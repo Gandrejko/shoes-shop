@@ -1,6 +1,7 @@
 import {InputBase, InputLabel, Typography} from '@mui/material';
 import {InputBaseProps} from '@mui/material/InputBase/InputBase';
 import {useId} from 'react';
+import {UseFormRegister} from 'react-hook-form';
 
 const styles = {
   label: {},
@@ -20,9 +21,18 @@ const styles = {
 
 type InputProps = InputBaseProps & {
   labelText: string;
+  register: UseFormRegister<any>;
+  validationSchema: any;
+  name: string;
 };
 
-export const Input = ({labelText, ...props}: InputProps) => {
+export const Input = ({
+  labelText,
+  register,
+  name,
+  validationSchema,
+  ...props
+}: InputProps) => {
   const id = useId();
   return (
     <>
@@ -34,7 +44,12 @@ export const Input = ({labelText, ...props}: InputProps) => {
           </Typography>
         )}
       </InputLabel>
-      <InputBase {...props} id={id} sx={styles.input} />
+      <InputBase
+        id={id}
+        sx={styles.input}
+        {...props}
+        {...register(name, validationSchema)}
+      />
     </>
   );
 };
