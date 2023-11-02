@@ -30,7 +30,7 @@ type CategoryProps = {
   children?: ReactNode;
   options?: {
     id: number;
-    name: string;
+    name: string | number;
   }[];
 };
 

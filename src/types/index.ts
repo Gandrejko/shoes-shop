@@ -1,10 +1,9 @@
-export type Data = {
+export type Data<T> = {
   id: number;
-  attributes: Attributes;
+  attributes: DefaultAttributes & T;
 };
 
-export type Attributes = {
-  name: string;
+export type DefaultAttributes = {
   createdAt: string;
   updatedAt: string;
   publishedAt: string;
@@ -21,7 +20,23 @@ export type Meta = {
   pagination: Pagination;
 };
 
-export type ResponseData = {
-  data: Data[];
+export type ResponseData<T> = {
+  data: Data<T>[];
   meta: Meta;
 };
+
+export type GendersResponse = ResponseData<{
+  name: string;
+}>;
+
+export type BrandsResponse = ResponseData<{
+  name: string;
+}>;
+
+export type ColorsResponse = ResponseData<{
+  name: string;
+}>;
+
+export type SizesResponse = ResponseData<{
+  value: number;
+}>;

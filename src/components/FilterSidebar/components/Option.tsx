@@ -10,7 +10,7 @@ const styles = {
 };
 
 type OptionProps = {
-  name: string;
+  name: string | number;
 };
 
 export const Option = ({name}: OptionProps) => {
