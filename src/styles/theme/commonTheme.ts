@@ -8,7 +8,7 @@ const workSans = Work_Sans({
   subsets: ['latin'],
 });
 
-const theme = createTheme({
+let theme = createTheme({
   palette: {
     mode: 'light',
     primary: {
@@ -40,7 +40,9 @@ const theme = createTheme({
     fontSize: 16,
     fontWeightRegular: 500,
 
-    h1: {},
+    h1: {
+      fontSize: 45,
+    },
   },
 });
 
