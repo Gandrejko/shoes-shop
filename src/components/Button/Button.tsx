@@ -1,4 +1,4 @@
-import { Button } from '@mui/material';
+import {Button} from '@mui/material';
 
 const styles = {
   transparentButton: {
@@ -23,24 +23,27 @@ const styles = {
 type ButtonProps = {
   isTransparent?: boolean;
   width?: string;
-  height?: string; 
+  height?: string;
   children: React.ReactNode;
 };
 
-export const CustomButton = ({ isTransparent, width, height, children }: ButtonProps) => {
-  const buttonStyle = isTransparent ? styles.transparentButton : styles.coloredButton;
+export const CustomButton = ({
+  isTransparent,
+  width,
+  height,
+  children,
+}: ButtonProps) => {
+  const buttonStyle = isTransparent
+    ? styles.transparentButton
+    : styles.coloredButton;
 
   const buttonProps = {
     sx: {
       width: width || 'auto',
-      height: height || 'auto', 
+      height: height || 'auto',
       ...buttonStyle,
     },
   };
 
-  return (
-    <Button {...buttonProps}>
-      {children}
-    </Button>
-  );
+  return <Button {...buttonProps}>{children}</Button>;
 };
