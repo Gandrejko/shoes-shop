@@ -36,18 +36,16 @@ type CategoryProps = {
 
 export const Category = ({name, children, options}: CategoryProps) => {
   return (
-    <>
-      <Accordion defaultExpanded disableGutters sx={styles.accordion}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>{name}</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          {children}
-          <Box sx={styles.options}>
-            {options?.map(({id, name}) => <Option key={id} name={name} />)}
-          </Box>
-        </AccordionDetails>
-      </Accordion>
-    </>
+    <Accordion defaultExpanded disableGutters sx={styles.accordion}>
+      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+        <Typography>{name}</Typography>
+      </AccordionSummary>
+      <AccordionDetails>
+        {children}
+        <Box sx={styles.options}>
+          {options?.map(({id, name}) => <Option key={id} name={name} />)}
+        </Box>
+      </AccordionDetails>
+    </Accordion>
   );
 };
