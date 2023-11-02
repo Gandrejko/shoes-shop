@@ -3,6 +3,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Box,
   Typography,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -16,6 +17,11 @@ const styles = {
     '&:before': {
       display: 'none',
     },
+  },
+  options: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '10px',
   },
 };
 
@@ -37,7 +43,9 @@ export const Category = ({name, children, options}: CategoryProps) => {
         </AccordionSummary>
         <AccordionDetails>
           {children}
-          {options?.map(({id, name}) => <Option key={id} name={name} />)}
+          <Box sx={styles.options}>
+            {options?.map(({id, name}) => <Option key={id} name={name} />)}
+          </Box>
         </AccordionDetails>
       </Accordion>
     </>
