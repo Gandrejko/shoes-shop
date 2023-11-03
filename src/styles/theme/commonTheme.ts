@@ -2,6 +2,16 @@ import {createTheme, responsiveFontSizes} from '@mui/material';
 import {inter, workSans} from './fonts';
 
 let theme = createTheme({
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 360,
+      largeSm: 600,
+      md: 900,
+      lg: 1200,
+      xl: 1920,
+    },
+  },
   palette: {
     mode: 'light',
     error: {
