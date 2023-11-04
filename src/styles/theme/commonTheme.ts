@@ -93,6 +93,14 @@ let theme = createTheme({
         }),
       },
     },
+    MuiDivider: {
+      styleOverrides: {
+        root: ({theme}) => ({
+          borderWidth: 1,
+          borderColor: theme.palette.grey.A100,
+        }),
+      },
+    },
   },
 });
 
