@@ -14,9 +14,8 @@ let theme = createTheme({
   },
   palette: {
     mode: 'light',
-    error: {
-      main: '#fe645e',
-    },
+    primary: {main: '#fe645e'},
+    error: {main: '#fe645e'},
     text: {
       primary: '#000',
       secondary: '#5c5c5c',
