@@ -82,7 +82,7 @@ export const SidebarLayout = ({children, currentTab}: SidebarLayoutProps) => {
             <Image
               width={20}
               height={20}
-              src="/icons/my-products.svg"
+              src="/icons/myProducts.svg"
               alt="my-products"
             />
             <Typography>My products</Typography>
