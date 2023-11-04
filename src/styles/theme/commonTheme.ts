@@ -44,12 +44,14 @@ let theme = createTheme({
     },
   },
   components: {
-    MuiOutlinedInput: {
+    MuiInputBase: {
       styleOverrides: {
         root: ({theme}) => ({
           border: 1,
+          borderStyle: 'solid',
           borderColor: theme.palette.grey[400],
           borderRadius: theme.spacing(),
+          padding: ['15px', '16px'].join(' '),
         }),
         input: ({theme}) => ({
           fontSize: 15,
@@ -72,22 +74,20 @@ let theme = createTheme({
           fontFamily: inter.style.fontFamily,
           fontSize: 12,
           fontWeight: 300,
-          color: theme.palette.error.main,
+          color: theme.palette.primary.main,
         }),
       },
     },
     MuiButton: {
       styleOverrides: {
-        root: ({theme}) => ({
+        root: {
           textTransform: 'none',
-          backgroundColor: theme.palette.common.white,
-        }),
+          width: 152,
+        },
         contained: ({theme}) => ({
-          backgroundColor: theme.palette.error.main,
+          color: theme.palette.common.white,
         }),
         outlined: ({theme}) => ({
-          color: theme.palette.error.main,
-          borderColor: theme.palette.error.main,
           borderRadius: theme.spacing(),
         }),
       },
