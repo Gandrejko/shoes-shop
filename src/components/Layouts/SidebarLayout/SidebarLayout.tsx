@@ -1,4 +1,4 @@
-import {AppBar, List} from '@mui/material';
+import {AppBar, Box, List, Stack} from '@mui/material';
 
 type SidebarLayout = {
   children: React.ReactNode;
@@ -8,8 +8,10 @@ const SidebarLayout: React.FC<SidebarLayout> = ({children}) => {
   return (
     <>
       <AppBar />
-      {children}
-      <List />
+      <Stack direction="row">
+        <Box sx={{backgroundColor: 'red', width: 300}} />
+        {children}
+      </Stack>
     </>
   );
 };

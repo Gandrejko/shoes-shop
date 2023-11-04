@@ -23,7 +23,10 @@ const UpdateProfileForm: React.FC = () => {
   } = useForm<UpdateProfileForm>();
 
   return (
-    <Box component="form" sx={{display: 'flex', flexDirection: 'column'}}>
+    <Box
+      component="form"
+      sx={{display: 'flex', flexDirection: 'column', maxWidth: 436}}
+    >
       <Box sx={{mb: 7}}>
         <Input
           defaultValue={'Jane'}
@@ -74,7 +77,7 @@ const UpdateProfileForm: React.FC = () => {
             required: true,
             pattern: {
               value: /\S+@\S+\.\S+/,
-              message: 'Required field',
+              message: 'The phone number is invalid',
             },
           }}
         />
