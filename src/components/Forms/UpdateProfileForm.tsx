@@ -74,7 +74,7 @@ const UpdateProfileForm: React.FC = () => {
             required: true,
             pattern: {
               value: /\S+@\S+\.\S+/,
-              message: 'The email is invalid',
+              message: 'Required field',
             },
           }}
         />
