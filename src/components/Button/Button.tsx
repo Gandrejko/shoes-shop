@@ -24,6 +24,7 @@ type ButtonProps = {
   isTransparent?: boolean;
   width?: string;
   height?: string;
+  alignSelf?: string;
   children: React.ReactNode;
 };
 
@@ -31,6 +32,7 @@ export const CustomButton = ({
   isTransparent,
   width,
   height,
+  alignSelf,
   children,
 }: ButtonProps) => {
   const buttonStyle = isTransparent
@@ -42,6 +44,7 @@ export const CustomButton = ({
       width: width || 'auto',
       height: height || 'auto',
       ...buttonStyle,
+      alignSelf,
     },
   };
 

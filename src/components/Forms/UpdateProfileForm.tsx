@@ -1,10 +1,7 @@
-import {Box, Button} from '@mui/material';
+import {Box} from '@mui/material';
 import {Input} from '../Inputs/Input';
 import {useForm} from 'react-hook-form';
-
-const styles = {
-  button: {background: '#FE645E', color: 'white', alignSelf: 'flex-end'},
-};
+import {CustomButton} from '../Button/Button';
 
 type UpdateProfileForm = {
   userName: string;
@@ -74,10 +71,9 @@ const UpdateProfileForm: React.FC = () => {
           }}
         />
       </Box>
-
-      <Button sx={styles.button} type="submit">
+      <CustomButton width="152" alignSelf="flex-end">
         Save changes
-      </Button>
+      </CustomButton>
     </Box>
   );
 };
