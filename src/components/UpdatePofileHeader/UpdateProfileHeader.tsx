@@ -1,4 +1,4 @@
-import {Box} from '@mui/material';
+import {Avatar, Box} from '@mui/material';
 import Image from 'next/image';
 import {CustomButton} from '../Button/Button';
 
@@ -9,21 +9,21 @@ const styles = {
     justifyContent: 'space-beetwen',
     alignItems: 'center',
   },
-  image: {marginRight: 76, borderRadius: 100},
   buttonsBox: {display: 'flex', flexDirection: 'column', gap: 3},
+  avatar: {
+    marginRight: 9.5,
+    width: 150,
+    height: 150,
+    borderRadius: 100,
+  },
 };
 
 const UpdateProfileHeader = () => {
   return (
     <Box sx={styles.headerBox}>
-      <Image
-        src="/images/avatar_test.jpg"
-        alt="avatar"
-        width={150}
-        height={150}
-        style={styles.image}
-      />
-
+      <Avatar sx={styles.avatar}>
+        <Image src="/images/avatar.png" alt="avatar" layout="fill" />
+      </Avatar>
       <Box sx={styles.buttonsBox}>
         <CustomButton isTransparent>Change photo</CustomButton>
         <CustomButton>Delete</CustomButton>
