@@ -45,7 +45,7 @@ let theme = createTheme({
 
         input: ({theme}) => ({
           fontSize: 15,
-          fontWeight: 300,
+          fontWeight: 400,
           color: theme.palette.text.secondary,
         }),
       },
