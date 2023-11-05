@@ -19,13 +19,12 @@ const UpdateProfileForm: React.FC = () => {
     register,
     handleSubmit,
     formState: {errors},
-    control,
   } = useForm<UpdateProfileForm>();
 
   return (
     <Box
       component="form"
-      sx={{display: 'flex', flexDirection: 'column', maxWidth: 436}}
+      sx={{display: 'flex', flexDirection: 'column', maxWidth: '100%'}}
     >
       <Box sx={{mb: 7}}>
         <Input
@@ -34,9 +33,8 @@ const UpdateProfileForm: React.FC = () => {
           name="userName"
           register={register}
           validationSchema={{
-            required: true,
             pattern: {
-              message: 'Required field',
+              required: true,
             },
           }}
           style={{marginBottom: 24}}
@@ -48,9 +46,6 @@ const UpdateProfileForm: React.FC = () => {
           register={register}
           validationSchema={{
             required: true,
-            pattern: {
-              message: 'Required field',
-            },
           }}
           style={{marginBottom: 24}}
         />
@@ -60,10 +55,8 @@ const UpdateProfileForm: React.FC = () => {
           name="email"
           register={register}
           validationSchema={{
-            required: true,
             pattern: {
-              value: /\S+@\S+\.\S+/,
-              message: 'The email is invalid',
+              value: /^(\d{3})\s\d{3}-\d{4}/,
             },
           }}
           style={{marginBottom: 24}}
@@ -77,12 +70,14 @@ const UpdateProfileForm: React.FC = () => {
             required: true,
             pattern: {
               value: /\S+@\S+\.\S+/,
-              message: 'The phone number is invalid',
             },
           }}
         />
       </Box>
-      <Button sx={styles.button}>Save changes</Button>
+
+      <Button sx={styles.button} type="submit">
+        Save changes
+      </Button>
     </Box>
   );
 };

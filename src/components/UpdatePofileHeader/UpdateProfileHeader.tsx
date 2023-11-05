@@ -1,4 +1,4 @@
-import {Box, ButtonGroup} from '@mui/material';
+import {Box} from '@mui/material';
 import Image from 'next/image';
 import {CustomButton} from '../Button/Button';
 
@@ -10,7 +10,7 @@ const styles = {
     alignItems: 'center',
   },
   image: {marginRight: 76, borderRadius: 100},
-  buttonsBox: {display: 'flex', flexDirection: 'column'},
+  buttonsBox: {display: 'flex', flexDirection: 'column', gap: 3},
 };
 
 const UpdateProfileHeader = () => {
