@@ -37,10 +37,11 @@ let theme = createTheme({
     MuiInputBase: {
       styleOverrides: {
         root: ({theme}) => ({
+          border: 1,
           borderStyle: 'solid',
           borderRadius: theme.spacing(),
           borderColor: theme.palette.grey[700],
-          padding: ['15px', '16px'].join(' '),
+          padding: ['7px', '16px'].join(' '),
         }),
 
         input: ({theme}) => ({
