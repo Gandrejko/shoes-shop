@@ -1,6 +1,6 @@
 import React from 'react';
 import {Box, Typography} from '@mui/material';
-import {CustomButton} from '../Button/Button';
+import {CustomButton} from '@/components/Button/Button';
 import Image from 'next/image';
 
 const EmptyCartPage = () => {

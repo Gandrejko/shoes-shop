@@ -1,5 +1,6 @@
 import {Box, Typography} from '@mui/material';
-import {CustomButton} from '../Button/Button';
+import {CustomButton} from '@/components/Button/Button';
+
 const SummarySection = ({products}: {products: any[]}) => {
   return (
     <Box>
