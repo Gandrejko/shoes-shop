@@ -15,9 +15,6 @@ export default NextAuth({
           const response = await axios.post(
             'https://shoes-shop-strapi.herokuapp.com/api/auth/local',
             credentials,
-            {
-              headers: {'Content-Type': 'application/json'},
-            },
           );
 
           return {...response.data.user, access_token: response.data.jwt};
