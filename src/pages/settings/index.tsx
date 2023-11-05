@@ -1,14 +1,14 @@
 import UpdateProfileContainer from '@/components/Containers/UpdateProfileContainer';
-import SidebarLayout from '@/components/Layouts/SidebarLayout/SidebarLayout';
 import {NextPageWithLayout} from '../_app';
 import {ReactElement} from 'react';
+import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
 
 const ProfilePage: NextPageWithLayout = () => {
   return <UpdateProfileContainer />;
 };
 
 ProfilePage.getLayout = function getLayout(page: ReactElement) {
-  return <SidebarLayout>{page}</SidebarLayout>;
+  return <SidebarLayout currentTab="settings">{page}</SidebarLayout>;
 };
 
 export default ProfilePage;

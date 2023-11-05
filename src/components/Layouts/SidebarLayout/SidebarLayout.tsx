@@ -36,7 +36,6 @@ const SidebarLayout: React.FC<SidebarLayout> = ({children}) => {
           </AppBar>
         </Box>
         <Stack direction="row" justifyContent="space-between">
-          <Box sx={{backgroundColor: 'red'}} flex={1} />
           {children}
         </Stack>
       </Box>

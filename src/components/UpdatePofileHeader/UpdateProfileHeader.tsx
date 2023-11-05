@@ -14,7 +14,6 @@ const styles = {
     marginRight: 9.5,
     width: 150,
     height: 150,
-    borderRadius: 100,
   },
 };
 
@@ -22,7 +21,7 @@ const UpdateProfileHeader = () => {
   return (
     <Box sx={styles.headerBox}>
       <Avatar sx={styles.avatar}>
-        <Image src="/images/avatar.png" alt="avatar" layout="fill" />
+        <Image src="/images/avatar.png" alt="avatar" width={150} height={150} />
       </Avatar>
       <Box sx={styles.buttonsBox}>
         <CustomButton isTransparent>Change photo</CustomButton>

@@ -1,6 +1,6 @@
 import {Box} from '@mui/material';
 import {Input} from '../Inputs/Input';
-import {useForm} from 'react-hook-form';
+import {SubmitHandler, useForm} from 'react-hook-form';
 import {CustomButton} from '../Button/Button';
 
 type UpdateProfileForm = {
@@ -18,10 +18,13 @@ const UpdateProfileForm: React.FC = () => {
     formState: {errors},
   } = useForm<UpdateProfileForm>();
 
+  const submitHadler: SubmitHandler<UpdateProfileForm> = async () => {};
+
   return (
     <Box
       component="form"
       sx={{display: 'flex', flexDirection: 'column', maxWidth: '100%'}}
+      onSubmit={handleSubmit(submitHadler)}
     >
       <Box sx={{mb: 7}}>
         <Input
