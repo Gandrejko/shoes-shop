@@ -6,55 +6,43 @@ import {SubmitHandler, useForm} from 'react-hook-form';
 import Image from 'next/image';
 import {useMutation} from 'react-query';
 import axios from 'axios';
-import {useEffect} from 'react';
 import {useRouter} from 'next/router';
 
-type ISignUp = {
+type SignUpType = {
   email: string;
   username: string;
   password: string;
   confirmPassword: string;
 };
 
-const signUp = async (userData: Partial<ISignUp>) => {
-  const data = await axios.post(
-    'https://shoes-shop-strapi.herokuapp.com/api/auth/local/register',
-    userData,
-  );
-  return data;
-};
-
 export default function SignUp() {
-  const {mutateAsync, isSuccess} = useMutation({
-    mutationFn: (userData: Partial<ISignUp>) =>
+  const {mutateAsync} = useMutation({
+    mutationFn: (userData: Partial<SignUpType>) =>
       axios.post(
         'https://shoes-shop-strapi.herokuapp.com/api/auth/local/register',
         userData,
       ),
+    onSuccess: () => {
+      router.push('/auth/signIn');
+    },
   });
   const {
     register,
     handleSubmit,
     watch,
     formState: {errors},
-  } = useForm<ISignUp>();
+  } = useForm<SignUpType>();
   const router = useRouter();
 
-  useEffect(() => {
-    if (isSuccess) {
-      router.push('/auth/signIn');
-    }
-  }, [router, isSuccess]);
-
-  const onSubmit: SubmitHandler<ISignUp> = async data => {
+  const onSubmit: SubmitHandler<SignUpType> = async data => {
     const {confirmPassword, ...restData} = data;
     mutateAsync(restData);
   };
 
   return (
     <Box sx={{display: 'flex'}}>
-      <Box sx={{width: '960px', margin: '208px 286px 0 196px'}}>
-        <Typography component="h1" sx={{fontSize: 45, marginBottom: 2}}>
+      <Box sx={{flex: '1', margin: '208px 286px 0 196px'}}>
+        <Typography component="h1" sx={{marginBottom: 2}}>
           Create an account
         </Typography>
         <Typography component="h5" sx={{fontSize: 15, marginBottom: 6}}>
@@ -134,12 +122,13 @@ export default function SignUp() {
           </Link>
         </Box>
       </Box>
-      <Image
-        src="/images/signUpBanner.png"
-        alt="picture of our brand"
-        width={960}
-        height={930}
-      />
+      <Box sx={{width: '943px', height: '930px', position: 'relative'}}>
+        <Image
+          src="/images/signUpBanner.png"
+          alt="picture of our brand"
+          fill={true}
+        />
+      </Box>
     </Box>
   );
 }

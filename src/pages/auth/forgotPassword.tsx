@@ -6,7 +6,6 @@ import {Input} from '@/components/Inputs/Input';
 import Image from 'next/image';
 import axios from 'axios';
 import {useMutation} from 'react-query';
-import {useEffect} from 'react';
 import {useRouter} from 'next/router';
 
 type ForgotPasswordType = {
@@ -14,25 +13,22 @@ type ForgotPasswordType = {
 };
 
 export default function ForgotPassword() {
-  const {mutateAsync, isSuccess} = useMutation({
+  const router = useRouter();
+  const {mutateAsync} = useMutation({
     mutationFn: (userData: ForgotPasswordType) =>
       axios.post(
         'https://shoes-shop-strapi.herokuapp.com/api/auth/forgot-password',
         userData,
       ),
+    onSuccess: () => {
+      router.push('/auth/resetPassword');
+    },
   });
   const {
     register,
     handleSubmit,
     formState: {errors},
   } = useForm<ForgotPasswordType>();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (isSuccess) {
-      router.push('/auth/resetPassword');
-    }
-  }, [router, isSuccess]);
 
   const onSubmit: SubmitHandler<ForgotPasswordType> = async data => {
     mutateAsync(data);
@@ -40,8 +36,8 @@ export default function ForgotPassword() {
 
   return (
     <Box sx={{display: 'flex'}}>
-      <Box sx={{width: '960px', margin: '208px 286px 0 196px'}}>
-        <Typography component="h1" sx={{fontSize: 45, marginBottom: 2}}>
+      <Box sx={{flex: '1', margin: '208px 286px 0 196px'}}>
+        <Typography component="h1" sx={{marginBottom: 2}}>
           Forgot password?
         </Typography>
         <Typography component="h5" sx={{fontSize: 15, marginBottom: 6}}>
@@ -87,12 +83,13 @@ export default function ForgotPassword() {
           </Link>
         </Box>
       </Box>
-      <Image
-        src="/images/resetForgotBanner.png"
-        alt="picture of our brand"
-        width={960}
-        height={930}
-      />
+      <Box sx={{width: '943px', height: '930px', position: 'relative'}}>
+        <Image
+          src="/images/resetForgotBanner.png"
+          alt="picture of our brand"
+          fill={true}
+        />
+      </Box>
     </Box>
   );
 }

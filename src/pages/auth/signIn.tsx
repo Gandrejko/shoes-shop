@@ -34,8 +34,8 @@ export default function SignIn() {
 
   return (
     <Box sx={{display: 'flex'}}>
-      <Box sx={{width: '960px', margin: '208px 286px 0 196px'}}>
-        <Typography component="h1" sx={{ marginBottom: 2}}>
+      <Box sx={{flex: '1', margin: '208px 286px 0 196px'}}>
+        <Typography component="h1" sx={{marginBottom: 2}}>
           Welcome back
         </Typography>
         <Typography component="h5" sx={{fontSize: 15, marginBottom: 6}}>
@@ -113,12 +113,13 @@ export default function SignIn() {
           </Link>
         </Box>
       </Box>
-      <Image
-        src="/images/signInBanner.png"
-        alt="picture of our brand"
-        width={960}
-        height={930}
-      />
+      <Box sx={{width: '943px', height: '930px', position: 'relative'}}>
+        <Image
+          src="/images/signInBanner.png"
+          alt="picture of our brand"
+          fill={true}
+        />
+      </Box>
     </Box>
   );
 }

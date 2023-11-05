@@ -7,7 +7,6 @@ import {Input} from '@/components/Inputs/Input';
 import Image from 'next/image';
 import axios from 'axios';
 import {useMutation} from 'react-query';
-import {useEffect} from 'react';
 
 type ResetPasswordType = {
   password: string;
@@ -16,6 +15,7 @@ type ResetPasswordType = {
 };
 
 export default function ResetPassword() {
+  const router = useRouter();
   const {mutateAsync, isSuccess} = useMutation({
     mutationFn: (userData: ResetPasswordType) =>
       axios.post(
@@ -26,6 +26,9 @@ export default function ResetPassword() {
           code: userData.code,
         },
       ),
+    onSuccess: () => {
+      router.push('/auth/signIn');
+    },
   });
   const {
     register,
@@ -33,15 +36,9 @@ export default function ResetPassword() {
     watch,
     formState: {errors},
   } = useForm<Omit<ResetPasswordType, 'code'>>();
-  const router = useRouter();
+
   const searchParams = useSearchParams();
   const code = searchParams.get('code') || '';
-
-  useEffect(() => {
-    if (isSuccess) {
-      router.push('/auth/signIn');
-    }
-  }, [router, isSuccess]);
 
   const onSubmit: SubmitHandler<
     Omit<ResetPasswordType, 'code'>
@@ -51,8 +48,13 @@ export default function ResetPassword() {
 
   return (
     <Box sx={{display: 'flex'}}>
-      <Box sx={{width: '960px', margin: '208px 286px 0 196px'}}>
-        <Typography component="h1" sx={{fontSize: 45, marginBottom: 2}}>
+      <Box
+        sx={{
+          flex: '1',
+          margin: '208px 286px 0 196px',
+        }}
+      >
+        <Typography component="h1" sx={{marginBottom: 2}}>
           Reset password
         </Typography>
         <Typography component="h5" sx={{fontSize: 15, marginBottom: 6}}>
@@ -105,12 +107,13 @@ export default function ResetPassword() {
           </Link>
         </Box>
       </Box>
-      <Image
-        src="/images/resetForgotBanner.png"
-        alt="picture of our brand"
-        width={960}
-        height={930}
-      />
+      <Box sx={{width: '943px', height: '930px', position: 'relative'}}>
+        <Image
+          src="/images/resetForgotBanner.png"
+          alt="picture of our brand"
+          fill={true}
+        />
+      </Box>
     </Box>
   );
 }
