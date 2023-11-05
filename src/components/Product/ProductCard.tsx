@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import Image from 'next/image';
+// @ts-ignore
 import {MoreHoriz} from '@mui/icons-material';
 import {
   Box,
