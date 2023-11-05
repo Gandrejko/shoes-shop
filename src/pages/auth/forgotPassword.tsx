@@ -57,7 +57,7 @@ export default function ForgotPassword() {
             register={register}
             name="email"
             validationSchema={{
-              required: true,
+              required: 'This field is required',
               pattern: {
                 value: /\S+@\S+\.\S+/,
                 message: 'Entered value does not match email format',

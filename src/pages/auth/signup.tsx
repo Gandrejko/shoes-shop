@@ -70,7 +70,7 @@ export default function SignUp() {
             register={register}
             name="username"
             validationSchema={{
-              required: 'Required field',
+              required: 'This field is required',
             }}
             required={true}
             style={{marginBottom: '24px'}}
@@ -80,7 +80,7 @@ export default function SignUp() {
             register={register}
             name="email"
             validationSchema={{
-              required: true,
+              required: 'This field is required',
               pattern: {
                 value: /\S+@\S+\.\S+/,
                 message: 'Entered value does not match email format',
@@ -94,7 +94,7 @@ export default function SignUp() {
             register={register}
             name="password"
             validationSchema={{
-              required: true,
+              required: 'This field is required',
               minLength: {
                 value: 6,
                 message: 'min length is 6',

@@ -68,7 +68,7 @@ export default function ResetPassword() {
             register={register}
             name="password"
             validationSchema={{
-              required: true,
+              required: 'This field is required',
               minLength: {
                 value: 6,
                 message: 'min length is 6',
@@ -83,7 +83,7 @@ export default function ResetPassword() {
             register={register}
             name="confirmPassword"
             validationSchema={{
-              required: true,
+              required: 'This field is required',
               validate: (val: string) => {
                 if (watch('password') != val) {
                   return 'Your passwords do no match';
