@@ -1,4 +1,4 @@
-import {Box, Divider, Typography} from '@mui/material';
+import {Box, Divider, List, ListItem, Typography} from '@mui/material';
 import Image from 'next/image';
 import {ReactNode} from 'react';
 
@@ -71,9 +71,8 @@ export const SidebarLayout = ({children, currentTab}: SidebarLayoutProps) => {
           </Box>
         </Box>
         <Divider />
-        <Box component="ul" sx={styles.tabs}>
-          <Box
-            component="li"
+        <List sx={styles.tabs}>
+          <ListItem
             sx={[
               styles.tab,
               {color: currentTab === 'products' ? 'FE645E' : '#000'},
@@ -86,9 +85,8 @@ export const SidebarLayout = ({children, currentTab}: SidebarLayoutProps) => {
               alt="my-products"
             />
             <Typography>My products</Typography>
-          </Box>
-          <Box
-            component="li"
+          </ListItem>
+          <ListItem
             sx={[
               styles.tab,
               {color: currentTab === 'settings' ? 'FE645E' : '#000'},
@@ -101,9 +99,8 @@ export const SidebarLayout = ({children, currentTab}: SidebarLayoutProps) => {
               alt="settings"
             />
             <Typography>Settings</Typography>
-          </Box>
-          <Box
-            component="li"
+          </ListItem>
+          <ListItem
             sx={[
               styles.tab,
               {color: currentTab === 'logout' ? 'FE645E' : '#000'},
@@ -116,8 +113,8 @@ export const SidebarLayout = ({children, currentTab}: SidebarLayoutProps) => {
               alt="logout"
             />
             <Typography>Log out</Typography>
-          </Box>
-        </Box>
+          </ListItem>
+        </List>
       </Box>
       {children}
     </Box>
