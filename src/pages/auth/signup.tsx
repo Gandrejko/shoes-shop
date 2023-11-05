@@ -43,7 +43,7 @@ export default function SignUp() {
   return (
     <Box sx={{display: 'flex'}}>
       <Box sx={{width: '960px', margin: '208px 286px 0 196px'}}>
-        <Typography component="h2" sx={{fontSize: 45, marginBottom: 2}}>
+        <Typography component="h1" sx={{fontSize: 45, marginBottom: 2}}>
           Create an account
         </Typography>
         <Typography component="h5" sx={{fontSize: 15, marginBottom: 6}}>
