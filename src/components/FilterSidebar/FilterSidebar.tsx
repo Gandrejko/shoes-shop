@@ -7,7 +7,7 @@ import {
 } from '@/types';
 import {Box} from '@mui/material';
 import axios, {AxiosResponse} from 'axios';
-import {useQuery} from 'react-query';
+import {useQuery} from '@tanstack/react-query';
 import {Category} from './components/Category';
 
 const styles = {
@@ -22,19 +22,22 @@ type CategoryInfo = {
 };
 
 export const FilterSidebar = () => {
-  const {data: genders} = useQuery<AxiosResponse<GendersResponse>>(
-    'genders',
-    () => axios.get(`${process.env.API_URL}/genders`),
-  );
-  const {data: colors} = useQuery<AxiosResponse<BrandsResponse>>('colors', () =>
-    axios.get(`${process.env.API_URL}/colors`),
-  );
-  const {data: brands} = useQuery<AxiosResponse<ColorsResponse>>('brands', () =>
-    axios.get(`${process.env.API_URL}/brands`),
-  );
-  const {data: sizes} = useQuery<AxiosResponse<SizesResponse>>('sizes', () =>
-    axios.get(`${process.env.API_URL}/sizes`),
-  );
+  const {data: genders} = useQuery<AxiosResponse<GendersResponse>>({
+    queryKey: ['genders'],
+    queryFn: () => axios.get(`${process.env.API_URL}/genders`),
+  });
+  const {data: colors} = useQuery<AxiosResponse<ColorsResponse>>({
+    queryKey: ['colors'],
+    queryFn: () => axios.get(`${process.env.API_URL}/colors`),
+  });
+  const {data: brands} = useQuery<AxiosResponse<BrandsResponse>>({
+    queryKey: ['brands'],
+    queryFn: () => axios.get(`${process.env.API_URL}/brands`),
+  });
+  const {data: sizes} = useQuery<AxiosResponse<SizesResponse>>({
+    queryKey: ['sizes'],
+    queryFn: () => axios.get(`${process.env.API_URL}/sizes`),
+  });
 
   return (
     <Box sx={styles.sidebar}>
