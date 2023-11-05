@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import {useState} from 'react';
 import logo from '../../../public/icons/logo.svg';
-import chart from '../../../public/icons/chart.svg';
+import cart from '../../../public/icons/cart.svg';
 import avatar from '../../../public/icons/avatar.svg';
 import search from '../../../public/icons/search.svg';
 import menu from '../../../public/icons/burgerMenu.svg';
@@ -117,7 +117,7 @@ const DesktopHeader = ({userLoggedIn}: HeaderProps) => {
           <SearchInput register={() => {}} validationSchema="" />
           <Stack direction="row" spacing={0.5}>
             <IconButton onClick={() => {}}>
-              <Image src={chart} alt="chart" width={24} height={24} />
+              <Image src={cart} alt="cart" width={24} height={24} />
             </IconButton>
             <IconButton onClick={() => {}}>
               <Image src={avatar} alt="avatar" width={24} height={24} />
@@ -136,7 +136,7 @@ const DesktopHeader = ({userLoggedIn}: HeaderProps) => {
           </CustomButton>
           <SearchInput register={() => {}} validationSchema="" />
           <IconButton onClick={() => {}}>
-            <Image src={chart} alt="chart" width={24} height={24} />
+            <Image src={cart} alt="cart" width={24} height={24} />
           </IconButton>
         </Stack>
       )}
@@ -157,7 +157,7 @@ const MobileHeader = ({userLoggedIn}: HeaderProps) => {
         <Image src={logo} alt="logo" width={35.31} height={26.52} />
         <Stack direction="row" alignItems="center" spacing={1}>
           <IconButton onClick={() => {}}>
-            <Image src={chart} alt="chart" width={20} height={20} />
+            <Image src={cart} alt="cart" width={20} height={20} />
           </IconButton>
           <IconButton onClick={() => {}}>
             <Image src={search} alt="search" width={20} height={20} />
