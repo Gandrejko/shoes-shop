@@ -64,7 +64,7 @@ let theme = createTheme({
           fontFamily: inter.style.fontFamily,
           fontSize: 12,
           fontWeight: 400,
-          color: theme.palette.primary.main,
+          color: theme.palette.error.main,
         }),
       },
     },
