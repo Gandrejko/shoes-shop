@@ -20,6 +20,7 @@ declare module 'next-auth' {
     username?: string;
     email?: string | null;
     id?: string;
+    access_token?: string;
   }
 }
 

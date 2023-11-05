@@ -20,7 +20,7 @@ export default NextAuth({
             },
           );
 
-          return response.data.user;
+          return {...response.data.user, access_token: response.data.jwt};
         } catch {
           return null;
         }
@@ -37,7 +37,7 @@ export default NextAuth({
     },
     jwt({token, account, user}) {
       if (account) {
-        token.accessToken = account.access_token;
+        token.accessToken = user.access_token;
         token.id = user.id;
         token.username = user.username;
         token.name = user.firstName
