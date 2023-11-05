@@ -1,37 +1,57 @@
-import NextAuth from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
+import axios from 'axios';
+import NextAuth from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
 
 export default NextAuth({
   providers: [
     CredentialsProvider({
-      name: "Credentials",
+      name: 'Credentials',
       credentials: {
-        identifier: { label: "Username", type: "text", placeholder: "jsmith" },
-        password: { label: "Password", type: "password" },
+        identifier: {label: 'Username', type: 'text', placeholder: 'jsmith'},
+        password: {label: 'Password', type: 'password'},
       },
       async authorize(credentials, req) {
-        const res = await fetch(
-          "https://shoes-shop-strapi.herokuapp.com/api/auth/local",
-          {
-            method: "POST",
-            body: JSON.stringify(credentials),
-            headers: { "Content-Type": "application/json" },
-          }
-        );
-        const data = await res.json();
-        if (res.ok && data) {
-          return {
-            name: data.user.username,
-            email: data.user.email,
-            id: data.user.id,
-          };
-        }
+        try {
+          const response = await axios.post(
+            'https://shoes-shop-strapi.herokuapp.com/api/auth/local',
+            credentials,
+            {
+              headers: {'Content-Type': 'application/json'},
+            },
+          );
 
-        return null;
+          return response.data.user;
+        } catch {
+          return null;
+        }
       },
     }),
   ],
-  pages: {
-    signIn: "/auth/signIn",
+  callbacks: {
+    session({session, token}) {
+      session.user.id = token.id;
+      session.user.username = token.username;
+      session.user.name = token.name;
+
+      return session;
+    },
+    jwt({token, account, user}) {
+      if (account) {
+        token.accessToken = account.access_token;
+        token.id = user.id;
+        token.username = user.username;
+        token.name = user.firstName
+          ? user.firstName + ' '
+          : '' + (user.lastName || '');
+      }
+      return token;
+    },
   },
+  pages: {
+    signIn: '/auth/signIn',
+  },
+  session: {
+    strategy: 'jwt',
+  },
+  secret: process.env.NEXTAUTH_SECRET,
 });

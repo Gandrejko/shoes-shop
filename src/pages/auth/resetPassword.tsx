@@ -5,30 +5,46 @@ import Link from 'next/link';
 import {CustomButton} from '@/components/Button/Button';
 import {Input} from '@/components/Inputs/Input';
 import Image from 'next/image';
-interface IResetPassword {
+import axios from 'axios';
+import {useMutation} from 'react-query';
+
+type ResetPasswordType = {
   password: string;
-  passwordConfirmation: string;
-}
+  confirmPassword: string;
+  code: string;
+};
+
+const resetPasswordHandler = async (userData: ResetPasswordType) => {
+  try {
+    const data = await axios.post(
+      'https://shoes-shop-strapi.herokuapp.com/api/auth/forgot-password',
+      {
+        password: userData.password,
+        passwordConfirmation: userData.confirmPassword,
+        code: userData.code,
+      },
+    );
+    return data;
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 export default function ResetPassword() {
+  const {mutate} = useMutation({mutationFn: resetPasswordHandler});
   const {
     register,
     handleSubmit,
     watch,
     formState: {errors},
-  } = useForm<IResetPassword>();
+  } = useForm<Omit<ResetPasswordType, 'code'>>();
   const searchParams = useSearchParams();
   const code = searchParams.get('code') || '';
 
-  const onSubmit: SubmitHandler<IResetPassword> = async data => {
-    await fetch(
-      'https://shoes-shop-strapi.herokuapp.com/api/auth/reset-password',
-      {
-        method: 'POST',
-        body: JSON.stringify({...data, code}),
-        headers: {'Content-Type': 'application/json'},
-      },
-    );
+  const onSubmit: SubmitHandler<
+    Omit<ResetPasswordType, 'code'>
+  > = async data => {
+    mutate({...data, code});
   };
 
   return (
@@ -48,7 +64,7 @@ export default function ResetPassword() {
           <Input
             labelText="Password"
             register={register}
-            name="identifier"
+            name="password"
             validationSchema={{
               required: true,
               minLength: {
@@ -57,6 +73,7 @@ export default function ResetPassword() {
               },
             }}
             required={true}
+            type="password"
             style={{marginBottom: '24px'}}
           />
           <Input
@@ -87,10 +104,10 @@ export default function ResetPassword() {
         </Box>
       </Box>
       <Image
-        src="/images/resetPasswordBanner.png"
+        src="/images/resetForgotBanner.png"
         alt="picture of our brand"
-        width="960"
-        height="1112"
+        width={960}
+        height={930}
       />
     </Box>
   );

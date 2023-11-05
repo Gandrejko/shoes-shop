@@ -5,9 +5,10 @@ import Link from 'next/link';
 import {CustomButton} from '@/components/Button/Button';
 import {Input} from '@/components/Inputs/Input';
 import Image from 'next/image';
+import {useRouter} from 'next/router';
 
-interface ISignIn {
-  identifier: string;
+interface SignInType {
+  email: string;
   password: string;
   isRemember: boolean;
 }
@@ -17,16 +18,17 @@ export default function SignIn() {
     register,
     handleSubmit,
     formState: {errors},
-  } = useForm<ISignIn>({
-    defaultValues: {identifier: '', password: '', isRemember: false},
+  } = useForm<SignInType>({
+    defaultValues: {email: '', password: '', isRemember: false},
   });
+  const router = useRouter();
 
-  const onSubmit: SubmitHandler<ISignIn> = async data => {
+  const onSubmit: SubmitHandler<SignInType> = async data => {
     await signIn('credentials', {
-      identifier: data.identifier,
+      identifier: data.email,
       password: data.password,
       redirect: true,
-      callbackUrl: 'http://localhost:3000',
+      callbackUrl: router.basePath,
     });
   };
 
@@ -34,7 +36,7 @@ export default function SignIn() {
     <Box sx={{display: 'flex'}}>
       <Box sx={{width: '960px', margin: '208px 286px 0 196px'}}>
         <Typography component="h2" sx={{fontSize: 45, marginBottom: 2}}>
-          Welcom back
+          Welcome back
         </Typography>
         <Typography component="h5" sx={{fontSize: 15, marginBottom: 6}}>
           Welcome back! Please enter your details to log into your account.
@@ -47,7 +49,7 @@ export default function SignIn() {
           <Input
             labelText="Email"
             register={register}
-            name="identifier"
+            name="email"
             validationSchema={{
               required: true,
               pattern: {
@@ -81,6 +83,7 @@ export default function SignIn() {
               marginBottom: '56px',
             }}
           >
+            {/* TODO: add remember me functionality */}
             <FormControlLabel
               control={
                 <Checkbox
@@ -113,8 +116,8 @@ export default function SignIn() {
       <Image
         src="/images/signInBanner.png"
         alt="picture of our brand"
-        width="960"
-        height="1112"
+        width={960}
+        height={930}
       />
     </Box>
   );

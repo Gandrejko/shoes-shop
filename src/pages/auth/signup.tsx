@@ -4,16 +4,30 @@ import {Box, Typography} from '@mui/material';
 import Link from 'next/link';
 import {SubmitHandler, useForm} from 'react-hook-form';
 import Image from 'next/image';
-import {log} from 'console';
+import {useMutation} from 'react-query';
+import axios from 'axios';
 
-interface ISignUp {
+type ISignUp = {
   email: string;
   username: string;
   password: string;
   confirmPassword: string;
-}
+};
+
+const signUp = async (userData: Partial<ISignUp>) => {
+  try {
+    const data = await axios.post(
+      'https://shoes-shop-strapi.herokuapp.com/api/auth/local/register',
+      userData,
+    );
+    return data;
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 export default function SignUp() {
+  const {mutate} = useMutation({mutationFn: signUp});
   const {
     register,
     handleSubmit,
@@ -23,15 +37,7 @@ export default function SignUp() {
 
   const onSubmit: SubmitHandler<ISignUp> = async data => {
     const {confirmPassword, ...restData} = data;
-    const res = await fetch(
-      'https://shoes-shop-strapi.herokuapp.com/api/auth/local/register',
-      {
-        method: 'POST',
-        body: JSON.stringify(restData),
-        headers: {'Content-Type': 'application/json'},
-      },
-    );
-    const user = await res.json();
+    mutate(restData);
   };
 
   return (
@@ -53,10 +59,7 @@ export default function SignUp() {
             register={register}
             name="username"
             validationSchema={{
-              required: true,
-              pattern: {
-                message: 'Required field',
-              },
+              required: 'Required field',
             }}
             required={true}
             style={{marginBottom: '24px'}}
@@ -123,8 +126,8 @@ export default function SignUp() {
       <Image
         src="/images/signUpBanner.png"
         alt="picture of our brand"
-        width="960"
-        height="1112"
+        width={960}
+        height={930}
       />
     </Box>
   );

@@ -4,27 +4,35 @@ import Link from 'next/link';
 import {CustomButton} from '@/components/Button/Button';
 import {Input} from '@/components/Inputs/Input';
 import Image from 'next/image';
+import axios from 'axios';
+import {useMutation} from 'react-query';
 
-interface IForgotPassword {
+type ForgotPasswordType = {
   email: string;
-}
+};
+
+const forgotPasswordHandler = async (userData: ForgotPasswordType) => {
+  try {
+    const data = await axios.post(
+      'https://shoes-shop-strapi.herokuapp.com/api/auth/forgot-password',
+      userData,
+    );
+    return data;
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 export default function ForgotPassword() {
+  const {mutate} = useMutation({mutationFn: forgotPasswordHandler});
   const {
     register,
     handleSubmit,
     formState: {errors},
-  } = useForm<IForgotPassword>();
+  } = useForm<ForgotPasswordType>();
 
-  const onSubmit: SubmitHandler<IForgotPassword> = async data => {
-    await fetch(
-      'https://shoes-shop-strapi.herokuapp.com/api/auth/forgot-password',
-      {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {'Content-Type': 'application/json'},
-      },
-    );
+  const onSubmit: SubmitHandler<ForgotPasswordType> = async data => {
+    mutate(data);
   };
 
   return (
@@ -59,18 +67,28 @@ export default function ForgotPassword() {
           <CustomButton type="submit">Reset password</CustomButton>
         </Box>
         <Box
-          sx={{display: 'flex', justifyContent: 'center', marginTop: '16px'}}
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'column',
+            gap: '15px',
+            marginTop: '16px',
+          }}
         >
+          <Link href={'/auth/resetPassword'}>
+            <Typography>Go to reset password page</Typography>
+          </Link>
           <Link href={'/auth/signIn'}>
             <Typography>Back to log in</Typography>
           </Link>
         </Box>
       </Box>
       <Image
-        src="/images/resetPasswordBanner.png"
+        src="/images/resetForgotBanner.png"
         alt="picture of our brand"
-        width="960"
-        height="1112"
+        width={960}
+        height={930}
       />
     </Box>
   );

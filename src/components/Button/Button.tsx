@@ -33,7 +33,7 @@ export const CustomButton = ({
   width,
   height,
   children,
-  ...props
+  ...remainingProps
 }: ButtonProps) => {
   const buttonStyle = isTransparent
     ? styles.transparentButton
@@ -45,11 +45,8 @@ export const CustomButton = ({
       height: height || 'auto',
       ...buttonStyle,
     },
+    ...remainingProps,
   };
 
-  return (
-    <Button {...buttonProps} {...props}>
-      {children}
-    </Button>
-  );
+  return <Button {...buttonProps}>{children}</Button>;
 };
