@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <>
       {/* <CustomButton width="90%" isTransparent={false}>submit</CustomButton> */}
-      <Header />
+      {/*<Header />*/}
     </>
   );
 }
