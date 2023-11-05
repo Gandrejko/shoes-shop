@@ -2,16 +2,6 @@ import {createTheme, responsiveFontSizes} from '@mui/material';
 import {inter, workSans} from './fonts';
 
 let theme = createTheme({
-  breakpoints: {
-    values: {
-      xs: 0,
-      sm: 360,
-      largeSm: 600,
-      md: 900,
-      lg: 1200,
-      xl: 1920,
-    },
-  },
   palette: {
     mode: 'light',
     primary: {main: '#fe645e'},
@@ -47,16 +37,16 @@ let theme = createTheme({
     MuiInputBase: {
       styleOverrides: {
         root: ({theme}) => ({
-          border: 1,
           borderStyle: 'solid',
-          borderColor: theme.palette.grey[400],
           borderRadius: theme.spacing(),
+          borderColor: theme.palette.grey[700],
           padding: ['15px', '16px'].join(' '),
         }),
+
         input: ({theme}) => ({
           fontSize: 15,
           fontWeight: 300,
-          color: theme.palette.grey[400],
+          color: theme.palette.text.secondary,
         }),
       },
     },
@@ -64,7 +54,7 @@ let theme = createTheme({
       styleOverrides: {
         root: ({theme}) => ({
           fontSize: 15,
-          color: theme.palette.grey[400],
+          color: theme.palette.grey[700],
         }),
       },
     },
@@ -73,7 +63,7 @@ let theme = createTheme({
         root: ({theme}) => ({
           fontFamily: inter.style.fontFamily,
           fontSize: 12,
-          fontWeight: 300,
+          fontWeight: 400,
           color: theme.palette.primary.main,
         }),
       },
@@ -82,7 +72,6 @@ let theme = createTheme({
       styleOverrides: {
         root: {
           textTransform: 'none',
-          width: 152,
         },
         contained: ({theme}) => ({
           color: theme.palette.common.white,
