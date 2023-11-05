@@ -6,33 +6,36 @@ import {Input} from '@/components/Inputs/Input';
 import Image from 'next/image';
 import axios from 'axios';
 import {useMutation} from 'react-query';
+import {useEffect} from 'react';
+import {useRouter} from 'next/router';
 
 type ForgotPasswordType = {
   email: string;
 };
 
-const forgotPasswordHandler = async (userData: ForgotPasswordType) => {
-  try {
-    const data = await axios.post(
-      'https://shoes-shop-strapi.herokuapp.com/api/auth/forgot-password',
-      userData,
-    );
-    return data;
-  } catch (e) {
-    console.log(e);
-  }
-};
-
 export default function ForgotPassword() {
-  const {mutate} = useMutation({mutationFn: forgotPasswordHandler});
+  const {mutateAsync, isSuccess} = useMutation({
+    mutationFn: (userData: ForgotPasswordType) =>
+      axios.post(
+        'https://shoes-shop-strapi.herokuapp.com/api/auth/forgot-password',
+        userData,
+      ),
+  });
   const {
     register,
     handleSubmit,
     formState: {errors},
   } = useForm<ForgotPasswordType>();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isSuccess) {
+      router.push('/auth/resetPassword');
+    }
+  }, [router, isSuccess]);
 
   const onSubmit: SubmitHandler<ForgotPasswordType> = async data => {
-    mutate(data);
+    mutateAsync(data);
   };
 
   return (

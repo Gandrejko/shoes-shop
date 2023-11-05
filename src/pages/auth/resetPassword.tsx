@@ -1,4 +1,4 @@
-import {useSearchParams} from 'next/navigation';
+import {useRouter, useSearchParams} from 'next/navigation';
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {Box, Typography} from '@mui/material';
 import Link from 'next/link';
@@ -7,6 +7,7 @@ import {Input} from '@/components/Inputs/Input';
 import Image from 'next/image';
 import axios from 'axios';
 import {useMutation} from 'react-query';
+import {useEffect} from 'react';
 
 type ResetPasswordType = {
   password: string;
@@ -14,37 +15,38 @@ type ResetPasswordType = {
   code: string;
 };
 
-const resetPasswordHandler = async (userData: ResetPasswordType) => {
-  try {
-    const data = await axios.post(
-      'https://shoes-shop-strapi.herokuapp.com/api/auth/forgot-password',
-      {
-        password: userData.password,
-        passwordConfirmation: userData.confirmPassword,
-        code: userData.code,
-      },
-    );
-    return data;
-  } catch (e) {
-    console.log(e);
-  }
-};
-
 export default function ResetPassword() {
-  const {mutate} = useMutation({mutationFn: resetPasswordHandler});
+  const {mutateAsync, isSuccess} = useMutation({
+    mutationFn: (userData: ResetPasswordType) =>
+      axios.post(
+        'https://shoes-shop-strapi.herokuapp.com/api/auth/reset-password',
+        {
+          password: userData.password,
+          passwordConfirmation: userData.confirmPassword,
+          code: userData.code,
+        },
+      ),
+  });
   const {
     register,
     handleSubmit,
     watch,
     formState: {errors},
   } = useForm<Omit<ResetPasswordType, 'code'>>();
+  const router = useRouter();
   const searchParams = useSearchParams();
   const code = searchParams.get('code') || '';
+
+  useEffect(() => {
+    if (isSuccess) {
+      router.push('/auth/signIn');
+    }
+  }, [router, isSuccess]);
 
   const onSubmit: SubmitHandler<
     Omit<ResetPasswordType, 'code'>
   > = async data => {
-    mutate({...data, code});
+    mutateAsync({...data, code});
   };
 
   return (

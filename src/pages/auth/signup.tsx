@@ -6,6 +6,8 @@ import {SubmitHandler, useForm} from 'react-hook-form';
 import Image from 'next/image';
 import {useMutation} from 'react-query';
 import axios from 'axios';
+import {useEffect} from 'react';
+import {useRouter} from 'next/router';
 
 type ISignUp = {
   email: string;
@@ -15,29 +17,38 @@ type ISignUp = {
 };
 
 const signUp = async (userData: Partial<ISignUp>) => {
-  try {
-    const data = await axios.post(
-      'https://shoes-shop-strapi.herokuapp.com/api/auth/local/register',
-      userData,
-    );
-    return data;
-  } catch (e) {
-    console.log(e);
-  }
+  const data = await axios.post(
+    'https://shoes-shop-strapi.herokuapp.com/api/auth/local/register',
+    userData,
+  );
+  return data;
 };
 
 export default function SignUp() {
-  const {mutate} = useMutation({mutationFn: signUp});
+  const {mutateAsync, isSuccess} = useMutation({
+    mutationFn: (userData: Partial<ISignUp>) =>
+      axios.post(
+        'https://shoes-shop-strapi.herokuapp.com/api/auth/local/register',
+        userData,
+      ),
+  });
   const {
     register,
     handleSubmit,
     watch,
     formState: {errors},
   } = useForm<ISignUp>();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isSuccess) {
+      router.push('/auth/signIn');
+    }
+  }, [router, isSuccess]);
 
   const onSubmit: SubmitHandler<ISignUp> = async data => {
     const {confirmPassword, ...restData} = data;
-    mutate(restData);
+    mutateAsync(restData);
   };
 
   return (

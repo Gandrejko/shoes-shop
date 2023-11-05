@@ -24,7 +24,6 @@ type InputProps = InputBaseProps & {
   register: UseFormRegister<any>;
   validationSchema: any;
   name: string;
-  required?: boolean;
 };
 
 export const Input = ({
@@ -32,7 +31,6 @@ export const Input = ({
   register,
   name,
   validationSchema,
-  required,
   ...props
 }: InputProps) => {
   const id = useId();
@@ -40,7 +38,7 @@ export const Input = ({
     <>
       <InputLabel sx={styles.label} htmlFor={id}>
         {labelText}
-        {required && (
+        {props.required && (
           <Typography component="span" sx={styles.requiredMark}>
             *
           </Typography>
