@@ -1,7 +1,11 @@
-import {Grid} from '@mui/material';
+import {Grid, SxProps} from '@mui/material';
 import ProductCard from './ProductCard';
 
-const styles = {
+type Styles = {
+  gridItem: SxProps;
+};
+
+const styles: Styles = {
   gridItem: {
     display: 'flex',
     justifyContent: 'center',

@@ -1,6 +1,11 @@
-import {Menu, MenuItem, MenuList, MenuProps} from '@mui/material';
+import {Menu, MenuItem, MenuList, MenuProps, SxProps} from '@mui/material';
 
-const styles = {
+type Styles = {
+  menuList: SxProps;
+  menuItem: SxProps;
+};
+
+const styles: Styles = {
   menuList: {
     width: '7rem',
     padding: '0.25rem 0.75rem',
