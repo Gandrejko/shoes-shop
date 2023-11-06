@@ -22,17 +22,9 @@ type ProdcutListProps = {
 
 const ProductList = ({products}: ProdcutListProps) => {
   return (
-    <Grid container spacing={{sm: 1, md: 2}}>
+    <Grid container spacing={{xs: 2, sm: 5, md: 5, lg: 6, xl: 8}}>
       {products.map(product => (
-        <Grid
-          key={product.id}
-          item
-          xs={12}
-          sm={6}
-          md={4}
-          lg={3}
-          sx={styles.gridItem}
-        >
+        <Grid key={product.id} item xs={6} lg={4} xl={3} sx={styles.gridItem}>
           <ProductCard product={product} />
         </Grid>
       ))}

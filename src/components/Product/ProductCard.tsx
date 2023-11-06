@@ -7,14 +7,23 @@ import {
   CardContent,
   IconButton,
   Stack,
+  SxProps,
   Typography,
 } from '@mui/material';
 
 import ButtonMenu from './ButtonMenu';
 
-const styles = {
+type Styles = {
+  card: SxProps;
+  cardContent: SxProps;
+  imageContainer: SxProps;
+  moreButton: SxProps;
+  productDescription: SxProps;
+};
+
+const styles: Styles = {
   card: {
-    maxWidth: 320,
+    width: 1,
     borderRadius: 0,
     boxShadow: 'none',
   },
@@ -24,11 +33,12 @@ const styles = {
   },
   imageContainer: {
     position: 'relative',
+    aspectRatio: 320 / 380,
   },
   moreButton: {
     position: 'absolute',
     top: 5,
-    right: 10,
+    right: 5,
   },
   productDescription: {
     justifyContent: 'space-between',
@@ -55,23 +65,19 @@ const ProductCard = ({product}: ProductCardProps) => {
   return (
     <Card sx={styles.card}>
       <Box sx={styles.imageContainer}>
+        <Image
+          src={product.image}
+          alt={product.name}
+          fill
+          style={{objectFit: 'cover'}}
+        />
         <IconButton
           aria-label="settings"
           sx={styles.moreButton}
           onClick={e => setAnchorEl(e.currentTarget)}
         >
-          <MoreHoriz fontSize="large" />
+          <MoreHoriz />
         </IconButton>
-        <Image
-          src={product.image}
-          width={320}
-          height={380}
-          alt={product.name}
-          style={{
-            width: '100%',
-            objectFit: 'cover',
-          }}
-        />
         <ButtonMenu
           open={Boolean(anchorEl)}
           onClose={() => setAnchorEl(null)}
@@ -83,11 +89,11 @@ const ProductCard = ({product}: ProductCardProps) => {
       <CardContent sx={styles.cardContent}>
         <Stack direction="row" sx={styles.productDescription}>
           <Box>
-            <Typography variant="h5" fontWeight="600">
+            <Typography variant="h5" fontWeight="600" fontSize={22}>
               {product.name}
             </Typography>
             <Typography
-              variant="h6"
+              fontSize={18}
               textTransform="capitalize"
             >{`${product.gender}'s Shoes`}</Typography>
           </Box>
