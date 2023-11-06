@@ -41,7 +41,7 @@ const ProductSizeList = ({sizes, header}: ProdcutListProps) => {
 
   return (
     <Box sx={styles.box}>
-      <Typography style={styles.header}>{header}</Typography>
+      <Typography sx={styles.header}>{header}</Typography>
       {/* Think this typography should be h4. If yes, I can add h4 config to the theme and here use I can set like component='h4'*/}
       <Box sx={styles.sizesBox}>
         {sizes.map(size => (

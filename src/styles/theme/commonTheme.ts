@@ -95,7 +95,8 @@ let theme = createTheme({
       styleOverrides: {
         root: ({theme}) => ({
           borderWidth: 1,
-          borderColor: theme.palette.grey.A100,
+          borderRadius: 2,
+          borderColor: theme.palette.grey.A700,
         }),
       },
     },
