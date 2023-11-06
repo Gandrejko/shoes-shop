@@ -33,15 +33,6 @@ let theme = createTheme({
     h1: {
       fontSize: 45,
     },
-    h2: {
-      fontSize: 25,
-    },
-    h3: {
-      fontSize: 22,
-    },
-    body2: {
-      fontSize: 20,
-    },
   },
   components: {
     MuiInputBase: {
