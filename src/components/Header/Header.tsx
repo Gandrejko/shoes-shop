@@ -1,15 +1,5 @@
 import Image from 'next/image';
 import {useState} from 'react';
-import logo from '../../../public/icons/logo.svg';
-import cart from '../../../public/icons/cart.svg';
-import avatar from '../../../public/icons/avatar.svg';
-import search from '../../../public/icons/search.svg';
-import menu from '../../../public/icons/burgerMenu.svg';
-import myProducts from '../../../public/icons/myProducts.svg';
-import settings from '../../../public/icons/settings.svg';
-import logout from '../../../public/icons/logout.svg';
-import login from '../../../public/icons/login.svg';
-import burgerClose from '../../../public/icons/burgerClose.svg';
 import {
   AppBar,
   Box,
@@ -104,7 +94,7 @@ const DesktopHeader = ({userLoggedIn}: HeaderProps) => {
   return (
     <Toolbar sx={styles.desktopWrapper}>
       <Stack direction="row" alignItems="center" spacing={3}>
-        <Image src={logo} alt="logo" width={40} height={30} />
+        <Image src="/icons/logo.svg" alt="logo" width={40} height={30} />
         <Typography>Products</Typography>
       </Stack>
       {userLoggedIn ? (
@@ -117,10 +107,10 @@ const DesktopHeader = ({userLoggedIn}: HeaderProps) => {
           <SearchInput register={() => {}} validationSchema="" />
           <Stack direction="row" spacing={0.5}>
             <IconButton onClick={() => {}}>
-              <Image src={cart} alt="cart" width={24} height={24} />
+              <Image src="/icons/cart.svg" alt="cart" width={24} height={24} />
             </IconButton>
             <IconButton onClick={() => {}}>
-              <Image src={avatar} alt="avatar" width={24} height={24} />
+              <Image src="icons/avatar.svg" alt="avatar" width={24} height={24} />
             </IconButton>
           </Stack>
         </Stack>
@@ -136,7 +126,7 @@ const DesktopHeader = ({userLoggedIn}: HeaderProps) => {
           </CustomButton>
           <SearchInput register={() => {}} validationSchema="" />
           <IconButton onClick={() => {}}>
-            <Image src={cart} alt="cart" width={24} height={24} />
+            <Image src="/icons/cart.svg" alt="cart" width={24} height={24} />
           </IconButton>
         </Stack>
       )}
@@ -154,16 +144,16 @@ const MobileHeader = ({userLoggedIn}: HeaderProps) => {
   return (
     <>
       <Toolbar sx={styles.mobileWrapper}>
-        <Image src={logo} alt="logo" width={35.31} height={26.52} />
+        <Image src="/icons/logo.svg" alt="logo" width={35.31} height={26.52} />
         <Stack direction="row" alignItems="center" spacing={1}>
           <IconButton onClick={() => {}}>
-            <Image src={cart} alt="cart" width={20} height={20} />
+            <Image src="/icons/cart.svg" alt="cart" width={20} height={20} />
           </IconButton>
           <IconButton onClick={() => {}}>
-            <Image src={search} alt="search" width={20} height={20} />
+            <Image src="/icons/search.svg" alt="search" width={20} height={20} />
           </IconButton>
           <IconButton onClick={() => setOpenDrawer(!openDrawer)}>
-            <Image src={menu} alt="menu" width={20} height={20} />
+            <Image src="/icons/burgerMenu.svg" alt="menu" width={20} height={20} />
           </IconButton>
         </Stack>
       </Toolbar>
@@ -178,7 +168,7 @@ const MobileHeader = ({userLoggedIn}: HeaderProps) => {
         <Box sx={styles.boxWrapper}>
           <Box sx={styles.closeBtnWrapper}>
             <IconButton onClick={() => setOpenDrawer(!openDrawer)}>
-              <Image src={burgerClose} alt="close" width={20} height={20} />
+              <Image src="/icons/burgerClose.svg" alt="close" width={20} height={20} />
             </IconButton>
           </Box>
           {userLoggedIn ? (
@@ -187,24 +177,24 @@ const MobileHeader = ({userLoggedIn}: HeaderProps) => {
                 <Image
                   width={20}
                   height={20}
-                  src={myProducts}
+                  src="/icons/myProducts.svg"
                   alt="my-products"
                 />
                 <Typography>My products</Typography>
               </ListItem>
               <ListItem sx={styles.tab}>
-                <Image width={20} height={20} src={settings} alt="settings" />
+                <Image width={20} height={20} src="/icons/settings.svg" alt="settings" />
                 <Typography>Settings</Typography>
               </ListItem>
               <ListItem sx={styles.tab}>
-                <Image width={20} height={20} src={logout} alt="logout" />
+                <Image width={20} height={20} src="/icons/logout.svg" alt="logout" />
                 <Typography>Log out</Typography>
               </ListItem>
             </List>
           ) : (
             <List sx={styles.tabs}>
               <ListItem sx={styles.tab}>
-                <Image width={20} height={20} src={login} alt="login" />
+                <Image width={20} height={20} src="/icons/login.svg" alt="login" />
                 <Typography>Log in</Typography>
               </ListItem>
             </List>
