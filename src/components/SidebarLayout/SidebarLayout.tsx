@@ -1,18 +1,19 @@
-import {Box, Divider, List, ListItem, Typography} from '@mui/material';
+import {Box, Divider, List, ListItem, SxProps, Typography} from '@mui/material';
 import Image from 'next/image';
 import {ReactNode} from 'react';
 
-const styles = {
+const styles: Record<string, SxProps> = {
   layout: {
     display: 'flex',
   },
   sidebar: {
     width: '320px',
+    display: {md: 'block', xs: 'none'},
   },
   user: {
     display: 'flex',
     alignItems: 'center',
-    padding: '35px 40px',
+    padding: '35px 16px',
     gap: '16px',
   },
   avatarContainer: {
@@ -42,6 +43,7 @@ const styles = {
     display: 'flex',
     gap: '15px',
     listStyle: 'none',
+    padding: '0 16px',
   },
 };
 
@@ -73,10 +75,10 @@ export const SidebarLayout = ({children, currentTab}: SidebarLayoutProps) => {
         <Divider />
         <List sx={styles.tabs}>
           <ListItem
-            sx={[
-              styles.tab,
-              {color: currentTab === 'products' ? 'FE645E' : '#000'},
-            ]}
+            sx={{
+              ...styles.tab,
+              color: currentTab === 'products' ? 'FE645E' : '#000',
+            }}
           >
             <Image
               width={20}
@@ -87,10 +89,10 @@ export const SidebarLayout = ({children, currentTab}: SidebarLayoutProps) => {
             <Typography>My products</Typography>
           </ListItem>
           <ListItem
-            sx={[
-              styles.tab,
-              {color: currentTab === 'settings' ? 'FE645E' : '#000'},
-            ]}
+            sx={{
+              ...styles.tab,
+              color: currentTab === 'settings' ? 'FE645E' : '#000',
+            }}
           >
             <Image
               width={20}
@@ -101,10 +103,10 @@ export const SidebarLayout = ({children, currentTab}: SidebarLayoutProps) => {
             <Typography>Settings</Typography>
           </ListItem>
           <ListItem
-            sx={[
-              styles.tab,
-              {color: currentTab === 'logout' ? 'FE645E' : '#000'},
-            ]}
+            sx={{
+              ...styles.tab,
+              color: currentTab === 'logout' ? 'FE645E' : '#000',
+            }}
           >
             <Image
               width={20}
