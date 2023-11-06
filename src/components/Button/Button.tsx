@@ -25,6 +25,7 @@ type ButtonProps = {
   width?: string;
   height?: string;
   children: React.ReactNode;
+  type?: 'submit';
 };
 
 export const CustomButton = ({
@@ -32,6 +33,7 @@ export const CustomButton = ({
   width,
   height,
   children,
+  ...remainingProps
 }: ButtonProps) => {
   const buttonStyle = isTransparent
     ? styles.transparentButton
@@ -43,6 +45,7 @@ export const CustomButton = ({
       height: height || 'auto',
       ...buttonStyle,
     },
+    ...remainingProps,
   };
 
   return <Button {...buttonProps}>{children}</Button>;
