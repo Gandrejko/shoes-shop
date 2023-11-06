@@ -7,6 +7,7 @@ import Image from 'next/image';
 import axios from 'axios';
 import {useMutation} from 'react-query';
 import {useRouter} from 'next/router';
+import {toast} from 'react-toastify';
 
 type ForgotPasswordType = {
   email: string;
@@ -21,7 +22,11 @@ export default function ForgotPassword() {
         userData,
       ),
     onSuccess: () => {
+      toast.info('On your email was sent information about recovery');
       router.push('/auth/resetPassword');
+    },
+    onError: () => {
+      toast.error('Something went wrong, try again later');
     },
   });
   const {

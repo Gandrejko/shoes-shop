@@ -7,6 +7,7 @@ import {parseCookies, setCookie} from 'nookies';
 export const authOptions: AuthOptions = {
   providers: [
     CredentialsProvider({
+      id: 'credentials',
       name: 'Credentials',
       credentials: {
         identifier: {label: 'Username', type: 'text', placeholder: 'jsmith'},

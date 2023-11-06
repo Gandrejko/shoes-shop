@@ -7,6 +7,7 @@ import {Input} from '@/components/Inputs/Input';
 import Image from 'next/image';
 import axios from 'axios';
 import {useMutation} from 'react-query';
+import {toast} from 'react-toastify';
 
 type ResetPasswordType = {
   password: string;
@@ -27,7 +28,11 @@ export default function ResetPassword() {
         },
       ),
     onSuccess: () => {
+      toast.success('Password was changed!');
       router.push('/auth/signIn');
+    },
+    onError: () => {
+      toast.error('Something went wrong, try again later');
     },
   });
   const {

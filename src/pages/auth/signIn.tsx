@@ -1,11 +1,12 @@
 import {SubmitHandler, useForm} from 'react-hook-form';
-import {signIn} from 'next-auth/react';
+import {SignInResponse, signIn, useSession} from 'next-auth/react';
 import {Box, Checkbox, FormControlLabel, Typography} from '@mui/material';
 import Link from 'next/link';
 import {CustomButton} from '@/components/Button/Button';
 import {Input} from '@/components/Inputs/Input';
 import Image from 'next/image';
 import {useRouter} from 'next/router';
+import {toast} from 'react-toastify';
 
 interface SignInType {
   email: string;
@@ -22,14 +23,21 @@ export default function SignIn() {
     defaultValues: {email: '', password: '', rememberMe: false},
   });
   const router = useRouter();
+  const {data: session} = useSession();
 
   const onSubmit: SubmitHandler<SignInType> = async data => {
-    await signIn('credentials', {
+    signIn('credentials', {
       identifier: data.email,
       password: data.password,
       rememberMe: data.rememberMe,
-      redirect: true,
-      callbackUrl: router.basePath,
+      redirect: false,
+    }).then((value: SignInResponse | undefined) => {
+      if (value?.ok) {
+        toast.success(`Hello, ${session?.user.username}!`);
+        router.push('/');
+      } else {
+        toast.error('Wrong credentials!');
+      }
     });
   };
 
