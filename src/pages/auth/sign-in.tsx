@@ -103,7 +103,7 @@ export default function SignIn() {
                 <Typography sx={{fontSize: '15px'}}>Remember me</Typography>
               }
             />
-            <Link href="/auth/forgotPassword">
+            <Link href="/auth/forgot-password">
               <Typography sx={{color: 'red'}}>Forgot password?</Typography>
             </Link>
           </Box>
@@ -114,7 +114,7 @@ export default function SignIn() {
           sx={{display: 'flex', justifyContent: 'center', marginTop: '24px'}}
         >
           <Typography component="span">Don’t have an account?</Typography>
-          <Link href={'/auth/signUp'}>
+          <Link href={'/auth/sign-up'}>
             <Typography sx={{marginLeft: '5px', color: 'red'}}>
               Sign up
             </Typography>

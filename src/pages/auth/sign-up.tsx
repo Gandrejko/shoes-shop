@@ -26,7 +26,7 @@ export default function SignUp() {
     onSuccess: () => {
       toast.success('You are successfully sign up!');
       toast.info('The last step is to confirm your email');
-      router.push('/auth/signIn');
+      router.push('/auth/sign-in');
     },
     onError: e => {
       toast.error('Account with such login or email already exist');
@@ -121,7 +121,7 @@ export default function SignUp() {
           sx={{display: 'flex', justifyContent: 'center', marginTop: '24px'}}
         >
           <Typography component="span">Already have an account?</Typography>
-          <Link href={'/auth/signIn'}>
+          <Link href={'/auth/sign-in'}>
             <Typography sx={{marginLeft: '5px', color: 'red'}}>
               Log in
             </Typography>

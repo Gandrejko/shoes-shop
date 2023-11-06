@@ -29,7 +29,7 @@ export default function ResetPassword() {
       ),
     onSuccess: () => {
       toast.success('Password was changed!');
-      router.push('/auth/signIn');
+      router.push('/auth/sign-in');
     },
     onError: () => {
       toast.error('Something went wrong, try again later');
@@ -107,7 +107,7 @@ export default function ResetPassword() {
         <Box
           sx={{display: 'flex', justifyContent: 'center', marginTop: '16px'}}
         >
-          <Link href={'/auth/signIn'}>
+          <Link href={'/auth/sign-in'}>
             <Typography>Back to log in</Typography>
           </Link>
         </Box>

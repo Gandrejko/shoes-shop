@@ -23,7 +23,7 @@ export default function ForgotPassword() {
       ),
     onSuccess: () => {
       toast.info('On your email was sent information about recovery');
-      router.push('/auth/resetPassword');
+      router.push('/auth/reset-password');
     },
     onError: () => {
       toast.error('Something went wrong, try again later');
@@ -80,10 +80,10 @@ export default function ForgotPassword() {
             marginTop: '16px',
           }}
         >
-          <Link href={'/auth/resetPassword'}>
+          <Link href={'/auth/reset-password'}>
             <Typography>Go to reset password page</Typography>
           </Link>
-          <Link href={'/auth/signIn'}>
+          <Link href={'/auth/sign-in'}>
             <Typography>Back to log in</Typography>
           </Link>
         </Box>
