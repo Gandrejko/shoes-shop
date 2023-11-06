@@ -1,11 +1,7 @@
 import {Grid, SxProps} from '@mui/material';
 import ProductCard from './ProductCard';
 
-type Styles = {
-  gridItem: SxProps;
-};
-
-const styles: Styles = {
+const styles: Record<string, SxProps> = {
   gridItem: {
     display: 'flex',
     justifyContent: 'center',

@@ -13,21 +13,9 @@ import products from '@/temp/data';
 import {NextPageWithLayout} from '../_app';
 import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
 import ProductList from '@/components/Product/ProductList';
-import {CustomButton} from '@/components/Button/Button';
+import {Button} from '@/components/Button/Button';
 
-type Styles = {
-  pageHeader: SxProps;
-  container: SxProps;
-  bannerContainer: SxProps;
-  profileContainer: SxProps;
-  avatarContainer: SxProps;
-  avatar: SxProps;
-  profileInfo: SxProps;
-  productsContainer: SxProps;
-  productsHeader: SxProps;
-};
-
-const styles: Styles = {
+const styles: Record<string, SxProps> = {
   container: {
     padding: {xs: 0, md: '35px 16px'},
     marginLeft: {xs: 0, md: 3},
@@ -85,7 +73,7 @@ const MyProducts: NextPageWithLayout = () => {
 
   return (
     <Container maxWidth="xl" sx={styles.container}>
-      <Box sx={styles.pageHeader}>
+      <Box sx={styles.productsHeader}>
         <Box sx={styles.bannerContainer}>
           <Image src="/images/myProductsBanner.png" alt="My products" fill />
         </Box>
@@ -109,9 +97,9 @@ const MyProducts: NextPageWithLayout = () => {
           <Typography variant="h1" fontSize={45}>
             My Products
           </Typography>
-          <CustomButton sx={{textTransform: 'none', padding: '8px 24px'}}>
+          <Button sx={{textTransform: 'none', padding: '8px 24px'}}>
             Add product
-          </CustomButton>
+          </Button>
         </Stack>
         <ProductList products={products} />
       </Box>

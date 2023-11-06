@@ -13,15 +13,7 @@ import {
 
 import ButtonMenu from './ButtonMenu';
 
-type Styles = {
-  card: SxProps;
-  cardContent: SxProps;
-  imageContainer: SxProps;
-  moreButton: SxProps;
-  productDescription: SxProps;
-};
-
-const styles: Styles = {
+const styles: Record<string, SxProps> = {
   card: {
     width: 1,
     borderRadius: 0,
