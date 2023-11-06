@@ -2,33 +2,54 @@ import {Box} from '@mui/material';
 import {Input} from '../Inputs/Input';
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {CustomButton} from '../Button/Button';
+import {useMutation} from 'react-query';
+import axios from 'axios';
 
-type UpdateProfileForm = {
+type UpdateProfileFormType = {
   userName: string;
   userSurname: string;
   email: string;
-  phone: number;
-  confirmPassword: string;
+  phone: string;
 };
 
-const UpdateProfileForm: React.FC = () => {
+const CURUSERDATA = {
+  id: '123',
+  userName: 'Jane',
+  userSurname: 'Meldrum',
+  email: 'rhc23@mail.com',
+  phone: '(949) 354-2574',
+};
+
+const UpdateProfileForm: React.FC = userdata => {
   const {
     register,
     handleSubmit,
     formState: {errors},
-  } = useForm<UpdateProfileForm>();
+  } = useForm<UpdateProfileFormType>();
 
-  const submitHadler: SubmitHandler<UpdateProfileForm> = async () => {};
+  const {mutateAsync, isSuccess} = useMutation({
+    mutationKey: '',
+    mutationFn: (userUpdateData: Partial<UpdateProfileFormType>) =>
+      axios.put(
+        `https://shoes-shop-strapi.herokuapp.com/api/users${CURUSERDATA.id}`,
+        userUpdateData,
+      ),
+  });
+
+  const formSubmitHadler: SubmitHandler<UpdateProfileFormType> = async data => {
+    mutateAsync(data);
+  };
 
   return (
     <Box
       component="form"
       sx={{display: 'flex', flexDirection: 'column', maxWidth: '100%'}}
-      onSubmit={handleSubmit(submitHadler)}
+      onSubmit={handleSubmit(formSubmitHadler)}
     >
       <Box sx={{mb: 7}}>
         <Input
-          defaultValue={'Jane'}
+          type="text"
+          defaultValue={CURUSERDATA.userName}
           labelText="Name"
           name="userName"
           register={register}
@@ -40,7 +61,8 @@ const UpdateProfileForm: React.FC = () => {
           style={{marginBottom: 24}}
         />
         <Input
-          defaultValue={'Meldrum'}
+          type="text"
+          defaultValue={CURUSERDATA.userSurname}
           labelText="Surname"
           name="userSurname"
           register={register}
@@ -50,26 +72,29 @@ const UpdateProfileForm: React.FC = () => {
           style={{marginBottom: 24}}
         />
         <Input
-          defaultValue={'rhc23@mail.com'}
+          type="mail"
+          defaultValue={CURUSERDATA.email}
           labelText="Email"
           name="email"
           register={register}
+          disabled
           validationSchema={{
             pattern: {
-              value: /^(\d{3})\s\d{3}-\d{4}/,
+              value: /\S+@\S+\.\S+/,
             },
           }}
           style={{marginBottom: 24}}
         />
         <Input
-          defaultValue={'(949) 354-2574'}
+          type="tel"
+          defaultValue={CURUSERDATA.phone}
           labelText="Phone number"
           name="phoneNumber"
           register={register}
           validationSchema={{
             required: true,
             pattern: {
-              value: /\S+@\S+\.\S+/,
+              value: /^(\d{3})\s\d{3}-\d{4}/,
             },
           }}
         />
@@ -78,6 +103,7 @@ const UpdateProfileForm: React.FC = () => {
         Save changes
       </CustomButton>
     </Box>
+    // {isSuccess && //To show success message}
   );
 };
 
