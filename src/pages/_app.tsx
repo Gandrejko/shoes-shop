@@ -3,8 +3,8 @@ import type {NextPage} from 'next';
 import type {AppProps} from 'next/app';
 
 import {SessionProvider} from 'next-auth/react';
-import {QueryClient, QueryClientProvider} from 'react-query';
 import {CssBaseline, ThemeProvider} from '@mui/material';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import theme from '@/styles/theme/commonTheme';
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {

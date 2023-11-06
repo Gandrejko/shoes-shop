@@ -33,6 +33,15 @@ let theme = createTheme({
     h1: {
       fontSize: 45,
     },
+    h2: {
+      fontSize: 25,
+    },
+    h3: {
+      fontSize: 22,
+    },
+    body2: {
+      fontSize: 20,
+    },
   },
   components: {
     MuiInputBase: {
@@ -88,6 +97,20 @@ let theme = createTheme({
         root: ({theme}) => ({
           borderWidth: 1,
           borderColor: theme.palette.grey.A100,
+        }),
+      },
+    },
+    MuiAccordionSummary: {
+      styleOverrides: {
+        root: ({theme}) => ({
+          padding: 0,
+        }),
+      },
+    },
+    MuiAccordionDetails: {
+      styleOverrides: {
+        root: ({theme}) => ({
+          padding: 0,
         }),
       },
     },
