@@ -2,7 +2,8 @@ import {Box, InputBase, InputLabel, Typography} from '@mui/material';
 import {InputBaseProps} from '@mui/material/InputBase/InputBase';
 import {useId} from 'react';
 import {UseFormRegister} from 'react-hook-form';
-import {WarningIcon} from '../Icons/WarningIcon';
+import Image from 'next/image';
+import warningIcon from '../../../public/icons/warning.svg';
 
 const styles = {
   label: {},
@@ -56,7 +57,7 @@ export const Input = ({
       />
       {errorMessage && (
         <Box sx={{color: 'red', display: 'flex', gap: '4px', marginTop: '8px'}}>
-          <WarningIcon />
+          <Image src={warningIcon} alt="" />
           {errorMessage}
         </Box>
       )}
