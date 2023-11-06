@@ -10,7 +10,7 @@ import {useRouter} from 'next/router';
 interface SignInType {
   email: string;
   password: string;
-  isRemember: boolean;
+  rememberMe: boolean;
 }
 
 export default function SignIn() {
@@ -19,7 +19,7 @@ export default function SignIn() {
     handleSubmit,
     formState: {errors},
   } = useForm<SignInType>({
-    defaultValues: {email: '', password: '', isRemember: false},
+    defaultValues: {email: '', password: '', rememberMe: false},
   });
   const router = useRouter();
 
@@ -27,6 +27,7 @@ export default function SignIn() {
     await signIn('credentials', {
       identifier: data.email,
       password: data.password,
+      rememberMe: data.rememberMe,
       redirect: true,
       callbackUrl: router.basePath,
     });
@@ -83,11 +84,10 @@ export default function SignIn() {
               marginBottom: '56px',
             }}
           >
-            {/* TODO: add remember me functionality */}
             <FormControlLabel
               control={
                 <Checkbox
-                  {...register('isRemember', {})}
+                  {...register('rememberMe', {})}
                   sx={{'& .MuiSvgIcon-root': {fontSize: '16px'}}}
                 />
               }
