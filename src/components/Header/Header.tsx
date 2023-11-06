@@ -11,24 +11,11 @@ import {
   SwipeableDrawer,
   List,
   ListItem,
+  useTheme,
 } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import {createTheme} from '@mui/material';
 import {SearchInput} from '@/components/Inputs/SearchInput';
 import {CustomButton} from '@/components/Button/Button';
-
-let theme = createTheme({
-  breakpoints: {
-    values: {
-      xs: 0,
-      sm: 360,
-      largeSm: 600,
-      md: 900,
-      lg: 1200,
-      xl: 1920,
-    },
-  },
-});
 
 const styles = {
   appBar: {
@@ -206,7 +193,8 @@ const MobileHeader = ({userLoggedIn}: HeaderProps) => {
 };
 
 export const Header = () => {
-  const isMobileMode = useMediaQuery(theme.breakpoints.down('largeSm'));
+  const theme = useTheme();
+  const isMobileMode = useMediaQuery(theme.breakpoints.down('md'));
   const userLoggedIn = true;
 
   return (
