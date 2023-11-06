@@ -1,5 +1,5 @@
-import {useState, useEffect} from 'react';
-import {Box, IconButton, Stack} from '@mui/material';
+import {useState} from 'react';
+import {Box, IconButton, Stack, SxProps} from '@mui/material';
 import Image from 'next/image';
 
 export const images: string[] = [
@@ -11,6 +11,17 @@ export const images: string[] = [
   '/images/item6.svg',
   '/images/item7.svg',
 ];
+
+const styles: Record<string, SxProps> = {
+  imageBox: {
+    position: 'relative'
+  },
+  buttonsBox: {
+    position: 'absolute',
+    bottom: '24px',
+    right: '38px'
+  }
+}
 
 const ImageSlider = () => {
   const [currentImage, setCurrentImage] = useState<number>(0);
@@ -50,7 +61,7 @@ const ImageSlider = () => {
           />
         ))}
       </Stack>
-      <Box sx={{position: 'relative'}}>
+      <Box sx={styles.imageBox}>
         <Image
           src={images[currentImage]}
           alt={`Image ${currentImage + 1}`}
@@ -58,7 +69,7 @@ const ImageSlider = () => {
           width={588}
           height={628}
         />
-        <Box sx={{position: 'absolute', bottom: '24px', right: '38px'}}>
+        <Box sx={styles.buttonsBox}>
           <IconButton onClick={prevImage}>
             <Image
               src="/icons/arrowPrev.svg"
