@@ -2,7 +2,7 @@ import theme from '@/styles/theme/commonTheme';
 import {CssBaseline, ThemeProvider} from '@mui/material';
 import type {AppProps} from 'next/app';
 import {SessionProvider} from 'next-auth/react';
-import {QueryClient, QueryClientProvider} from 'react-query';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {useState} from 'react';
 
 const queryClient = new QueryClient();

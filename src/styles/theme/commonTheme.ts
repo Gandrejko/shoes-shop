@@ -91,6 +91,20 @@ let theme = createTheme({
         }),
       },
     },
+    MuiAccordionSummary: {
+      styleOverrides: {
+        root: ({theme}) => ({
+          padding: 0,
+        }),
+      },
+    },
+    MuiAccordionDetails: {
+      styleOverrides: {
+        root: ({theme}) => ({
+          padding: 0,
+        }),
+      },
+    },
   },
 });
 

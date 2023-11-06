@@ -4,6 +4,7 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
+  Divider,
   Typography,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -36,16 +37,19 @@ type CategoryProps = {
 
 export const Category = ({name, children, options}: CategoryProps) => {
   return (
-    <Accordion defaultExpanded disableGutters sx={styles.accordion}>
-      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        <Typography>{name}</Typography>
-      </AccordionSummary>
-      <AccordionDetails>
-        {children}
-        <Box sx={styles.options}>
-          {options?.map(({id, name}) => <Option key={id} name={name} />)}
-        </Box>
-      </AccordionDetails>
-    </Accordion>
+    <>
+      <Divider />
+      <Accordion defaultExpanded disableGutters sx={styles.accordion}>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography>{name}</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          {children}
+          <Box sx={styles.options}>
+            {options?.map(({id, name}) => <Option key={id} name={name} />)}
+          </Box>
+        </AccordionDetails>
+      </Accordion>
+    </>
   );
 };
