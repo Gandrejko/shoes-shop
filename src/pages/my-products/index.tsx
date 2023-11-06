@@ -73,7 +73,7 @@ const MyProducts: NextPageWithLayout = () => {
 
   return (
     <Container maxWidth="xl" sx={styles.container}>
-      <Box sx={styles.productsHeader}>
+      <Box sx={styles.pageHeader}>
         <Box sx={styles.bannerContainer}>
           <Image src="/images/myProductsBanner.png" alt="My products" fill />
         </Box>
