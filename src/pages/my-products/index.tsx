@@ -49,7 +49,7 @@ const styles: Record<string, SxProps> = {
     borderRadius: '50%',
   },
   avatar: {
-    bgcolor: '#FE645E',
+    bgcolor: 'primary.main',
     fontSize: 45,
     width: 1,
     height: 1,
@@ -85,18 +85,14 @@ const MyProducts: NextPageWithLayout = () => {
             )}
           </Box>
           <Stack sx={styles.profileInfo}>
-            <Typography variant="h2" fontSize={20} fontWeight={600}>
-              Jane Meldrum
-            </Typography>
-            <Typography>1374 bonus points</Typography>
+            <Typography variant="h4">Jane Meldrum</Typography>
+            <Typography fontWeight={300}>1374 bonus points</Typography>
           </Stack>
         </Stack>
       </Box>
       <Box sx={styles.productsContainer}>
         <Stack direction="row" sx={styles.productsHeader}>
-          <Typography variant="h1" fontSize={45}>
-            My Products
-          </Typography>
+          <Typography variant="h1">My Products</Typography>
           <Button sx={{textTransform: 'none', padding: '8px 24px'}}>
             Add product
           </Button>

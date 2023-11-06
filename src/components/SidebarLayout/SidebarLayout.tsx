@@ -1,6 +1,6 @@
-import {Box, Divider, List, ListItem, SxProps, Typography} from '@mui/material';
-import Image from 'next/image';
 import {ReactNode} from 'react';
+import Image from 'next/image';
+import {Box, Divider, List, ListItem, SxProps, Typography} from '@mui/material';
 
 const styles: Record<string, SxProps> = {
   layout: {
@@ -19,7 +19,7 @@ const styles: Record<string, SxProps> = {
   avatarContainer: {
     width: '64px',
     height: '64px',
-    backgroundColor: '#fc9656',
+    backgroundColor: 'primary.main',
     borderRadius: '50%',
     display: 'flex',
     alignItems: 'center',
@@ -27,11 +27,9 @@ const styles: Record<string, SxProps> = {
   },
   avatarLetter: {
     color: '#fff',
-    fontSize: '24px',
   },
   welcome: {
-    fontSize: '12px',
-    color: '#9e9e9e',
+    color: 'grey.A200',
   },
   tabs: {
     marginTop: '30px',
@@ -62,13 +60,15 @@ export const SidebarLayout = ({children, currentTab}: SidebarLayoutProps) => {
           <Box sx={styles.avatarContainer}>
             {image && <Image src={image} width={64} height={64} alt="user" />}
             {!image && (
-              <Typography sx={styles.avatarLetter}>
+              <Typography variant="h2" sx={styles.avatarLetter}>
                 {name[0].toUpperCase()}
               </Typography>
             )}
           </Box>
           <Box>
-            <Typography sx={styles.welcome}>Welcome</Typography>
+            <Typography variant="body2" sx={styles.welcome}>
+              Welcome
+            </Typography>
             <Typography>{name}</Typography>
           </Box>
         </Box>

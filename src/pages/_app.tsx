@@ -23,14 +23,14 @@ export default function App({
 }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? (page => page);
 
-  return getLayout(
+  return (
     <SessionProvider session={session}>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <Component {...pageProps} />
+          {getLayout(<Component {...pageProps} />)}
         </ThemeProvider>
       </QueryClientProvider>
-    </SessionProvider>,
+    </SessionProvider>
   );
 }

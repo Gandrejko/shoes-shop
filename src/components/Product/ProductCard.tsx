@@ -81,15 +81,17 @@ const ProductCard = ({product}: ProductCardProps) => {
       <CardContent sx={styles.cardContent}>
         <Stack direction="row" sx={styles.productDescription}>
           <Box>
-            <Typography variant="h5" fontWeight="600" fontSize={22}>
+            <Typography variant="h3" fontSize={14}>
               {product.name}
             </Typography>
             <Typography
-              fontSize={18}
+              variant="h5"
+              fontSize={14}
               textTransform="capitalize"
+              color={theme => theme.palette.text.secondary}
             >{`${product.gender}'s Shoes`}</Typography>
           </Box>
-          <Typography variant="h5" fontWeight="600">
+          <Typography variant="h3" fontSize={14}>
             ${product.price}
           </Typography>
         </Stack>
