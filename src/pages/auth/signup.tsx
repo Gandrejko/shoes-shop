@@ -53,61 +53,70 @@ export default function SignUp() {
           onSubmit={handleSubmit(onSubmit)}
           sx={{display: 'flex', flexDirection: 'column'}}
         >
-          <Input
-            labelText="Name"
-            register={register}
-            name="username"
-            validationSchema={{
-              required: 'This field is required',
+          <Box
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '24px',
+              marginBottom: '104px',
             }}
-            required={true}
-            style={{marginBottom: '24px'}}
-          />
-          <Input
-            labelText="Email"
-            register={register}
-            name="email"
-            validationSchema={{
-              required: 'This field is required',
-              pattern: {
-                value: /\S+@\S+\.\S+/,
-                message: 'Entered value does not match email format',
-              },
-            }}
-            required={true}
-            style={{marginBottom: '24px'}}
-          />
-          <Input
-            labelText="Password"
-            register={register}
-            name="password"
-            validationSchema={{
-              required: 'This field is required',
-              minLength: {
-                value: 6,
-                message: 'min length is 6',
-              },
-            }}
-            required={true}
-            type="password"
-            style={{marginBottom: '24px'}}
-          />
-          <Input
-            labelText="Confirm password"
-            register={register}
-            name="confirmPassword"
-            validationSchema={{
-              required: true,
-              validate: (val: string) => {
-                if (watch('password') != val) {
-                  return 'Your passwords do no match';
-                }
-              },
-            }}
-            required={true}
-            type="password"
-            style={{marginBottom: '104px'}}
-          />
+          >
+            <Input
+              labelText="Name"
+              register={register}
+              name="username"
+              validationSchema={{
+                required: 'This field is required',
+              }}
+              required={true}
+              errorMessage={errors.username?.message}
+            />
+            <Input
+              labelText="Email"
+              register={register}
+              name="email"
+              validationSchema={{
+                required: true,
+                pattern: {
+                  value: /\S+@\S+\.\S+/,
+                  message: 'Entered value does not match email format',
+                },
+              }}
+              required={true}
+              errorMessage={errors.email?.message}
+            />
+            <Input
+              labelText="Password"
+              register={register}
+              name="password"
+              validationSchema={{
+                required: true,
+                minLength: {
+                  value: 6,
+                  message: 'Min length is 6',
+                },
+              }}
+              required={true}
+              type="password"
+              errorMessage={errors.password?.message}
+            />
+            <Input
+              labelText="Confirm password"
+              register={register}
+              name="confirmPassword"
+              validationSchema={{
+                required: true,
+                validate: (val: string) => {
+                  if (watch('password') != val) {
+                    return 'Your passwords do no match';
+                  }
+                },
+              }}
+              required={true}
+              type="password"
+              errorMessage={errors.confirmPassword?.message}
+            />
+          </Box>
 
           <CustomButton type="submit">Sign up</CustomButton>
         </Box>

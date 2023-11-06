@@ -65,37 +65,46 @@ export default function ResetPassword() {
           onSubmit={handleSubmit(onSubmit)}
           sx={{display: 'flex', flexDirection: 'column'}}
         >
-          <Input
-            labelText="Password"
-            register={register}
-            name="password"
-            validationSchema={{
-              required: 'This field is required',
-              minLength: {
-                value: 6,
-                message: 'min length is 6',
-              },
+          <Box
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '24px',
+              marginBottom: '37px',
             }}
-            required={true}
-            type="password"
-            style={{marginBottom: '24px'}}
-          />
-          <Input
-            labelText="Confirm password"
-            register={register}
-            name="confirmPassword"
-            validationSchema={{
-              required: 'This field is required',
-              validate: (val: string) => {
-                if (watch('password') != val) {
-                  return 'Your passwords do no match';
-                }
-              },
-            }}
-            required={true}
-            type="password"
-            style={{marginBottom: '37px'}}
-          />
+          >
+            <Input
+              labelText="Password"
+              register={register}
+              name="password"
+              validationSchema={{
+                required: true,
+                minLength: {
+                  value: 6,
+                  message: 'Min length is 6',
+                },
+              }}
+              required={true}
+              type="password"
+              errorMessage={errors.password?.message}
+            />
+            <Input
+              labelText="Confirm password"
+              register={register}
+              name="confirmPassword"
+              validationSchema={{
+                required: true,
+                validate: (val: string) => {
+                  if (watch('password') != val) {
+                    return 'Your passwords do no match';
+                  }
+                },
+              }}
+              required={true}
+              type="password"
+              errorMessage={errors.confirmPassword?.message}
+            />
+          </Box>
 
           <CustomButton type="submit">Reset password</CustomButton>
         </Box>

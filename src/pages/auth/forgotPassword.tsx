@@ -48,20 +48,22 @@ export default function ForgotPassword() {
           onSubmit={handleSubmit(onSubmit)}
           sx={{display: 'flex', flexDirection: 'column'}}
         >
-          <Input
-            labelText="Email"
-            register={register}
-            name="email"
-            validationSchema={{
-              required: 'This field is required',
-              pattern: {
-                value: /\S+@\S+\.\S+/,
-                message: 'Entered value does not match email format',
-              },
-            }}
-            required={true}
-            style={{marginBottom: '24px'}}
-          />
+          <Box sx={{marginBottom: '24px'}}>
+            <Input
+              labelText="Email"
+              register={register}
+              name="email"
+              validationSchema={{
+                required: true,
+                pattern: {
+                  value: /\S+@\S+\.\S+/,
+                  message: 'Entered value does not match email format',
+                },
+              }}
+              required={true}
+              errorMessage={errors.email?.message}
+            />
+          </Box>
 
           <CustomButton type="submit">Reset password</CustomButton>
         </Box>
