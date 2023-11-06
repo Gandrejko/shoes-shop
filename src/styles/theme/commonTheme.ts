@@ -25,6 +25,7 @@ let theme = createTheme({
     fontFamily: workSans.style.fontFamily,
     fontWeightBold: 600,
     fontSize: 16,
+
     allVariants: {
       fontWeight: 500,
     },
