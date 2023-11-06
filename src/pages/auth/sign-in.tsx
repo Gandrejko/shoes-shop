@@ -1,16 +1,17 @@
 import {SubmitHandler, useForm} from 'react-hook-form';
-import {signIn} from 'next-auth/react';
+import {SignInResponse, signIn, useSession} from 'next-auth/react';
 import {Box, Checkbox, FormControlLabel, Typography} from '@mui/material';
 import Link from 'next/link';
 import {CustomButton} from '@/components/Button/Button';
 import {Input} from '@/components/Inputs/Input';
 import Image from 'next/image';
 import {useRouter} from 'next/router';
+import {toast} from 'react-toastify';
 
 interface SignInType {
   email: string;
   password: string;
-  isRemember: boolean;
+  rememberMe: boolean;
 }
 
 export default function SignIn() {
@@ -19,16 +20,24 @@ export default function SignIn() {
     handleSubmit,
     formState: {errors},
   } = useForm<SignInType>({
-    defaultValues: {email: '', password: '', isRemember: false},
+    defaultValues: {email: '', password: '', rememberMe: false},
   });
   const router = useRouter();
+  const {data: session} = useSession();
 
   const onSubmit: SubmitHandler<SignInType> = async data => {
-    await signIn('credentials', {
+    signIn('credentials', {
       identifier: data.email,
       password: data.password,
-      redirect: true,
-      callbackUrl: router.basePath,
+      rememberMe: data.rememberMe,
+      redirect: false,
+    }).then((value: SignInResponse | undefined) => {
+      if (value?.ok) {
+        toast.success(`Hello, ${session?.user.username}!`);
+        router.push('/');
+      } else {
+        toast.error('Wrong credentials!');
+      }
     });
   };
 
@@ -83,11 +92,10 @@ export default function SignIn() {
               marginBottom: '56px',
             }}
           >
-            {/* TODO: add remember me functionality */}
             <FormControlLabel
               control={
                 <Checkbox
-                  {...register('isRemember', {})}
+                  {...register('rememberMe', {})}
                   sx={{'& .MuiSvgIcon-root': {fontSize: '16px'}}}
                 />
               }
@@ -95,7 +103,7 @@ export default function SignIn() {
                 <Typography sx={{fontSize: '15px'}}>Remember me</Typography>
               }
             />
-            <Link href="/auth/forgotPassword">
+            <Link href="/auth/forgot-password">
               <Typography sx={{color: 'red'}}>Forgot password?</Typography>
             </Link>
           </Box>
@@ -106,7 +114,7 @@ export default function SignIn() {
           sx={{display: 'flex', justifyContent: 'center', marginTop: '24px'}}
         >
           <Typography component="span">Don’t have an account?</Typography>
-          <Link href={'/auth/signUp'}>
+          <Link href={'/auth/sign-up'}>
             <Typography sx={{marginLeft: '5px', color: 'red'}}>
               Sign up
             </Typography>

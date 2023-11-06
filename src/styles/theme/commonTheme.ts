@@ -24,7 +24,6 @@ let theme = createTheme({
   typography: {
     fontFamily: workSans.style.fontFamily,
     fontWeightBold: 600,
-    fontSize: 16,
 
     allVariants: {
       fontWeight: 500,
@@ -39,8 +38,18 @@ let theme = createTheme({
     h3: {
       fontSize: 22,
     },
-    body2: {
+    h4: {
       fontSize: 20,
+    },
+    h5: {
+      fontSize: 18,
+    },
+
+    body1: {
+      fontSize: 16,
+    },
+    body2: {
+      fontSize: 12,
     },
   },
   components: {
@@ -94,20 +103,6 @@ let theme = createTheme({
         root: ({theme}) => ({
           borderWidth: 1,
           borderColor: theme.palette.grey.A100,
-        }),
-      },
-    },
-    MuiAccordionSummary: {
-      styleOverrides: {
-        root: ({theme}) => ({
-          padding: 0,
-        }),
-      },
-    },
-    MuiAccordionDetails: {
-      styleOverrides: {
-        root: ({theme}) => ({
-          padding: 0,
         }),
       },
     },

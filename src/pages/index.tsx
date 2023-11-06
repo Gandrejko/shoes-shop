@@ -13,4 +13,6 @@ export default function Home() {
       <Header />
     </>
   );
-}
+
+export default function Home() {
+

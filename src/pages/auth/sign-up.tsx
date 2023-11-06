@@ -7,6 +7,7 @@ import Image from 'next/image';
 import {useMutation} from 'react-query';
 import axios from 'axios';
 import {useRouter} from 'next/router';
+import {toast} from 'react-toastify';
 
 type SignUpType = {
   email: string;
@@ -23,7 +24,12 @@ export default function SignUp() {
         userData,
       ),
     onSuccess: () => {
-      router.push('/auth/signIn');
+      toast.success('You are successfully sign up!');
+      toast.info('The last step is to confirm your email');
+      router.push('/auth/sign-in');
+    },
+    onError: e => {
+      toast.error('Account with such login or email already exist');
     },
   });
   const {
@@ -115,7 +121,7 @@ export default function SignUp() {
           sx={{display: 'flex', justifyContent: 'center', marginTop: '24px'}}
         >
           <Typography component="span">Already have an account?</Typography>
-          <Link href={'/auth/signIn'}>
+          <Link href={'/auth/sign-in'}>
             <Typography sx={{marginLeft: '5px', color: 'red'}}>
               Log in
             </Typography>
