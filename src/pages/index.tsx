@@ -1,3 +1,13 @@
+import React from 'react';
+import {Header} from '@/components/Header';
+
 export default function Home() {
-  return <></>;
+  // const {data: session} = useSession();
+  // console.log(session);
+  return (
+    <>
+      {/* <CustomButton width="90%" isTransparent={false}>submit</CustomButton> */}
+      <Header />
+    </>
+  );
 }
