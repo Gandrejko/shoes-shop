@@ -12,7 +12,7 @@ import axios from 'axios';
 
 const styles: Record<string, SxProps> = {
   mainContainer: {
-    padding: '50px 40px 0',
+    padding: '50px 40px',
     display: 'flex',
     flexDirection: 'column',
     gap: '3rem',
@@ -138,7 +138,9 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
       onSubmit={handleSubmit(() => onSubmit(getValues()), onError)}
     >
       <Box sx={styles.header}>
-        <Typography variant="h1">Add a product</Typography>
+        <Typography variant="h1">
+          {product ? 'Edit product' : 'Add a product'}
+        </Typography>
         <Button type="submit">Save</Button>
       </Box>
       <Typography sx={styles.description}>

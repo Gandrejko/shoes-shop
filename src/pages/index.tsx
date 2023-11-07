@@ -1,5 +1,5 @@
 import React from 'react';
-import {Header} from '@/components/Header';
+import Header from '@/components/Header';
 
 export default function Home() {
   // const {data: session} = useSession();
@@ -9,5 +9,5 @@ export default function Home() {
       {/* <CustomButton width="90%" isTransparent={false}>submit</CustomButton> */}
       <Header />
     </>
-  )
+  );
 }
