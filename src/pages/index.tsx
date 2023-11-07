@@ -8,9 +8,9 @@ export default function Home() {
   return (
     <>
       {/* <CustomButton width="90%" isTransparent={false}>submit</CustomButton> */}
-      {/*<Header />*/}
-      <Link href="/404">404</Link>
-      <Link href="/500">500</Link>
+      <Header />
+      {/*<Link href="/404">404</Link>*/}
+      {/*<Link href="/500">500</Link>*/}
     </>
   )
 }

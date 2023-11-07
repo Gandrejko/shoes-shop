@@ -8,6 +8,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import MobileHeader from '@/components/Header/components/MobileHeader';
 import DesktopHeader from '@/components/Header/components/DesktopHeader';
 
+
 const styles: Record<string, SxProps> = {
   appBar: {
     height: '100%',
