@@ -2,6 +2,7 @@ import {Avatar, Box, SxProps} from '@mui/material';
 import Image from 'next/image';
 import {Button} from '../Button/Button';
 import HiddenInput from '../Inputs/HiddenInput';
+import {useEffect} from 'react';
 
 const styles: Record<string, SxProps> = {
   headerBox: {

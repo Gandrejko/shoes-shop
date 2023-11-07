@@ -2,73 +2,74 @@ import {Box} from '@mui/material';
 import {Input} from '../Inputs/Input';
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {Button} from '../Button/Button';
-import {useMutation} from 'react-query';
+import {useMutation, useQueryClient} from 'react-query';
 import axios from 'axios';
 import {toast} from 'react-toastify';
 
-type CurUserDataType = {
+type UserDataType = {
   id: number;
   username: string;
+  email: string;
+  provider: string;
+  confirmed: boolean;
+  blocked: boolean;
+  createdAt: string;
+  updatedAt: string;
+  phoneNumber: string;
   firstName: string;
   lastName: string;
-  email: string;
-  phone: number;
-  password: number;
 };
 
-const updateFormPlaceholders = {
-  phone: 11111,
+type UserUpdateFormProps = {
+  currentUser: UserDataType;
+};
+
+const updatedFormPlaceholders = {
+  phone: '(949) 354-2574',
   lastName: 'Last Name',
 };
 
-type UpdateProfileFormType = {
-  // id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phoneNumber: number;
-};
+const UpdateProfileForm = ({currentUser}: UserUpdateFormProps) => {
+  const queryClient = useQueryClient();
 
-const CURUSERDATA: Partial<CurUserDataType> = {
-  id: 123,
-  username: 'Jane',
-  firstName: 'Jane',
-  lastName: 'Meldrum',
-  email: 'rhc23@mail.com',
-  phone: 9999,
-  password: 777,
-};
-
-const UpdateProfileForm = () => {
   const {
     register,
     handleSubmit,
     formState: {errors},
-  } = useForm<UpdateProfileFormType>({
+  } = useForm<Partial<UserDataType>>({
     defaultValues: {
-      firstName: CURUSERDATA.firstName,
-      lastName: CURUSERDATA.lastName || updateFormPlaceholders.lastName,
-      email: CURUSERDATA.email,
-      phoneNumber: CURUSERDATA.phone || updateFormPlaceholders.phone,
+      firstName: currentUser.firstName,
+      lastName: currentUser.lastName || updatedFormPlaceholders.lastName,
+      email: currentUser.email,
+      phoneNumber: currentUser.phoneNumber || updatedFormPlaceholders.phone,
     },
   });
 
   const {mutateAsync} = useMutation({
-    mutationFn: (userUpdateData: Partial<UpdateProfileFormType>) =>
+    mutationFn: (userUpdateData: Partial<UserDataType>) =>
       axios.put(
-        `https://shoes-shop-strapi.herokuapp.com/api/users${CURUSERDATA.id}`,
+        `https://shoes-shop-strapi.herokuapp.com/api/users${currentUser.id}`,
         userUpdateData,
       ),
-    onSuccess: () => {
-      toast.success('You profile data is successfully updated!');
+
+    onMutate: userUpdateData => {
+      queryClient.setQueryData(['user'], {
+        ...currentUser,
+        ...userUpdateData,
+      });
+      return {userUpdateData};
     },
     onError: () => {
       toast.error('Something went wrong. Please, try again.');
     },
+
+    onSettled: () => {
+      queryClient.invalidateQueries(['user']);
+    },
   });
 
   const formSubmitHadler: SubmitHandler<
-    UpdateProfileFormType
+    Partial<UserDataType>
   > = async updatedData => {
     mutateAsync(updatedData);
   };
@@ -81,7 +82,6 @@ const UpdateProfileForm = () => {
     >
       <Box sx={{mb: 7}}>
         <Input
-          defaultValue={CURUSERDATA.firstName}
           type="text"
           labelText="Name"
           name="firstName"
@@ -93,7 +93,6 @@ const UpdateProfileForm = () => {
           style={{marginBottom: 24}}
         />
         <Input
-          defaultValue={CURUSERDATA.lastName}
           type="text"
           labelText="Surname"
           name="lastName"
@@ -105,7 +104,6 @@ const UpdateProfileForm = () => {
           style={{marginBottom: 24}}
         />
         <Input
-          defaultValue={CURUSERDATA.email}
           type="mail"
           labelText="Email"
           name="email"
@@ -122,7 +120,6 @@ const UpdateProfileForm = () => {
           style={{marginBottom: 24}}
         />
         <Input
-          defaultValue={CURUSERDATA.phone}
           type="tel"
           labelText="Phone number"
           name="phoneNumber"
@@ -130,7 +127,8 @@ const UpdateProfileForm = () => {
           validationSchema={{
             required: 'Phone number is required',
             pattern: {
-              value: /^(\d{3})\s\d{3}-\d{4}/,
+              value: /^\(\d{3}\) \d{3}-\d{4}$/,
+              message: 'This phone is invalid',
             },
           }}
           required={true}
