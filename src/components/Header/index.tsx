@@ -22,7 +22,7 @@ export type HeaderProps = {
   userLoggedIn: boolean;
 };
 
-export const Header = () => {
+const Header = () => {
   const theme = useTheme();
   const isMobileMode = useMediaQuery(theme.breakpoints.down('md'));
   const userLoggedIn = false;
@@ -40,3 +40,5 @@ export const Header = () => {
     </Box>
   );
 };
+
+export default Header;
