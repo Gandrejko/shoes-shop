@@ -1,8 +1,8 @@
 import {IconButton, Stack, SxProps, Toolbar, Typography} from '@mui/material';
-import Image from 'next/image'
 import {SearchInput} from '@/components/Inputs/SearchInput';
 import {HeaderProps} from '@/components/Header';
 import {Button} from '@/components/Button/Button'
+import Image from 'next/image';
 
 const styles: Record<string, SxProps> = {
   desktopWrapper: {
@@ -17,7 +17,7 @@ const DesktopHeader = ({userLoggedIn}: HeaderProps) => {
       <Toolbar sx={styles.desktopWrapper}>
         <Stack direction="row" alignItems="center" spacing={4}>
           <Image src="/icons/logo.svg" alt="logo" width={40} height={30} />
-          <Typography>Products</Typography>
+          <Typography variant="body1">Products</Typography>
         </Stack>
         {userLoggedIn ? (
           <Stack
@@ -26,7 +26,7 @@ const DesktopHeader = ({userLoggedIn}: HeaderProps) => {
             justifyContent="space-between"
             spacing={4}
           >
-            <SearchInput register={() => {}} validationSchema=""}/>
+            <SearchInput register={() => {}} validationSchema=""/>
             <Stack direction="row" spacing={0.5}>
               <IconButton onClick={() => {}}>
                 <Image src="/icons/cart.svg" alt="cart" width={24} height={24} />

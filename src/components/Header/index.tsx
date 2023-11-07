@@ -25,20 +25,17 @@ export type HeaderProps = {
 const Header = () => {
   const theme = useTheme();
   const isMobileMode = useMediaQuery(theme.breakpoints.down('md'));
-  const userLoggedIn = false;
+  const userLoggedIn = true;
 
   return (
     <Box sx={{display: 'flex', flexDirection: 'column'}}>
       <AppBar sx={styles.appBar}>
-        {isMobileMode ? (
-          <MobileHeader userLoggedIn={userLoggedIn} />
-        ) : (
-          <DesktopHeader userLoggedIn={userLoggedIn} />
-        )}
+        {isMobileMode ?
+          <MobileHeader userLoggedIn={userLoggedIn} /> : <DesktopHeader userLoggedIn={userLoggedIn}/>}
         <Divider />
       </AppBar>
     </Box>
-  );
+  )
 };
 
 export default Header;
