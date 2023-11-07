@@ -24,7 +24,6 @@ let theme = createTheme({
   typography: {
     fontFamily: workSans.style.fontFamily,
     fontWeightBold: 600,
-    fontSize: 16,
 
     allVariants: {
       fontWeight: 500,
@@ -32,6 +31,25 @@ let theme = createTheme({
 
     h1: {
       fontSize: 45,
+    },
+    h2: {
+      fontSize: 25,
+    },
+    h3: {
+      fontSize: 22,
+    },
+    h4: {
+      fontSize: 20,
+    },
+    h5: {
+      fontSize: 18,
+    },
+
+    body1: {
+      fontSize: 16,
+    },
+    body2: {
+      fontSize: 12,
     },
   },
   components: {
