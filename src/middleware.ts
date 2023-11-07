@@ -3,7 +3,7 @@ import {NextRequest, NextResponse} from 'next/server';
 
 export async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
-  //List of protected routes
+  // List of protected routes
   const protectedPaths = ['/my-products'];
   const isPathProtected = protectedPaths?.some(path => pathname == path);
   const res = NextResponse.next();
