@@ -9,5 +9,5 @@ export default function Home() {
       {/* <CustomButton width="90%" isTransparent={false}>submit</CustomButton> */}
       <Header />
     </>
-  );
+  )
 }
