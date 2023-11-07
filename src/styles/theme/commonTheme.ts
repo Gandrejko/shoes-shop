@@ -23,8 +23,8 @@ let theme = createTheme({
 
   typography: {
     fontFamily: workSans.style.fontFamily,
+    fontWeightLight: 300,
     fontWeightBold: 600,
-    fontSize: 16,
 
     allVariants: {
       fontWeight: 500,
@@ -33,15 +33,31 @@ let theme = createTheme({
     h1: {
       fontSize: 45,
     },
+    h2: {
+      fontSize: 25,
+    },
+    h3: {
+      fontSize: 22,
+    },
+    h4: {
+      fontSize: 20,
+    },
+    h5: {
+      fontSize: 18,
+    },
+
+    body1: {
+      fontSize: 16,
+    },
+    body2: {
+      fontSize: 12,
+    },
   },
   components: {
     MuiInputBase: {
       styleOverrides: {
         root: ({theme}) => ({
-          border: 1,
-          borderStyle: 'solid',
           borderRadius: theme.spacing(),
-          borderColor: theme.palette.grey[700],
           padding: ['7px', '16px'].join(' '),
         }),
 
@@ -88,6 +104,15 @@ let theme = createTheme({
         root: ({theme}) => ({
           borderWidth: 1,
           borderColor: theme.palette.grey.A100,
+        }),
+      },
+    },
+    MuiCheckbox: {
+      styleOverrides: {
+        root: ({theme}) => ({
+          borderWidth: 1,
+          borderRadius: 2,
+          borderColor: theme.palette.grey.A700,
         }),
       },
     },
