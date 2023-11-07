@@ -1,7 +1,4 @@
-import {FilterSidebar} from '@/components/FilterSidebar/FilterSidebar';
 import React from 'react';
-import {CustomButton} from '../components/Button/Button';
-import {useSession} from 'next-auth/react';
 import {Header} from '@/components/Header/Header';
 
 export default function Home() {
@@ -13,6 +10,5 @@ export default function Home() {
       <Header />
     </>
   );
-
-export default function Home() {
+}
 
