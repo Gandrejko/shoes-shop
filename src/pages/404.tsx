@@ -5,26 +5,23 @@ import Header from '@/components/Header';
 
 const styles: Record<string, SxProps> = {
   page: {
-    display: "flex",
-    flexDirection: "column",
-    minHeight: "100vh",
+    height: "100vh",
   },
   main: {
     display: "flex",
+    height: {sm: "calc(100vh - 60px)", md: "calc(100vh - 120px)"},
   },
   info: {
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
-    gap: "20px",
-    padding: {md: "0 40px", lg: '0 120px'},
+    gap: "28px",
+    padding: {sm: "0 20px", md: "0 60px", lg: '0 120px'},
     width: "50vw",
-    height: "calc(100vh - 120px)"
   },
   banner: {
     width: "50vw",
-    height: "calc(100vh - 120px)",
-    position: 'relative'
+    position: 'relative',
   }
 }
 
@@ -35,7 +32,7 @@ const Error404 = () => {
         <Box sx={styles.main}>
           <Box sx={styles.info}>
             <Typography variant="h1">Error 404</Typography>
-            <Typography variant="body2">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna</Typography>
+            <Typography variant="h4">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna</Typography>
             <Stack direction="row" spacing={4}>
               <Button width="152px" height="40px" isTransparent={true}>Go Back</Button>
               <Button width="152px" height="40px" isTransparent={false}>Home</Button>
@@ -45,6 +42,7 @@ const Error404 = () => {
             <Image
               src="/images/404PageBanner.png"
               alt="404 error"
+              objectFit="cover"
               fill
             />
           </Box>
