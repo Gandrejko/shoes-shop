@@ -72,15 +72,17 @@ const styles: Record<string, SxProps> = {
 type ProductData = {
   name: string;
   price: number;
-  gender: string;
-  brand: string;
+  gender: number;
+  brand: number;
   description: string;
   size: number;
   images: string[];
+  uniqueID: string;
+  teamName: string;
 };
 
 type ProductFormProps = {
-  onSubmit: () => void;
+  onSubmit: (data: any) => void;
   product?: any;
 };
 
@@ -90,12 +92,14 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
     useForm<ProductData>({
       defaultValues: {
         name: '',
-        price: 0,
-        gender: '',
-        brand: '',
+        price: 25,
+        gender: 3,
+        brand: 13,
         description: '',
-        size: 36,
+        size: 13,
         images: [],
+        teamName: 'fb-team',
+        uniqueID: 'uniqueId',
       },
     });
 
@@ -103,7 +107,6 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
     mutationFn: (file: FormData) =>
       axios.post(`${process.env.API_URL}/upload`, file),
     onSuccess: data => {
-      console.log(data.data);
       const currentImages = getValues('images') || [];
       const newImages = data.data.map((image: any) => image.url);
       setValue('images', [...currentImages, ...newImages]);
@@ -124,15 +127,19 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
     mutate(formData);
   };
 
+  const onError = (errors: any) => {
+    console.log(errors);
+  };
+
   return (
     <Box
       sx={styles.mainContainer}
       component="form"
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(() => onSubmit(getValues()), onError)}
     >
       <Box sx={styles.header}>
         <Typography variant="h1">Add a product</Typography>
-        <CustomButton>Save</CustomButton>
+        <CustomButton type="submit">Save</CustomButton>
       </Box>
       <Typography sx={styles.description}>
         Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in
