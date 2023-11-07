@@ -1,10 +1,8 @@
-import Image from 'next/image';
-import { ReactElement } from 'react';
-import { Box, Container, Typography, SxProps } from '@mui/material';
+import { Box, Container, Typography, SxProps, Card, CardMedia } from '@mui/material';
 import products from '@/temp/data';
-import { SidebarLayout } from '@/components/SidebarLayout/SidebarLayout';
 import { Button } from '@/components/Button/Button';
 import ImageSlider from '@/components/ImageSlider/ImageSlider';
+import Header from '@/components/Header'
 
 const styles: Record<string, SxProps> = {
     container: {
@@ -17,9 +15,6 @@ const styles: Record<string, SxProps> = {
         flexDirection: 'column',
         alignItems: 'center',
         gap: '16px',
-        backgroundColor: 'white',
-        boxShadow: '0px 0px 8px rgba(0, 0, 0, 0.1)',
-        borderRadius: '8px',
     },
     productImage: {
         width: '100%',
@@ -66,9 +61,16 @@ const styles: Record<string, SxProps> = {
         justifyContent: 'space-between'
     },
     picturesContainer: {
-        backgroundColor:'blue',
-        display:'flex',
-        flexDirection:'column'
+        width:'100%',
+        display: 'flex',
+        justifyContent:'center',
+        alignContent:'center',
+        flexDirection: 'column'
+    },
+    arrayOfImages: {
+        gap:'10px',
+        display: 'flex',
+        justifyContent:'center',
     }
 };
 
@@ -76,7 +78,10 @@ const SingleProductPage = () => {
     const product = products[0];
 
     return (
+
+
         <Container maxWidth="xl" sx={styles.container}>
+            {/* <Header/> */}
             <Box sx={styles.productContainer}>
                 <ImageSlider />
             </Box>
@@ -90,12 +95,25 @@ const SingleProductPage = () => {
                     </Typography>
                 </Box>
 
+
                 <Box sx={styles.picturesContainer}>
                     <Typography variant="h4" sx={styles.productGender}>
                         {product.gender}'s Shoes
                     </Typography>
-                </Box>
+                    <Box   sx={styles.arrayOfImages}>
+                        {products.map((p) => (
+                            <Card key={p.id} sx={styles.productImageCard}>
+                                <CardMedia
+                                    component="img"
+                                    alt={p.name}
+                                    height="80"
+                                    image={p.image}
+                                />
+                            </Card>
+                        ))}
+                    </Box>
 
+                </Box>
                 <Box sx={styles.btnContainer}>
                     <Button sx={styles.addToCartButton}>Favorite</Button>
                     <Button sx={styles.addToCartButton}>Add to Bag</Button>
