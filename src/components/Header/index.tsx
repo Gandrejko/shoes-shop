@@ -8,10 +8,9 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import MobileHeader from '@/components/Header/components/MobileHeader';
 import DesktopHeader from '@/components/Header/components/DesktopHeader';
 
-
 const styles: Record<string, SxProps> = {
   appBar: {
-    height: '100%',
+    height: '120px',
     color: '#000000',
     backgroundColor: '#FFFFFF',
     border: 'none',
@@ -26,20 +25,15 @@ export type HeaderProps = {
 const Header = () => {
   const theme = useTheme();
   const isMobileMode = useMediaQuery(theme.breakpoints.down('md'));
-  const userLoggedIn = false;
+  const userLoggedIn = true;
 
   return (
-    <Box sx={{display: 'flex', flexDirection: 'column'}}>
-      <AppBar sx={styles.appBar}>
-        {isMobileMode ? (
-          <MobileHeader userLoggedIn={userLoggedIn} />
-        ) : (
-          <DesktopHeader userLoggedIn={userLoggedIn} />
-        )}
+      <Box sx={styles.appBar}>
+        {isMobileMode ?
+          <MobileHeader userLoggedIn={userLoggedIn} /> : <DesktopHeader userLoggedIn={userLoggedIn}/>}
         <Divider />
-      </AppBar>
-    </Box>
-  );
+      </Box>
+  )
 };
 
 export default Header;
