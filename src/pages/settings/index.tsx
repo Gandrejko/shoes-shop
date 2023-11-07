@@ -3,7 +3,7 @@ import {Box, Typography} from '@mui/material';
 import {NextPageWithLayout} from '../_app';
 import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
 import UpdateProfileHeader from '@/components/UpdatePofileHeader/UpdateProfileHeader';
-import UpdateProfileForm from '@/components/Forms/UpdateProfileForm';
+// import UpdateProfileForm from '@/components/Forms/UpdateProfileForm';
 
 const styles = {
   box: {
@@ -35,7 +35,7 @@ const ProfilePage: NextPageWithLayout = () => {
         <Typography component="p" sx={styles.paragraph}>
           Welcome back! Please enter your details to log into your account.
         </Typography>
-        <UpdateProfileForm />
+        {/* <UpdateProfileForm /> */}
       </Box>
     </Box>
   );
