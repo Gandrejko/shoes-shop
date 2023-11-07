@@ -23,8 +23,8 @@ let theme = createTheme({
 
   typography: {
     fontFamily: workSans.style.fontFamily,
+    fontWeightLight: 300,
     fontWeightBold: 600,
-    fontSize: 16,
 
     allVariants: {
       fontWeight: 500,
@@ -39,18 +39,25 @@ let theme = createTheme({
     h3: {
       fontSize: 22,
     },
-    body2: {
+    h4: {
       fontSize: 20,
+    },
+    h5: {
+      fontSize: 18,
+    },
+
+    body1: {
+      fontSize: 16,
+    },
+    body2: {
+      fontSize: 12,
     },
   },
   components: {
     MuiInputBase: {
       styleOverrides: {
         root: ({theme}) => ({
-          border: 1,
-          borderStyle: 'solid',
           borderRadius: theme.spacing(),
-          borderColor: theme.palette.grey[700],
           padding: ['7px', '16px'].join(' '),
         }),
 
@@ -100,17 +107,12 @@ let theme = createTheme({
         }),
       },
     },
-    MuiAccordionSummary: {
+    MuiCheckbox: {
       styleOverrides: {
         root: ({theme}) => ({
-          padding: 0,
-        }),
-      },
-    },
-    MuiAccordionDetails: {
-      styleOverrides: {
-        root: ({theme}) => ({
-          padding: 0,
+          borderWidth: 1,
+          borderRadius: 2,
+          borderColor: theme.palette.grey.A700,
         }),
       },
     },

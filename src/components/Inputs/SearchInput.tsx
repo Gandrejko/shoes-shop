@@ -13,6 +13,7 @@ const styles = {
     borderRadius: '50px',
     border: '1px solid #494949',
     padding: '8px 15px',
+    height: "48px",
   },
   searchHuge: {
     width: '100%',
