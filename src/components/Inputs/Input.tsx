@@ -37,7 +37,7 @@ export const Input = ({
     <Box>
       <InputLabel htmlFor={id}>
         {labelText}
-        {props.required && (
+        {validationSchema.required && (
           <Typography component="span" sx={styles.requiredMark}>
             *
           </Typography>

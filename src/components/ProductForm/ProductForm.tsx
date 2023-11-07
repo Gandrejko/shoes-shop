@@ -11,11 +11,19 @@ import Image from 'next/image';
 const styles: Record<string, SxProps> = {
   mainContainer: {
     padding: '50px 40px 0',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '3rem',
   },
   header: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  description: {
+    fontWeight: 300,
+    lineHeight: 1.2,
+    width: '80%',
   },
   dropdowns: {
     display: 'flex',
@@ -23,17 +31,24 @@ const styles: Record<string, SxProps> = {
   },
   form: {
     display: 'flex',
-    gap: '5rem',
+    columnGap: '5rem',
+    rowGap: '3rem',
+    [theme.breakpoints.down('md')]: {
+      flexDirection: 'column',
+    },
   },
   formContainer: {
     width: 440,
+    [theme.breakpoints.down('md')]: {
+      width: 'auto',
+    },
     display: 'flex',
     flexDirection: 'column',
     gap: '1rem',
     flexShrink: 1,
   },
   imagesContainer: {
-    flexShrink: 2,
+    flexShrink: 2.5,
   },
   uploadImageCard: {
     border: `2px dashed ${theme.palette.grey['A400']}`,
@@ -95,7 +110,7 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
         <Typography variant="h1">Add a product</Typography>
         <CustomButton>Save</CustomButton>
       </Box>
-      <Typography>
+      <Typography sx={styles.description}>
         Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in
         laying out print, graphic or web designs. The passage is attributed to
         an unknown typesetter in the 15th century who is thought to have
@@ -109,6 +124,7 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
             register={register}
             validationSchema={{required: 'Product name is required'}}
             name="name"
+            placeholder="Nike Air Max 90"
           />
           <Input
             labelText="Price"
