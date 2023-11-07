@@ -17,7 +17,8 @@ type SignUpType = {
 };
 
 export default function SignUp() {
-  const {mutateAsync} = useMutation({
+  const {mutate} = useMutation({
+    mutationKey: ['sign-up'],
     mutationFn: (userData: Partial<SignUpType>) =>
       axios.post(
         'https://shoes-shop-strapi.herokuapp.com/api/auth/local/register',
@@ -42,7 +43,7 @@ export default function SignUp() {
 
   const onSubmit: SubmitHandler<SignUpType> = async data => {
     const {confirmPassword, ...restData} = data;
-    mutateAsync(restData);
+    mutate(restData);
   };
 
   return (

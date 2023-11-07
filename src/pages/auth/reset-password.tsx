@@ -17,7 +17,8 @@ type ResetPasswordType = {
 
 export default function ResetPassword() {
   const router = useRouter();
-  const {mutateAsync, isSuccess} = useMutation({
+  const {mutate, isSuccess} = useMutation({
+    mutationKey: ['reset-password'],
     mutationFn: (userData: ResetPasswordType) =>
       axios.post(
         'https://shoes-shop-strapi.herokuapp.com/api/auth/reset-password',
@@ -48,7 +49,7 @@ export default function ResetPassword() {
   const onSubmit: SubmitHandler<
     Omit<ResetPasswordType, 'code'>
   > = async data => {
-    mutateAsync({...data, code});
+    mutate({...data, code});
   };
 
   return (

@@ -15,7 +15,8 @@ type ForgotPasswordType = {
 
 export default function ForgotPassword() {
   const router = useRouter();
-  const {mutateAsync} = useMutation({
+  const {mutate} = useMutation({
+    mutationKey: ['forgot-password'],
     mutationFn: (userData: ForgotPasswordType) =>
       axios.post(
         'https://shoes-shop-strapi.herokuapp.com/api/auth/forgot-password',
@@ -36,7 +37,7 @@ export default function ForgotPassword() {
   } = useForm<ForgotPasswordType>();
 
   const onSubmit: SubmitHandler<ForgotPasswordType> = async data => {
-    mutateAsync(data);
+    mutate(data);
   };
 
   return (
