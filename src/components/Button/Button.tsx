@@ -1,4 +1,4 @@
-import {Button as ButtonMUI, ButtonBaseProps, SxProps} from '@mui/material';
+import { Button as ButtonMUI, ButtonProps as MUIButtonProps, SxProps } from '@mui/material';
 
 const styles = {
   transparentButton: {
@@ -26,7 +26,7 @@ type ButtonProps = {
   height?: string;
   children: React.ReactNode;
   alignSelf?: string;
-} & ButtonBaseProps;
+} & MUIButtonProps; 
 
 export const Button = ({
   isTransparent,
@@ -46,6 +46,7 @@ export const Button = ({
       width,
       height,
     } as SxProps,
+    ...remainingProps, 
   };
 
   return <ButtonMUI {...buttonProps}>{children}</ButtonMUI>;
