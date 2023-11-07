@@ -1,16 +1,16 @@
 import {Box, Typography, Button} from '@mui/material';
 import Image from 'next/image';
 
-interface Product {
+type Product = {
   id: number;
   name: string;
   image: string;
   gender: string;
   available: string;
   price: number;
-}
+};
 
-const ProductItem: React.FC<{product: Product}> = ({product}) => {
+const ProductItem = ({product}: {product: Product}) => {
   return (
     <Box
       sx={{
@@ -89,7 +89,7 @@ const ProductItem: React.FC<{product: Product}> = ({product}) => {
                 -
               </Button>
               <Typography sx={{fontWeight: '400', fontSize: 24, marginLeft: 2}}>
-                {0}
+                Quantity
               </Typography>
               <Button
                 sx={{
@@ -104,9 +104,6 @@ const ProductItem: React.FC<{product: Product}> = ({product}) => {
               >
                 +
               </Button>
-              <Typography sx={{fontWeight: '400', fontSize: 24, marginLeft: 2}}>
-                Quantity
-              </Typography>
               <Typography
                 sx={{
                   fontWeight: '400',
@@ -119,7 +116,7 @@ const ProductItem: React.FC<{product: Product}> = ({product}) => {
               </Typography>
               <Image
                 style={{cursor: 'pointer'}}
-                src="./icons/deleteFromChart.svg"
+                src="/icons/deleteFromChart.svg" // Use a leading slash for relative paths
                 width={32}
                 height={32}
                 alt="delete"
