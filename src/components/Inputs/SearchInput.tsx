@@ -30,6 +30,17 @@ const styles = {
     border: 'none',
     outline: 'none',
   },
+  inputHuge: {
+    width: '100%',
+    padding: '19px 15px 17px',
+    border: 'none',
+    outline: 'none',
+
+    '& .MuiInputBase-input': {
+      fontSize: '24px',
+      lineHeight: 'normal',
+    },
+  },
 };
 
 type SearchInputProps = InputBaseProps & {
@@ -53,7 +64,7 @@ export const SearchInput = ({
       <InputBase
         placeholder="Search"
         id={id}
-        sx={styles.input}
+        sx={giantMode ? styles.inputHuge : styles.input}
         {...props}
         {...register(name, validationSchema)}
       />
