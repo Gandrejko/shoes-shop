@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {Box, IconButton, List, ListItem, Stack, SwipeableDrawer, SxProps, Toolbar, Typography} from '@mui/material';
 import Image from 'next/image';
-import {HeaderProps} from '@/components/Header/Header';
+import {HeaderProps} from '@/components/Header';
 
 const styles: Record<string, SxProps> = {
   mobileWrapper: {
