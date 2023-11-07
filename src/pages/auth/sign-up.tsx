@@ -1,4 +1,4 @@
-import {CustomButton} from '@/components/Button/Button';
+import {Button} from '@/components/Button/Button';
 import {Input} from '@/components/Inputs/Input';
 import {Box, Typography} from '@mui/material';
 import Link from 'next/link';
@@ -7,6 +7,7 @@ import Image from 'next/image';
 import {useMutation} from 'react-query';
 import axios from 'axios';
 import {useRouter} from 'next/router';
+import {toast} from 'react-toastify';
 
 type SignUpType = {
   email: string;
@@ -23,7 +24,12 @@ export default function SignUp() {
         userData,
       ),
     onSuccess: () => {
-      router.push('/auth/signIn');
+      toast.success('You are successfully sign up!');
+      toast.info('The last step is to confirm your email');
+      router.push('/auth/sign-in');
+    },
+    onError: e => {
+      toast.error('Account with such login or email already exist');
     },
   });
   const {
@@ -118,13 +124,13 @@ export default function SignUp() {
             />
           </Box>
 
-          <CustomButton type="submit">Sign up</CustomButton>
+          <Button type="submit">Sign up</Button>
         </Box>
         <Box
           sx={{display: 'flex', justifyContent: 'center', marginTop: '24px'}}
         >
           <Typography component="span">Already have an account?</Typography>
-          <Link href={'/auth/signIn'}>
+          <Link href={'/auth/sign-in'}>
             <Typography sx={{marginLeft: '5px', color: 'red'}}>
               Log in
             </Typography>

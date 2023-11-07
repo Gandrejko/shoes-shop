@@ -1,12 +1,13 @@
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {Box, Typography} from '@mui/material';
 import Link from 'next/link';
-import {CustomButton} from '@/components/Button/Button';
+import {Button} from '@/components/Button/Button';
 import {Input} from '@/components/Inputs/Input';
 import Image from 'next/image';
 import axios from 'axios';
 import {useMutation} from 'react-query';
 import {useRouter} from 'next/router';
+import {toast} from 'react-toastify';
 
 type ForgotPasswordType = {
   email: string;
@@ -21,7 +22,11 @@ export default function ForgotPassword() {
         userData,
       ),
     onSuccess: () => {
-      router.push('/auth/resetPassword');
+      toast.info('On your email was sent information about recovery');
+      router.push('/auth/reset-password');
+    },
+    onError: () => {
+      toast.error('Something went wrong, try again later');
     },
   });
   const {
@@ -65,7 +70,7 @@ export default function ForgotPassword() {
             />
           </Box>
 
-          <CustomButton type="submit">Reset password</CustomButton>
+          <Button type="submit">Reset password</Button>
         </Box>
         <Box
           sx={{
@@ -77,10 +82,10 @@ export default function ForgotPassword() {
             marginTop: '16px',
           }}
         >
-          <Link href={'/auth/resetPassword'}>
+          <Link href={'/auth/reset-password'}>
             <Typography>Go to reset password page</Typography>
           </Link>
-          <Link href={'/auth/signIn'}>
+          <Link href={'/auth/sign-in'}>
             <Typography>Back to log in</Typography>
           </Link>
         </Box>

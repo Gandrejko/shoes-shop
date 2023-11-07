@@ -2,11 +2,12 @@ import {useRouter, useSearchParams} from 'next/navigation';
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {Box, Typography} from '@mui/material';
 import Link from 'next/link';
-import {CustomButton} from '@/components/Button/Button';
+import {Button} from '@/components/Button/Button';
 import {Input} from '@/components/Inputs/Input';
 import Image from 'next/image';
 import axios from 'axios';
 import {useMutation} from 'react-query';
+import {toast} from 'react-toastify';
 
 type ResetPasswordType = {
   password: string;
@@ -27,7 +28,11 @@ export default function ResetPassword() {
         },
       ),
     onSuccess: () => {
-      router.push('/auth/signIn');
+      toast.success('Password was changed!');
+      router.push('/auth/sign-in');
+    },
+    onError: () => {
+      toast.error('Something went wrong, try again later');
     },
   });
   const {
@@ -106,12 +111,12 @@ export default function ResetPassword() {
             />
           </Box>
 
-          <CustomButton type="submit">Reset password</CustomButton>
+          <Button type="submit">Reset password</Button>
         </Box>
         <Box
           sx={{display: 'flex', justifyContent: 'center', marginTop: '16px'}}
         >
-          <Link href={'/auth/signIn'}>
+          <Link href={'/auth/sign-in'}>
             <Typography>Back to log in</Typography>
           </Link>
         </Box>
