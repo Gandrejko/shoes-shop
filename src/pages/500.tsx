@@ -2,7 +2,7 @@ import Image from 'next/image';
 import {Box, CssBaseline, Typography, Stack} from '@mui/material';
 import {CustomButton} from '@/components/Button/Button';
 
-const Page500 = () => {
+const Error500 = () => {
   return (
     <>
       <CssBaseline />
@@ -28,4 +28,4 @@ const Page500 = () => {
   );
 };
 
-export default Page500;
+export default Error500;
