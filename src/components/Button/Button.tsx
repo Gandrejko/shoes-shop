@@ -40,13 +40,14 @@ export const Button = ({
     : styles.coloredButton;
 
   const buttonProps = {
+    ...remainingProps, 
     sx: {
       ...remainingProps.sx,
       ...customButtonStyle,
       width,
       height,
     } as SxProps,
-    ...remainingProps, 
+
   };
 
   return <ButtonMUI {...buttonProps}>{children}</ButtonMUI>;
