@@ -3,10 +3,12 @@ import Dropdown from '@/components/Dropdown/Dropdown';
 import Textarea from '@/components/Textarea/Textarea';
 import theme from '@/styles/theme/commonTheme';
 import {Box, Grid, InputBase, SxProps, Typography} from '@mui/material';
-import React, {useRef} from 'react';
+import {useMutation} from '@tanstack/react-query';
+import React, {useRef, useState} from 'react';
 import {Input} from '@/components/Inputs/Input';
 import {Controller, useForm} from 'react-hook-form';
 import Image from 'next/image';
+import axios from 'axios';
 
 const styles: Record<string, SxProps> = {
   mainContainer: {
@@ -84,21 +86,43 @@ type ProductFormProps = {
 
 const ProductForm = ({onSubmit, product}: ProductFormProps) => {
   const inputRef = useRef<HTMLInputElement>();
-  const {register, handleSubmit, control} = useForm<ProductData>({
-    defaultValues: {
-      name: '',
-      price: 0,
-      gender: '',
-      brand: '',
-      description: '',
-      size: 36,
-      images: [
-        'https://media.finishline.com/i/finishline/AH6789_604_P1?$default$&w=671&&h=671&bg=rgb(237,237,237)',
-        'https://media.finishline.com/i/finishline/AH6789_604_P1?$default$&w=671&&h=671&bg=rgb(237,237,237)',
-        'https://media.finishline.com/i/finishline/AH6789_604_P1?$default$&w=671&&h=671&bg=rgb(237,237,237)',
-      ],
+  const {register, handleSubmit, control, getValues, setValue} =
+    useForm<ProductData>({
+      defaultValues: {
+        name: '',
+        price: 0,
+        gender: '',
+        brand: '',
+        description: '',
+        size: 36,
+        images: [],
+      },
+    });
+
+  const {mutate} = useMutation({
+    mutationFn: (file: FormData) =>
+      axios.post(`${process.env.API_URL}/upload`, file),
+    onSuccess: data => {
+      console.log(data.data);
+      const currentImages = getValues('images') || [];
+      const newImages = data.data.map((image: any) => image.url);
+      setValue('images', [...currentImages, ...newImages]);
     },
   });
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    let formData = new FormData();
+
+    if (!e.target.files) {
+      return;
+    }
+
+    for (let i = 0; i < e.target.files.length; i++) {
+      formData.append('files', e.target.files[i]);
+    }
+
+    mutate(formData);
+  };
 
   return (
     <Box
@@ -171,8 +195,8 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
               control={control}
               render={({field}) => (
                 <>
-                  {field.value.map(url => (
-                    <Grid item key={url}>
+                  {field.value.map((url, index) => (
+                    <Grid item key={index}>
                       <Image width={320} height={380} src={url} alt="product" />
                     </Grid>
                   ))}
@@ -195,9 +219,10 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
                         </Typography>
                       </Typography>
                       <InputBase
-                        inputProps={{ref: inputRef}}
+                        inputProps={{ref: inputRef, multiple: true}}
                         type="file"
                         sx={{display: 'none'}}
+                        onChange={handleFileChange}
                       />
                     </Box>
                   </Grid>
