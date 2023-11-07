@@ -23,6 +23,7 @@ let theme = createTheme({
 
   typography: {
     fontFamily: workSans.style.fontFamily,
+    fontWeightLight: 300,
     fontWeightBold: 600,
     fontSize: 16,
 

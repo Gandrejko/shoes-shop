@@ -1,4 +1,20 @@
-import {Button, SxProps, useTheme} from '@mui/material';
+import {Button, SxProps} from '@mui/material';
+
+const styles: Record<string, SxProps> = {
+  button: {
+    fontWeight: 'fontWeighRegular',
+    fontSize: {xs: 10, sm: 15},
+    textTransform: 'uppercase',
+    borderColor: 'grey.A700',
+    color: 'text.secondary',
+    width: {xs: 52, sm: 85},
+    height: {xs: 34, sm: 55},
+    '&:hover': {
+      borderColor: 'grey.A700',
+      backgroundColor: 'grey.A100',
+    },
+  },
+};
 
 type SizeItemType = {
   id: number;
@@ -10,29 +26,6 @@ type SiteItemPropsType = {
 };
 
 const ProductSizeItem = ({size}: SiteItemPropsType) => {
-  const theme = useTheme();
-  const styles: Record<string, SxProps> = {
-    button: {
-      // fontWeigth: theme.typography.fontWeightLight,
-      //trying to set fontWeigth but browser add pixels to fontWeigth. But if to it directly in sx prop it works
-      textTransform: 'uppercase',
-      borderColor: theme.palette.grey.A700,
-      color: theme.palette.text.secondary,
-      width: 85,
-      height: 55,
-      '&:hover': {
-        borderColor: theme.palette.grey.A700,
-        backgroundColor: theme.palette.grey.A100,
-      },
-
-      [theme.breakpoints.down('sm')]: {
-        fontSize: 10,
-        width: 52,
-        height: 34,
-      },
-    },
-  };
-
   return (
     <Button sx={styles.button} variant="outlined">
       eu-{size.value}

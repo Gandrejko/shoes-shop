@@ -1,5 +1,20 @@
-import {Box, SxProps, Typography, useTheme} from '@mui/material';
+import {Box, SxProps, Typography} from '@mui/material';
 import ProductSizeItem from './ProductSizeItem';
+
+const styles: Record<string, SxProps> = {
+  box: {width: '500px'},
+  header: {
+    fontSize: 20,
+    color: 'grey.A700',
+    marginBottom: {xs: '5px', sm: 3},
+  },
+  sizesBox: {
+    display: 'flex',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: {xs: 2, sm: 3},
+  },
+};
 
 type SizeItemType = {
   id: number;
@@ -12,33 +27,6 @@ type ProdcutListProps = {
 };
 
 const ProductSizeList = ({sizes, header}: ProdcutListProps) => {
-  const theme = useTheme();
-
-  const styles: Record<string, SxProps> = {
-    box: {width: '100%'},
-    header: {
-      fontSize: 20,
-      color: theme.palette.grey.A700,
-      marginBottom: theme.spacing(3),
-    },
-    sizesBox: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      flexWrap: 'wrap',
-      gap: theme.spacing(3),
-    },
-
-    [theme.breakpoints.down('sm')]: {
-      header: {
-        marginBottom: '5px',
-      },
-      sizesBox: {
-        gap: theme.spacing(2),
-      },
-    },
-  };
-
   return (
     <Box sx={styles.box}>
       <Typography sx={styles.header}>{header}</Typography>
