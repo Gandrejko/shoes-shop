@@ -1,5 +1,5 @@
 import {IconButton, Stack, SxProps, Toolbar, Typography} from '@mui/material';
-import Image from 'next/image';
+import Image from 'next/image'
 import {SearchInput} from '@/components/Inputs/SearchInput';
 import {CustomButton} from '@/components/Button/Button';
 import {HeaderProps} from '@/components/Header/Header';
@@ -9,7 +9,7 @@ const styles: Record<string, SxProps> = {
     height: '120px',
     display: 'flex',
     justifyContent: 'space-between',
-  },
+  }
 }
 
 const DesktopHeader = ({userLoggedIn}: HeaderProps) => {
