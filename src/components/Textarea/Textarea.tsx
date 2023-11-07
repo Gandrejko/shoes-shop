@@ -8,36 +8,28 @@ const styles = {
     color: '#FE645E',
     marginLeft: '5px',
   },
-  input: {
-    width: '100%',
-    borderRadius: '8px',
-    border: '1px solid #494949',
-    padding: '8px 15px',
-    outline: 'none',
-    underline: 'none',
-  },
 };
 
-type InputProps = InputBaseProps & {
+type TextareaProps = InputBaseProps & {
   labelText: string;
   register: UseFormRegister<any>;
   validationSchema: any;
   name: string;
 };
 
-export const Input = ({
+const Textarea = ({
   labelText,
   register,
   name,
   validationSchema,
   ...props
-}: InputProps) => {
+}: TextareaProps) => {
   const id = useId();
   return (
     <Box>
       <InputLabel htmlFor={id}>
         {labelText}
-        {props.required && (
+        {validationSchema.required && (
           <Typography component="span" sx={styles.requiredMark}>
             *
           </Typography>
@@ -45,10 +37,13 @@ export const Input = ({
       </InputLabel>
       <InputBase
         id={id}
-        sx={styles.input}
+        fullWidth
+        multiline
         {...props}
         {...register(name, validationSchema)}
       />
     </Box>
   );
 };
+
+export default Textarea;

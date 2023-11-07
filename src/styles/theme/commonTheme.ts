@@ -114,6 +114,16 @@ let theme = createTheme({
         }),
       },
     },
+    MuiSelect: {
+      styleOverrides: {
+        root: ({theme}) => ({
+          padding: 0,
+          '&.Mui-focused': {
+            border: 'none', // Встановіть бажаний стиль для рамки, наприклад, 'none' для видалення рамки
+          },
+        }),
+      },
+    },
   },
 });
 
