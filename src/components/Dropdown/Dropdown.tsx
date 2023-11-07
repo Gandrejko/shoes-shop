@@ -1,3 +1,4 @@
+import theme from '@/styles/theme/commonTheme';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
   Box,
@@ -18,6 +19,10 @@ const styles: Record<string, SxProps> = {
   select: {
     width: '100%',
     borderRadius: '8px',
+    border: `1px solid ${theme.palette.grey['A700']}`,
+  },
+  '.MuiOutlinedInput-root': {
+    border: 'none',
   },
 };
 

@@ -8,6 +8,11 @@ const styles = {
     color: '#FE645E',
     marginLeft: '5px',
   },
+  textarea: {
+    borderRadius: '8px',
+    border: '1px solid #494949',
+    padding: '8px 15px',
+  },
 };
 
 type TextareaProps = InputBaseProps & {
@@ -36,6 +41,7 @@ const Textarea = ({
         )}
       </InputLabel>
       <InputBase
+        sx={styles.textarea}
         id={id}
         fullWidth
         multiline

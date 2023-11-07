@@ -1,4 +1,4 @@
-import {CustomButton} from '@/components/Button/Button';
+import {Button} from '@/components/Button/Button';
 import Dropdown from '@/components/Dropdown/Dropdown';
 import Textarea from '@/components/Textarea/Textarea';
 import theme from '@/styles/theme/commonTheme';
@@ -139,7 +139,7 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
     >
       <Box sx={styles.header}>
         <Typography variant="h1">Add a product</Typography>
-        <CustomButton type="submit">Save</CustomButton>
+        <Button type="submit">Save</Button>
       </Box>
       <Typography sx={styles.description}>
         Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in

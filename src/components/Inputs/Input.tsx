@@ -1,3 +1,4 @@
+import theme from '@/styles/theme/commonTheme';
 import {Box, InputBase, InputLabel, Typography} from '@mui/material';
 import {InputBaseProps} from '@mui/material/InputBase/InputBase';
 import {useId} from 'react';
@@ -11,7 +12,7 @@ const styles = {
   input: {
     width: '100%',
     borderRadius: '8px',
-    border: '1px solid #494949',
+    border: `1px solid ${theme.palette.grey['A700']}`,
     padding: '8px 15px',
     outline: 'none',
     underline: 'none',
