@@ -41,10 +41,10 @@ export const Button = ({
 
   const buttonProps = {
     sx: {
+      ...remainingProps.sx,
       ...customButtonStyle,
       width,
       height,
-      ...remainingProps.sx,
     } as SxProps,
   };
 
