@@ -1,6 +1,6 @@
 import {Avatar, Box} from '@mui/material';
 import Image from 'next/image';
-import {CustomButton} from '../Button/Button';
+import {Button} from '../Button/Button';
 
 const styles = {
   headerBox: {
@@ -24,8 +24,8 @@ const UpdateProfileHeader = () => {
         <Image src="/images/avatar.png" alt="avatar" width={150} height={150} />
       </Avatar>
       <Box sx={styles.buttonsBox}>
-        <CustomButton isTransparent>Change photo</CustomButton>
-        <CustomButton>Delete</CustomButton>
+        <Button isTransparent>Change photo</Button>
+        <Button>Delete</Button>
       </Box>
     </Box>
   );

@@ -1,7 +1,7 @@
 import {Box} from '@mui/material';
 import {Input} from '../Inputs/Input';
 import {SubmitHandler, useForm} from 'react-hook-form';
-import {CustomButton} from '../Button/Button';
+import {Button} from '../Button/Button';
 import {useMutation} from 'react-query';
 import axios from 'axios';
 
@@ -20,7 +20,7 @@ const CURUSERDATA = {
   phone: '(949) 354-2574',
 };
 
-const UpdateProfileForm: React.FC = userdata => {
+const UpdateProfileForm = userdata => {
   const {
     register,
     handleSubmit,
@@ -99,9 +99,9 @@ const UpdateProfileForm: React.FC = userdata => {
           }}
         />
       </Box>
-      <CustomButton width="152" alignSelf="flex-end">
+      <Button width="152" alignSelf="flex-end">
         Save changes
-      </CustomButton>
+      </Button>
     </Box>
     // {isSuccess && //To show success message}
   );
