@@ -10,7 +10,7 @@ import DesktopHeader from '@/components/Header/components/DesktopHeader';
 
 const styles: Record<string, SxProps> = {
   appBar: {
-    height: '100%',
+    position: 'static',
     color: '#000000',
     backgroundColor: '#FFFFFF',
     border: 'none',
@@ -28,13 +28,11 @@ const Header = () => {
   const userLoggedIn = true;
 
   return (
-    <Box sx={{display: 'flex', flexDirection: 'column'}}>
       <AppBar sx={styles.appBar}>
         {isMobileMode ?
           <MobileHeader userLoggedIn={userLoggedIn} /> : <DesktopHeader userLoggedIn={userLoggedIn}/>}
         <Divider />
       </AppBar>
-    </Box>
   )
 };
 
