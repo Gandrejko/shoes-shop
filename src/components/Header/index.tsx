@@ -1,6 +1,5 @@
 import {
   AppBar,
-  Box,
   Divider,
   SxProps, useTheme,
 } from '@mui/material';
@@ -10,7 +9,7 @@ import DesktopHeader from '@/components/Header/components/DesktopHeader';
 
 const styles: Record<string, SxProps> = {
   appBar: {
-    height: '120px',
+    position: 'static',
     color: '#000000',
     backgroundColor: '#FFFFFF',
     border: 'none',
@@ -28,11 +27,11 @@ const Header = () => {
   const userLoggedIn = true;
 
   return (
-      <Box sx={styles.appBar}>
+      <AppBar sx={styles.appBar}>
         {isMobileMode ?
           <MobileHeader userLoggedIn={userLoggedIn} /> : <DesktopHeader userLoggedIn={userLoggedIn}/>}
         <Divider />
-      </Box>
+      </AppBar>
   )
 };
 
