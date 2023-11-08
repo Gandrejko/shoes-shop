@@ -7,14 +7,14 @@ type Props = {
 };
 
 /**
- * @description useGetRequest is a custom hook that wraps around react-query's useQuery hook. It is used to make a **GET** request to the backend.
+ * @description useGet is a custom hook that wraps around react-query's useQuery hook. It is used to make a **GET** request to the backend.
  * @param endpoint - the endpoint to make the request to
  * @param params - the query params to be sent with the request
  * @param options - the options to be passed to the useQuery hook
  */
-function useGetRequest<Req = any, Res = any>({
+function useGet<Req = any, Res = any>({
   endpoint,
-  params,
+  params = '*',
   ...options
 }: Props & Partial<UseQueryOptions<Res, Error>>) {
   const key = endpoint.split('/')[1];
@@ -31,4 +31,4 @@ function useGetRequest<Req = any, Res = any>({
   });
 }
 
-export default useGetRequest;
+export default useGet;

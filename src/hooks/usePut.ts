@@ -11,14 +11,14 @@ type Props = {
 };
 
 /**
- * @description usePutRequest is a custom hook that wraps around react-query's useMutation hook. It is used to make a **PUT** request to the backend.
+ * @description usePut is a custom hook that wraps around react-query's useMutation hook. It is used to make a **PUT** request to the backend.
  * @param endpoint - the endpoint to make the request to
  * @param params - the query params to be sent with the request
  * @param options - the options to be passed to the useMutation hook
  */
-function usePutRequest<Req = any, Res = any>({
+function usePut<Req = any, Res = any>({
   endpoint,
-  params,
+  params = '*',
   ...options
 }: Props & UseMutationOptions<Res, Error, Req>) {
   const queryClient = useQueryClient();
@@ -41,4 +41,4 @@ function usePutRequest<Req = any, Res = any>({
   });
 }
 
-export default usePutRequest;
+export default usePut;

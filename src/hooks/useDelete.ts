@@ -11,14 +11,14 @@ type Props = {
 };
 
 /**
- * @description useDeleteRequest is a custom hook that wraps around react-query's useMutation hook. It is used to make a **DELETE** request to the backend.
+ * @description useDelete is a custom hook that wraps around react-query's useMutation hook. It is used to make a **DELETE** request to the backend.
  * @param endpoint - the endpoint to make the request to
  * @param params - the query params to be sent with the request
  * @param options - the options to be passed to the useMutation hook
  */
-function useDeleteRequest<Req = any, Res = any>({
+function useDelete<Req = any, Res = any>({
   endpoint,
-  params,
+  params = '*',
   ...options
 }: Props & UseMutationOptions<Res, Error, Req>) {
   const queryClient = useQueryClient();
@@ -26,12 +26,7 @@ function useDeleteRequest<Req = any, Res = any>({
 
   return useMutation<Res, Error, Req>({
     ...options,
-    mutationFn: async () => {
-      const res = await axios.delete<Res>(endpoint, {
-        params,
-      });
-      return res.data;
-    },
+    mutationFn: () => axios.delete(endpoint, {params}),
     onSuccess: (...props) => {
       options.onSuccess && options.onSuccess(...props);
       queryClient.invalidateQueries({queryKey: [key]});
@@ -39,4 +34,4 @@ function useDeleteRequest<Req = any, Res = any>({
   });
 }
 
-export default useDeleteRequest;
+export default useDelete;

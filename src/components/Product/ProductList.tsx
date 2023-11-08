@@ -1,6 +1,6 @@
 import {Grid, SxProps} from '@mui/material';
 
-import useGetRequest from '@/hooks/useGetRequest';
+import useGet from '@/hooks/useGet';
 import {ResponseData} from '@/types';
 import {ProductAttributes} from '@/types/attributes';
 import {Data} from '@/types/entities';
@@ -14,7 +14,7 @@ const styles: Record<string, SxProps> = {
 };
 
 const ProductList = () => {
-  const {data: products, isLoading} = useGetRequest<
+  const {data: products, isLoading} = useGet<
     any,
     ResponseData<Data<ProductAttributes>[]>
   >({

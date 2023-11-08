@@ -1,5 +1,5 @@
 import {Button} from '@/components/Button/Button';
-import usePostRequest from '@/hooks/usePostRequest';
+import usePost from '@/hooks/usePost';
 import {ResponseData} from '@/types';
 import {ProductAttributes} from '@/types/attributes';
 import {Data} from '@/types/entities';
@@ -22,7 +22,7 @@ const body: ProductRequest = {
 };
 
 export default function Home() {
-  const {mutate} = usePostRequest<
+  const {mutate} = usePost<
     ProductRequest,
     ResponseData<Data<ProductAttributes>>
   >({
