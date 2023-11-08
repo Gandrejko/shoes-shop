@@ -1,4 +1,4 @@
-import {Box} from '@mui/material';
+import {Box, SxProps} from '@mui/material';
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import axios from 'axios';
 import {useSession} from 'next-auth/react';
@@ -6,6 +6,11 @@ import {SubmitHandler, useForm} from 'react-hook-form';
 import {toast} from 'react-toastify';
 import {Button} from '../Button/Button';
 import {Input} from '../Inputs/Input';
+
+const styles: Record<string, SxProps> = {
+  form: {display: 'flex', flexDirection: 'column', maxWidth: '100%'},
+  inputsBox: {marginBottom: {xs: 4, sm: 7}},
+};
 
 type UserDataType = {
   id: number;
@@ -21,39 +26,31 @@ type UserDataType = {
   lastName: string;
 };
 
-type UserUpdateFormProps = {
-  currentUser: UserDataType;
-};
-
-const updatedFormPlaceholders = {
-  phone: '(949) 354-2574',
-  lastName: 'Last Name',
-};
-
-const jwtToken = 'jwtToken';
-
 type Props = {
   imageId: number;
 };
 
 const UpdateProfileForm = ({imageId}: Props) => {
-  // const {data, update} = useSession();
-  const queryClient = useQueryClient();
-  // const currentUser = data?.user;
+  // const currentUser = {
+  //   id: 395,
+  //   username: 'Nas Nas',
+  //   email: 'nas@gmail.com',
+  //   provider: 'local',
+  //   confirmed: true,
+  //   blocked: false,
+  //   createdAt: '2023-11-04T21:40:04.384Z',
+  //   updatedAt: '2023-11-07T11:05:24.437Z',
+  //   phoneNumber: '(949) 354-2574',
+  //   firstName: '',
+  //   lastName: '',
+  // };
 
-  const currentUser = {
-    id: 395,
-    username: 'Nas',
-    email: 'nas@gmail.com',
-    provider: 'local',
-    confirmed: true,
-    blocked: false,
-    createdAt: '2023-11-04T21:40:04.384Z',
-    updatedAt: '2023-11-07T11:05:24.437Z',
-    phoneNumber: '1312313',
-    firstName: 'Nas',
-    lastName: 'Nas',
-  };
+  const jwtToken = 'jwtToken';
+  const {data, update} = useSession();
+  const queryClient = useQueryClient();
+  const currentUser = data?.user;
+
+  const [firstName, lastName] = currentUser.username.split(' ');
 
   const {
     register,
@@ -61,10 +58,10 @@ const UpdateProfileForm = ({imageId}: Props) => {
     formState: {errors},
   } = useForm<Partial<UserDataType>>({
     defaultValues: {
-      firstName: currentUser.firstName || '',
-      lastName: currentUser.lastName,
+      firstName: firstName,
+      lastName: lastName,
       email: currentUser.email,
-      phoneNumber: currentUser.phoneNumber,
+      phoneNumber: currentUser.phoneNumber || '',
     },
   });
 
@@ -79,13 +76,14 @@ const UpdateProfileForm = ({imageId}: Props) => {
 
       return axios.put(
         `https://shoes-shop-strapi.herokuapp.com/api/users/${currentUser.id}`,
-        {...userUpdateData, avatar: imageId},
+        //{...userUpdateData, avatar: imageId},
+        {userUpdateData},
         config,
       );
     },
     onSuccess: newData => {
       queryClient.invalidateQueries({queryKey: ['currentUser']});
-      // update(newData);
+      update(newData);
       toast.success('Your profile was successfully updated!');
     },
     onError: () => {
@@ -102,11 +100,12 @@ const UpdateProfileForm = ({imageId}: Props) => {
   return (
     <Box
       component="form"
-      sx={{display: 'flex', flexDirection: 'column', maxWidth: '100%'}}
+      sx={styles.form}
       onSubmit={handleSubmit(formSubmitHadler)}
     >
-      <Box sx={{mb: 7}}>
+      <Box sx={styles.inputsBox}>
         <Input
+          placeholder={firstName}
           type="text"
           labelText="Name"
           name="firstName"
@@ -115,9 +114,10 @@ const UpdateProfileForm = ({imageId}: Props) => {
             required: 'Name is required',
           }}
           required={true}
-          style={{marginBottom: 24}}
+          style={{marginBottom: '24px'}}
         />
         <Input
+          placeholder={lastName}
           type="text"
           labelText="Surname"
           name="lastName"
@@ -126,14 +126,14 @@ const UpdateProfileForm = ({imageId}: Props) => {
             required: 'Surname is required',
           }}
           required={true}
-          style={{marginBottom: 24}}
+          style={{marginBottom: '24px'}}
         />
         <Input
+          placeholder={currentUser.email}
           type="mail"
           labelText="Email"
           name="email"
           register={register}
-          disabled
           validationSchema={{
             required: 'Email is required',
             pattern: {
@@ -142,9 +142,10 @@ const UpdateProfileForm = ({imageId}: Props) => {
             },
           }}
           required={true}
-          style={{marginBottom: 24}}
+          style={{marginBottom: '24px'}}
         />
         <Input
+          placeholder={currentUser.phoneNumber || '(949) 354-2574'}
           type="tel"
           labelText="Phone number"
           name="phoneNumber"

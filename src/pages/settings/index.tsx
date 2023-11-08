@@ -1,5 +1,5 @@
 import {ReactElement, useState} from 'react';
-import {Box, Typography} from '@mui/material';
+import {Box, SxProps, Typography} from '@mui/material';
 import {NextPageWithLayout} from '../_app';
 import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
 import UpdateProfileHeader from '@/components/UpdatePofileHeader/UpdateProfileHeader';
@@ -35,22 +35,21 @@ type UserDataType = {
   lastName: string;
 };
 
-const styles = {
+const styles: Record<string, SxProps> = {
   box: {
     display: 'flex',
-    padding: 6.5,
+    padding: {xs: 3, sm: 4, md: 6.5},
     flex: 5,
   },
   h1: {
-    fontWeight: 500,
-    fontSize: 45,
-    marginBottom: 4.5,
+    fontSize: {xs: 30, sm: 45},
+    marginBottom: {xs: '12px', sm: 4.5},
   },
   paragraph: {
-    fontSize: 15,
+    fontSize: {xs: 12, sm: 15},
     fontWeight: 300,
-    marginBottom: 6,
-    color: '#5C5C5C',
+    marginBottom: {xs: 3, sm: 6},
+    color: '#5c5c5c',
   },
 };
 
