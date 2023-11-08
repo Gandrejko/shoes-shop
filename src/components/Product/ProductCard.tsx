@@ -6,6 +6,7 @@ import {
   Card,
   CardContent,
   IconButton,
+  Paper,
   Stack,
   SxProps,
   Typography,
@@ -50,12 +51,16 @@ const ProductCard = ({product}: Props) => {
   return (
     <Card sx={styles.card}>
       <Box sx={styles.imageContainer}>
-        <Image
-          src={product.images?.data?.[0].attributes.url ?? ''}
-          alt={product.name!}
-          fill
-          style={{objectFit: 'cover'}}
-        />
+        {product.images?.data ? (
+          <Image
+            src={product.images.data[0].attributes.url}
+            alt={product.name!}
+            fill
+            style={{objectFit: 'cover'}}
+          />
+        ) : (
+          <Paper sx={{height: 1, backgroundColor: 'grey.A200'}} />
+        )}
         <IconButton
           aria-label="settings"
           sx={styles.moreButton}
@@ -77,12 +82,16 @@ const ProductCard = ({product}: Props) => {
             <Typography variant="h3" fontSize={14}>
               {product.name}
             </Typography>
-            <Typography
-              variant="h5"
-              fontSize={14}
-              textTransform="capitalize"
-              color={theme => theme.palette.text.secondary}
-            >{`${product.gender?.data.attributes.name}'s Shoes`}</Typography>
+            {product.gender?.data && (
+              <Typography
+                variant="h5"
+                fontSize={14}
+                textTransform="capitalize"
+                color={theme => theme.palette.text.secondary}
+              >
+                {`${product.gender.data.attributes.name}'s Shoes`}
+              </Typography>
+            )}
           </Box>
           <Typography variant="h3" fontSize={14}>
             ${product.price}

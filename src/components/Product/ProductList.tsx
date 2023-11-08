@@ -21,6 +21,7 @@ const ProductList = () => {
     endpoint: '/products',
     params: {
       populate: 'images,gender',
+      'filters[teamName]': 'team-3',
     },
   });
 
