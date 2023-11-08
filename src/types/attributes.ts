@@ -1,3 +1,4 @@
+import {RequestData} from '.';
 import {
   Product,
   Data,
@@ -12,14 +13,14 @@ import {
 
 export type ProductAttributes = Partial<
   Product & {
-    images: Data<Image>[];
-    categories: Data<Category>[];
-    sizes: Data<Size>[];
+    images: RequestData<Data<Image>[]>;
+    categories: RequestData<Data<Category>[]>;
+    sizes: RequestData<Data<Size>[]>;
 
-    brand: Data<Brand> | null;
-    color: Data<Color> | null;
-    gender: Data<Gender> | null;
-    userID: Data<User> | null;
+    brand: RequestData<Data<Brand>> | null;
+    color: RequestData<Data<Color>> | null;
+    gender: RequestData<Data<Gender>> | null;
+    userID: RequestData<Data<User>> | null;
   }
 >;
 
@@ -27,43 +28,43 @@ export type UserAttributes = Partial<
   User & {
     firstName: string | null;
     lastName: string | null;
-    avatar: Data<Image> | null;
-    prodcuts: Data<Product>[];
+    avatar: RequestData<Data<Image>> | null;
+    prodcuts: RequestData<Data<Product>[]>;
   }
 >;
 
 export type BrandAttributes = Partial<
   Brand & {
-    products: Data<Product>[];
+    products: RequestData<Data<Product>[]>;
   }
 >;
 
 export type CategoryAttributes = Partial<
   Category & {
-    products: Data<Product>[];
+    products: RequestData<Data<Product>[]>;
   }
 >;
 
 export type ColorAttributes = Partial<
   Color & {
-    products: Data<Product>[];
+    products: RequestData<Data<Product>[]>;
   }
 >;
 
 export type GenderAttributes = Partial<
   Gender & {
-    products: Data<Product>[];
+    products: RequestData<Data<Product>[]>;
   }
 >;
 
 export type SizeAttributes = Partial<
   Size & {
-    products: Data<Product>[];
+    products: RequestData<Data<Product>[]>;
   }
 >;
 
 export type ImageAttributes = Partial<
   Image & {
-    related: Data<Product>[];
+    related: RequestData<Data<Product>[]>;
   }
 >;
