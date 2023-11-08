@@ -1,5 +1,5 @@
 import {Box, Typography} from '@mui/material';
-import {CustomButton} from '@/components/Button/Button';
+import Button from '@/components/Button/Button';
 
 const SummarySection = ({products}: {products: any[]}) => {
   return (
@@ -104,9 +104,9 @@ const SummarySection = ({products}: {products: any[]}) => {
           0
         </Typography>
       </Box>
-      <CustomButton isTransparent={false} width="100%" height="40px">
+      <Button isTransparent={false} width="100%" height="40px">
         Checkout
-      </CustomButton>
+      </Button>
     </Box>
   );
 };
