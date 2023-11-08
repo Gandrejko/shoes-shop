@@ -1,4 +1,5 @@
 import ProductForm from '@/components/ProductForm/ProductForm';
+import theme from '@/styles/theme/commonTheme';
 import {Modal} from '@mui/material';
 import {Box, SxProps} from '@mui/material';
 import {useMutation, useQuery} from '@tanstack/react-query';
@@ -18,6 +19,18 @@ const styles: Record<string, SxProps> = {
     left: 180,
     bottom: 120,
     right: 180,
+    [theme.breakpoints.down('lg')]: {
+      top: 70,
+      left: 90,
+      bottom: 70,
+      right: 90,
+    },
+    [theme.breakpoints.down('md')]: {
+      top: 0,
+      left: 0,
+      bottom: 0,
+      right: 0,
+    },
     overflow: 'hidden',
     overflowY: 'scroll',
   },

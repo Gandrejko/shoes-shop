@@ -2,9 +2,9 @@ import Dropdown from '@/components/Dropdown/Dropdown';
 import {Input} from '@/components/Inputs/Input';
 import theme from '@/styles/theme/commonTheme';
 import {ProductData} from '../ProductForm';
-import {Box, SxProps} from '@mui/material';
+import {Box, Grid, SxProps} from '@mui/material';
 import React from 'react';
-import {UseFormReturn} from 'react-hook-form';
+import {UseFormRegister} from 'react-hook-form';
 import Textarea from '@/components/Textarea/Textarea';
 
 const styles: Record<string, SxProps> = {
@@ -33,22 +33,22 @@ const styles: Record<string, SxProps> = {
 };
 
 type FormContainerProps = {
-  formProps: Partial<UseFormReturn<ProductData>>;
+  register: UseFormRegister<ProductData>;
 };
 
-const FormContainer = ({formProps}: FormContainerProps) => {
+const FormContainer = ({register}: FormContainerProps) => {
   return (
-    <Box sx={styles.formContainer}>
+    <Grid sx={styles.formContainer}>
       <Input
         labelText="Product name"
-        register={formProps.register}
+        register={register}
         validationSchema={{required: 'Product name is required'}}
         name="name"
         placeholder="Nike Air Max 90"
       />
       <Input
         labelText="Price"
-        register={formProps.register}
+        register={register}
         validationSchema={{required: 'Price is required'}}
         name="price"
       />
@@ -56,7 +56,7 @@ const FormContainer = ({formProps}: FormContainerProps) => {
         <Dropdown
           name="gender"
           labelText="Gender"
-          register={formProps.register}
+          register={register}
           validationSchema={undefined}
           options={[
             {value: 'Men', text: 'Men'},
@@ -66,7 +66,7 @@ const FormContainer = ({formProps}: FormContainerProps) => {
         <Dropdown
           name="brand"
           labelText="Brand"
-          register={formProps.register}
+          register={register}
           validationSchema={undefined}
           options={[
             {value: 'Men', text: 'Men'},
@@ -76,13 +76,13 @@ const FormContainer = ({formProps}: FormContainerProps) => {
       </Box>
       <Textarea
         labelText="Description"
-        register={formProps.register}
+        register={register}
         validationSchema={{required: 'Description is required'}}
         name="description"
         minRows={8}
         placeholder="Do not exceed 300 chaeacters."
       />
-    </Box>
+    </Grid>
   );
 };
 

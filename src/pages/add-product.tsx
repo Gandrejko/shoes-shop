@@ -1,8 +1,9 @@
 import ProductForm from '@/components/ProductForm/ProductForm';
+import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
 import {useMutation} from '@tanstack/react-query';
 import axios from 'axios';
 import {useSession} from 'next-auth/react';
-import React from 'react';
+import React, {ReactElement} from 'react';
 
 const AddProduct = () => {
   const session = useSession();
@@ -30,6 +31,10 @@ const AddProduct = () => {
     },
   });
   return <ProductForm onSubmit={mutate} />;
+};
+
+AddProduct.getLayout = function getLayout(page: ReactElement) {
+  return <SidebarLayout>{page}</SidebarLayout>;
 };
 
 export default AddProduct;

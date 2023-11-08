@@ -12,6 +12,12 @@ const styles: Record<string, SxProps> = {
     display: 'flex',
     flexDirection: 'column',
     gap: '3rem',
+    [theme.breakpoints.down('md')]: {
+      padding: '0',
+    },
+    [theme.breakpoints.down('md')]: {
+      padding: '30px 20px',
+    },
   },
   header: {
     display: 'flex',
@@ -29,21 +35,11 @@ const styles: Record<string, SxProps> = {
   },
   form: {
     display: 'flex',
-    columnGap: '5rem',
-    rowGap: '3rem',
-    [theme.breakpoints.down('md')]: {
+    gap: '5rem',
+    [theme.breakpoints.down('lg')]: {
+      gap: '3rem',
       flexDirection: 'column',
     },
-  },
-  formContainer: {
-    width: 440,
-    [theme.breakpoints.down('md')]: {
-      width: 'auto',
-    },
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '1rem',
-    flexShrink: 1,
   },
 };
 
@@ -54,7 +50,10 @@ export type ProductData = {
   brand: number;
   description: string;
   size: number;
-  images: string[];
+  images: {
+    id: number;
+    url: string;
+  }[];
 };
 
 type ProductFormProps = {
@@ -100,7 +99,7 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
         in a type specimen book. It usually begins with:
       </Typography>
       <Box sx={styles.form}>
-        <FormContainer formProps={{register}} />
+        <FormContainer register={register} />
         <ImagesContainer formProps={{register, control, getValues, setValue}} />
       </Box>
     </Box>
