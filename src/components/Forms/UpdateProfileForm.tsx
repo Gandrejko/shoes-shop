@@ -1,10 +1,11 @@
 import {Box} from '@mui/material';
-import {Input} from '../Inputs/Input';
-import {SubmitHandler, useForm} from 'react-hook-form';
-import {Button} from '../Button/Button';
-import {useMutation, useQueryClient} from 'react-query';
+import {useMutation, useQueryClient} from '@tanstack/react-query';
 import axios from 'axios';
+import {useSession} from 'next-auth/react';
+import {SubmitHandler, useForm} from 'react-hook-form';
 import {toast} from 'react-toastify';
+import {Button} from '../Button/Button';
+import {Input} from '../Inputs/Input';
 
 type UserDataType = {
   id: number;
@@ -29,8 +30,30 @@ const updatedFormPlaceholders = {
   lastName: 'Last Name',
 };
 
-const UpdateProfileForm = ({currentUser}: UserUpdateFormProps) => {
+const jwtToken = 'jwtToken';
+
+type Props = {
+  imageId: number;
+};
+
+const UpdateProfileForm = ({imageId}: Props) => {
+  // const {data, update} = useSession();
   const queryClient = useQueryClient();
+  // const currentUser = data?.user;
+
+  const currentUser = {
+    id: 395,
+    username: 'Nas',
+    email: 'nas@gmail.com',
+    provider: 'local',
+    confirmed: true,
+    blocked: false,
+    createdAt: '2023-11-04T21:40:04.384Z',
+    updatedAt: '2023-11-07T11:05:24.437Z',
+    phoneNumber: '1312313',
+    firstName: 'Nas',
+    lastName: 'Nas',
+  };
 
   const {
     register,
@@ -38,22 +61,31 @@ const UpdateProfileForm = ({currentUser}: UserUpdateFormProps) => {
     formState: {errors},
   } = useForm<Partial<UserDataType>>({
     defaultValues: {
-      firstName: currentUser.firstName,
-      lastName: currentUser.lastName || updatedFormPlaceholders.lastName,
+      firstName: currentUser.firstName || '',
+      lastName: currentUser.lastName,
       email: currentUser.email,
-      phoneNumber: currentUser.phoneNumber || updatedFormPlaceholders.phone,
+      phoneNumber: currentUser.phoneNumber,
     },
   });
 
   const updateCurrentUserMutation = useMutation({
-    mutationFn: (userUpdateData: Partial<UserDataType>) => {
+    mutationFn: async (userUpdateData: Partial<UserDataType>) => {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      };
+
       return axios.put(
         `https://shoes-shop-strapi.herokuapp.com/api/users/${currentUser.id}`,
-        userUpdateData,
+        {...userUpdateData, avatar: imageId},
+        config,
       );
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries(['currentUser']);
+    onSuccess: newData => {
+      queryClient.invalidateQueries({queryKey: ['currentUser']});
+      // update(newData);
       toast.success('Your profile was successfully updated!');
     },
     onError: () => {

@@ -14,7 +14,10 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-type InputType = {type: string};
+type InputType = {
+  type: string;
+  // onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
 
 const HiddenInput = ({type}: InputType) => {
   return <InputBase type={type} sx={styles.input} />;
