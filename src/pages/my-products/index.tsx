@@ -9,7 +9,6 @@ import {
   Typography,
 } from '@mui/material';
 
-import products from '@/temp/data';
 import {NextPageWithLayout} from '../_app';
 import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
 import ProductList from '@/components/Product/ProductList';
@@ -97,7 +96,7 @@ const MyProducts: NextPageWithLayout = () => {
             Add product
           </Button>
         </Stack>
-        <ProductList products={products} />
+        <ProductList />
       </Box>
     </Container>
   );

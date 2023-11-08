@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 
 import ButtonMenu from './ButtonMenu';
+import type {ProductAttributes} from '@/types/attributes';
 
 const styles: Record<string, SxProps> = {
   card: {
@@ -39,27 +40,19 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-type Product = {
-  id: number;
-  name: string;
-  price: number;
-  image: string;
-  gender: string;
+type Props = {
+  product: ProductAttributes;
 };
 
-type ProductCardProps = {
-  product: Product;
-};
-
-const ProductCard = ({product}: ProductCardProps) => {
+const ProductCard = ({product}: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   return (
     <Card sx={styles.card}>
       <Box sx={styles.imageContainer}>
         <Image
-          src={product.image}
-          alt={product.name}
+          src={product.images?.data?.[0].attributes.url ?? ''}
+          alt={product.name!}
           fill
           style={{objectFit: 'cover'}}
         />
@@ -89,7 +82,7 @@ const ProductCard = ({product}: ProductCardProps) => {
               fontSize={14}
               textTransform="capitalize"
               color={theme => theme.palette.text.secondary}
-            >{`${product.gender}'s Shoes`}</Typography>
+            >{`${product.gender?.data.attributes.name}'s Shoes`}</Typography>
           </Box>
           <Typography variant="h3" fontSize={14}>
             ${product.price}
