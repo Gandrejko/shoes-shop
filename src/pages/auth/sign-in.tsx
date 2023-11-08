@@ -2,7 +2,7 @@ import {SubmitHandler, useForm} from 'react-hook-form';
 import {SignInResponse, signIn, useSession} from 'next-auth/react';
 import {Box, Checkbox, FormControlLabel, Typography} from '@mui/material';
 import Link from 'next/link';
-import {CustomButton} from '@/components/Button/Button';
+import {Button} from '@/components/Button/Button';
 import {Input} from '@/components/Inputs/Input';
 import Image from 'next/image';
 import {useRouter} from 'next/router';
@@ -108,7 +108,7 @@ export default function SignIn() {
             </Link>
           </Box>
 
-          <CustomButton type="submit">Sign in</CustomButton>
+          <Button type="submit">Sign in</Button>
         </Box>
         <Box
           sx={{display: 'flex', justifyContent: 'center', marginTop: '24px'}}

@@ -31,6 +31,7 @@ const EditProduct = ({productId}: EditProductProps) => {
   const router = useRouter();
   const session = useSession();
   const token = session.data?.user.accessToken;
+  console.log(session);
   const {mutate} = useMutation({
     mutationFn: (data: any) => {
       return axios.put(
