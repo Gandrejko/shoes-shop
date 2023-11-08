@@ -1,11 +1,23 @@
-import {Modal as MuiModal, Box, useTheme, useMediaQuery} from '@mui/material';
+import {
+  Modal as MuiModal,
+  Box,
+  useTheme,
+  useMediaQuery,
+  SxProps,
+} from '@mui/material';
 import {useForm} from 'react-hook-form';
 import {SearchInput} from '../Inputs/SearchInput';
 import Image from 'next/image';
 import logoIcon from '../../../public/icons/logo.svg';
 import modalCloseIcon from '../../../public/icons/modalClose.svg';
+import {Button} from '../Button/Button';
 
 const style = {
+  modal: {
+    '& .MuiBox-root': {
+      outline: 'none',
+    },
+  },
   container: {
     position: 'absolute' as 'absolute',
     width: '100%',
@@ -25,23 +37,28 @@ const style = {
   },
   closeImageStyles: {
     marginLeft: '25px',
+    cursor: 'pointer',
   },
 };
 
-type ReasonTYpes = 'escapeKeyDown' | 'backdropClick';
-
-type PropsTYpe = {
-  handleClose: (value: string) => void;
+type PropsType = {
+  handleSearchClick: (value: string) => void;
+  handleClose: () => void;
   isOpen: boolean;
 };
 
-export const Modal = ({handleClose, isOpen}: PropsTYpe) => {
+export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
   const {register, getValues} = useForm<{searchString: string}>();
   const theme = useTheme();
   const greaterThanMid = useMediaQuery(theme.breakpoints.up('md'));
+  const lessThanSmall = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleOnClose = () => {
-    handleClose(getValues('searchString'));
+    handleClose();
+  };
+
+  const handleOnSearch = () => {
+    handleSearchClick(getValues('searchString'));
   };
 
   return (
@@ -51,18 +68,38 @@ export const Modal = ({handleClose, isOpen}: PropsTYpe) => {
         onClose={handleOnClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        sx={style.modal}
       >
         <Box sx={style.container}>
           <Box sx={style.wrapper}>
             {greaterThanMid && (
               <Image src={logoIcon} alt="" style={style.logoImageStyles} />
             )}
-            <SearchInput
-              register={register}
-              name="searchString"
-              validationSchema={{}}
-              giantMode
-            />
+            <Box
+              sx={{
+                width: '100%',
+                maxWidth: '1071px',
+                display: 'flex',
+                flexDirection: `${lessThanSmall ? 'column' : 'row'}`,
+                alignItems: 'center',
+                gap: '25px',
+              }}
+            >
+              <SearchInput
+                register={register}
+                name="searchString"
+                validationSchema={{}}
+                giantMode
+              />
+              <Button
+                isTransparent
+                height={`${greaterThanMid ? '50%' : 'auto'}`}
+                onClick={handleOnSearch}
+              >
+                Search
+              </Button>
+            </Box>
+
             <Image
               src={modalCloseIcon}
               alt=""

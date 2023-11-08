@@ -1,7 +1,7 @@
 import {IconButton, Stack, SxProps, Toolbar, Typography} from '@mui/material';
 import {SearchInput} from '@/components/Inputs/SearchInput';
 import {HeaderProps} from '@/components/Header';
-import {Button} from '@/components/Button/Button'
+import {Button} from '@/components/Button/Button';
 import Image from 'next/image';
 
 const styles: Record<string, SxProps> = {
@@ -9,11 +9,12 @@ const styles: Record<string, SxProps> = {
     height: '120px',
     display: 'flex',
     justifyContent: 'space-between',
-  }
-}
+  },
+};
 
-const DesktopHeader = ({userLoggedIn}: HeaderProps) => {
+const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
   return (
+    <>
       <Toolbar sx={styles.desktopWrapper}>
         <Stack direction="row" alignItems="center" spacing={4}>
           <Image src="/icons/logo.svg" alt="logo" width={40} height={30} />
@@ -26,10 +27,20 @@ const DesktopHeader = ({userLoggedIn}: HeaderProps) => {
             justifyContent="space-between"
             spacing={4}
           >
-            <SearchInput register={() => {}} validationSchema=""/>
+            <SearchInput
+              name="not-used-1"
+              register={() => {}}
+              validationSchema=""
+              onClick={handleModalOpen}
+            />
             <Stack direction="row" spacing={0.5}>
               <IconButton onClick={() => {}}>
-                <Image src="/icons/cart.svg" alt="cart" width={24} height={24} />
+                <Image
+                  src="/icons/cart.svg"
+                  alt="cart"
+                  width={24}
+                  height={24}
+                />
               </IconButton>
               <IconButton onClick={() => {}}>
                 <Image
@@ -51,14 +62,20 @@ const DesktopHeader = ({userLoggedIn}: HeaderProps) => {
             <Button width="145px" height="48px" isTransparent={true}>
               Sign In
             </Button>
-            <SearchInput register={() => {}} validationSchema=""/>
+            <SearchInput
+              name="not-used-2"
+              register={() => {}}
+              validationSchema=""
+              onClick={handleModalOpen}
+            />
             <IconButton onClick={() => {}}>
               <Image src="/icons/cart.svg" alt="cart" width={24} height={24} />
             </IconButton>
           </Stack>
         )}
       </Toolbar>
-  )
+    </>
+  );
 };
 
 export default DesktopHeader;

@@ -44,7 +44,7 @@ const styles = {
 };
 
 type SearchInputProps = InputBaseProps & {
-  register: UseFormRegister<any>;
+  register: UseFormRegister<any> | (() => void);
   validationSchema: any;
   name: string;
   giantMode?: boolean;
