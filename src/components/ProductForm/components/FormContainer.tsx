@@ -1,10 +1,19 @@
 import Dropdown from '@/components/Dropdown/Dropdown';
 import {Input} from '@/components/Inputs/Input';
+import ProductSizeList from '@/components/ProductSize/ProductSizeList';
 import theme from '@/styles/theme/commonTheme';
+import {
+  BrandsResponse,
+  ColorsResponse,
+  GendersResponse,
+  SizesResponse,
+} from '@/types';
+import {useQuery} from '@tanstack/react-query';
+import axios, {AxiosResponse} from 'axios';
 import {ProductData} from '../ProductForm';
 import {Box, Grid, SxProps} from '@mui/material';
 import React from 'react';
-import {UseFormRegister} from 'react-hook-form';
+import {UseFormReturn} from 'react-hook-form';
 import Textarea from '@/components/Textarea/Textarea';
 
 const styles: Record<string, SxProps> = {
@@ -33,22 +42,57 @@ const styles: Record<string, SxProps> = {
 };
 
 type FormContainerProps = {
-  register: UseFormRegister<ProductData>;
+  formProps: Pick<
+    UseFormReturn<ProductData>,
+    'register' | 'control' | 'getValues' | 'setValue'
+  >;
 };
 
-const FormContainer = ({register}: FormContainerProps) => {
+const FormContainer = ({formProps}: FormContainerProps) => {
+  const {data: genders} = useQuery<AxiosResponse<GendersResponse>>({
+    queryKey: ['genders'],
+    queryFn: () => axios.get(`${process.env.API_URL}/genders`),
+  });
+  const {data: colors} = useQuery<AxiosResponse<ColorsResponse>>({
+    queryKey: ['colors'],
+    queryFn: () => axios.get(`${process.env.API_URL}/colors`),
+  });
+  const {data: brands} = useQuery<AxiosResponse<BrandsResponse>>({
+    queryKey: ['brands'],
+    queryFn: () => axios.get(`${process.env.API_URL}/brands`),
+  });
+  const {data: sizes} = useQuery<AxiosResponse<SizesResponse>>({
+    queryKey: ['sizes'],
+    queryFn: () => axios.get(`${process.env.API_URL}/sizes`),
+  });
+
+  const sizesMapped =
+    sizes?.data.data.map(({id, attributes: {value}}) => ({
+      id,
+      value,
+    })) || [];
+
+  const checkSize = (id: number, isChecked: boolean) => {
+    const oldSizes = formProps.getValues('sizes') || [];
+    const oldSize = sizesMapped.find(size => size.id === id);
+    const newSizes =
+      oldSize && isChecked
+        ? [...oldSizes, oldSize]
+        : oldSizes.filter(size => size.id !== id);
+    formProps.setValue('sizes', newSizes);
+  };
   return (
     <Grid sx={styles.formContainer}>
       <Input
         labelText="Product name"
-        register={register}
+        register={formProps.register}
         validationSchema={{required: 'Product name is required'}}
         name="name"
         placeholder="Nike Air Max 90"
       />
       <Input
         labelText="Price"
-        register={register}
+        register={formProps.register}
         validationSchema={{required: 'Price is required'}}
         name="price"
       />
@@ -56,31 +100,37 @@ const FormContainer = ({register}: FormContainerProps) => {
         <Dropdown
           name="gender"
           labelText="Gender"
-          register={register}
+          register={formProps.register}
           validationSchema={undefined}
-          options={[
-            {value: 'Men', text: 'Men'},
-            {value: 'Women', text: 'Women'},
-          ]}
+          options={genders?.data.data.map(({id, attributes}) => ({
+            value: id,
+            text: attributes.name,
+          }))}
         />
         <Dropdown
           name="brand"
           labelText="Brand"
-          register={register}
+          register={formProps.register}
           validationSchema={undefined}
-          options={[
-            {value: 'Men', text: 'Men'},
-            {value: 'Women', text: 'Women'},
-          ]}
+          options={brands?.data.data.map(({id, attributes}) => ({
+            value: id,
+            text: attributes.name,
+          }))}
         />
       </Box>
       <Textarea
         labelText="Description"
-        register={register}
+        register={formProps.register}
         validationSchema={{required: 'Description is required'}}
         name="description"
         minRows={8}
-        placeholder="Do not exceed 300 chaeacters."
+        placeholder="Do not exceed 300 characters."
+      />
+      <ProductSizeList
+        control={formProps.control}
+        header="Add size"
+        sizes={sizesMapped}
+        onClick={checkSize}
       />
     </Grid>
   );

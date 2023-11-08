@@ -1,4 +1,12 @@
-import {Box, SxProps, Typography} from '@mui/material';
+import ImageCard from '@/components/ProductForm/components/ImageCard';
+import {ProductData} from '@/components/ProductForm/ProductForm';
+import {SizesResponse} from '@/types';
+import {Box, Grid, InputBase, SxProps, Typography} from '@mui/material';
+import {useQuery} from '@tanstack/react-query';
+import axios, {AxiosResponse} from 'axios';
+import Image from 'next/image';
+import React from 'react';
+import {Control, Controller, UseFormReturn} from 'react-hook-form';
 import ProductSizeItem from './ProductSizeItem';
 
 const styles: Record<string, SxProps> = {
@@ -21,20 +29,39 @@ type SizeItemType = {
   value: number;
 };
 
-type ProdcutListProps = {
-  sizes: SizeItemType[];
+type ProductListProps = {
   header: string;
+  control: UseFormReturn<ProductData>['control'];
+  onClick: (id: number, isChecked: boolean) => void;
+  sizes: SizeItemType[];
 };
 
-const ProductSizeList = ({sizes, header}: ProdcutListProps) => {
+const ProductSizeList = ({
+  header,
+  control,
+  onClick,
+  sizes,
+}: ProductListProps) => {
   return (
     <Box sx={styles.box}>
       <Typography sx={styles.header}>{header}</Typography>
       {/* Think this typography should be h4. If yes, I can add h4 config to the theme and here use I can set like component='h4'*/}
       <Box sx={styles.sizesBox}>
-        {sizes.map(size => (
-          <ProductSizeItem key={size.id} size={size} />
-        ))}
+        <Controller
+          name="sizes"
+          control={control}
+          render={({field}) => (
+            <>
+              {sizes.map(({id, value}) => (
+                <ProductSizeItem
+                  key={id}
+                  size={{id, value}}
+                  onClick={onClick}
+                />
+              ))}
+            </>
+          )}
+        />
       </Box>
     </Box>
   );

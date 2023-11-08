@@ -1,13 +1,6 @@
 import theme from '@/styles/theme/commonTheme';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import {
-  Box,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SxProps,
-} from '@mui/material';
+import {Box, InputLabel, MenuItem, Select, SxProps} from '@mui/material';
 import {SelectProps} from '@mui/material/Select/Select';
 import React, {useId} from 'react';
 import {UseFormRegister} from 'react-hook-form';
@@ -31,7 +24,7 @@ type DropdownProps = SelectProps & {
   register: UseFormRegister<any>;
   validationSchema: any;
   name: string;
-  options: {value: string; text: string}[];
+  options?: {value: number; text: string}[];
 };
 
 const Dropdown = ({
@@ -39,7 +32,7 @@ const Dropdown = ({
   register,
   validationSchema,
   name,
-  options,
+  options = [],
 }: DropdownProps) => {
   const id = useId();
   return (
@@ -50,7 +43,8 @@ const Dropdown = ({
         IconComponent={ExpandMoreIcon}
         {...register(name, validationSchema)}
         sx={styles.select}
-        defaultValue={options[0].value}
+        defaultValue={options[0]?.value || 0}
+        MenuProps={{sx: {maxHeight: 400}}}
       >
         {options.map(({value, text}) => (
           <MenuItem key={value} value={value}>

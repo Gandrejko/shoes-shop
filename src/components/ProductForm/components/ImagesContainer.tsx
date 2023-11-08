@@ -31,7 +31,10 @@ const styles: Record<string, SxProps> = {
 };
 
 type ImagesContainerProps = {
-  formProps: Partial<UseFormReturn<ProductData>>;
+  formProps: Pick<
+    UseFormReturn<ProductData>,
+    'register' | 'control' | 'getValues' | 'setValue'
+  >;
 };
 
 const ImagesContainer = ({formProps}: ImagesContainerProps) => {

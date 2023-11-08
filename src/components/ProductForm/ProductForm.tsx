@@ -1,9 +1,17 @@
 import {Button} from '@/components/Button/Button';
+import {
+  BrandsResponse,
+  ColorsResponse,
+  GendersResponse,
+  SizesResponse,
+} from '@/types';
+import {useQuery} from '@tanstack/react-query';
+import axios, {AxiosResponse} from 'axios';
 import FormContainer from './components/FormContainer';
 import ImagesContainer from './components/ImagesContainer';
 import theme from '@/styles/theme/commonTheme';
 import {Box, SxProps, Typography} from '@mui/material';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useForm} from 'react-hook-form';
 
 const styles: Record<string, SxProps> = {
@@ -49,7 +57,10 @@ export type ProductData = {
   gender: number;
   brand: number;
   description: string;
-  size: number;
+  sizes: {
+    id: number;
+    value: number;
+  }[];
   images: {
     id: number;
     url: string;
@@ -66,14 +77,26 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
     useForm<ProductData>({
       defaultValues: {
         name: '',
-        price: 25,
+        price: 0,
         gender: 3,
         brand: 13,
         description: '',
-        size: 13,
+        sizes: [],
         images: [],
       },
     });
+
+  const handleOnSubmit = () => {
+    const values = getValues();
+    const data = {
+      ...values,
+      sizes: values.sizes.map(({id}) => id),
+      images: values.images.map(({id}) => id),
+      teamName: 'team-3',
+    };
+    console.log(data);
+    // onSubmit(data);
+  };
 
   const onError = (errors: any) => {
     console.log(errors);
@@ -83,7 +106,7 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
     <Box
       sx={styles.mainContainer}
       component="form"
-      onSubmit={handleSubmit(() => onSubmit(getValues()), onError)}
+      onSubmit={handleSubmit(handleOnSubmit, onError)}
     >
       <Box sx={styles.header}>
         <Typography variant="h1">
@@ -99,7 +122,7 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
         in a type specimen book. It usually begins with:
       </Typography>
       <Box sx={styles.form}>
-        <FormContainer register={register} />
+        <FormContainer formProps={{register, control, getValues, setValue}} />
         <ImagesContainer formProps={{register, control, getValues, setValue}} />
       </Box>
     </Box>

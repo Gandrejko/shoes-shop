@@ -1,4 +1,5 @@
 import {Button, SxProps} from '@mui/material';
+import {useState} from 'react';
 
 const styles: Record<string, SxProps> = {
   button: {
@@ -23,11 +24,21 @@ type SizeItemType = {
 
 type SiteItemPropsType = {
   size: SizeItemType;
+  onClick: (id: number, isChecked: boolean) => void;
 };
 
-const ProductSizeItem = ({size}: SiteItemPropsType) => {
+const ProductSizeItem = ({size, onClick}: SiteItemPropsType) => {
+  const [isChecked, setIsChecked] = useState(false);
+  const handleClick = () => {
+    setIsChecked(!isChecked);
+    onClick(size.id, !isChecked);
+  };
   return (
-    <Button sx={styles.button} variant="outlined">
+    <Button
+      sx={styles.button}
+      variant={isChecked ? 'contained' : 'outlined'}
+      onClick={handleClick}
+    >
       eu-{size.value}
     </Button>
   );

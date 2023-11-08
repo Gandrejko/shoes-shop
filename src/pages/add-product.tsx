@@ -3,7 +3,7 @@ import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
 import {useMutation} from '@tanstack/react-query';
 import axios from 'axios';
 import {useSession} from 'next-auth/react';
-import React, {ReactElement} from 'react';
+import React from 'react';
 
 const AddProduct = () => {
   const session = useSession();
@@ -12,12 +12,7 @@ const AddProduct = () => {
     mutationFn: (data: any) => {
       return axios.post(
         `${process.env.API_URL}/products`,
-        {
-          data: {
-            ...data,
-            teamName: 'team-3',
-          },
-        },
+        {data},
         {
           headers: {
             'Content-Type': 'application/json',
@@ -30,11 +25,10 @@ const AddProduct = () => {
       console.log(data);
     },
   });
-  return <ProductForm onSubmit={mutate} />;
+  return (
+    <SidebarLayout>
+      <ProductForm onSubmit={mutate} />
+    </SidebarLayout>
+  );
 };
-
-AddProduct.getLayout = function getLayout(page: ReactElement) {
-  return <SidebarLayout>{page}</SidebarLayout>;
-};
-
 export default AddProduct;
