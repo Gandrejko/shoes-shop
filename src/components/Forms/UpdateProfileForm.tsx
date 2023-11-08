@@ -45,33 +45,26 @@ const UpdateProfileForm = ({currentUser}: UserUpdateFormProps) => {
     },
   });
 
-  const {mutateAsync} = useMutation({
-    mutationFn: (userUpdateData: Partial<UserDataType>) =>
-      axios.put(
-        `https://shoes-shop-strapi.herokuapp.com/api/users${currentUser.id}`,
+  const updateCurrentUserMutation = useMutation({
+    mutationFn: (userUpdateData: Partial<UserDataType>) => {
+      return axios.put(
+        `https://shoes-shop-strapi.herokuapp.com/api/users/${currentUser.id}`,
         userUpdateData,
-      ),
-
-    onMutate: userUpdateData => {
-      queryClient.setQueryData(['user'], {
-        ...currentUser,
-        ...userUpdateData,
-      });
-      return {userUpdateData};
+      );
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['currentUser']);
+      toast.success('Your profile was successfully updated!');
     },
     onError: () => {
       toast.error('Something went wrong. Please, try again.');
-    },
-
-    onSettled: () => {
-      queryClient.invalidateQueries(['user']);
     },
   });
 
   const formSubmitHadler: SubmitHandler<
     Partial<UserDataType>
   > = async updatedData => {
-    mutateAsync(updatedData);
+    updateCurrentUserMutation.mutate(updatedData);
   };
 
   return (
