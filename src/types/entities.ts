@@ -19,9 +19,7 @@ export type Product = {
   name: string;
   description: string;
   price: number;
-
-  uniqueID: string;
-  teamName: 'fb-team' | 'ea-team';
+  teamName: 'team-1' | 'team-2' | 'team-3';
 };
 
 export type Image = {
