@@ -15,6 +15,6 @@ export default function Home() {
         );
       }
     }
-  });
+  }, [session?.user.accessToken, status]);
   return <></>;
 }
