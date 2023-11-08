@@ -8,60 +8,66 @@ import {
   SxProps,
 } from '@mui/material';
 import Image from 'next/image';
-import {useState} from 'react';
 import {Button} from '../Button/Button';
 
 const styles: Record<string, SxProps> = {
-  modalBox: {
-    width: {sx: '320px', md: '656px'},
-    height: {sx: '371px', md: '435px'},
-    padding: 3,
-    gap: {sx: 3, md: 7},
+  modalPaper: {
+    backgroundColor: 'common.white',
+    p: 4,
+    gap: {xs: 3, sm: 7},
+    borderRadius: 2,
+    m: 0,
+    maxWidth: {xs: 300, sm: 420, md: 656},
   },
   content: {
-    fontWeight: 'fontWeighLight',
+    fontWeight: 'fontWeightLight',
     fontSize: 15,
+    color: 'text.secondary',
   },
   actions: {
     width: '100%',
-    justifyContent: 'space-between',
+  },
+  closeButton: {
+    position: 'absolute',
+    right: {xs: 22, sm: 32},
+    top: {xs: 22, sm: 32},
+    aspectRatio: 16 / 16,
   },
 };
 
-const DeleteModal = () => {
-  const [open, setOpen] = useState(false);
+type DeleteModalProps = {
+  isModalOpen: boolean;
+  handleModalClose: () => void;
+};
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
+const DeleteModal = ({isModalOpen, handleModalClose}: DeleteModalProps) => {
   return (
-    <Dialog open={open} sx={styles.modalBox}>
-      <DialogTitle component="h1">
-        Are you sure to delete selected item
+    <Dialog open={isModalOpen} PaperProps={{sx: styles.modalPaper}}>
+      <DialogTitle component="h1" variant="h1">
+        Are you sure to delete selected item?
       </DialogTitle>
-      <IconButton aria-label="close" onClick={handleClose}>
-        <Image
-          src="icons/modalClose.svg"
-          alt="closeModal"
-          width={16}
-          height={16}
-        />
+      <IconButton
+        aria-label="closeModal"
+        sx={styles.closeButton}
+        onClick={handleModalClose}
+      >
+        <Image src="icons/modalClose.svg" alt="closeModal" fill />
       </IconButton>
-      <DialogContent>
+      <DialogContent sx={styles.content}>
         Lorem ipsum dolor sit amet consectetur. Sed imperdiet tempor facilisi
         massa aliquet sit habitant. Lorem ipsum dolor sit amet consectetur.{' '}
       </DialogContent>
       <Divider variant="fullWidth" />
       <DialogActions>
-        <Button width="150px" height="150px" onClick={handleClose}>
+        <Button
+          width="282px"
+          height="61px"
+          isTransparent
+          onClick={handleModalClose}
+        >
           Cancel
         </Button>
-        <Button width="150px" height="150px">
+        <Button width="282px" height="61px">
           Delete
         </Button>
       </DialogActions>
