@@ -7,9 +7,9 @@ import {
   IconButton,
   SxProps,
 } from '@mui/material';
+import Image from 'next/image';
 import {useState} from 'react';
 import {Button} from '../Button/Button';
-import Image from 'next/image';
 
 const styles: Record<string, SxProps> = {
   modalBox: {
