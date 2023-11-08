@@ -4,6 +4,8 @@ const products = [
     name: 'Nike Air Max 270',
     price: 160,
     gender: 'women',
+    available: 'in stock',
+    quantity: 1,
     image:
       'https://media.finishline.com/i/finishline/AH6789_604_P1?$default$&w=671&&h=671&bg=rgb(237,237,237)',
   },
@@ -12,6 +14,8 @@ const products = [
     name: 'Nike Air Max 60',
     price: 180,
     gender: 'men',
+    available: 'in stock',
+    quantity: 1,
     image:
       'https://media.finishline.com/i/finishline/AH6789_604_P1?$default$&w=671&&h=671&bg=rgb(237,237,237)',
   },
@@ -20,6 +24,8 @@ const products = [
     name: 'Nike Air Max 90',
     price: 300,
     gender: 'women',
+    available: 'in stock',
+    quantity: 1,
     image:
       'https://media.finishline.com/i/finishline/AH6789_604_P1?$default$&w=671&&h=671&bg=rgb(237,237,237)',
   },
@@ -28,6 +34,8 @@ const products = [
     name: 'Nike Air Max 120',
     price: 204,
     gender: 'men',
+    available: 'in stock',
+    quantity: 1,
     image:
       'https://media.finishline.com/i/finishline/AH6789_604_P1?$default$&w=671&&h=671&bg=rgb(237,237,237)',
   },
@@ -36,6 +44,8 @@ const products = [
     name: 'Nike Air Max 333',
     price: 160,
     gender: 'women',
+    available: 'in stock',
+    quantity: 1,
     image:
       'https://media.finishline.com/i/finishline/AH6789_604_P1?$default$&w=671&&h=671&bg=rgb(237,237,237)',
   },
@@ -44,6 +54,8 @@ const products = [
     name: 'Nike Air Max 77',
     price: 145,
     gender: 'women',
+    available: 'in stock',
+    quantity: 1,
     image:
       'https://media.finishline.com/i/finishline/AH6789_604_P1?$default$&w=671&&h=671&bg=rgb(237,237,237)',
   },
