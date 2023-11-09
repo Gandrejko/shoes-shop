@@ -1,21 +1,16 @@
-import {
-  AppBar,
-  Box,
-  Divider,
-  SxProps, useTheme,
-} from '@mui/material';
+import {AppBar, Divider, SxProps, useTheme} from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import MobileHeader from '@/components/Header/components/MobileHeader';
 import DesktopHeader from '@/components/Header/components/DesktopHeader';
 
 const styles: Record<string, SxProps> = {
   appBar: {
-    position: 'static',
+    position: 'sticky',
     color: '#000000',
     backgroundColor: '#FFFFFF',
     border: 'none',
     boxShadow: 'none',
-  }
+  },
 };
 
 export type HeaderProps = {
@@ -28,12 +23,15 @@ const Header = () => {
   const userLoggedIn = true;
 
   return (
-      <AppBar sx={styles.appBar}>
-        {isMobileMode ?
-          <MobileHeader userLoggedIn={userLoggedIn} /> : <DesktopHeader userLoggedIn={userLoggedIn}/>}
-        <Divider />
-      </AppBar>
-  )
+    <AppBar sx={styles.appBar}>
+      {isMobileMode ? (
+        <MobileHeader userLoggedIn={userLoggedIn} />
+      ) : (
+        <DesktopHeader userLoggedIn={userLoggedIn} />
+      )}
+      <Divider />
+    </AppBar>
+  );
 };
 
 export default Header;
