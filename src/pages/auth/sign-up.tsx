@@ -1,6 +1,5 @@
-import {Button} from '@/components/Button/Button';
 import {Input} from '@/components/Inputs/Input';
-import {Box, Typography, useMediaQuery} from '@mui/material';
+import {Box, Typography, Button} from '@mui/material';
 import Link from 'next/link';
 import {SubmitHandler, useForm} from 'react-hook-form';
 import Image from 'next/image';
@@ -8,9 +7,8 @@ import {useMutation} from '@tanstack/react-query';
 import axios from 'axios';
 import {useRouter} from 'next/router';
 import {toast} from 'react-toastify';
+import {styles} from '@/styles/authPagesStyles';
 import logoIcon from '../../../public/icons/logo.svg';
-import theme from '@/styles/theme/commonTheme';
-import {styles} from './styles';
 
 type SignUpType = {
   email: string;
@@ -20,9 +18,7 @@ type SignUpType = {
 };
 
 export default function SignUp() {
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const {mutate} = useMutation({
-    mutationKey: ['sign-up'],
+  const {mutateAsync} = useMutation({
     mutationFn: (userData: Partial<SignUpType>) =>
       axios.post(
         'https://shoes-shop-strapi.herokuapp.com/api/auth/local/register',
@@ -47,7 +43,7 @@ export default function SignUp() {
 
   const onSubmit: SubmitHandler<SignUpType> = async data => {
     const {confirmPassword, ...restData} = data;
-    mutate(restData);
+    mutateAsync(restData);
   };
 
   return (
@@ -130,22 +126,24 @@ export default function SignUp() {
 
             <Button type="submit">Sign up</Button>
           </Box>
-          <Box sx={styles.linksContainer}>
+          <Box
+            sx={{display: 'flex', justifyContent: 'center', marginTop: '24px'}}
+          >
             <Typography component="span">Already have an account?</Typography>
-            <Link href={'/auth/sign-in'} style={styles.link}>
-              <Typography>Log in</Typography>
+            <Link href={'/auth/sign-in'}>
+              <Typography sx={{marginLeft: '5px', color: 'red'}}>
+                Log in
+              </Typography>
             </Link>
           </Box>
         </Box>
-        {!isMobile && (
-          <Box sx={styles.imageWrapper}>
-            <Image
-              src="/images/signUpBanner.png"
-              alt="picture of our brand"
-              fill={true}
-            />
-          </Box>
-        )}
+        <Box sx={{width: '943px', height: '930px', position: 'relative'}}>
+          <Image
+            src="/images/signUpBanner.png"
+            alt="picture of our brand"
+            fill={true}
+          />
+        </Box>
       </Box>
     </Box>
   );

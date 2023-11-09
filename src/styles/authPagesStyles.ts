@@ -1,3 +1,5 @@
+import theme from '@/styles/theme/commonTheme';
+
 export const styles = {
   tab: {
     position: 'relative',
@@ -10,7 +12,7 @@ export const styles = {
     left: '50%',
     transform: 'translate(-50%, 0)',
     paddingBottom: {sm: '0', xs: '14px'},
-    borderBottom: {sm: 'none', xs: '1px  solid #EAECF0'},
+    borderBottom: {sm: `none', xs: '1px  solid ${theme.palette.grey['A100']}`},
   },
   headerImage: {
     marginLeft: '40px',
@@ -61,7 +63,7 @@ export const styles = {
     gap: '5px',
   },
   link: {
-    color: '#FE645E',
+    color: theme.palette.primary.main,
     fontWeight: '300',
     textDecoration: 'none',
   },

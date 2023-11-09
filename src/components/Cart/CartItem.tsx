@@ -1,5 +1,4 @@
-import {Box, Typography} from '@mui/material';
-import {Button} from '@/components/Button/Button';
+import {Box, Typography, Button} from '@mui/material';
 import Image from 'next/image';
 
 type Product = {
@@ -33,7 +32,7 @@ const ProductItem = ({product}: {product: Product}) => {
             {product.name}
           </Typography>
           <Typography sx={{color: '#5C5C5C', fontSize: 18, marginLeft: 2}}>
-            {product.gender}'s shoes
+            {product.gender}`&apos;s shoes
           </Typography>
           <Typography
             sx={{

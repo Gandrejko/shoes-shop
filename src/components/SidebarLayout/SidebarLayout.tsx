@@ -1,13 +1,16 @@
 import {ReactNode} from 'react';
 import Image from 'next/image';
 import {Box, Divider, List, ListItem, SxProps, Typography} from '@mui/material';
+import {destroyCookie} from 'nookies';
+import {signOut} from 'next-auth/react';
 
 const styles: Record<string, SxProps> = {
   layout: {
     display: 'flex',
   },
   sidebar: {
-    width: '320px',
+    width: 320,
+    flexShrink: 0,
     display: {md: 'block', xs: 'none'},
   },
   user: {
@@ -47,12 +50,18 @@ const styles: Record<string, SxProps> = {
 
 type SidebarLayoutProps = {
   children: ReactNode;
-  currentTab: 'products' | 'settings' | 'logout';
+  currentTab?: 'products' | 'settings' | 'logout';
 };
 
 export const SidebarLayout = ({children, currentTab}: SidebarLayoutProps) => {
   const image = false;
   const name = 'Jane Meldrum';
+
+  const logoutFunction = async () => {
+    destroyCookie(null, 'rememberMe');
+    await signOut();
+  };
+
   return (
     <Box sx={styles.layout}>
       <Box sx={styles.sidebar}>
@@ -107,6 +116,7 @@ export const SidebarLayout = ({children, currentTab}: SidebarLayoutProps) => {
               ...styles.tab,
               color: currentTab === 'logout' ? 'FE645E' : '#000',
             }}
+            onClick={logoutFunction}
           >
             <Image
               width={20}

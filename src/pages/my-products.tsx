@@ -1,4 +1,6 @@
+import EditProduct from '@/components/EditProduct/EditProduct';
 import Image from 'next/image';
+import {useRouter} from 'next/router';
 import {ReactElement} from 'react';
 import {
   Avatar,
@@ -7,13 +9,13 @@ import {
   Stack,
   SxProps,
   Typography,
+  Button
 } from '@mui/material';
 
 import products from '@/temp/data';
-import {NextPageWithLayout} from '../_app';
+import {NextPageWithLayout} from '@/pages/_app';
 import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
 import ProductList from '@/components/Product/ProductList';
-import {Button} from '@/components/Button/Button';
 
 const styles: Record<string, SxProps> = {
   container: {
@@ -69,10 +71,13 @@ const styles: Record<string, SxProps> = {
 };
 
 const MyProducts: NextPageWithLayout = () => {
+  const router = useRouter();
+  const productId = router.query.productId as string;
   const userImage = null; // TODO: temporary
 
   return (
     <Container maxWidth="xl" sx={styles.container}>
+      {productId && <EditProduct productId={productId} />}
       <Box sx={styles.pageHeader}>
         <Box sx={styles.bannerContainer}>
           <Image src="/images/myProductsBanner.png" alt="My products" fill />

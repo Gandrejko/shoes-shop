@@ -92,7 +92,6 @@ let theme = createTheme({
           textTransform: 'none',
         },
         contained: ({theme}) => ({
-          borderRadius: theme.spacing(),
           color: theme.palette.common.white,
         }),
         outlined: ({theme}) => ({
@@ -142,6 +141,16 @@ let theme = createTheme({
           },
           [theme.breakpoints.up('md')]: {
             gap: theme.spacing(4),
+          },
+        }),
+      },
+    },
+    MuiSelect: {
+      styleOverrides: {
+        root: ({theme}) => ({
+          padding: 0,
+          '&.Mui-focused': {
+            border: 'none', // Встановіть бажаний стиль для рамки, наприклад, 'none' для видалення рамки
           },
         }),
       },
