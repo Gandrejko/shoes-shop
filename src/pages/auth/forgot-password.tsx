@@ -1,7 +1,6 @@
 import {SubmitHandler, useForm} from 'react-hook-form';
-import {Box, Typography} from '@mui/material';
+import {Box, Typography, Button} from '@mui/material';
 import Link from 'next/link';
-import {CustomButton} from '@/components/Button/Button';
 import {Input} from '@/components/Inputs/Input';
 import Image from 'next/image';
 import axios from 'axios';
@@ -68,7 +67,7 @@ export default function ForgotPassword() {
             style={{marginBottom: '24px'}}
           />
 
-          <CustomButton type="submit">Reset password</CustomButton>
+          <Button type="submit">Reset password</Button>
         </Box>
         <Box
           sx={{

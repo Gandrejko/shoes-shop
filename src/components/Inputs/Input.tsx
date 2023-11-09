@@ -1,7 +1,9 @@
-import {InputBase, InputLabel, Typography} from '@mui/material';
+import {Box, InputBase, InputLabel, Typography} from '@mui/material';
 import {InputBaseProps} from '@mui/material/InputBase/InputBase';
 import {useId} from 'react';
 import {UseFormRegister} from 'react-hook-form';
+import Image from 'next/image';
+import warningIcon from '../../../public/icons/warning.svg';
 
 const styles = {
   label: {},
@@ -24,6 +26,7 @@ type InputProps = InputBaseProps & {
   register: UseFormRegister<any>;
   validationSchema: any;
   name: string;
+  errorMessage?: string;
 };
 
 export const Input = ({
@@ -31,11 +34,12 @@ export const Input = ({
   register,
   name,
   validationSchema,
+  errorMessage,
   ...props
 }: InputProps) => {
   const id = useId();
   return (
-    <>
+    <Box>
       <InputLabel sx={styles.label} htmlFor={id}>
         {labelText}
         {props.required && (
@@ -49,7 +53,14 @@ export const Input = ({
         sx={styles.input}
         {...props}
         {...register(name, validationSchema)}
+        error={!!errorMessage}
       />
-    </>
+      {errorMessage && (
+        <Box sx={{color: 'red', display: 'flex', gap: '4px', marginTop: '8px'}}>
+          <Image src={warningIcon} alt="" />
+          {errorMessage}
+        </Box>
+      )}
+    </Box>
   );
 };
