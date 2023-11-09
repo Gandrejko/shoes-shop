@@ -31,11 +31,11 @@ export default function ResetPassword() {
           code: userData.code,
         },
       ),
-    onSuccess: () => {
+    onSuccess: value => {
       toast.success('Password was changed!');
       router.push('/auth/sign-in');
     },
-    onError: () => {
+    onError: e => {
       toast.error('Something went wrong, try again later');
     },
   });
@@ -84,11 +84,11 @@ export default function ResetPassword() {
                 validationSchema={{
                   required: true,
                   minLength: {
-                    value: 6,
-                    message: 'Min length is 6',
+                    value: 8,
+                    message: 'Min length is 8',
                   },
                 }}
-                required={true}
+                required
                 type="password"
                 errorMessage={errors.password?.message}
               />
@@ -104,7 +104,7 @@ export default function ResetPassword() {
                     }
                   },
                 }}
-                required={true}
+                required
                 type="password"
                 errorMessage={errors.confirmPassword?.message}
               />

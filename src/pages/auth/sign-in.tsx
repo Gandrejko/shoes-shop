@@ -83,7 +83,7 @@ export default function SignIn() {
                     message: 'Entered value does not match email format',
                   },
                 }}
-                required={true}
+                required
                 errorMessage={errors.email?.message}
               />
               <Input
@@ -93,29 +93,29 @@ export default function SignIn() {
                 validationSchema={{
                   required: true,
                   minLength: {
-                    value: 6,
-                    message: 'Min length is 6',
+                    value: 8,
+                    message: 'Min length is 8',
                   },
                 }}
-                required={true}
+                required
                 type="password"
                 errorMessage={errors.password?.message}
               />
-            </Box>
 
-            <Box sx={styles.checkboxContainer}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    {...register('rememberMe', {})}
-                    sx={styles.checkbox}
-                  />
-                }
-                label={<Typography variant="body1">Remember me</Typography>}
-              />
-              <Link href="/auth/forgot-password" style={styles.link}>
-                <Typography>Forgot password?</Typography>
-              </Link>
+              <Box sx={styles.checkboxContainer}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      {...register('rememberMe', {})}
+                      sx={styles.checkbox}
+                    />
+                  }
+                  label={<Typography variant="body1">Remember me</Typography>}
+                />
+                <Link href="/auth/forgot-password" style={styles.link}>
+                  <Typography>Forgot password?</Typography>
+                </Link>
+              </Box>
             </Box>
 
             <Button type="submit">Sign in</Button>

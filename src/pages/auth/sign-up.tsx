@@ -78,7 +78,7 @@ export default function SignUp() {
                 validationSchema={{
                   required: 'This field is required',
                 }}
-                required={true}
+                required
                 errorMessage={errors.username?.message}
               />
               <Input
@@ -92,7 +92,7 @@ export default function SignUp() {
                     message: 'Entered value does not match email format',
                   },
                 }}
-                required={true}
+                required
                 errorMessage={errors.email?.message}
               />
               <Input
@@ -102,11 +102,11 @@ export default function SignUp() {
                 validationSchema={{
                   required: true,
                   minLength: {
-                    value: 6,
-                    message: 'Min length is 6',
+                    value: 8,
+                    message: 'Min length is 8',
                   },
                 }}
-                required={true}
+                required
                 type="password"
                 errorMessage={errors.password?.message}
               />
@@ -122,7 +122,7 @@ export default function SignUp() {
                     }
                   },
                 }}
-                required={true}
+                required
                 type="password"
                 errorMessage={errors.confirmPassword?.message}
               />

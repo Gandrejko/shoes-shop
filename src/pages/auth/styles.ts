@@ -24,8 +24,8 @@ export const styles = {
   wrapper: {
     flex: '1',
     margin: {
-      xl: '288px 305px 0 196px',
-      lg: '220px 13% 0 10%',
+      xl: '155px 305px 0 196px',
+      lg: '155px 13% 0 10%',
       sm: '180px 9% 0 6%',
       xs: '125px 20px 0',
     },
@@ -50,7 +50,7 @@ export const styles = {
     display: 'flex',
     flexDirection: 'column',
     gap: '24px',
-    marginBottom: {lg: '104px', sm: '10%', xs: '54px'},
+    marginBottom: '54px',
     width: '100%',
     maxWidth: {sm: '436px', xs: '100%'},
   },
@@ -75,8 +75,6 @@ export const styles = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: {lg: 'center', sm: 'flex-start'},
-    marginTop: '16px',
-    marginBottom: '56px',
     flexDirection: {md: 'row', sm: 'column', xs: 'row'},
   },
   checkbox: {

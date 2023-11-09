@@ -137,7 +137,7 @@ export default function ForgotPassword() {
                     message: 'Entered value does not match email format',
                   },
                 }}
-                required={true}
+                required
                 errorMessage={errors.email?.message}
               />
             </Box>
