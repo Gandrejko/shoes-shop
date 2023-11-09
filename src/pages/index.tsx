@@ -1,43 +1,44 @@
-import {Button} from '@/components/Button/Button';
-import usePost from '@/hooks/usePost';
-import {ResponseData} from '@/types';
-import {ProductAttributes} from '@/types/attributes';
-import {Data} from '@/types/entities';
-import {ProductRequest} from '@/types/requests';
+import Header from '@/components/Header';
+import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
+import {useSession} from 'next-auth/react';
+import {ReactElement, useEffect} from 'react';
+import {toast} from 'react-toastify';
 
-// TEMPORARY: For testing purposes only
-const body: ProductRequest = {
-  name: 'Air Max 90',
-  description:
-    'Nike Air Max 90 is a classic shoe that has become very popular among sneakerheads. The shoe is made of leather and mesh, and has a rubber sole. The shoe is available in many different colors, and is a great shoe for everyday use.',
-  price: 240,
-  teamName: 'team-3',
-  images: [1527],
-  brand: 11,
-  categories: [5, 6],
-  color: 9,
-  userID: 395,
-  gender: 3,
-  sizes: [14, 15],
+const Home = () => {
+  const {data: session, status} = useSession();
+
+  useEffect(() => {
+    const value = JSON.parse(localStorage.getItem('signInJustNow') || '{}');
+
+    if (typeof value !== 'object' && value) {
+      toast.success(`Hello, ${session?.user.username}!`);
+      localStorage.setItem('signInJustNow', JSON.stringify(false));
+    }
+  }, [session?.user.username]);
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      const value = localStorage.getItem('accessToken');
+
+      if (value === null || value === undefined) {
+        localStorage.setItem(
+          'accessToken',
+          JSON.stringify(session?.user.accessToken),
+        );
+      }
+    }
+  }, [session?.user.accessToken, status]);
+
+  return <></>;
 };
 
-export default function Home() {
-  const {mutate} = usePost<
-    ProductRequest,
-    ResponseData<Data<ProductAttributes>>
-  >('/products', {
-    onSuccess: data => {
-      console.log(data);
-    },
-  });
-
+Home.getLayout = function getLayout(page: ReactElement) {
   return (
-    <Button
-      onClick={() => {
-        mutate(body);
-      }}
-    >
-      Request
-    </Button>
+    <>
+      <Header />
+      <SidebarLayout currentTab="products">{page}</SidebarLayout>
+    </>
   );
-}
+};
+
+export default Home;
