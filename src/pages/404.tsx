@@ -61,7 +61,7 @@ const Error404 = () => {
         <>
           <Box sx={styles.mobile}>
             <Image
-              src="/images/404PageBanner.jpeg"
+              src="/images/404PageBanner.png"
               alt="404 error"
               objectFit="cover"
               fill
@@ -114,7 +114,7 @@ const Error404 = () => {
             </Box>
             <Box sx={styles.banner}>
               <Image
-                src="/images/404PageBanner.jpeg"
+                src="/images/404PageBanner.png"
                 alt="404 error"
                 objectFit="cover"
                 fill
