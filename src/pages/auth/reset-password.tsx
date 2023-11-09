@@ -1,16 +1,12 @@
 import {useRouter, useSearchParams} from 'next/navigation';
 import {SubmitHandler, useForm} from 'react-hook-form';
-import {Box, Theme, Typography, makeStyles, useMediaQuery} from '@mui/material';
+import {Box, Typography, Button} from '@mui/material';
 import Link from 'next/link';
-import {Button} from '@/components/Button/Button';
 import {Input} from '@/components/Inputs/Input';
 import Image from 'next/image';
 import axios from 'axios';
-import {useMutation} from '@tanstack/react-query';
+import {useMutation} from 'react-query';
 import {toast} from 'react-toastify';
-import logoIcon from '../../../public/icons/logo.svg';
-import theme from '@/styles/theme/commonTheme';
-import {styles} from './styles';
 
 type ResetPasswordType = {
   password: string;
@@ -20,8 +16,7 @@ type ResetPasswordType = {
 
 export default function ResetPassword() {
   const router = useRouter();
-  const {mutate, isSuccess} = useMutation({
-    mutationKey: ['reset-password'],
+  const {mutateAsync, isSuccess} = useMutation({
     mutationFn: (userData: ResetPasswordType) =>
       axios.post(
         'https://shoes-shop-strapi.herokuapp.com/api/auth/reset-password',
@@ -45,7 +40,6 @@ export default function ResetPassword() {
     watch,
     formState: {errors},
   } = useForm<Omit<ResetPasswordType, 'code'>>();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const searchParams = useSearchParams();
   const code = searchParams.get('code') || '';
@@ -53,80 +47,76 @@ export default function ResetPassword() {
   const onSubmit: SubmitHandler<
     Omit<ResetPasswordType, 'code'>
   > = async data => {
-    mutate({...data, code});
+    mutateAsync({...data, code});
   };
 
   return (
-    <Box sx={styles.tab}>
-      <Box sx={styles.header}>
-        <Link href="/" style={styles.headerImage}>
-          <Image src={logoIcon} alt="" />
-        </Link>
-      </Box>
-      <Box sx={styles.container}>
-        <Box sx={styles.wrapper}>
-          <Typography variant="h1" sx={styles.title}>
-            Reset password
-          </Typography>
-          <Typography variant="body1" sx={styles.titleText}>
-            Please create new password here
-          </Typography>
-          <Box
-            component="form"
-            onSubmit={handleSubmit(onSubmit)}
-            sx={styles.formContainer}
-          >
-            <Box sx={styles.form}>
-              <Input
-                labelText="Password"
-                register={register}
-                name="password"
-                validationSchema={{
-                  required: true,
-                  minLength: {
-                    value: 6,
-                    message: 'Min length is 6',
-                  },
-                }}
-                required={true}
-                type="password"
-                errorMessage={errors.password?.message}
-              />
-              <Input
-                labelText="Confirm password"
-                register={register}
-                name="confirmPassword"
-                validationSchema={{
-                  required: true,
-                  validate: (val: string) => {
-                    if (watch('password') != val) {
-                      return 'Your passwords do no match';
-                    }
-                  },
-                }}
-                required={true}
-                type="password"
-                errorMessage={errors.confirmPassword?.message}
-              />
-            </Box>
+    <Box sx={{display: 'flex'}}>
+      <Box
+        sx={{
+          flex: '1',
+          margin: '208px 286px 0 196px',
+        }}
+      >
+        <Typography component="h1" sx={{marginBottom: 2}}>
+          Reset password
+        </Typography>
+        <Typography component="h5" sx={{fontSize: 15, marginBottom: 6}}>
+          Please create new password here
+        </Typography>
+        <Box
+          component="form"
+          onSubmit={handleSubmit(onSubmit)}
+          sx={{display: 'flex', flexDirection: 'column'}}
+        >
+          <Input
+            labelText="Password"
+            register={register}
+            name="password"
+            validationSchema={{
+              required: 'This field is required',
+              minLength: {
+                value: 6,
+                message: 'min length is 6',
+              },
+            }}
+            required={true}
+            type="password"
+            style={{marginBottom: '24px'}}
+          />
+          <Input
+            labelText="Confirm password"
+            register={register}
+            name="confirmPassword"
+            validationSchema={{
+              required: 'This field is required',
+              validate: (val: string) => {
+                if (watch('password') != val) {
+                  return 'Your passwords do no match';
+                }
+              },
+            }}
+            required={true}
+            type="password"
+            style={{marginBottom: '37px'}}
+          />
 
-            <Button type="submit">Reset password</Button>
-          </Box>
-          <Box sx={styles.linksContainer}>
-            <Link href={'/auth/sign-in'} style={styles.link}>
-              <Typography>Back to log in</Typography>
-            </Link>
-          </Box>
+          <Button type="submit">Reset password</Button>
         </Box>
-        {!isMobile && (
-          <Box sx={styles.imageWrapper}>
-            <Image
-              src="/images/resetForgotBanner.png"
-              alt="picture of our brand"
-              fill={true}
-            />
-          </Box>
-        )}
+        <Box
+          sx={{display: 'flex', justifyContent: 'center', marginTop: '16px'}}
+        >
+          <Link href={'/auth/sign-in'}>
+            <Typography>Back to log in</Typography>
+          </Link>
+        </Box>
+      </Box>
+      <Box sx={{width: '943px', height: '930px', position: 'relative'}}>
+        <Image
+          src="/images/resetForgotBanner.png"
+          alt="picture of our brand"
+          fill={true}
+        />
       </Box>
     </Box>
   );
