@@ -1,11 +1,11 @@
-import { createTheme, responsiveFontSizes } from '@mui/material';
-import { inter, workSans } from './fonts';
+import {createTheme, responsiveFontSizes} from '@mui/material';
+import {inter, workSans} from './fonts';
 
 let theme = createTheme({
   palette: {
     mode: 'light',
-    primary: { main: '#fe645e' },
-    error: { main: '#fe645e' },
+    primary: {main: '#fe645e'},
+    error: {main: '#fe645e'},
     text: {
       primary: '#000',
       secondary: '#5c5c5c',
@@ -56,12 +56,12 @@ let theme = createTheme({
   components: {
     MuiInputBase: {
       styleOverrides: {
-        root: ({ theme }) => ({
+        root: ({theme}) => ({
           borderRadius: theme.spacing(),
           padding: ['7px', '16px'].join(' '),
         }),
 
-        input: ({ theme }) => ({
+        input: ({theme}) => ({
           fontSize: 15,
           fontWeight: 400,
           color: theme.palette.text.secondary,
@@ -70,7 +70,7 @@ let theme = createTheme({
     },
     MuiInputLabel: {
       styleOverrides: {
-        root: ({ theme }) => ({
+        root: ({theme}) => ({
           fontSize: 15,
           color: theme.palette.grey[700],
         }),
@@ -78,7 +78,7 @@ let theme = createTheme({
     },
     MuiFormHelperText: {
       styleOverrides: {
-        root: ({ theme }) => ({
+        root: ({theme}) => ({
           fontFamily: inter.style.fontFamily,
           fontSize: 12,
           fontWeight: 400,
@@ -86,41 +86,22 @@ let theme = createTheme({
         }),
       },
     },
-
     MuiButton: {
       styleOverrides: {
         root: {
           textTransform: 'none',
-          boxShadow: 'none',
-          
-          '&:hover': {
-            boxShadow:'none'
-          },
         },
-        contained: ({ theme }) => ({
+        contained: ({theme}) => ({
           color: theme.palette.common.white,
-          borderRadius: theme.spacing(),
-          '&:hover': {
-            backgroundColor: 'transparent',
-            color: theme.palette.primary.main,
-            border: `1px solid ${theme.palette.primary.main}`
-          },
         }),
-        outlined: ({ theme }) => ({
+        outlined: ({theme}) => ({
           borderRadius: theme.spacing(),
-          '&:hover': {
-            backgroundColor: `${theme.palette.primary.main}`,
-            color: theme.palette.common.white,
-          },
         }),
       },
     },
-
-
-
     MuiDivider: {
       styleOverrides: {
-        root: ({ theme }) => ({
+        root: ({theme}) => ({
           borderWidth: 1,
           borderColor: theme.palette.grey.A100,
         }),
@@ -128,7 +109,7 @@ let theme = createTheme({
     },
     MuiCheckbox: {
       styleOverrides: {
-        root: ({ theme }) => ({
+        root: ({theme}) => ({
           borderWidth: 1,
           borderRadius: 2,
           borderColor: theme.palette.grey.A700,
@@ -160,6 +141,16 @@ let theme = createTheme({
           },
           [theme.breakpoints.up('md')]: {
             gap: theme.spacing(4),
+          },
+        }),
+      },
+    },
+    MuiSelect: {
+      styleOverrides: {
+        root: ({theme}) => ({
+          padding: 0,
+          '&.Mui-focused': {
+            border: 'none', // Встановіть бажаний стиль для рамки, наприклад, 'none' для видалення рамки
           },
         }),
       },

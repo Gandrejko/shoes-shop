@@ -35,8 +35,8 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
           >
             <SearchInput
               name="not-used-1"
-              register={() => {}}
-              validationSchema=""
+              register={false}
+              validationSchema={false}
               onClick={handleModalOpen}
             />
             <Stack direction="row" spacing={0.5}>
@@ -68,8 +68,8 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
             <Button sx={{width: '145px', height: '48px'}}>Sign In</Button>
             <SearchInput
               name="not-used-2"
-              register={() => {}}
-              validationSchema=""
+              register={false}
+              validationSchema={false}
               onClick={handleModalOpen}
             />
             <IconButton onClick={() => {}}>

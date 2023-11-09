@@ -5,7 +5,7 @@ import {ReactElement, useEffect} from 'react';
 import {toast} from 'react-toastify';
 
 const Home = () => {
-  const {data: session} = useSession();
+  const {data: session, status} = useSession();
 
   useEffect(() => {
     const value = JSON.parse(localStorage.getItem('signInJustNow') || '{}');
@@ -15,6 +15,19 @@ const Home = () => {
       localStorage.setItem('signInJustNow', JSON.stringify(false));
     }
   }, []);
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      const value = localStorage.getItem('accessToken');
+
+      if (value === null || value === undefined) {
+        localStorage.setItem(
+          'accessToken',
+          JSON.stringify(session?.user.accessToken),
+        );
+      }
+    }
+  }, [session?.user.accessToken, status]);
 
   return <></>;
 };
