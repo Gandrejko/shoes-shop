@@ -14,14 +14,14 @@ export const images: string[] = [
 
 const styles: Record<string, SxProps> = {
   imageBox: {
-    position: 'relative'
+    position: 'relative',
   },
   buttonsBox: {
     position: 'absolute',
     bottom: '24px',
-    right: '38px'
-  }
-}
+    right: '38px',
+  },
+};
 
 const ImageSlider = () => {
   const [currentImage, setCurrentImage] = useState<number>(0);
