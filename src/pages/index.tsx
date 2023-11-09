@@ -1,7 +1,6 @@
 import Header from '@/components/Header';
 import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
-import {signOut, useSession} from 'next-auth/react';
-import {destroyCookie} from 'nookies';
+import {useSession} from 'next-auth/react';
 import {ReactElement, useEffect} from 'react';
 import {toast} from 'react-toastify';
 
@@ -17,16 +16,7 @@ const Home = () => {
     }
   }, []);
 
-  //Put log out function here for example
-  const logoutFunction = async () => {
-    destroyCookie(null, 'rememberMe');
-    await signOut();
-  };
-  return (
-    <>
-      <div onClick={logoutFunction}>Log out</div>
-    </>
-  );
+  return <></>;
 };
 
 Home.getLayout = function getLayout(page: ReactElement) {
