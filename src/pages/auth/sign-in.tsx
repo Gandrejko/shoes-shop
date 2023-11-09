@@ -1,11 +1,19 @@
 import {SubmitHandler, useForm} from 'react-hook-form';
-import {SignInResponse, signIn, useSession} from 'next-auth/react';
-import {Box, Checkbox, FormControlLabel, Typography, Button} from '@mui/material';
+import {SignInResponse, signIn} from 'next-auth/react';
+import {
+  Box,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
 import Link from 'next/link';
 import {Input} from '@/components/Inputs/Input';
 import Image from 'next/image';
 import {useRouter} from 'next/router';
 import {toast} from 'react-toastify';
+import theme from '@/styles/theme/commonTheme';
 
 interface SignInType {
   email: string;
@@ -22,22 +30,21 @@ export default function SignIn() {
     defaultValues: {email: '', password: '', rememberMe: false},
   });
   const router = useRouter();
-  const {data: session} = useSession();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const onSubmit: SubmitHandler<SignInType> = async data => {
-    signIn('credentials', {
+    const response: SignInResponse | undefined = await signIn('credentials', {
       identifier: data.email,
       password: data.password,
       rememberMe: data.rememberMe,
       redirect: false,
-    }).then((value: SignInResponse | undefined) => {
-      if (value?.ok) {
-        toast.success(`Hello, ${session?.user.username}!`);
-        router.push('/');
-      } else {
-        toast.error('Wrong credentials!');
-      }
     });
+    if (response?.ok) {
+      localStorage.setItem('signInJustNow', JSON.stringify(true));
+      router.push('/');
+    } else {
+      toast.error('Wrong credentials!');
+    }
   };
 
   return (
@@ -107,7 +114,9 @@ export default function SignIn() {
             </Link>
           </Box>
 
-          <Button type="submit">Sign in</Button>
+          <Button type="submit" variant="contained">
+            Sign in
+          </Button>
         </Box>
         <Box
           sx={{display: 'flex', justifyContent: 'center', marginTop: '24px'}}

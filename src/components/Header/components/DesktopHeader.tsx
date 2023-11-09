@@ -18,22 +18,60 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-const DesktopHeader = ({userLoggedIn}: HeaderProps) => {
+const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
   return (
-    <Toolbar sx={styles.desktopWrapper}>
-      <Stack direction="row" alignItems="center" spacing={4}>
-        <Image src="/icons/logo.svg" alt="logo" width={40} height={30} />
-        <Typography variant="body1">Products</Typography>
-      </Stack>
-      {userLoggedIn ? (
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          spacing={4}
-        >
-          <SearchInput />
-          <Stack direction="row" spacing={0.5}>
+    <>
+      <Toolbar sx={styles.desktopWrapper}>
+        <Stack direction="row" alignItems="center" spacing={4}>
+          <Image src="/icons/logo.svg" alt="logo" width={40} height={30} />
+          <Typography variant="body1">Products</Typography>
+        </Stack>
+        {userLoggedIn ? (
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            spacing={4}
+          >
+            <SearchInput
+              name="not-used-1"
+              register={false}
+              validationSchema={false}
+              onClick={handleModalOpen}
+            />
+            <Stack direction="row" spacing={0.5}>
+              <IconButton onClick={() => {}}>
+                <Image
+                  src="/icons/cart.svg"
+                  alt="cart"
+                  width={24}
+                  height={24}
+                />
+              </IconButton>
+              <IconButton onClick={() => {}}>
+                <Image
+                  src="icons/avatar.svg"
+                  alt="avatar"
+                  width={24}
+                  height={24}
+                />
+              </IconButton>
+            </Stack>
+          </Stack>
+        ) : (
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            spacing={4}
+          >
+            <Button sx={{width: '145px', height: '48px'}}>Sign In</Button>
+            <SearchInput
+              name="not-used-2"
+              register={false}
+              validationSchema={false}
+              onClick={handleModalOpen}
+            />
             <IconButton onClick={() => {}}>
               <Image src="/icons/cart.svg" alt="cart" width={24} height={24} />
             </IconButton>
@@ -46,24 +84,9 @@ const DesktopHeader = ({userLoggedIn}: HeaderProps) => {
               />
             </IconButton>
           </Stack>
-        </Stack>
-      ) : (
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          spacing={4}
-        >
-          <Button sx={{width: '145px', height: '48px'}} variant="contained">
-            Sign In
-          </Button>
-          <SearchInput />
-          <IconButton onClick={() => {}}>
-            <Image src="/icons/cart.svg" alt="cart" width={24} height={24} />
-          </IconButton>
-        </Stack>
-      )}
-    </Toolbar>
+        )}
+      </Toolbar>
+    </>
   );
 };
 
