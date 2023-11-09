@@ -12,7 +12,8 @@ import ImagesContainer from './components/ImagesContainer';
 import theme from '@/styles/theme/commonTheme';
 import {Box, SxProps, Typography} from '@mui/material';
 import React, {useEffect} from 'react';
-import {useForm} from 'react-hook-form';
+import {FieldErrors, useForm} from 'react-hook-form';
+import {toast} from 'react-toastify';
 
 const styles: Record<string, SxProps> = {
   mainContainer: {
@@ -88,25 +89,27 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
 
   const handleOnSubmit = () => {
     const values = getValues();
-    const obj: any = {};
-    for (const key in values) {
-      const value = (values as any)[key];
-      if (Boolean(value)) {
-        obj[key] = value;
-      }
-    }
-    const data = {
-      ...obj,
-      sizes: values.sizes.map(({id}) => id),
-      images: values.images.map(({id}) => id),
-      teamName: 'team-3',
-    };
-    console.log(data);
-    // onSubmit(data);
+    const data = Object.keys(values).reduce(
+      (acc, key) => {
+        const value = (values as any)[key];
+        if (Boolean(value)) {
+          (acc as any)[key] = value;
+        }
+        return acc;
+      },
+      {
+        teamName: 'team-3',
+      },
+    );
+    onSubmit(data);
   };
 
-  const onError = (errors: any) => {
-    console.log(errors);
+  const onError = (errors: FieldErrors<ProductData>) => {
+    Object.entries(errors).forEach(([key, value]) => {
+      if (value && value.message) {
+        toast.error(value.message);
+      }
+    });
   };
 
   return (

@@ -96,6 +96,10 @@ const FormContainer = ({formProps}: FormContainerProps) => {
         register={formProps.register}
         validationSchema={{
           required: 'Price is required',
+          min: {
+            value: 1,
+            message: 'Price must be greater than 0',
+          },
           onChange: e =>
             formProps.setValue(
               'price',

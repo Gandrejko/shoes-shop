@@ -10,7 +10,7 @@ import {Control, Controller, UseFormReturn} from 'react-hook-form';
 import ProductSizeItem from './ProductSizeItem';
 
 const styles: Record<string, SxProps> = {
-  box: {width: '500px'},
+  box: {width: '100%'},
   header: {
     fontSize: 20,
     color: 'grey.A700',

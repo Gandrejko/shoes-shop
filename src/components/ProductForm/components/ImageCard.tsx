@@ -8,7 +8,6 @@ const styles: Record<string, SxProps> = {
     borderRadius: 0,
     boxShadow: 'none',
     width: 1,
-    minWidth: 200,
   },
   imageContainer: {
     aspectRatio: 320 / 380,

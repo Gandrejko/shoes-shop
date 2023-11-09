@@ -11,6 +11,7 @@ const AddProduct = () => {
   const router = useRouter();
   const session = useSession();
   const token = session.data?.user.accessToken;
+  console.log(token);
   const {mutate} = useMutation({
     mutationFn: (data: any) => {
       return axios.post(
