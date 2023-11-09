@@ -5,28 +5,23 @@ import {
 } from '@tanstack/react-query';
 import axios from '@/services/axios';
 
-type Props = {
-  endpoint: string;
-  params?: any; // TODO: add type for query
-};
-
 /**
  * @description usePost is a custom hook that wraps around react-query's useMutation hook. It is used to make a **POST** request to the backend.
  * @param endpoint - the endpoint to make the request to
- * @param params - the query params to be sent with the request
  * @param options - the options to be passed to the useMutation hook
+ * @param params - the query params to be sent with the request
  */
-function usePost<Req = any, Res = any>({
-  endpoint,
-  params = '*',
-  ...options
-}: Props & UseMutationOptions<Res, Error, Req>) {
+function usePost<Req = any, Res = any>(
+  endpoint: string,
+  options: UseMutationOptions<Res, Error, Req> | null = null,
+  params: any = null,
+) {
   const queryClient = useQueryClient();
   const key = endpoint.split('/')[1];
 
   return useMutation<Res, Error, Req>({
     ...options,
-    mutationFn: async (newData: Req) => {
+    mutationFn: async newData => {
       const res = await axios.postForm<Res>(
         endpoint,
         {data: JSON.stringify(newData)},
@@ -35,8 +30,8 @@ function usePost<Req = any, Res = any>({
       return res.data;
     },
     onSuccess: (...props) => {
-      options.onSuccess && options.onSuccess(...props);
       queryClient.invalidateQueries({queryKey: [key]});
+      options?.onSuccess && options.onSuccess(...props);
     },
   });
 }

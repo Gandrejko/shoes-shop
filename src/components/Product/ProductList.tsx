@@ -15,14 +15,10 @@ const styles: Record<string, SxProps> = {
 
 const ProductList = () => {
   const {data: products, isLoading} = useGet<
-    any,
     ResponseData<Data<ProductAttributes>[]>
-  >({
-    endpoint: '/products',
-    params: {
-      populate: 'images,gender',
-      'filters[teamName]': 'team-3',
-    },
+  >('/products', null, {
+    populate: 'images,gender',
+    'filters[teamName]': 'team-3',
   });
 
   if (isLoading) return <div>Loading...</div>;
