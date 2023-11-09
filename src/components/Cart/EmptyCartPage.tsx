@@ -1,6 +1,11 @@
 import React from 'react';
+<<<<<<< HEAD
 import {Box, Typography, Button} from '@mui/material';
 import {CustomButton} from '@/components/Button/Button';
+=======
+import {Box, Typography} from '@mui/material';
+import {Button} from '@/components/Button/Button';
+>>>>>>> main
 import Image from 'next/image';
 
 const EmptyCartPage = () => {
@@ -38,9 +43,9 @@ const EmptyCartPage = () => {
         Post can contain video, images and text.
       </Typography>
 
-      <CustomButton isTransparent={false} width="10%" height="40px">
+      <Button isTransparent={false} width="10%" height="40px">
         Add product
-      </CustomButton>
+      </Button>
     </Box>
   );
 };

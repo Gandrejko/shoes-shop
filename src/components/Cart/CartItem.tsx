@@ -1,4 +1,5 @@
-import {Box, Typography, Button} from '@mui/material';
+import {Box, Typography} from '@mui/material';
+import {Button} from '@/components/Button/Button';
 import Image from 'next/image';
 
 type Product = {
