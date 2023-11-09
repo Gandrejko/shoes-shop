@@ -46,7 +46,6 @@ type ProductCardProps = {
 
 const ProductCard = ({product}: ProductCardProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  console.log(product);
   return (
     <Card sx={styles.card}>
       <Box sx={styles.imageContainer}>

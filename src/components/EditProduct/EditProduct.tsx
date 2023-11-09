@@ -3,7 +3,7 @@ import theme from '@/styles/theme/commonTheme';
 import {Modal} from '@mui/material';
 import {Box, SxProps} from '@mui/material';
 import {useMutation, useQuery} from '@tanstack/react-query';
-import axios from 'axios';
+import axios, {Axios, AxiosError} from 'axios';
 import {useSession} from 'next-auth/react';
 import {useRouter} from 'next/router';
 import React, {useEffect} from 'react';
@@ -48,7 +48,12 @@ const EditProduct = ({productId}: EditProductProps) => {
 
   const {data, error} = useQuery({
     queryKey: ['product', productId],
-    queryFn: () => axios.get(`${process.env.API_URL}/products/${productId}`),
+    queryFn: () =>
+      axios.get(`${process.env.API_URL}/products/${productId}`, {
+        params: {
+          populate: '*',
+        },
+      }),
   });
 
   useEffect(() => {
@@ -70,6 +75,14 @@ const EditProduct = ({productId}: EditProductProps) => {
         },
       );
     },
+    onError: (error: AxiosError) => {
+      console.log(error);
+      toast.error(error.message);
+    },
+    onSuccess: () => {
+      toast.success('Product updated successfully');
+      router.push('/my-products');
+    },
   });
 
   return (
@@ -79,7 +92,10 @@ const EditProduct = ({productId}: EditProductProps) => {
       onClose={() => router.push('/my-products')}
     >
       <Box sx={styles.modalContent}>
-        <ProductForm onSubmit={mutate} product={data} />
+        <ProductForm
+          onSubmit={mutate}
+          product={data?.data.data.attributes || []}
+        />
       </Box>
     </Modal>
   );

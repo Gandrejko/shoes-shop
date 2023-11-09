@@ -2,7 +2,6 @@ import theme from '@/styles/theme/commonTheme';
 import {
   BrandsResponse,
   ColorsResponse,
-  Data,
   GendersResponse,
   SizesResponse,
 } from '@/types';
@@ -67,19 +66,19 @@ type CategoryInfo = {
 };
 
 export const FilterSidebar = () => {
-  const {data: genders} = useQuery<AxiosResponse<GendersResponse>>({
+  const {data: genders} = useQuery<GendersResponse>({
     queryKey: ['genders'],
     queryFn: () => axios.get(`${process.env.API_URL}/genders`),
   });
-  const {data: colors} = useQuery<AxiosResponse<ColorsResponse>>({
+  const {data: colors} = useQuery<ColorsResponse>({
     queryKey: ['colors'],
     queryFn: () => axios.get(`${process.env.API_URL}/colors`),
   });
-  const {data: brands} = useQuery<AxiosResponse<BrandsResponse>>({
+  const {data: brands} = useQuery<BrandsResponse>({
     queryKey: ['brands'],
     queryFn: () => axios.get(`${process.env.API_URL}/brands`),
   });
-  const {data: sizes} = useQuery<AxiosResponse<SizesResponse>>({
+  const {data: sizes} = useQuery<SizesResponse>({
     queryKey: ['sizes'],
     queryFn: () => axios.get(`${process.env.API_URL}/sizes`),
   });

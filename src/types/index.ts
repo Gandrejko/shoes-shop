@@ -1,3 +1,6 @@
+import {Data} from '@/types/entities';
+import {AxiosResponse} from 'axios';
+
 export type RequestData<T> = {
   data: T;
 };
@@ -18,18 +21,34 @@ type Pagination = {
   total: number;
 };
 
-export type GendersResponse = ResponseData<{
-  name: string;
-}>;
+export type GendersResponse = AxiosResponse<
+  ResponseData<
+    Data<{
+      name: string;
+    }>[]
+  >
+>;
 
-export type BrandsResponse = ResponseData<{
-  name: string;
-}>;
+export type BrandsResponse = AxiosResponse<
+  ResponseData<
+    Data<{
+      name: string;
+    }>[]
+  >
+>;
 
-export type ColorsResponse = ResponseData<{
-  name: string;
-}>;
+export type ColorsResponse = AxiosResponse<
+  ResponseData<
+    Data<{
+      name: string;
+    }>[]
+  >
+>;
 
-export type SizesResponse = ResponseData<{
-  value: number;
-}>;
+export type SizesResponse = AxiosResponse<
+  ResponseData<
+    Data<{
+      value: number;
+    }>[]
+  >
+>;

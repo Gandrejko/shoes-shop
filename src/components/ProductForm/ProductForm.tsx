@@ -5,13 +5,14 @@ import {
   GendersResponse,
   SizesResponse,
 } from '@/types';
+import {ProductAttributes} from '@/types/attributes';
 import {useQuery} from '@tanstack/react-query';
 import axios, {AxiosResponse} from 'axios';
 import FormContainer from './components/FormContainer';
 import ImagesContainer from './components/ImagesContainer';
 import theme from '@/styles/theme/commonTheme';
 import {Box, SxProps, Typography} from '@mui/material';
-import React, {useEffect} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {FieldErrors, useForm} from 'react-hook-form';
 import {toast} from 'react-toastify';
 
@@ -70,22 +71,37 @@ export type ProductData = {
 
 type ProductFormProps = {
   onSubmit: (data: any) => void;
-  product?: any;
+  product?: ProductAttributes;
 };
 
+const createDefaultProduct = (product?: ProductAttributes) => ({
+  name: product?.name || '',
+  price: product?.price || 0,
+  gender: product?.gender?.data?.id,
+  brand: product?.gender?.data?.id,
+  description: product?.description || '',
+  sizes:
+    product?.sizes?.data?.map(({id, attributes}) => ({
+      id,
+      value: attributes.value,
+    })) || [],
+  images:
+    product?.images?.data?.map(({id, attributes}) => ({
+      id,
+      url: attributes.url,
+    })) || [],
+});
+
 const ProductForm = ({onSubmit, product}: ProductFormProps) => {
-  const {register, handleSubmit, control, getValues, setValue} =
+  console.log('product', product);
+  const {register, reset, handleSubmit, control, getValues, setValue} =
     useForm<ProductData>({
-      defaultValues: {
-        name: '',
-        price: 0,
-        gender: undefined,
-        brand: undefined,
-        description: '',
-        sizes: [],
-        images: [],
-      },
+      defaultValues: useMemo(() => createDefaultProduct(product), [product]),
     });
+
+  useEffect(() => {
+    reset(createDefaultProduct(product));
+  }, [product]);
 
   const handleOnSubmit = () => {
     const values = getValues();
