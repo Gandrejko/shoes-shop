@@ -43,7 +43,7 @@ type DeleteModalProps = {
 const DeleteModal = ({isModalOpen, handleModalClose}: DeleteModalProps) => {
   return (
     <Dialog open={isModalOpen} PaperProps={{sx: styles.modalPaper}}>
-      <DialogTitle component="h1" variant="h1">
+      <DialogTitle variant="h1">
         Are you sure to delete selected item?
       </DialogTitle>
       <IconButton
