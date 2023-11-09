@@ -44,8 +44,8 @@ const styles = {
 };
 
 type SearchInputProps = InputBaseProps & {
-  register: UseFormRegister<any> | (() => void);
-  validationSchema: RegisterOptions<any>;
+  register: UseFormRegister<any> | false;
+  validationSchema: RegisterOptions<any> | false;
   name: string;
   giantMode?: boolean;
   errorMessage?: string;
@@ -62,7 +62,9 @@ export const SearchInput = ({
   const id = useId();
 
   const registerProps =
-    register && name ? register(name, validationSchema) : {};
+    register && name
+      ? register(name, validationSchema ? validationSchema : {})
+      : {};
   return (
     <Box sx={giantMode ? styles.searchHuge : styles.search}>
       <Image width={20} height={20} src="icons/search.svg" alt="search" />
