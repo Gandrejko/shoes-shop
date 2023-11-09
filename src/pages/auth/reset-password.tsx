@@ -1,37 +1,42 @@
-import {Input} from '@/components/Inputs/Input';
-import {Box, Typography, Button, useMediaQuery} from '@mui/material';
-import Link from 'next/link';
+import {useRouter, useSearchParams} from 'next/navigation';
 import {SubmitHandler, useForm} from 'react-hook-form';
+import {Box, Typography, useMediaQuery} from '@mui/material';
+import Link from 'next/link';
+import {Button} from '@/components/Button/Button';
+import {Input} from '@/components/Inputs/Input';
 import Image from 'next/image';
-import {useMutation} from '@tanstack/react-query';
 import axios from 'axios';
-import {useRouter} from 'next/router';
+import {useMutation} from '@tanstack/react-query';
 import {toast} from 'react-toastify';
-import {styles} from '@/styles/authPagesStyles';
 import logoIcon from '../../../public/icons/logo.svg';
 import theme from '@/styles/theme/commonTheme';
+import {styles} from '@/styles/authPagesStyles';
 
-type SignUpType = {
-  email: string;
-  username: string;
+type ResetPasswordType = {
   password: string;
   confirmPassword: string;
+  code: string;
 };
 
-export default function SignUp() {
-  const {mutateAsync} = useMutation({
-    mutationFn: (userData: Partial<SignUpType>) =>
+export default function ResetPassword() {
+  const router = useRouter();
+  const {mutate, isSuccess} = useMutation({
+    mutationKey: ['reset-password'],
+    mutationFn: (userData: ResetPasswordType) =>
       axios.post(
-        'https://shoes-shop-strapi.herokuapp.com/api/auth/local/register',
-        userData,
+        'https://shoes-shop-strapi.herokuapp.com/api/auth/reset-password',
+        {
+          password: userData.password,
+          passwordConfirmation: userData.confirmPassword,
+          code: userData.code,
+        },
       ),
-    onSuccess: () => {
-      toast.success('You are successfully sign up!');
-      toast.info('The last step is to confirm your email');
+    onSuccess: value => {
+      toast.success('Password was changed!');
       router.push('/auth/sign-in');
     },
     onError: e => {
-      toast.error('Account with such login or email already exist');
+      toast.error('Something went wrong, try again later');
     },
   });
   const {
@@ -39,13 +44,16 @@ export default function SignUp() {
     handleSubmit,
     watch,
     formState: {errors},
-  } = useForm<SignUpType>();
-  const router = useRouter();
+  } = useForm<Omit<ResetPasswordType, 'code'>>();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const onSubmit: SubmitHandler<SignUpType> = async data => {
-    const {confirmPassword, ...restData} = data;
-    mutateAsync(restData);
+  const searchParams = useSearchParams();
+  const code = searchParams.get('code') || '';
+
+  const onSubmit: SubmitHandler<
+    Omit<ResetPasswordType, 'code'>
+  > = async data => {
+    mutate({...data, code});
   };
 
   return (
@@ -58,10 +66,10 @@ export default function SignUp() {
       <Box sx={styles.container}>
         <Box sx={styles.wrapper}>
           <Typography variant="h1" sx={styles.title}>
-            Create an account
+            Reset password
           </Typography>
           <Typography variant="body1" sx={styles.titleText}>
-            Create an account to get an easy access to your dream shopping
+            Please create new password here
           </Typography>
           <Box
             component="form"
@@ -69,30 +77,6 @@ export default function SignUp() {
             sx={styles.formContainer}
           >
             <Box sx={styles.form}>
-              <Input
-                labelText="Name"
-                register={register}
-                name="username"
-                validationSchema={{
-                  required: 'This field is required',
-                }}
-                required
-                errorMessage={errors.username?.message}
-              />
-              <Input
-                labelText="Email"
-                register={register}
-                name="email"
-                validationSchema={{
-                  required: true,
-                  pattern: {
-                    value: /\S+@\S+\.\S+/,
-                    message: 'Entered value does not match email format',
-                  },
-                }}
-                required
-                errorMessage={errors.email?.message}
-              />
               <Input
                 labelText="Password"
                 register={register}
@@ -126,21 +110,18 @@ export default function SignUp() {
               />
             </Box>
 
-            <Button type="submit" variant="contained">
-              Sign up
-            </Button>
+            <Button type="submit">Reset password</Button>
           </Box>
           <Box sx={styles.linksContainer}>
-            <Typography variant="body1">Already have an account?</Typography>
             <Link href={'/auth/sign-in'} style={styles.link}>
-              <Typography>Log in</Typography>
+              <Typography>Back to log in</Typography>
             </Link>
           </Box>
         </Box>
         {!isMobile && (
           <Box sx={styles.imageWrapper}>
             <Image
-              src="/images/signUpBanner.png"
+              src="/images/resetForgotBanner.png"
               alt="picture of our brand"
               fill={true}
             />
