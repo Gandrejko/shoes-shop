@@ -1,6 +1,13 @@
-import { IconButton, Stack, SxProps, Toolbar, Typography, Button } from '@mui/material';
-import { SearchInput } from '@/components/Inputs/SearchInput';
-import { HeaderProps } from '@/components/Header';
+import {
+  IconButton,
+  Stack,
+  SxProps,
+  Toolbar,
+  Typography,
+  Button,
+} from '@mui/material';
+import {SearchInput} from '@/components/Inputs/SearchInput';
+import {HeaderProps} from '@/components/Header';
 import Image from 'next/image';
 
 const styles: Record<string, SxProps> = {
@@ -11,7 +18,7 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-const DesktopHeader = ({ userLoggedIn }: HeaderProps) => {
+const DesktopHeader = ({userLoggedIn}: HeaderProps) => {
   return (
     <Toolbar sx={styles.desktopWrapper}>
       <Stack direction="row" alignItems="center" spacing={4}>
@@ -25,12 +32,12 @@ const DesktopHeader = ({ userLoggedIn }: HeaderProps) => {
           justifyContent="space-between"
           spacing={4}
         >
-          <SearchInput register={() => { }} validationSchema="" />
+          <SearchInput />
           <Stack direction="row" spacing={0.5}>
-            <IconButton onClick={() => { }}>
+            <IconButton onClick={() => {}}>
               <Image src="/icons/cart.svg" alt="cart" width={24} height={24} />
             </IconButton>
-            <IconButton onClick={() => { }}>
+            <IconButton onClick={() => {}}>
               <Image
                 src="icons/avatar.svg"
                 alt="avatar"
@@ -47,17 +54,17 @@ const DesktopHeader = ({ userLoggedIn }: HeaderProps) => {
           justifyContent="space-between"
           spacing={4}
         >
-          <Button sx={{ width: '145px', height: '48px' }} variant='contained'>
+          <Button sx={{width: '145px', height: '48px'}} variant="contained">
             Sign In
           </Button>
-          <SearchInput register={() => { }} validationSchema="" />
-          <IconButton onClick={() => { }}>
+          <SearchInput />
+          <IconButton onClick={() => {}}>
             <Image src="/icons/cart.svg" alt="cart" width={24} height={24} />
           </IconButton>
         </Stack>
       )}
     </Toolbar>
-  )
+  );
 };
 
 export default DesktopHeader;
