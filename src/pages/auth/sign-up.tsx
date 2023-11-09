@@ -3,7 +3,7 @@ import {Box, Typography, Button} from '@mui/material';
 import Link from 'next/link';
 import {SubmitHandler, useForm} from 'react-hook-form';
 import Image from 'next/image';
-import {useMutation} from 'react-query';
+import {useMutation} from '@tanstack/react-query';
 import axios from 'axios';
 import {useRouter} from 'next/router';
 import {toast} from 'react-toastify';
