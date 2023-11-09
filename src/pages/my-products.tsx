@@ -9,13 +9,13 @@ import {
   Stack,
   SxProps,
   Typography,
+  Button
 } from '@mui/material';
 
 import products from '@/temp/data';
 import {NextPageWithLayout} from '@/pages/_app';
 import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
 import ProductList from '@/components/Product/ProductList';
-import {Button} from '@/components/Button/Button';
 
 const styles: Record<string, SxProps> = {
   container: {

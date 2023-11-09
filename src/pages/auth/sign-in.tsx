@@ -1,8 +1,7 @@
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {SignInResponse, signIn, useSession} from 'next-auth/react';
-import {Box, Checkbox, FormControlLabel, Typography} from '@mui/material';
+import {Box, Checkbox, FormControlLabel, Typography, Button} from '@mui/material';
 import Link from 'next/link';
-import {Button} from '@/components/Button/Button';
 import {Input} from '@/components/Inputs/Input';
 import Image from 'next/image';
 import {useRouter} from 'next/router';
