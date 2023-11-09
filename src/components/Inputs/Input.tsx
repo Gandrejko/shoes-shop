@@ -40,7 +40,7 @@ export const Input = ({
   const id = useId();
   return (
     <Box>
-      <InputLabel sx={styles.label} htmlFor={id}>
+      <InputLabel htmlFor={id}>
         {labelText}
         {validationSchema.required && (
           <Typography component="span" sx={styles.requiredMark}>
