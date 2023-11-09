@@ -53,10 +53,14 @@ const ImageSlider = () => {
             }}
             onClick={() => setCurrentImage(index)}
             onMouseEnter={e => {
-              e.target.style.filter = 'grayscale(100%)';
+              if (e.target instanceof HTMLElement) {
+                e.target.style.filter = 'grayscale(100%)';
+              }
             }}
             onMouseLeave={e => {
-              e.target.style.filter = 'none';
+              if (e.target instanceof HTMLElement) {
+                e.target.style.filter = 'grayscale(100%)';
+              }
             }}
           />
         ))}

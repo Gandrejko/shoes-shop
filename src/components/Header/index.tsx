@@ -1,11 +1,11 @@
-import {AppBar, Box, Divider, SxProps, useTheme} from '@mui/material';
+import {AppBar, Divider, SxProps, useTheme} from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import MobileHeader from '@/components/Header/components/MobileHeader';
 import DesktopHeader from '@/components/Header/components/DesktopHeader';
 
 const styles: Record<string, SxProps> = {
   appBar: {
-    position: 'static',
+    position: 'sticky',
     color: '#000000',
     backgroundColor: '#FFFFFF',
     border: 'none',
