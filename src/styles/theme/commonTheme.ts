@@ -92,6 +92,7 @@ let theme = createTheme({
           textTransform: 'none',
         },
         contained: ({theme}) => ({
+          borderRadius: theme.spacing(),
           color: theme.palette.common.white,
         }),
         outlined: ({theme}) => ({
@@ -113,6 +114,35 @@ let theme = createTheme({
           borderWidth: 1,
           borderRadius: 2,
           borderColor: theme.palette.grey.A700,
+        }),
+      },
+    },
+    MuiDialogTitle: {
+      styleOverrides: {
+        root: {
+          padding: 0,
+        },
+      },
+    },
+    MuiDialogContent: {
+      styleOverrides: {
+        root: ({theme}) => ({
+          padding: 0,
+          color: theme.palette.text.secondary,
+        }),
+      },
+    },
+    MuiDialogActions: {
+      styleOverrides: {
+        root: ({theme}) => ({
+          padding: 0,
+          justifyContent: 'space-between',
+          [theme.breakpoints.down('md')]: {
+            gap: theme.spacing(2),
+          },
+          [theme.breakpoints.up('md')]: {
+            gap: theme.spacing(4),
+          },
         }),
       },
     },
