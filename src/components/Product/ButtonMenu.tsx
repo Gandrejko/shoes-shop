@@ -6,6 +6,7 @@ import {
   SxProps,
   Typography,
 } from '@mui/material';
+import {useRouter} from 'next/router';
 
 const styles: Record<string, SxProps> = {
   menuList: {
@@ -17,14 +18,25 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-const ButtonMenu = (props: MenuProps) => {
+type ButtonMenuProps = MenuProps & {
+  productid: number;
+};
+
+const ButtonMenu = (props: ButtonMenuProps) => {
+  const router = useRouter();
   return (
     <Menu {...props}>
       <MenuList sx={styles.menuList}>
         <MenuItem sx={styles.menuItem} divider>
           <Typography fontWeight={300}>View</Typography>
         </MenuItem>
-        <MenuItem sx={styles.menuItem} divider>
+        <MenuItem
+          onClick={() =>
+            router.push(`/my-products/?productId=${props.productid}`)
+          }
+          sx={styles.menuItem}
+          divider
+        >
           <Typography fontWeight={300}>Edit</Typography>
         </MenuItem>
         <MenuItem sx={styles.menuItem}>

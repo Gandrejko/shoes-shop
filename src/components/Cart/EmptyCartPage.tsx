@@ -27,7 +27,7 @@ const EmptyCartPage = () => {
         component="p"
         sx={{fontWeight: 700, fontSize: 20, marginBottom: 2}}
       >
-        You don't have any products yet.
+        You don`&apos;t have any products yet.
       </Typography>
       <Typography
         component="p"
@@ -36,7 +36,7 @@ const EmptyCartPage = () => {
         Post can contain video, images and text.
       </Typography>
 
-      <Button variant='contained' sx={{width:'10%', height:'10%'}} >
+      <Button variant="contained" sx={{width: '10%', height: '10%'}}>
         Add product
       </Button>
     </Box>

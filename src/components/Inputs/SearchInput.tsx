@@ -2,7 +2,7 @@ import {Box, InputBase} from '@mui/material';
 import {InputBaseProps} from '@mui/material/InputBase/InputBase';
 import Image from 'next/image';
 import {useId} from 'react';
-import {UseFormRegister} from 'react-hook-form';
+import {RegisterOptions, UseFormRegister} from 'react-hook-form';
 
 const styles = {
   search: {
@@ -25,9 +25,9 @@ const styles = {
 };
 
 type SearchInputProps = InputBaseProps & {
-  register: UseFormRegister<any>;
-  validationSchema: any;
-  name: string;
+  register?: UseFormRegister<any>;
+  validationSchema?: RegisterOptions<any>;
+  name?: string;
 };
 
 export const SearchInput = ({
@@ -37,6 +37,8 @@ export const SearchInput = ({
   ...props
 }: SearchInputProps) => {
   const id = useId();
+  const registerProps =
+    register && name ? register(name, validationSchema) : {};
   return (
     <Box sx={styles.search}>
       <Image width={20} height={20} src="icons/search.svg" alt="search" />
@@ -45,7 +47,7 @@ export const SearchInput = ({
         id={id}
         sx={styles.input}
         {...props}
-        {...register(name, validationSchema)}
+        {...registerProps}
       />
     </Box>
   );
