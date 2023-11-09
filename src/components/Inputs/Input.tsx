@@ -1,3 +1,4 @@
+import theme from '@/styles/theme/commonTheme';
 import {Box, InputBase, InputLabel, Typography} from '@mui/material';
 import {InputBaseProps} from '@mui/material/InputBase/InputBase';
 import {useId} from 'react';
