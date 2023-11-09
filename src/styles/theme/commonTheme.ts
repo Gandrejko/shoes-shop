@@ -117,7 +117,6 @@ let theme = createTheme({
         }),
       },
     },
-
     MuiDialogTitle: {
       styleOverrides: {
         root: {
@@ -125,7 +124,6 @@ let theme = createTheme({
         },
       },
     },
-
     MuiDialogContent: {
       styleOverrides: {
         root: ({theme}) => ({
@@ -134,7 +132,6 @@ let theme = createTheme({
         }),
       },
     },
-
     MuiDialogActions: {
       styleOverrides: {
         root: ({theme}) => ({
@@ -147,14 +144,6 @@ let theme = createTheme({
             gap: theme.spacing(4),
           },
         }),
-      },
-    },
-
-    MuiBackdrop: {
-      styleOverrides: {
-        root: {
-          backgroundColor: 'rgba(0, 0, 0, 0.0)',
-        },
       },
     },
   },
