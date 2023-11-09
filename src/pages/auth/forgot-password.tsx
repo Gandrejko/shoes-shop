@@ -10,71 +10,10 @@ import {useRouter} from 'next/router';
 import {toast} from 'react-toastify';
 import logoIcon from '../../../public/icons/logo.svg';
 import theme from '@/styles/theme/commonTheme';
-import {styles} from './styles';
+import {styles} from '@/styles/authPagesStyles';
 
 type ForgotPasswordType = {
   email: string;
-};
-
-const st1yles = {
-  tab: {
-    position: 'relative',
-  },
-  header: {
-    position: 'absolute',
-    width: '100%',
-    maxWidth: '1920px',
-    top: '50px',
-    left: '50%',
-    transform: 'translate(-50%, 0)',
-  },
-  headerImage: {
-    marginLeft: '40px',
-  },
-  container: {
-    display: 'flex',
-    margin: '0 auto',
-    width: '100%',
-    maxWidth: '1920px',
-  },
-  wrapper: {
-    flex: '1',
-    margin: '288px 305px 0 196px',
-    width: '50%',
-    maxWidth: '459px',
-  },
-  title: {
-    marginBottom: '16px',
-  },
-  titleText: {
-    marginBottom: '48px',
-  },
-  formContainer: {
-    flex: '1',
-    margin: '208px 286px 0 196px',
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  linksContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column',
-    gap: '15px',
-    marginTop: '16px',
-  },
-  link: {
-    color: '#FE645E',
-    fontWeight: '300',
-    textDecoration: 'none',
-  },
-  imageContainer: {
-    width: '50%',
-    height: '100vh',
-    position: 'relative',
-  },
 };
 
 export default function ForgotPassword() {

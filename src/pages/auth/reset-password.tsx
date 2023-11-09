@@ -1,6 +1,6 @@
 import {useRouter, useSearchParams} from 'next/navigation';
 import {SubmitHandler, useForm} from 'react-hook-form';
-import {Box, Theme, Typography, makeStyles, useMediaQuery} from '@mui/material';
+import {Box, Typography, useMediaQuery} from '@mui/material';
 import Link from 'next/link';
 import {Button} from '@/components/Button/Button';
 import {Input} from '@/components/Inputs/Input';
@@ -10,7 +10,7 @@ import {useMutation} from '@tanstack/react-query';
 import {toast} from 'react-toastify';
 import logoIcon from '../../../public/icons/logo.svg';
 import theme from '@/styles/theme/commonTheme';
-import {styles} from './styles';
+import {styles} from '@/styles/authPagesStyles';
 
 type ResetPasswordType = {
   password: string;

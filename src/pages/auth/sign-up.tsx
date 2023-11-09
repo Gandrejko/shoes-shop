@@ -1,5 +1,5 @@
 import {Input} from '@/components/Inputs/Input';
-import {Box, Typography, Button} from '@mui/material';
+import {Box, Typography, Button, useMediaQuery} from '@mui/material';
 import Link from 'next/link';
 import {SubmitHandler, useForm} from 'react-hook-form';
 import Image from 'next/image';
@@ -9,6 +9,7 @@ import {useRouter} from 'next/router';
 import {toast} from 'react-toastify';
 import {styles} from '@/styles/authPagesStyles';
 import logoIcon from '../../../public/icons/logo.svg';
+import theme from '@/styles/theme/commonTheme';
 
 type SignUpType = {
   email: string;
@@ -40,6 +41,7 @@ export default function SignUp() {
     formState: {errors},
   } = useForm<SignUpType>();
   const router = useRouter();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const onSubmit: SubmitHandler<SignUpType> = async data => {
     const {confirmPassword, ...restData} = data;
@@ -124,26 +126,26 @@ export default function SignUp() {
               />
             </Box>
 
-            <Button type="submit">Sign up</Button>
+            <Button type="submit" variant="contained">
+              Sign up
+            </Button>
           </Box>
-          <Box
-            sx={{display: 'flex', justifyContent: 'center', marginTop: '24px'}}
-          >
-            <Typography component="span">Already have an account?</Typography>
-            <Link href={'/auth/sign-in'}>
-              <Typography sx={{marginLeft: '5px', color: 'red'}}>
-                Log in
-              </Typography>
+          <Box sx={styles.linksContainer}>
+            <Typography variant="body1">Already have an account?</Typography>
+            <Link href={'/auth/sign-in'} style={styles.link}>
+              <Typography>Log in</Typography>
             </Link>
           </Box>
         </Box>
-        <Box sx={{width: '943px', height: '930px', position: 'relative'}}>
-          <Image
-            src="/images/signUpBanner.png"
-            alt="picture of our brand"
-            fill={true}
-          />
-        </Box>
+        {!isMobile && (
+          <Box sx={styles.imageWrapper}>
+            <Image
+              src="/images/signUpBanner.png"
+              alt="picture of our brand"
+              fill={true}
+            />
+          </Box>
+        )}
       </Box>
     </Box>
   );
