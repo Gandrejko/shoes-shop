@@ -1,5 +1,4 @@
-import {Box, Typography} from '@mui/material';
-import {Button} from '@/components/Button/Button';
+import {Box, Typography, Button} from '@mui/material';
 
 const SummarySection = ({products}: {products: any[]}) => {
   return (
@@ -104,7 +103,7 @@ const SummarySection = ({products}: {products: any[]}) => {
           0
         </Typography>
       </Box>
-      <Button variant='contained'>
+      <Button variant='contained' sx={{width:'100%', marginTop:'100px'}}>
         Checkout
       </Button>
     </Box>

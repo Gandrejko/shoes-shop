@@ -1,7 +1,6 @@
-import {IconButton, Stack, SxProps, Toolbar, Typography} from '@mui/material';
+import {IconButton, Stack, SxProps, Toolbar, Typography, Button} from '@mui/material';
 import {SearchInput} from '@/components/Inputs/SearchInput';
 import {HeaderProps} from '@/components/Header';
-import {Button} from '@/components/Button/Button'
 import Image from 'next/image';
 
 const styles: Record<string, SxProps> = {
@@ -48,7 +47,7 @@ const DesktopHeader = ({userLoggedIn}: HeaderProps) => {
             justifyContent="space-between"
             spacing={4}
           >
-            <Button width="145px" height="48px" isTransparent={true}>
+            <Button sx={{width:'145px', height:'48px'}} variant='contained'>
               Sign In
             </Button>
             <SearchInput register={() => {}} validationSchema=""/>
