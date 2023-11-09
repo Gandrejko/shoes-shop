@@ -14,14 +14,14 @@ export const images: string[] = [
 
 const styles: Record<string, SxProps> = {
   imageBox: {
-    position: 'relative'
+    position: 'relative',
   },
   buttonsBox: {
     position: 'absolute',
     bottom: '24px',
-    right: '38px'
-  }
-}
+    right: '38px',
+  },
+};
 
 const ImageSlider = () => {
   const [currentImage, setCurrentImage] = useState<number>(0);
@@ -53,10 +53,14 @@ const ImageSlider = () => {
             }}
             onClick={() => setCurrentImage(index)}
             onMouseEnter={e => {
-              e.target.style.filter = 'grayscale(100%)';
+              if (e.target instanceof HTMLElement) {
+                e.target.style.filter = 'grayscale(100%)';
+              }
             }}
             onMouseLeave={e => {
-              e.target.style.filter = 'none';
+              if (e.target instanceof HTMLElement) {
+                e.target.style.filter = 'grayscale(100%)';
+              }
             }}
           />
         ))}

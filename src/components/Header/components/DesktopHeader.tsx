@@ -71,6 +71,14 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
             <IconButton onClick={() => {}}>
               <Image src="/icons/cart.svg" alt="cart" width={24} height={24} />
             </IconButton>
+            <IconButton onClick={() => {}}>
+              <Image
+                src="icons/avatar.svg"
+                alt="avatar"
+                width={24}
+                height={24}
+              />
+            </IconButton>
           </Stack>
         )}
       </Toolbar>

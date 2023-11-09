@@ -5,10 +5,11 @@ import DesktopHeader from '@/components/Header/components/DesktopHeader';
 import {Modal} from '../Modal/Modal';
 import {useState} from 'react';
 import {useSession} from 'next-auth/react';
+import {useRouter} from 'next/router';
 
 const styles: Record<string, SxProps> = {
   appBar: {
-    position: 'static',
+    position: 'sticky',
     color: '#000000',
     backgroundColor: '#FFFFFF',
     border: 'none',
@@ -26,6 +27,7 @@ const Header = () => {
   const theme = useTheme();
   const isMobileMode = useMediaQuery(theme.breakpoints.down('md'));
   const {status} = useSession();
+  const router = useRouter();
 
   const handleModalClose = () => {
     setOpen(false);
@@ -37,7 +39,14 @@ const Header = () => {
 
   const handleSearchClick = (value: string) => {
     setOpen(false);
-    console.log(value);
+    const newQuery = {
+      ...router.query,
+      searchingString: value,
+    };
+    router.push({
+      pathname: router.pathname,
+      query: newQuery,
+    });
   };
 
   return (
