@@ -1,6 +1,5 @@
 import {Button} from '@/components/Button/Button';
 import usePost from '@/hooks/usePost';
-import usePut from '@/hooks/usePut';
 import {ResponseData} from '@/types';
 import {ProductAttributes} from '@/types/attributes';
 import {Data} from '@/types/entities';

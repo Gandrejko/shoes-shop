@@ -1,10 +1,9 @@
-import {CustomButton} from '@/components/Button/Button';
 import {Input} from '@/components/Inputs/Input';
-import {Box, Typography} from '@mui/material';
+import {Box, Typography, Button} from '@mui/material';
 import Link from 'next/link';
 import {SubmitHandler, useForm} from 'react-hook-form';
 import Image from 'next/image';
-import {useMutation} from 'react-query';
+import {useMutation} from '@tanstack/react-query';
 import axios from 'axios';
 import {useRouter} from 'next/router';
 import {toast} from 'react-toastify';
@@ -115,7 +114,7 @@ export default function SignUp() {
             style={{marginBottom: '104px'}}
           />
 
-          <CustomButton type="submit">Sign up</CustomButton>
+          <Button type="submit">Sign up</Button>
         </Box>
         <Box
           sx={{display: 'flex', justifyContent: 'center', marginTop: '24px'}}

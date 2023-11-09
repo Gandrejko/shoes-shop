@@ -7,7 +7,8 @@ const styles: Record<string, SxProps> = {
     display: 'flex',
   },
   sidebar: {
-    width: '320px',
+    width: 320,
+    flexShrink: 0,
     display: {md: 'block', xs: 'none'},
   },
   user: {
@@ -47,7 +48,7 @@ const styles: Record<string, SxProps> = {
 
 type SidebarLayoutProps = {
   children: ReactNode;
-  currentTab: 'products' | 'settings' | 'logout';
+  currentTab?: 'products' | 'settings' | 'logout';
 };
 
 export const SidebarLayout = ({children, currentTab}: SidebarLayoutProps) => {

@@ -116,6 +116,45 @@ let theme = createTheme({
         }),
       },
     },
+    MuiDialogTitle: {
+      styleOverrides: {
+        root: {
+          padding: 0,
+        },
+      },
+    },
+    MuiDialogContent: {
+      styleOverrides: {
+        root: ({theme}) => ({
+          padding: 0,
+          color: theme.palette.text.secondary,
+        }),
+      },
+    },
+    MuiDialogActions: {
+      styleOverrides: {
+        root: ({theme}) => ({
+          padding: 0,
+          justifyContent: 'space-between',
+          [theme.breakpoints.down('md')]: {
+            gap: theme.spacing(2),
+          },
+          [theme.breakpoints.up('md')]: {
+            gap: theme.spacing(4),
+          },
+        }),
+      },
+    },
+    MuiSelect: {
+      styleOverrides: {
+        root: ({theme}) => ({
+          padding: 0,
+          '&.Mui-focused': {
+            border: 'none', // Встановіть бажаний стиль для рамки, наприклад, 'none' для видалення рамки
+          },
+        }),
+      },
+    },
   },
 });
 
