@@ -2,20 +2,18 @@ import {SubmitHandler, useForm} from 'react-hook-form';
 import {SignInResponse, signIn} from 'next-auth/react';
 import {
   Box,
+  Button,
   Checkbox,
   FormControlLabel,
   Typography,
   useMediaQuery,
 } from '@mui/material';
 import Link from 'next/link';
-import {Button} from '@/components/Button/Button';
 import {Input} from '@/components/Inputs/Input';
 import Image from 'next/image';
 import {useRouter} from 'next/router';
 import {toast} from 'react-toastify';
-import logoIcon from '../../../public/icons/logo.svg';
 import theme from '@/styles/theme/commonTheme';
-import {styles} from './styles';
 
 interface SignInType {
   email: string;
@@ -50,90 +48,93 @@ export default function SignIn() {
   };
 
   return (
-    <Box sx={styles.tab}>
-      <Box sx={styles.header}>
-        <Link href="/" style={styles.headerImage}>
-          <Image src={logoIcon} alt="" />
-        </Link>
-      </Box>
-      <Box sx={styles.container}>
-        <Box sx={styles.wrapper}>
-          <Typography variant="h1" sx={styles.title}>
-            Welcome back
-          </Typography>
-          <Typography component="h5" sx={styles.titleText}>
-            Welcome back! Please enter your details to log into your account.
-          </Typography>
+    <Box sx={{display: 'flex'}}>
+      <Box sx={{flex: '1', margin: '208px 286px 0 196px'}}>
+        <Typography component="h1" sx={{marginBottom: 2}}>
+          Welcome back
+        </Typography>
+        <Typography component="h5" sx={{fontSize: 15, marginBottom: 6}}>
+          Welcome back! Please enter your details to log into your account.
+        </Typography>
+        <Box
+          component="form"
+          onSubmit={handleSubmit(onSubmit)}
+          sx={{display: 'flex', flexDirection: 'column'}}
+        >
+          <Input
+            labelText="Email"
+            register={register}
+            name="email"
+            validationSchema={{
+              required: 'This field is required',
+              pattern: {
+                value: /\S+@\S+\.\S+/,
+                message: 'Entered value does not match email format',
+              },
+            }}
+            required={true}
+            style={{marginBottom: '24px'}}
+          />
+          <Input
+            labelText="Password"
+            register={register}
+            name="password"
+            validationSchema={{
+              required: 'This field is required',
+              minLength: {
+                value: 6,
+                message: 'min length is 6',
+              },
+            }}
+            required={true}
+            type="password"
+          />
           <Box
-            component="form"
-            onSubmit={handleSubmit(onSubmit)}
-            sx={styles.formContainer}
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginTop: '16px',
+              marginBottom: '56px',
+            }}
           >
-            <Box sx={styles.form}>
-              <Input
-                labelText="Email"
-                register={register}
-                name="email"
-                validationSchema={{
-                  required: true,
-                  pattern: {
-                    value: /\S+@\S+\.\S+/,
-                    message: 'Entered value does not match email format',
-                  },
-                }}
-                required={true}
-                errorMessage={errors.email?.message}
-              />
-              <Input
-                labelText="Password"
-                register={register}
-                name="password"
-                validationSchema={{
-                  required: true,
-                  minLength: {
-                    value: 6,
-                    message: 'Min length is 6',
-                  },
-                }}
-                required={true}
-                type="password"
-                errorMessage={errors.password?.message}
-              />
-            </Box>
-
-            <Box sx={styles.checkboxContainer}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    {...register('rememberMe', {})}
-                    sx={styles.checkbox}
-                  />
-                }
-                label={<Typography variant="body1">Remember me</Typography>}
-              />
-              <Link href="/auth/forgot-password" style={styles.link}>
-                <Typography>Forgot password?</Typography>
-              </Link>
-            </Box>
-
-            <Button type="submit">Sign in</Button>
-          </Box>
-          <Box sx={styles.linksContainer}>
-            <Typography component="span">Don’t have an account?</Typography>
-            <Link href={'/auth/sign-up'} style={styles.link}>
-              <Typography>Sign up</Typography>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  {...register('rememberMe', {})}
+                  sx={{'& .MuiSvgIcon-root': {fontSize: '16px'}}}
+                />
+              }
+              label={
+                <Typography sx={{fontSize: '15px'}}>Remember me</Typography>
+              }
+            />
+            <Link href="/auth/forgot-password">
+              <Typography sx={{color: 'red'}}>Forgot password?</Typography>
             </Link>
           </Box>
+
+          <Button type="submit" variant="contained">
+            Sign in
+          </Button>
         </Box>
-        {!isMobile && (
-          <Box sx={styles.imageWrapper}>
-            <Image
-              src="/images/signInBanner.png"
-              alt="picture of our brand"
-              fill={true}
-            />
-          </Box>
-        )}
+        <Box
+          sx={{display: 'flex', justifyContent: 'center', marginTop: '24px'}}
+        >
+          <Typography component="span">Don’t have an account?</Typography>
+          <Link href={'/auth/sign-up'}>
+            <Typography sx={{marginLeft: '5px', color: 'red'}}>
+              Sign up
+            </Typography>
+          </Link>
+        </Box>
+      </Box>
+      <Box sx={{width: '943px', height: '930px', position: 'relative'}}>
+        <Image
+          src="/images/signInBanner.png"
+          alt="picture of our brand"
+          fill={true}
+        />
       </Box>
     </Box>
   );
