@@ -2,14 +2,18 @@ import Image from 'next/image';
 import {Box, Typography, Stack, SxProps} from '@mui/material';
 import {Button} from '@/components/Button/Button';
 import Header from '@/components/Header';
+import Link from 'next/link';
 
 const styles: Record<string, SxProps> = {
   page: {
     height: "100vh",
+    flexGrow: 1,
+    flexDirection: "column",
   },
   main: {
     display: "flex",
-    height: {sm: "calc(100vh - 60px)", md: "calc(100vh - 120px)"},
+    flexGrow: 1,
+    height: "100%",
   },
   info: {
     display: "flex",
@@ -21,33 +25,38 @@ const styles: Record<string, SxProps> = {
   },
   banner: {
     width: "50vw",
+    height: "100%",
     position: 'relative',
   }
 }
 
 const Error404 = () => {
   return (
-      <Box sx={styles.page}>
+      <Stack sx={styles.page}>
         <Header />
         <Box sx={styles.main}>
           <Box sx={styles.info}>
             <Typography variant="h1">Error 404</Typography>
             <Typography variant="h4">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna</Typography>
             <Stack direction="row" spacing={4}>
-              <Button width="152px" height="40px" isTransparent={true}>Go Back</Button>
-              <Button width="152px" height="40px" isTransparent={false}>Home</Button>
+              <Link  href='/'>
+                <Button width="152px" height="40px" isTransparent={true}>Go Back</Button>
+              </Link>
+              <Link  href='/'>
+                <Button width="152px" height="40px" isTransparent={false}>Home</Button>
+              </Link>
             </Stack>
           </Box>
           <Box sx={styles.banner}>
             <Image
-              src="/images/404PageBanner.png"
+              src="/images/404PageBanner.jpeg"
               alt="404 error"
               objectFit="cover"
               fill
             />
           </Box>
         </Box>
-      </Box>
+      </Stack>
   );
 };
 

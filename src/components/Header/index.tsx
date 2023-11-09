@@ -9,7 +9,7 @@ import DesktopHeader from '@/components/Header/components/DesktopHeader';
 
 const styles: Record<string, SxProps> = {
   appBar: {
-    position: 'static',
+    position: 'sticky',
     color: '#000000',
     backgroundColor: '#FFFFFF',
     border: 'none',

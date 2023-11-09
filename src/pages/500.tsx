@@ -2,23 +2,28 @@ import Image from 'next/image';
 import {Box, Typography, Stack, SxProps} from '@mui/material';
 import {Button} from '@/components/Button/Button';
 import Header from '@/components/Header';
+import Link from 'next/link';
 
 const styles: Record<string, SxProps> = {
   page: {
     height: "100vh",
+    flexGrow: 1,
+    flexDirection: "column",
   },
   main: {
-    width: "100vw",
-    height: {sm: "calc(100vh - 60px)", md: "calc(100vh - 120px)"},
+    display: "flex",
+    flexGrow: 1,
+    height: "100%",
     position: 'relative',
-    paddingTop: "10%",
-    paddingLeft: "10%",
   },
   wrapper: {
+    margin: "0 auto",
     display: "flex",
     flexDirection: "column",
     gap: "28px",
-    width: "538px",
+    maxWidth: "538px",
+    justifyContent: "center",
+    marginLeft: "10vw",
   },
   text: {
     zIndex: 1,
@@ -27,7 +32,7 @@ const styles: Record<string, SxProps> = {
 
 const Error500 = () => {
   return (
-      <Box sx={styles.page}>
+      <Stack sx={styles.page}>
           <Header />
           <Box sx={styles.main}>
             <Image
@@ -40,12 +45,16 @@ const Error500 = () => {
               <Typography variant="h1" sx={styles.text}>We lost that page...</Typography>
               <Typography variant="h4" sx={styles.text}>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna</Typography>
               <Stack direction="row" spacing={4}>
-                <Button width="152px" height="40px" isTransparent={true}>Go Back</Button>
-                <Button width="152px" height="40px" isTransparent={false}>Home</Button>
+                <Link href='/'>
+                  <Button width="152px" height="40px" isTransparent={true}>Go Back</Button>
+                </Link>
+                <Link href='/'>
+                  <Button width="152px" height="40px" isTransparent={false}>Home</Button>
+                </Link>
               </Stack>
             </Box>
           </Box>
-      </Box>
+      </Stack>
   );
 };
 
