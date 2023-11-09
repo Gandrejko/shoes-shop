@@ -92,12 +92,14 @@ let theme = createTheme({
         root: {
           textTransform: 'none',
           boxShadow: 'none',
+          
           '&:hover': {
             boxShadow:'none'
           },
         },
         contained: ({ theme }) => ({
           color: theme.palette.common.white,
+          borderRadius: theme.spacing(),
           '&:hover': {
             backgroundColor: 'transparent',
             color: theme.palette.primary.main,
