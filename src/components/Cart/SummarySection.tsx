@@ -103,7 +103,7 @@ const SummarySection = ({products}: {products: any[]}) => {
           0
         </Typography>
       </Box>
-      <Button variant='contained' sx={{width:'100%', marginTop:'100px'}}>
+      <Button variant='outlined' sx={{width:'100%', marginTop:'100px'}}>
         Checkout
       </Button>
     </Box>
