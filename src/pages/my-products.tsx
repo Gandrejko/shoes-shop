@@ -1,4 +1,8 @@
 import EditProduct from '@/components/EditProduct/EditProduct';
+import {ProductsResponse} from '@/types/responses';
+import {useQuery} from '@tanstack/react-query';
+import axios from 'axios';
+import {useSession} from 'next-auth/react';
 import Image from 'next/image';
 import {useRouter} from 'next/router';
 import {ReactElement} from 'react';
@@ -9,10 +13,8 @@ import {
   Stack,
   SxProps,
   Typography,
-  Button
+  Button,
 } from '@mui/material';
-
-import products from '@/temp/data';
 import {NextPageWithLayout} from '@/pages/_app';
 import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
 import ProductList from '@/components/Product/ProductList';
@@ -74,6 +76,21 @@ const MyProducts: NextPageWithLayout = () => {
   const router = useRouter();
   const productId = router.query.productId as string;
   const userImage = null; // TODO: temporary
+  const session = useSession();
+
+  const {data} = useQuery<ProductsResponse>({
+    queryKey: ['products'],
+    queryFn: () =>
+      axios.get(`${process.env.API_URL}/products`, {
+        params: {
+          userId: session.data?.user.userId,
+          populate: '*',
+          'filters[teamName]': 'team-3',
+        },
+      }),
+  });
+  const products =
+    data?.data.data.map(({id, attributes}) => ({id, ...attributes})) || [];
 
   return (
     <Container maxWidth="xl" sx={styles.container}>

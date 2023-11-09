@@ -1,3 +1,4 @@
+import {Product} from '@/components/Product/ProductList';
 import {useState} from 'react';
 import Image from 'next/image';
 import {MoreHoriz} from '@mui/icons-material';
@@ -39,30 +40,24 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-type Product = {
-  id: number;
-  name: string;
-  price: number;
-  image: string;
-  gender: string;
-};
-
 type ProductCardProps = {
   product: Product;
 };
 
 const ProductCard = ({product}: ProductCardProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
+  console.log(product);
   return (
     <Card sx={styles.card}>
       <Box sx={styles.imageContainer}>
-        <Image
-          src={product.image}
-          alt={product.name}
-          fill
-          style={{objectFit: 'cover'}}
-        />
+        {product.images.data && (
+          <Image
+            src={product.images.data?.[0].attributes.url}
+            alt={product.name}
+            fill
+            style={{objectFit: 'cover'}}
+          />
+        )}
         <IconButton
           aria-label="settings"
           sx={styles.moreButton}
@@ -85,12 +80,14 @@ const ProductCard = ({product}: ProductCardProps) => {
             <Typography variant="h3" fontSize={14}>
               {product.name}
             </Typography>
-            <Typography
-              variant="h5"
-              fontSize={14}
-              textTransform="capitalize"
-              color={theme => theme.palette.text.secondary}
-            >{`${product.gender}'s Shoes`}</Typography>
+            {product.gender.data && (
+              <Typography
+                variant="h5"
+                fontSize={14}
+                textTransform="capitalize"
+                color={theme => theme.palette.text.secondary}
+              >{`${product.gender.data?.attributes.name}'s Shoes`}</Typography>
+            )}
           </Box>
           <Typography variant="h3" fontSize={14}>
             ${product.price}

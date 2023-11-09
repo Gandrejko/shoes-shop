@@ -1,3 +1,4 @@
+import {ProductAttributes} from '@/types/attributes';
 import {Grid, SxProps} from '@mui/material';
 import ProductCard from './ProductCard';
 
@@ -8,19 +9,15 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-type Product = {
+export type Product = ProductAttributes & {
   id: number;
-  name: string;
-  price: number;
-  image: string;
-  gender: string;
 };
 
-type ProdcutListProps = {
+type ProductListProps = {
   products: Product[];
 };
 
-const ProductList = ({products}: ProdcutListProps) => {
+const ProductList = ({products}: ProductListProps) => {
   return (
     <Grid container spacing={{xs: 2, sm: 5, md: 5, lg: 6, xl: 8}}>
       {products.map(product => (

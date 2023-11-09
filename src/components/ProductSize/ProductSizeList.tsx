@@ -1,12 +1,7 @@
-import ImageCard from '@/components/ProductForm/components/ImageCard';
 import {ProductData} from '@/components/ProductForm/ProductForm';
-import {SizesResponse} from '@/types';
-import {Box, Grid, InputBase, SxProps, Typography} from '@mui/material';
-import {useQuery} from '@tanstack/react-query';
-import axios, {AxiosResponse} from 'axios';
-import Image from 'next/image';
+import {Box, SxProps, Typography} from '@mui/material';
 import React from 'react';
-import {Control, Controller, UseFormReturn} from 'react-hook-form';
+import {Controller, UseFormReturn} from 'react-hook-form';
 import ProductSizeItem from './ProductSizeItem';
 
 const styles: Record<string, SxProps> = {
