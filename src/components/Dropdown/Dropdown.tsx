@@ -43,9 +43,12 @@ const Dropdown = ({
         IconComponent={ExpandMoreIcon}
         {...register(name, validationSchema)}
         sx={styles.select}
-        defaultValue={options[0]?.value || 0}
+        defaultValue=""
         MenuProps={{sx: {maxHeight: 400}}}
       >
+        <MenuItem key="" value={undefined}>
+          None
+        </MenuItem>
         {options.map(({value, text}) => (
           <MenuItem key={value} value={value}>
             {text}

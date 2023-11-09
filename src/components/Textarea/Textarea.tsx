@@ -1,7 +1,7 @@
 import {Box, InputBase, InputLabel, Typography} from '@mui/material';
 import {InputBaseProps} from '@mui/material/InputBase/InputBase';
 import {useId} from 'react';
-import {UseFormRegister} from 'react-hook-form';
+import {RegisterOptions, UseFormRegister} from 'react-hook-form';
 
 const styles = {
   requiredMark: {
@@ -18,7 +18,7 @@ const styles = {
 type TextareaProps = InputBaseProps & {
   labelText: string;
   register: UseFormRegister<any>;
-  validationSchema: any;
+  validationSchema: RegisterOptions<any>;
   name: string;
 };
 

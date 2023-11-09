@@ -6,7 +6,8 @@ import {useMutation, useQuery} from '@tanstack/react-query';
 import axios from 'axios';
 import {useSession} from 'next-auth/react';
 import {useRouter} from 'next/router';
-import React from 'react';
+import React, {useEffect} from 'react';
+import {toast} from 'react-toastify';
 
 const styles: Record<string, SxProps> = {
   modal: {
@@ -44,7 +45,19 @@ const EditProduct = ({productId}: EditProductProps) => {
   const router = useRouter();
   const session = useSession();
   const token = session.data?.user.accessToken;
-  console.log(session);
+
+  const {data, error} = useQuery({
+    queryKey: ['product', productId],
+    queryFn: () => axios.get(`${process.env.API_URL}/products/${productId}`),
+  });
+
+  useEffect(() => {
+    if (error) {
+      router.push('/my-products');
+      toast.error(error.message);
+    }
+  }, [error]);
+
   const {mutate} = useMutation({
     mutationFn: (data: any) => {
       return axios.put(
@@ -58,10 +71,6 @@ const EditProduct = ({productId}: EditProductProps) => {
       );
     },
   });
-  const {data} = useQuery({
-    queryKey: ['products', productId],
-    queryFn: () => axios.get(`${process.env.API_URL}/products/${productId}`),
-  });
 
   return (
     <Modal
@@ -70,7 +79,7 @@ const EditProduct = ({productId}: EditProductProps) => {
       onClose={() => router.push('/my-products')}
     >
       <Box sx={styles.modalContent}>
-        <ProductForm onSubmit={mutate} />
+        <ProductForm onSubmit={mutate} product={data} />
       </Box>
     </Modal>
   );

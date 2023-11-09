@@ -22,6 +22,8 @@ const styles: Record<string, SxProps> = {
     alignItems: 'center',
     justifyContent: 'center',
     aspectRatio: 320 / 380,
+    padding: '20px',
+    textAlign: 'center',
   },
   uploadImage: {
     color: 'primary.main',

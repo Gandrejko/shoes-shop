@@ -13,7 +13,7 @@ import axios, {AxiosResponse} from 'axios';
 import {ProductData} from '../ProductForm';
 import {Box, Grid, SxProps} from '@mui/material';
 import React from 'react';
-import {UseFormReturn} from 'react-hook-form';
+import {Controller, UseFormReturn} from 'react-hook-form';
 import Textarea from '@/components/Textarea/Textarea';
 
 const styles: Record<string, SxProps> = {
@@ -91,10 +91,17 @@ const FormContainer = ({formProps}: FormContainerProps) => {
         placeholder="Nike Air Max 90"
       />
       <Input
+        name="price"
         labelText="Price"
         register={formProps.register}
-        validationSchema={{required: 'Price is required'}}
-        name="price"
+        validationSchema={{
+          required: 'Price is required',
+          onChange: e =>
+            formProps.setValue(
+              'price',
+              Number(e.target.value.replace(/\D/g, '')),
+            ),
+        }}
       />
       <Box sx={styles.dropdowns}>
         <Dropdown
@@ -121,7 +128,16 @@ const FormContainer = ({formProps}: FormContainerProps) => {
       <Textarea
         labelText="Description"
         register={formProps.register}
-        validationSchema={{required: 'Description is required'}}
+        validationSchema={{
+          required: 'Description is required',
+          onChange: e =>
+            formProps.setValue(
+              'description',
+              e.target.value.length > 300
+                ? e.target.value.slice(0, 300)
+                : e.target.value,
+            ),
+        }}
         name="description"
         minRows={8}
         placeholder="Do not exceed 300 characters."

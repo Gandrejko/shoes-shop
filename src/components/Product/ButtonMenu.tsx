@@ -6,7 +6,7 @@ import {
   SxProps,
   Typography,
 } from '@mui/material';
-import {useRouter} from 'next/navigation';
+import {useRouter} from 'next/router';
 
 const styles: Record<string, SxProps> = {
   menuList: {
@@ -19,7 +19,7 @@ const styles: Record<string, SxProps> = {
 };
 
 type ButtonMenuProps = MenuProps & {
-  productId: number;
+  productid: number;
 };
 
 const ButtonMenu = (props: ButtonMenuProps) => {
@@ -32,7 +32,7 @@ const ButtonMenu = (props: ButtonMenuProps) => {
         </MenuItem>
         <MenuItem
           onClick={() =>
-            router.push(`/my-products/?productId=${props.productId}`)
+            router.push(`/my-products/?productId=${props.productid}`)
           }
           sx={styles.menuItem}
           divider

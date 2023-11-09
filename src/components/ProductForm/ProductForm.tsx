@@ -54,8 +54,8 @@ const styles: Record<string, SxProps> = {
 export type ProductData = {
   name: string;
   price: number;
-  gender: number;
-  brand: number;
+  gender?: number;
+  brand?: number;
   description: string;
   sizes: {
     id: number;
@@ -78,8 +78,8 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
       defaultValues: {
         name: '',
         price: 0,
-        gender: 3,
-        brand: 13,
+        gender: undefined,
+        brand: undefined,
         description: '',
         sizes: [],
         images: [],
@@ -88,8 +88,15 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
 
   const handleOnSubmit = () => {
     const values = getValues();
+    const obj: any = {};
+    for (const key in values) {
+      const value = (values as any)[key];
+      if (Boolean(value)) {
+        obj[key] = value;
+      }
+    }
     const data = {
-      ...values,
+      ...obj,
       sizes: values.sizes.map(({id}) => id),
       images: values.images.map(({id}) => id),
       teamName: 'team-3',

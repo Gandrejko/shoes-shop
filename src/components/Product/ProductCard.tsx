@@ -71,7 +71,7 @@ const ProductCard = ({product}: ProductCardProps) => {
           <MoreHoriz />
         </IconButton>
         <ButtonMenu
-          productId={product.id}
+          productid={product.id}
           open={Boolean(anchorEl)}
           onClose={() => setAnchorEl(null)}
           anchorEl={anchorEl}

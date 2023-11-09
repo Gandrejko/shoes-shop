@@ -3,9 +3,12 @@ import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
 import {useMutation} from '@tanstack/react-query';
 import axios from 'axios';
 import {useSession} from 'next-auth/react';
+import {useRouter} from 'next/navigation';
 import React from 'react';
+import {toast} from 'react-toastify';
 
 const AddProduct = () => {
+  const router = useRouter();
   const session = useSession();
   const token = session.data?.user.accessToken;
   const {mutate} = useMutation({
@@ -21,8 +24,12 @@ const AddProduct = () => {
         },
       );
     },
-    onSuccess: (data: any) => {
-      console.log(data);
+    onSuccess: () => {
+      toast.success('Product added successfully');
+      router.push(`/`);
+    },
+    onError: () => {
+      toast.error('Something went wrong');
     },
   });
   return (
