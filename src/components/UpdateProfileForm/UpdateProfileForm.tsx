@@ -1,10 +1,9 @@
-import {Box, SxProps} from '@mui/material';
+import {Box, Button, SxProps} from '@mui/material';
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import axios from 'axios';
 import {useSession} from 'next-auth/react';
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {toast} from 'react-toastify';
-import {Button} from '../Button/Button';
 import {Input} from '../Inputs/Input';
 
 const styles: Record<string, SxProps> = {
@@ -16,6 +15,7 @@ const styles: Record<string, SxProps> = {
   inputsBox: {
     marginBottom: {xs: 4, sm: 7},
   },
+  button: {alignSelf: 'flex-end', width: {xs: 117, sm: 152}},
 };
 
 type UserDataType = {
@@ -151,7 +151,7 @@ const UpdateProfileForm = ({image, currentUser}: Props) => {
           required={true}
         />
       </Box>
-      <Button width="152" alignSelf="flex-end" type="submit">
+      <Button variant="contained" type="submit" style={styles.button}>
         Save changes
       </Button>
     </Box>

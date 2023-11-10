@@ -1,27 +1,13 @@
-import UpdateProfileForm from '@/components/Forms/UpdateProfileForm';
+import UpdateProfileForm from '@/components/UpdateProfileForm/UpdateProfileForm';
 import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
 import UpdateProfileHeader from '@/components/UpdatePofileHeader/UpdateProfileHeader';
-import {Box, SxProps, Typography} from '@mui/material';
+import {Box, Container, SxProps, Typography} from '@mui/material';
 import {ReactElement, useState} from 'react';
-import {NextPageWithLayout} from '../_app';
+import {NextPageWithLayout} from './_app';
 import Header from '@/components/Header';
 import axios from 'axios';
 import {useSession} from 'next-auth/react';
 import {useQuery} from '@tanstack/react-query';
-
-const currentUser = {
-  id: 395,
-  username: 'Nas',
-  email: 'nas@gmail.com',
-  provider: 'local',
-  confirmed: true,
-  blocked: false,
-  createdAt: '2023-11-04T21:40:04.384Z',
-  updatedAt: '2023-11-07T11:05:24.437Z',
-  phoneNumber: '1312313',
-  firstName: 'Nas',
-  lastName: 'Nas',
-};
 
 type UserDataType = {
   id: number;
@@ -38,11 +24,12 @@ type UserDataType = {
 };
 
 const styles: Record<string, SxProps> = {
-  box: {
+  container: {
     display: 'flex',
     padding: {xs: 3, sm: 4, md: 6.5},
-    flex: 5,
+    margin: {xs: '0 auto', md: 0},
   },
+  box: {flex: 5},
   h1: {
     fontSize: {xs: 30, sm: 45},
     marginBottom: {xs: '12px', sm: 4.5},
@@ -55,7 +42,7 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-const ProfilePage: NextPageWithLayout = () => {
+const SettingsPage: NextPageWithLayout = () => {
   // const {data} = useSession();
   const data = {user: {id: 395}};
   const jwtToken =
@@ -84,8 +71,8 @@ const ProfilePage: NextPageWithLayout = () => {
   if (isLoading) return <div>Loading...</div>;
 
   return (
-    <Box sx={styles.box}>
-      <Box>
+    <Box sx={styles.container}>
+      <Box sx={styles.box}>
         <Typography component="h1" sx={styles.h1}>
           My Profile
         </Typography>
@@ -103,7 +90,7 @@ const ProfilePage: NextPageWithLayout = () => {
   );
 };
 
-ProfilePage.getLayout = function (page: ReactElement) {
+SettingsPage.getLayout = function (page: ReactElement) {
   return (
     <>
       <Header />
@@ -112,4 +99,4 @@ ProfilePage.getLayout = function (page: ReactElement) {
   );
 };
 
-export default ProfilePage;
+export default SettingsPage;

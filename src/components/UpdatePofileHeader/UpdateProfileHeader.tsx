@@ -1,10 +1,9 @@
-import {Avatar, Box, SxProps} from '@mui/material';
+import {Avatar, Box, Button, SxProps} from '@mui/material';
 import {useMutation, useQuery} from '@tanstack/react-query';
 import axios from 'axios';
 import Image from 'next/image';
 import {ChangeEvent, Dispatch} from 'react';
 import {toast} from 'react-toastify';
-import {Button} from '../Button/Button';
 import HiddenInput from '../Inputs/HiddenInput';
 import {useSession} from 'next-auth/react';
 
@@ -34,6 +33,9 @@ const styles: Record<string, SxProps> = {
     width: {xs: 100, sm: 150},
     height: {xs: 100, sm: 150},
     backgroundColor: 'primary.main',
+  },
+  button: {
+    width: 152,
   },
 };
 
@@ -113,11 +115,21 @@ const UpdateProfileHeader = ({image, currentUser, setImage}: Props) => {
         )}
       </Box>
       <Box sx={styles.buttonsBox}>
-        <Button isTransparent width="152" type="button" component="label">
+        <Button
+          variant="outlined"
+          type="button"
+          component="label"
+          sx={styles.button}
+        >
           Change photo
           <HiddenInput type="file" onChange={handleFileChange} />
         </Button>
-        <Button width="152" type="button" onClick={() => deleteImage(image.id)}>
+        <Button
+          variant="contained"
+          type="button"
+          onClick={() => deleteImage(image.id)}
+          sx={styles.button}
+        >
           Delete
         </Button>
       </Box>
