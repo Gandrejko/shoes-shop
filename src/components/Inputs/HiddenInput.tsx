@@ -1,4 +1,4 @@
-import {InputBase, SxProps} from '@mui/material';
+import {InputBase, InputBaseProps, SxProps} from '@mui/material';
 
 const styles: Record<string, SxProps> = {
   input: {
@@ -14,13 +14,8 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-type InputType = {
-  type: string;
-  // onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-};
-
-const HiddenInput = ({type}: InputType) => {
-  return <InputBase type={type} sx={styles.input} />;
+const HiddenInput = ({...inputProps}: InputBaseProps) => {
+  return <InputBase sx={styles.input} {...inputProps} />;
 };
 
 export default HiddenInput;

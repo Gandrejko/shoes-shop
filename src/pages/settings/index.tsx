@@ -1,11 +1,13 @@
-import {ReactElement, useState} from 'react';
-import {Box, SxProps, Typography} from '@mui/material';
-import {NextPageWithLayout} from '../_app';
+import UpdateProfileForm from '@/components/Forms/UpdateProfileForm';
 import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
 import UpdateProfileHeader from '@/components/UpdatePofileHeader/UpdateProfileHeader';
-import UpdateProfileForm from '@/components/Forms/UpdateProfileForm';
-import {useQuery, useQueryClient} from 'react-query';
+import {Box, SxProps, Typography} from '@mui/material';
+import {ReactElement, useState} from 'react';
+import {NextPageWithLayout} from '../_app';
+import Header from '@/components/Header';
 import axios from 'axios';
+import {useSession} from 'next-auth/react';
+import {useQuery} from '@tanstack/react-query';
 
 const currentUser = {
   id: 395,
@@ -54,7 +56,32 @@ const styles: Record<string, SxProps> = {
 };
 
 const ProfilePage: NextPageWithLayout = () => {
-  const [imageId, setImageId] = useState(-1);
+  // const {data} = useSession();
+  const data = {user: {id: 395}};
+  const jwtToken =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mzk1LCJpYXQiOjE2OTkzNzU4OTQsImV4cCI6MTcwMTk2Nzg5NH0.Toa8YhgAK-KC1FWVmbwLLTUrRpsZHdOZ7_fvTl_Mei0';
+
+  const [image, setImage] = useState<any>(null);
+
+  const {data: currentUser, isLoading} = useQuery({
+    queryKey: ['users', data?.user.id],
+    queryFn: async () => {
+      const url = `https://shoes-shop-strapi.herokuapp.com/api/users/${data?.user.id}`;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
+        params: {
+          populate: 'avatar',
+        },
+      };
+      const res = await axios.get(url, config);
+      if (res.data.avatar) setImage(res.data.avatar);
+      return res.data;
+    },
+  });
+
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     <Box sx={styles.box}>
@@ -62,18 +89,27 @@ const ProfilePage: NextPageWithLayout = () => {
         <Typography component="h1" sx={styles.h1}>
           My Profile
         </Typography>
-        <UpdateProfileHeader setImageId={setImageId} />
+        <UpdateProfileHeader
+          currentUser={currentUser}
+          image={image}
+          setImage={setImage}
+        />
         <Typography component="p" sx={styles.paragraph}>
           Welcome back! Please enter your details to log into your account.
         </Typography>
-        <UpdateProfileForm imageId={imageId} />
+        <UpdateProfileForm currentUser={currentUser} image={image} />
       </Box>
     </Box>
   );
 };
 
 ProfilePage.getLayout = function (page: ReactElement) {
-  return <SidebarLayout currentTab="settings">{page}</SidebarLayout>;
+  return (
+    <>
+      <Header />
+      <SidebarLayout currentTab="settings">{page}</SidebarLayout>;
+    </>
+  );
 };
 
 export default ProfilePage;

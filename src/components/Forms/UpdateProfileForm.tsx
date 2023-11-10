@@ -8,8 +8,14 @@ import {Button} from '../Button/Button';
 import {Input} from '../Inputs/Input';
 
 const styles: Record<string, SxProps> = {
-  form: {display: 'flex', flexDirection: 'column', maxWidth: '100%'},
-  inputsBox: {marginBottom: {xs: 4, sm: 7}},
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    maxWidth: '100%',
+  },
+  inputsBox: {
+    marginBottom: {xs: 4, sm: 7},
+  },
 };
 
 type UserDataType = {
@@ -27,30 +33,16 @@ type UserDataType = {
 };
 
 type Props = {
-  imageId: number;
+  image: any;
+  currentUser: any;
 };
 
-const UpdateProfileForm = ({imageId}: Props) => {
-  // const currentUser = {
-  //   id: 395,
-  //   username: 'Nas Nas',
-  //   email: 'nas@gmail.com',
-  //   provider: 'local',
-  //   confirmed: true,
-  //   blocked: false,
-  //   createdAt: '2023-11-04T21:40:04.384Z',
-  //   updatedAt: '2023-11-07T11:05:24.437Z',
-  //   phoneNumber: '(949) 354-2574',
-  //   firstName: '',
-  //   lastName: '',
-  // };
-
-  const jwtToken = 'jwtToken';
+const UpdateProfileForm = ({image, currentUser}: Props) => {
+  const jwtToken =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mzk1LCJpYXQiOjE2OTkzNzU4OTQsImV4cCI6MTcwMTk2Nzg5NH0.Toa8YhgAK-KC1FWVmbwLLTUrRpsZHdOZ7_fvTl_Mei0';
   const {data, update} = useSession();
   const queryClient = useQueryClient();
-  const currentUser = data?.user;
-
-  const [firstName, lastName] = currentUser.username.split(' ');
+  // const currentUser = data?.user;
 
   const {
     register,
@@ -58,14 +50,14 @@ const UpdateProfileForm = ({imageId}: Props) => {
     formState: {errors},
   } = useForm<Partial<UserDataType>>({
     defaultValues: {
-      firstName: firstName,
-      lastName: lastName,
+      firstName: currentUser.firstName ?? '',
+      lastName: currentUser.lastName ?? '',
       email: currentUser.email,
-      phoneNumber: currentUser.phoneNumber || '',
+      phoneNumber: currentUser.phoneNumber ?? '',
     },
   });
 
-  const updateCurrentUserMutation = useMutation({
+  const {mutate} = useMutation({
     mutationFn: async (userUpdateData: Partial<UserDataType>) => {
       const config = {
         headers: {
@@ -76,14 +68,13 @@ const UpdateProfileForm = ({imageId}: Props) => {
 
       return axios.put(
         `https://shoes-shop-strapi.herokuapp.com/api/users/${currentUser.id}`,
-        //{...userUpdateData, avatar: imageId},
-        {userUpdateData},
+        {...userUpdateData, avatar: image.id},
         config,
       );
     },
     onSuccess: newData => {
-      queryClient.invalidateQueries({queryKey: ['currentUser']});
-      update(newData);
+      queryClient.invalidateQueries({queryKey: ['users', currentUser.id]});
+      // update(newData);
       toast.success('Your profile was successfully updated!');
     },
     onError: () => {
@@ -93,8 +84,8 @@ const UpdateProfileForm = ({imageId}: Props) => {
 
   const formSubmitHadler: SubmitHandler<
     Partial<UserDataType>
-  > = async updatedData => {
-    updateCurrentUserMutation.mutate(updatedData);
+  > = updatedData => {
+    mutate(updatedData);
   };
 
   return (
@@ -105,7 +96,7 @@ const UpdateProfileForm = ({imageId}: Props) => {
     >
       <Box sx={styles.inputsBox}>
         <Input
-          placeholder={firstName}
+          placeholder="First Name"
           type="text"
           labelText="Name"
           name="firstName"
@@ -117,7 +108,7 @@ const UpdateProfileForm = ({imageId}: Props) => {
           style={{marginBottom: '24px'}}
         />
         <Input
-          placeholder={lastName}
+          placeholder="Last Name"
           type="text"
           labelText="Surname"
           name="lastName"
@@ -129,7 +120,7 @@ const UpdateProfileForm = ({imageId}: Props) => {
           style={{marginBottom: '24px'}}
         />
         <Input
-          placeholder={currentUser.email}
+          placeholder="Email address"
           type="mail"
           labelText="Email"
           name="email"
@@ -145,7 +136,7 @@ const UpdateProfileForm = ({imageId}: Props) => {
           style={{marginBottom: '24px'}}
         />
         <Input
-          placeholder={currentUser.phoneNumber || '(949) 354-2574'}
+          placeholder="Phone number"
           type="tel"
           labelText="Phone number"
           name="phoneNumber"

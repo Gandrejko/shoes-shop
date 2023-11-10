@@ -28,7 +28,6 @@ type ButtonProps = {
   isTransparent?: boolean;
   width?: string;
   height?: string;
-  alignSelf?: string;
   children: React.ReactNode;
   alignSelf?: string;
 } & MUIButtonProps;
