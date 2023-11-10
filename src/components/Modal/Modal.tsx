@@ -3,14 +3,13 @@ import {
   Box,
   useTheme,
   useMediaQuery,
-  SxProps,
+  SxProps, Button,
 } from '@mui/material';
 import {useForm} from 'react-hook-form';
 import {SearchInput} from '../Inputs/SearchInput';
 import Image from 'next/image';
 import logoIcon from '../../../public/icons/logo.svg';
 import modalCloseIcon from '../../../public/icons/modalClose.svg';
-import {Button} from '../Button/Button';
 
 const style = {
   modal: {
@@ -92,8 +91,8 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
                 giantMode
               />
               <Button
-                isTransparent
-                height={`${greaterThanMid ? '50%' : 'auto'}`}
+                variant="outlined"
+                sx={{width: "148px", height: "80px"}}
                 onClick={handleOnSearch}
               >
                 Search

@@ -4,10 +4,10 @@ import {
   SxProps,
   Toolbar,
   Typography,
+  Button,
 } from '@mui/material';
 import {SearchInput} from '@/components/Inputs/SearchInput';
 import {HeaderProps} from '@/components/Header';
-import {Button} from '@/components/Button/Button';
 import Image from 'next/image';
 
 const styles: Record<string, SxProps> = {
@@ -65,7 +65,7 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
             justifyContent="space-between"
             spacing={4}
           >
-            <Button isTransparent width="145px" height="48px">Sign In</Button>
+            <Button variant="outlined" sx={{width: "145px", height: "48px"}} >Sign In</Button>
             <SearchInput
               name="not-used-2"
               register={false}
