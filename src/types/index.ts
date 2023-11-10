@@ -17,3 +17,10 @@ type Pagination = {
   pageCount: number;
   total: number;
 };
+
+export type Filters = Partial<{
+  gender: number;
+  brand: number;
+  colors: number[];
+  sizes: number[];
+}>;

@@ -13,12 +13,17 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-const ProductList = () => {
+type Props = {
+  params?: any;
+};
+
+const ProductList = ({params = null}: Props) => {
   const {data: products, isLoading} = useGet<
     ResponseData<Data<ProductAttributes>[]>
   >('/products', null, {
     populate: 'images,gender',
     'filters[teamName]': 'team-3',
+    ...params,
   });
 
   if (isLoading) return <div>Loading...</div>;

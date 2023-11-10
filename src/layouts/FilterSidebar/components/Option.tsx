@@ -9,14 +9,16 @@ const styles = {
 };
 
 type OptionProps = {
+  id: number;
   name: string | number;
+  onChangeFilter: (id: number) => void;
 };
 
-export const Option = ({name}: OptionProps) => {
+export const Option = ({name, onChangeFilter}: OptionProps) => {
   const id = useId();
   return (
     <Box sx={styles.option}>
-      <Checkbox size="small" color="primary" id={id} />
+      <Checkbox size="small" color="primary" id={id} sx={{paddingLeft: 0}} />
       <InputLabel htmlFor={id}>{name}</InputLabel>
     </Box>
   );

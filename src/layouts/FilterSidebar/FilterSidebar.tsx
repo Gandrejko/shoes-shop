@@ -1,6 +1,6 @@
 import useGet from '@/hooks/useGet';
 import theme from '@/styles/theme/commonTheme';
-import {ResponseData} from '@/types';
+import {Filters, ResponseData} from '@/types';
 import {
   BrandAttributes,
   ColorAttributes,
@@ -8,7 +8,7 @@ import {
   SizeAttributes,
 } from '@/types/attributes';
 import {Box, Slider, SxProps, Typography} from '@mui/material';
-import {useState} from 'react';
+import {Dispatch, SetStateAction, useState} from 'react';
 import {Category} from './components/Category';
 import {Data} from '@/types/entities';
 
@@ -61,12 +61,11 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-type CategoryInfo = {
-  id: number;
-  name: string;
+type Props = {
+  setFilters: Dispatch<SetStateAction<Filters>>;
 };
 
-export const FilterSidebar = () => {
+export const FilterSidebar = ({setFilters}: Props) => {
   const {data: genders} =
     useGet<ResponseData<Data<GenderAttributes>[]>>('/genders');
 
@@ -97,6 +96,9 @@ export const FilterSidebar = () => {
       </Box>
       <Category
         name="Gender"
+        onChangeFilter={genderId => {
+          setFilters(prevFilters => ({...prevFilters, gender: genderId}));
+        }}
         options={genders?.data.map(({id, attributes}) => ({
           id,
           name: attributes.name!,
@@ -104,6 +106,11 @@ export const FilterSidebar = () => {
       />
       <Category
         name="Colors"
+        onChangeFilter={colorId =>
+          setFilters(prevFilters => ({
+            colors: [...prevFilters.colors!, colorId],
+          }))
+        }
         options={colors?.data.map(({id, attributes}) => ({
           id,
           name: attributes.name!,
@@ -111,12 +118,15 @@ export const FilterSidebar = () => {
       />
       <Category
         name="Brands"
+        onChangeFilter={brandId => {
+          setFilters(prevFilters => ({...prevFilters, brand: brandId}));
+        }}
         options={brands?.data.map(({id, attributes}) => ({
           id,
           name: attributes.name!,
         }))}
       />
-      <Category name="Price">
+      <Category name="Price" onChangeFilter={() => {}}>
         <Slider
           getAriaLabel={() => 'Temperature range'}
           value={price}
@@ -128,6 +138,11 @@ export const FilterSidebar = () => {
       </Category>
       <Category
         name="Sizes"
+        onChangeFilter={sizeId =>
+          setFilters(prevFilters => ({
+            sizes: [...prevFilters.sizes!, sizeId],
+          }))
+        }
         options={sizes?.data.map(({id, attributes}) => ({
           id,
           name: attributes.value!,
