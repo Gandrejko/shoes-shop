@@ -23,6 +23,7 @@ export type ProductAttributes = {
   brand: RequestData<Data<Brand> | null>;
   color: RequestData<Data<Color> | null>;
   gender: RequestData<Data<Gender> | null>;
+  userID: RequestData<Data<User> | null>;
 };
 
 export type UserAttributes = Partial<

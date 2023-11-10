@@ -10,9 +10,9 @@ import {
 } from '@/types';
 import {useQuery} from '@tanstack/react-query';
 import axios, {AxiosResponse} from 'axios';
-import {ProductData} from '../ProductForm';
+import {ProductData, ProductFormContext} from '../ProductForm';
 import {Box, Grid, SxProps} from '@mui/material';
-import React from 'react';
+import React, {useContext} from 'react';
 import {Controller, UseFormReturn} from 'react-hook-form';
 import Textarea from '@/components/Textarea/Textarea';
 
@@ -49,6 +49,7 @@ type FormContainerProps = {
 };
 
 const FormContainer = ({formProps}: FormContainerProps) => {
+  const {gender, setGender, brand, setBrand} = useContext(ProductFormContext);
   const {data: genders} = useQuery<GendersResponse>({
     queryKey: ['genders'],
     queryFn: () => axios.get(`${process.env.API_URL}/genders`),
@@ -111,22 +112,22 @@ const FormContainer = ({formProps}: FormContainerProps) => {
         <Dropdown
           name="gender"
           labelText="Gender"
-          register={formProps.register}
-          validationSchema={undefined}
           options={genders?.data.data.map(({id, attributes}) => ({
             value: id,
             text: attributes.name,
           }))}
+          value={gender}
+          onChange={e => setGender(e.target.value)}
         />
         <Dropdown
           name="brand"
           labelText="Brand"
-          register={formProps.register}
-          validationSchema={undefined}
           options={brands?.data.data.map(({id, attributes}) => ({
             value: id,
             text: attributes.name,
           }))}
+          value={brand}
+          onChange={e => setBrand(e.target.value)}
         />
       </Box>
       <Textarea

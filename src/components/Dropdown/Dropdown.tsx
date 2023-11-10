@@ -21,19 +21,11 @@ const styles: Record<string, SxProps> = {
 
 type DropdownProps = SelectProps & {
   labelText: string;
-  register: UseFormRegister<any>;
-  validationSchema: any;
   name: string;
   options?: {value: number; text: string}[];
 };
 
-const Dropdown = ({
-  labelText,
-  register,
-  validationSchema,
-  name,
-  options = [],
-}: DropdownProps) => {
+const Dropdown = ({labelText, name, options = [], ...props}: DropdownProps) => {
   const id = useId();
   return (
     <Box sx={styles.dropdown}>
@@ -41,12 +33,11 @@ const Dropdown = ({
       <Select
         id={id}
         IconComponent={ExpandMoreIcon}
-        {...register(name, validationSchema)}
         sx={styles.select}
-        defaultValue=""
         MenuProps={{sx: {maxHeight: 400}}}
+        {...props}
       >
-        <MenuItem key="" value={undefined}>
+        <MenuItem key="none" value={0}>
           None
         </MenuItem>
         {options.map(({value, text}) => (
