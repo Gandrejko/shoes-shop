@@ -1,7 +1,6 @@
-import {Button} from '@/components/Button/Button';
 import theme from '@/styles/theme/commonTheme';
 import {ProductRequest} from '@/types/requests';
-import {Box, SxProps, Typography} from '@mui/material';
+import {Box, Button, SxProps, Typography} from '@mui/material';
 import {FieldErrors, useForm} from 'react-hook-form';
 import {toast} from 'react-toastify';
 import FormContainer from './components/FormContainer';
