@@ -1,8 +1,6 @@
 import React from 'react';
-import {Box, Typography} from '@mui/material';
-import {CustomButton} from '@/components/Button/Button';
+import {Box, Typography, Button} from '@mui/material';
 import Image from 'next/image';
-
 const EmptyCartPage = () => {
   return (
     <Box
@@ -29,7 +27,7 @@ const EmptyCartPage = () => {
         component="p"
         sx={{fontWeight: 700, fontSize: 20, marginBottom: 2}}
       >
-        You don't have any products yet.
+        You don`&apos;t have any products yet.
       </Typography>
       <Typography
         component="p"
@@ -38,9 +36,9 @@ const EmptyCartPage = () => {
         Post can contain video, images and text.
       </Typography>
 
-      <CustomButton isTransparent={false} width="10%" height="40px">
+      <Button variant="contained" sx={{width: '10%', height: '10%'}}>
         Add product
-      </CustomButton>
+      </Button>
     </Box>
   );
 };

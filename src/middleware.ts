@@ -21,5 +21,5 @@ export async function middleware(req: NextRequest) {
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: '/my-products',
+  matcher: ['/my-products', '/add-product'],
 };

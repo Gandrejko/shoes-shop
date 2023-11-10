@@ -1,39 +1,77 @@
-import {
-  AppBar,
-  Box,
-  Divider,
-  SxProps, useTheme,
-} from '@mui/material';
+import {AppBar, Divider, SxProps, useTheme} from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import MobileHeader from '@/components/Header/components/MobileHeader';
 import DesktopHeader from '@/components/Header/components/DesktopHeader';
+import {Modal} from '../Modal/Modal';
+import {useState} from 'react';
+import {useSession} from 'next-auth/react';
+import {useRouter} from 'next/router';
 
 const styles: Record<string, SxProps> = {
   appBar: {
-    position: 'static',
+    position: 'sticky',
     color: '#000000',
     backgroundColor: '#FFFFFF',
     border: 'none',
     boxShadow: 'none',
-  }
+  },
 };
 
 export type HeaderProps = {
   userLoggedIn: boolean;
+  handleModalOpen: () => void;
 };
 
 const Header = () => {
+  const [open, setOpen] = useState(false);
   const theme = useTheme();
   const isMobileMode = useMediaQuery(theme.breakpoints.down('md'));
-  const userLoggedIn = true;
+  const {status} = useSession();
+  const router = useRouter();
+
+  const handleModalClose = () => {
+    setOpen(false);
+  };
+
+  const handleModalOpen = () => {
+    setOpen(true);
+  };
+
+  const handleSearchClick = (value: string) => {
+    setOpen(false);
+    const newQuery = {
+      ...router.query,
+      searchingString: value,
+    };
+    router.push({
+      pathname: router.pathname,
+      query: newQuery,
+    });
+  };
 
   return (
+    <>
       <AppBar sx={styles.appBar}>
-        {isMobileMode ?
-          <MobileHeader userLoggedIn={userLoggedIn} /> : <DesktopHeader userLoggedIn={userLoggedIn}/>}
+        {isMobileMode ? (
+          <MobileHeader
+            userLoggedIn={status === 'authenticated'}
+            handleModalOpen={handleModalOpen}
+          />
+        ) : (
+          <DesktopHeader
+            userLoggedIn={status === 'authenticated'}
+            handleModalOpen={handleModalOpen}
+          />
+        )}
         <Divider />
       </AppBar>
-  )
+      <Modal
+        isOpen={open}
+        handleClose={handleModalClose}
+        handleSearchClick={handleSearchClick}
+      />
+    </>
+  );
 };
 
 export default Header;
