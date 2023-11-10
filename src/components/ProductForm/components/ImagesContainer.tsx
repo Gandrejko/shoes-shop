@@ -1,6 +1,6 @@
 import ImageCard from '@/components/ProductForm/components/ImageCard';
 import theme from '@/styles/theme/commonTheme';
-import {ProductRequest} from '@/types/requests';
+import {ProductRequest} from '@/types/product';
 import {Box, Grid, InputBase, SxProps, Typography} from '@mui/material';
 import {useMutation} from '@tanstack/react-query';
 import axios from 'axios';
