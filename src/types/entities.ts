@@ -10,12 +10,14 @@ type DefaultAttributes = {
 };
 
 export type User = {
+  id: number;
   email: string;
   username: string;
   phoneNumber?: string | null;
 };
 
 export type Product = {
+  id: number;
   name: string;
   description: string;
   price: number;
@@ -23,6 +25,7 @@ export type Product = {
 };
 
 export type Image = {
+  id: number;
   url: string;
   width: number;
   height: number;
@@ -33,21 +36,26 @@ export type Image = {
 };
 
 export type Category = {
+  id: number;
   name: string;
 };
 
 export type Size = {
+  id: number;
   value: number;
 };
 
 export type Brand = {
+  id: number;
   name: string;
 };
 
 export type Color = {
+  id: number;
   name: string;
 };
 
 export type Gender = {
+  id: number;
   name: string;
 };

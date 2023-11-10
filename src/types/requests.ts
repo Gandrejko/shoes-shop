@@ -1,4 +1,13 @@
-import {Brand, Category, Color, Gender, Product, Size, User} from './entities';
+import {
+  Brand,
+  Category,
+  Color,
+  Gender,
+  Image,
+  Product,
+  Size,
+  User,
+} from './entities';
 
 export type UserRequest = User & {
   password: string;
@@ -7,12 +16,12 @@ export type UserRequest = User & {
 
 export type ProductRequest = Partial<
   Product & {
-    images: number[];
-    categories: number[];
-    sizes: number[];
-    brand: number;
-    color: number;
-    gender: number;
+    images: Image[];
+    categories: Category[];
+    sizes: Size[];
+    brand: Brand;
+    color: Color;
+    gender: Gender;
     userID: number;
   }
 >;

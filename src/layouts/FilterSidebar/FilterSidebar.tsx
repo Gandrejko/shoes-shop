@@ -1,16 +1,16 @@
+import useGet from '@/hooks/useGet';
 import theme from '@/styles/theme/commonTheme';
+import {ResponseData} from '@/types';
 import {
-  BrandsResponse,
-  ColorsResponse,
-  Data,
-  GendersResponse,
-  SizesResponse,
-} from '@/types';
+  BrandAttributes,
+  ColorAttributes,
+  GenderAttributes,
+  SizeAttributes,
+} from '@/types/attributes';
 import {Box, Slider, SxProps, Typography} from '@mui/material';
-import axios, {AxiosResponse} from 'axios';
-import {useQuery} from '@tanstack/react-query';
-import {Category} from './components/Category';
 import {useState} from 'react';
+import {Category} from './components/Category';
+import {Data} from '@/types/entities';
 
 const styles: Record<string, SxProps> = {
   sidebar: {
@@ -67,22 +67,16 @@ type CategoryInfo = {
 };
 
 export const FilterSidebar = () => {
-  const {data: genders} = useQuery<AxiosResponse<GendersResponse>>({
-    queryKey: ['genders'],
-    queryFn: () => axios.get(`${process.env.API_URL}/genders`),
-  });
-  const {data: colors} = useQuery<AxiosResponse<ColorsResponse>>({
-    queryKey: ['colors'],
-    queryFn: () => axios.get(`${process.env.API_URL}/colors`),
-  });
-  const {data: brands} = useQuery<AxiosResponse<BrandsResponse>>({
-    queryKey: ['brands'],
-    queryFn: () => axios.get(`${process.env.API_URL}/brands`),
-  });
-  const {data: sizes} = useQuery<AxiosResponse<SizesResponse>>({
-    queryKey: ['sizes'],
-    queryFn: () => axios.get(`${process.env.API_URL}/sizes`),
-  });
+  const {data: genders} =
+    useGet<ResponseData<Data<GenderAttributes>[]>>('/genders');
+
+  const {data: colors} =
+    useGet<ResponseData<Data<ColorAttributes>[]>>('/colors');
+
+  const {data: brands} =
+    useGet<ResponseData<Data<BrandAttributes>[]>>('/brands');
+
+  const {data: sizes} = useGet<ResponseData<Data<SizeAttributes>[]>>('/sizes');
 
   const [price, setPrice] = useState<number[]>([20, 37]);
 
@@ -103,23 +97,23 @@ export const FilterSidebar = () => {
       </Box>
       <Category
         name="Gender"
-        options={genders?.data.data.map(({id, attributes}) => ({
+        options={genders?.data.map(({id, attributes}) => ({
           id,
-          name: attributes.name,
+          name: attributes.name!,
         }))}
       />
       <Category
         name="Colors"
-        options={colors?.data.data.map(({id, attributes}) => ({
+        options={colors?.data.map(({id, attributes}) => ({
           id,
-          name: attributes.name,
+          name: attributes.name!,
         }))}
       />
       <Category
         name="Brands"
-        options={brands?.data.data.map(({id, attributes}) => ({
+        options={brands?.data.map(({id, attributes}) => ({
           id,
-          name: attributes.name,
+          name: attributes.name!,
         }))}
       />
       <Category name="Price">
@@ -134,9 +128,9 @@ export const FilterSidebar = () => {
       </Category>
       <Category
         name="Sizes"
-        options={sizes?.data.data.map(({id, attributes}) => ({
+        options={sizes?.data.map(({id, attributes}) => ({
           id,
-          name: attributes.value,
+          name: attributes.value!,
         }))}
       />
     </Box>

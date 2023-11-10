@@ -1,13 +1,8 @@
-import ImageCard from '@/components/ProductForm/components/ImageCard';
-import {ProductData} from '@/components/ProductForm/ProductForm';
-import {SizesResponse} from '@/types';
-import {Box, Grid, InputBase, SxProps, Typography} from '@mui/material';
-import {useQuery} from '@tanstack/react-query';
-import axios, {AxiosResponse} from 'axios';
-import Image from 'next/image';
-import React from 'react';
-import {Control, Controller, UseFormReturn} from 'react-hook-form';
+import {ProductRequest} from '@/types/requests';
+import {Box, SxProps, Typography} from '@mui/material';
+import {Controller, UseFormReturn} from 'react-hook-form';
 import ProductSizeItem from './ProductSizeItem';
+import {Size} from '@/types/entities';
 
 const styles: Record<string, SxProps> = {
   box: {width: '100%'},
@@ -24,16 +19,11 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-type SizeItemType = {
-  id: number;
-  value: number;
-};
-
 type ProductListProps = {
   header: string;
-  control: UseFormReturn<ProductData>['control'];
+  control: UseFormReturn<ProductRequest>['control'];
   onClick: (id: number, isChecked: boolean) => void;
-  sizes: SizeItemType[];
+  sizes: Size[];
 };
 
 const ProductSizeList = ({
