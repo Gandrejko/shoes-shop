@@ -1,7 +1,7 @@
 import axiosInstance from 'axios';
 
 const axios = axiosInstance.create({
-  baseURL: 'https://shoes-shop-strapi.herokuapp.com/api',
+  baseURL: process.env.API_URL,
 });
 
 axios.interceptors.request.use(config => {
