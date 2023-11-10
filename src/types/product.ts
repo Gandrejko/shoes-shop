@@ -30,14 +30,14 @@ export type ProductAttributes = Partial<
 
 export type ProductRequest = Partial<
   Product & {
-    images: Image[] | number[];
-    categories: Category[] | number[];
-    sizes: Size[] | number[];
-    
-    brand: Brand | number;
-    color: Color | number;
-    gender: Gender | number;
-    userID: User | number;
+    images: Image[];
+    categories: Category[];
+    sizes: Size[];
+
+    brand: Brand;
+    color: Color;
+    gender: Gender;
+    userID: User;
   }
 >;
 

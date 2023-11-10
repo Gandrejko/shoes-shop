@@ -14,7 +14,7 @@ export type BrandAttributes = Partial<
 
 export type BrandRequest = Partial<
   Brand & {
-    products: Product[] | number[];
+    products: Product[];
   }
 >;
 

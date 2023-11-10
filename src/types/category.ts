@@ -14,7 +14,7 @@ export type CategoryAttributes = Partial<
 
 export type CategoryRequest = Partial<
   Category & {
-    products: Product[] | number[];
+    products: Product[];
   }
 >;
 

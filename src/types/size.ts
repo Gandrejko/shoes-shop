@@ -14,7 +14,7 @@ export type SizeAttributes = Partial<
 
 export type SizeRequest = Partial<
   Size & {
-    products: Product[] | number[];
+    products: Product[];
   }
 >;
 

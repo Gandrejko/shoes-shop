@@ -14,7 +14,7 @@ export type GenderAttributes = Partial<
 
 export type GenderRequest = Partial<
   Gender & {
-    products: Product[] | number[];
+    products: Product[];
   }
 >;
 

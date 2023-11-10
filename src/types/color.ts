@@ -14,7 +14,7 @@ export type ColorAttributes = Partial<
 
 export type ColorRequest = Partial<
   Color & {
-    products: Product[] | number[];
+    products: Product[];
   }
 >;
 
