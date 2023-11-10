@@ -14,7 +14,7 @@ const Home = () => {
       toast.success(`Hello, ${session?.user.username}!`);
       localStorage.setItem('signInJustNow', JSON.stringify(false));
     }
-  }, []);
+  }, [session?.user.username]);
 
   useEffect(() => {
     if (status === 'authenticated') {

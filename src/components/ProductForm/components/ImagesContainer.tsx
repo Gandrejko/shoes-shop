@@ -1,5 +1,6 @@
 import ImageCard from '@/components/ProductForm/components/ImageCard';
 import theme from '@/styles/theme/commonTheme';
+import {ProductRequest} from '@/types/requests';
 import {Box, Grid, InputBase, SxProps, Typography} from '@mui/material';
 import {useMutation} from '@tanstack/react-query';
 import axios from 'axios';
@@ -7,7 +8,6 @@ import {useSession} from 'next-auth/react';
 import Image from 'next/image';
 import React, {useRef} from 'react';
 import {Controller, UseFormReturn} from 'react-hook-form';
-import {ProductData} from '../ProductForm';
 
 const styles: Record<string, SxProps> = {
   imagesContainer: {
@@ -34,7 +34,7 @@ const styles: Record<string, SxProps> = {
 
 type ImagesContainerProps = {
   formProps: Pick<
-    UseFormReturn<ProductData>,
+    UseFormReturn<ProductRequest>,
     'register' | 'control' | 'getValues' | 'setValue'
   >;
 };
@@ -46,7 +46,7 @@ const ImagesContainer = ({formProps}: ImagesContainerProps) => {
 
   const {mutate} = useMutation({
     mutationFn: (file: FormData) =>
-      axios.post(`${process.env.API_URL}/upload`, file),
+      axios.post(`https://shoes-shop-strapi.herokuapp.com/api/upload`, file),
     onSuccess: (data: any) => {
       const currentImages = formProps.getValues?.('images') || [];
       const newImages = data.data.map((image: any) => ({
@@ -59,12 +59,15 @@ const ImagesContainer = ({formProps}: ImagesContainerProps) => {
 
   const {mutate: deleteImage} = useMutation({
     mutationFn: (id: number) =>
-      axios.delete(`${process.env.API_URL}/upload/files/${id}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token,
+      axios.delete(
+        `https://shoes-shop-strapi.herokuapp.com/api/upload/files/${id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+          },
         },
-      }),
+      ),
   });
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -99,7 +102,7 @@ const ImagesContainer = ({formProps}: ImagesContainerProps) => {
           control={formProps.control}
           render={({field}) => (
             <>
-              {field.value.map((image: {url: string; id: number}) => (
+              {field.value?.map((image: {url: string; id: number}) => (
                 <Grid item key={image.id} xs={12} sm={6} md={6} lg={8} xl={5}>
                   <ImageCard
                     image={image}
