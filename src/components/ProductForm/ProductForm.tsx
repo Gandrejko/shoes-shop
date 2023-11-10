@@ -97,6 +97,9 @@ const createDefaultProduct = (product?: ProductAttributes) => ({
 const ProductForm = ({onSubmit, product}: ProductFormProps) => {
   const [gender, setGender] = useState<number>(0);
   const [brand, setBrand] = useState<number>(0);
+  const [choosedSizes, setChoosedSizes] = useState<
+    {id: number; value: number}[]
+  >([]);
 
   const {register, reset, handleSubmit, control, getValues, setValue} =
     useForm<ProductData>({
@@ -107,6 +110,12 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
     reset(createDefaultProduct(product));
     setGender(product?.gender?.data?.id || 0);
     setBrand(product?.brand?.data?.id || 0);
+    setChoosedSizes(
+      product?.sizes?.data?.map(({id, attributes}) => ({
+        id,
+        value: attributes.value,
+      })) || [],
+    );
   }, [product]);
 
   const handleOnSubmit = () => {
@@ -114,6 +123,7 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
       ...getValues(),
       gender,
       brand,
+      sizes: choosedSizes,
     };
     const data = Object.keys(values).reduce(
       (acc, key) => {
@@ -139,7 +149,16 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
   };
 
   return (
-    <ProductFormContext.Provider value={{gender, setGender, brand, setBrand}}>
+    <ProductFormContext.Provider
+      value={{
+        gender,
+        setGender,
+        brand,
+        setBrand,
+        choosedSizes,
+        setChoosedSizes,
+      }}
+    >
       <Box
         sx={styles.mainContainer}
         component="form"

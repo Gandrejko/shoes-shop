@@ -22,20 +22,16 @@ type SizeItemType = {
 
 type SiteItemPropsType = {
   size: SizeItemType;
-  onClick: (id: number, isChecked: boolean) => void;
+  onClick: (id: number) => void;
+  isChecked: boolean;
 };
 
-const ProductSizeItem = ({size, onClick}: SiteItemPropsType) => {
-  const [isChecked, setIsChecked] = useState(false);
-  const handleClick = () => {
-    setIsChecked(!isChecked);
-    onClick(size.id, !isChecked);
-  };
+const ProductSizeItem = ({size, onClick, isChecked}: SiteItemPropsType) => {
   return (
     <Button
       sx={styles(isChecked)}
       variant={isChecked ? 'contained' : 'outlined'}
-      onClick={handleClick}
+      onClick={() => onClick(size.id)}
     >
       eu-{size.value}
     </Button>

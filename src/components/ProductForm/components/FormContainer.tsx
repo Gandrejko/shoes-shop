@@ -49,7 +49,8 @@ type FormContainerProps = {
 };
 
 const FormContainer = ({formProps}: FormContainerProps) => {
-  const {gender, setGender, brand, setBrand} = useContext(ProductFormContext);
+  const {gender, setGender, brand, setBrand, choosedSizes, setChoosedSizes} =
+    useContext(ProductFormContext);
   const {data: genders} = useQuery<GendersResponse>({
     queryKey: ['genders'],
     queryFn: () => axios.get(`${process.env.API_URL}/genders`),
@@ -73,14 +74,22 @@ const FormContainer = ({formProps}: FormContainerProps) => {
       value,
     })) || [];
 
-  const checkSize = (id: number, isChecked: boolean) => {
-    const oldSizes = formProps.getValues('sizes') || [];
-    const oldSize = sizesMapped.find(size => size.id === id);
-    const newSizes =
-      oldSize && isChecked
-        ? [...oldSizes, oldSize]
-        : oldSizes.filter(size => size.id !== id);
-    formProps.setValue('sizes', newSizes);
+  const checkSize = (id: number) => {
+    setChoosedSizes((prevState: any) => {
+      const newSize = sizesMapped.find(size => size.id === id);
+      const isSizeAlreadyChoosed = prevState.find(
+        (size: any) => size.id === id,
+      );
+      if (!newSize) {
+        return prevState;
+      }
+      if (!isSizeAlreadyChoosed) {
+        console.log(newSize);
+        return [...prevState, newSize];
+      } else {
+        return prevState.filter((size: any) => size.id !== id);
+      }
+    });
   };
   return (
     <Grid sx={styles.formContainer}>
@@ -148,9 +157,9 @@ const FormContainer = ({formProps}: FormContainerProps) => {
         placeholder="Do not exceed 300 characters."
       />
       <ProductSizeList
-        control={formProps.control}
         header="Add size"
         sizes={sizesMapped}
+        choosedSizes={choosedSizes}
         onClick={checkSize}
       />
     </Grid>
