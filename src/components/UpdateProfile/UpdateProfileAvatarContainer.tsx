@@ -1,11 +1,12 @@
 import {Avatar, Box, Button, SxProps} from '@mui/material';
-import {useMutation, useQuery} from '@tanstack/react-query';
+import {useMutation} from '@tanstack/react-query';
 import axios from 'axios';
+import {useSession} from 'next-auth/react';
 import Image from 'next/image';
-import {ChangeEvent, Dispatch} from 'react';
+import {ChangeEvent} from 'react';
+import {UseFormReturn} from 'react-hook-form';
 import {toast} from 'react-toastify';
 import HiddenInput from '../Inputs/HiddenInput';
-import {useSession} from 'next-auth/react';
 
 const styles: Record<string, SxProps> = {
   headerBox: {
@@ -39,22 +40,41 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-type Props = {
-  image: any;
-  currentUser: any;
-  setImage: Dispatch<any>;
+type UserDataType = {
+  id: number;
+  username: string;
+  email: string;
+  provider: string;
+  confirmed: boolean;
+  blocked: boolean;
+  createdAt: string;
+  updatedAt: string;
+  phoneNumber: string;
+  firstName: string;
+  lastName: string;
+  avatar: any;
 };
 
-const UpdateProfileHeader = ({image, currentUser, setImage}: Props) => {
-  const jwtToken =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mzk1LCJpYXQiOjE2OTkzNzU4OTQsImV4cCI6MTcwMTk2Nzg5NH0.Toa8YhgAK-KC1FWVmbwLLTUrRpsZHdOZ7_fvTl_Mei0';
+type UpdateProfileAvatarContainerProps = {
+  formProps: Pick<
+    UseFormReturn<Partial<UserDataType>>,
+    'register' | 'control' | 'getValues' | 'setValue' | 'formState'
+  >;
+};
+
+const UpdateProfileAvatarContainer = ({
+  formProps,
+}: UpdateProfileAvatarContainerProps) => {
+  const {data: session} = useSession();
+  const currentUser = session?.user;
+  const token = session?.user.accessToken;
 
   const {mutate: uploadImage} = useMutation({
     mutationFn: async (formData: FormData) => {
-      const url = 'https://shoes-shop-strapi.herokuapp.com/api/upload';
+      const url = `${process.env.API_URL}/upload`;
       const config = {
         headers: {
-          Authorization: `Bearer ${jwtToken}`,
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
         },
       };
@@ -62,8 +82,8 @@ const UpdateProfileHeader = ({image, currentUser, setImage}: Props) => {
       const res = await axios.post(url, formData, config);
       return res.data[0];
     },
-    onSuccess: data => {
-      setImage(data);
+    onSuccess: (data: any) => {
+      formProps.setValue?.('avatar', {id: data.id, image: data.id});
     },
     onError: error => {
       toast.error(error.message);
@@ -72,10 +92,10 @@ const UpdateProfileHeader = ({image, currentUser, setImage}: Props) => {
 
   const {mutate: deleteImage} = useMutation({
     mutationFn: async (id: number) => {
-      const url = `https://shoes-shop-strapi.herokuapp.com/api/upload/files/${id}`;
+      const url = `${process.env.API_URL}/upload/files/${id}`;
       const config = {
         headers: {
-          Authorization: `Bearer ${jwtToken}`,
+          Authorization: `Bearer ${token}`,
         },
       };
 
@@ -83,7 +103,7 @@ const UpdateProfileHeader = ({image, currentUser, setImage}: Props) => {
       return res.data;
     },
     onSuccess: () => {
-      setImage(null);
+      formProps.setValue?.('avatar', null);
     },
     onError: error => {
       toast.error(error.message);
@@ -103,9 +123,9 @@ const UpdateProfileHeader = ({image, currentUser, setImage}: Props) => {
   return (
     <Box sx={styles.headerBox}>
       <Box sx={styles.avatarContainer}>
-        {image ? (
+        {currentUser.avatar ? (
           <Image
-            src={image.url}
+            src={currentUser.avatar.url}
             alt={currentUser.username}
             fill
             style={{objectFit: 'cover'}}
@@ -115,19 +135,14 @@ const UpdateProfileHeader = ({image, currentUser, setImage}: Props) => {
         )}
       </Box>
       <Box sx={styles.buttonsBox}>
-        <Button
-          variant="outlined"
-          type="button"
-          component="label"
-          sx={styles.button}
-        >
+        <Button variant="outlined" component="label" sx={styles.button}>
           Change photo
           <HiddenInput type="file" onChange={handleFileChange} />
         </Button>
         <Button
           variant="contained"
           type="button"
-          onClick={() => deleteImage(image.id)}
+          onClick={() => deleteImage(currentUser.avatar.id)}
           sx={styles.button}
         >
           Delete
@@ -137,4 +152,4 @@ const UpdateProfileHeader = ({image, currentUser, setImage}: Props) => {
   );
 };
 
-export default UpdateProfileHeader;
+export default UpdateProfileAvatarContainer;

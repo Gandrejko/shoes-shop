@@ -1,13 +1,14 @@
-import UpdateProfileForm from '@/components/UpdateProfileForm/UpdateProfileForm';
-import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
-import UpdateProfileHeader from '@/components/UpdatePofileHeader/UpdateProfileHeader';
-import {Box, Container, SxProps, Typography} from '@mui/material';
-import {ReactElement, useState} from 'react';
-import {NextPageWithLayout} from './_app';
 import Header from '@/components/Header';
+import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
+import {Box, SxProps, Typography} from '@mui/material';
+import {useQueryClient} from '@tanstack/react-query';
 import axios from 'axios';
 import {useSession} from 'next-auth/react';
-import {useQuery} from '@tanstack/react-query';
+import {ReactElement} from 'react';
+import {useMutation} from 'react-query';
+import {toast} from 'react-toastify';
+import {NextPageWithLayout} from './_app';
+import UpdateForm from '@/components/UpdateProfile/UpdateForm';
 
 type UserDataType = {
   id: number;
@@ -43,28 +44,34 @@ const styles: Record<string, SxProps> = {
 };
 
 const SettingsPage: NextPageWithLayout = () => {
-  // const {data} = useSession();
-  const data = {user: {id: 395}};
-  const jwtToken =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mzk1LCJpYXQiOjE2OTkzNzU4OTQsImV4cCI6MTcwMTk2Nzg5NH0.Toa8YhgAK-KC1FWVmbwLLTUrRpsZHdOZ7_fvTl_Mei0';
+  // const queryClient = useQueryClient();
+  const {data: session, update} = useSession();
+  const token = session?.user.accessToken;
+  const currentUser = session?.user;
 
-  const [image, setImage] = useState<any>(null);
-
-  const {data: currentUser, isLoading} = useQuery({
-    queryKey: ['users', data?.user.id],
-    queryFn: async () => {
-      const url = `https://shoes-shop-strapi.herokuapp.com/api/users/${data?.user.id}`;
+  const {mutate, isLoading} = useMutation({
+    mutationFn: async (userUpdateData: Partial<UserDataType>) => {
       const config = {
         headers: {
-          Authorization: `Bearer ${jwtToken}`,
-        },
-        params: {
-          populate: 'avatar',
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
         },
       };
-      const res = await axios.get(url, config);
-      if (res.data.avatar) setImage(res.data.avatar);
-      return res.data;
+
+      return axios.put(
+        `${process.env.API_URL}/users/${currentUser.id}`,
+        // {...userUpdateData, avatar: image.id},
+        {...userUpdateData},
+        config,
+      );
+    },
+    onSuccess: newData => {
+      // queryClient.invalidateQueries({queryKey: ['users', currentUser.id]});
+      update(newData);
+      toast.success('Your profile was successfully updated!');
+    },
+    onError: () => {
+      toast.error('Something went wrong. Please, try again.');
     },
   });
 
@@ -76,15 +83,7 @@ const SettingsPage: NextPageWithLayout = () => {
         <Typography component="h1" sx={styles.h1}>
           My Profile
         </Typography>
-        <UpdateProfileHeader
-          currentUser={currentUser}
-          image={image}
-          setImage={setImage}
-        />
-        <Typography component="p" sx={styles.paragraph}>
-          Welcome back! Please enter your details to log into your account.
-        </Typography>
-        <UpdateProfileForm currentUser={currentUser} image={image} />
+        <UpdateForm onSubmit={mutate} />
       </Box>
     </Box>
   );
