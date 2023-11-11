@@ -11,7 +11,7 @@ import axios from '@/services/axios';
  * @param options - the options to be passed to the useMutation hook
  * @param params - the query params to be sent with the request
  */
-function usePut<Req = any, Res = any>(
+function usePut<Req extends {id?: number} = any, Res = any>(
   endpoint: string,
   options: UseMutationOptions<Res, Error, Req> | null = null,
   params: any = null,
@@ -21,9 +21,9 @@ function usePut<Req = any, Res = any>(
 
   return useMutation<Res, Error, Req>({
     ...options,
-    mutationFn: async (newData: Req) => {
+    mutationFn: async newData => {
       const res = await axios.putForm<Res>(
-        endpoint,
+        `${endpoint}/${newData.id}`,
         {data: JSON.stringify(newData)},
         {params},
       );

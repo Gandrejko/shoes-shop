@@ -13,7 +13,7 @@ import axios from '@/services/axios';
  */
 function useDelete<Res = any>(
   endpoint: string,
-  options: UseMutationOptions<Res> | null = null,
+  options: UseMutationOptions<Res, Error, number> | null = null,
   params: any = null,
 ) {
   const queryClient = useQueryClient();
@@ -21,8 +21,8 @@ function useDelete<Res = any>(
 
   return useMutation({
     ...options,
-    mutationFn: async () => {
-      const res = await axios.delete<Res>(endpoint, {params});
+    mutationFn: async id => {
+      const res = await axios.delete<Res>(`${endpoint}/${id}`, {params});
       return res.data;
     },
     onSuccess: (...props) => {
