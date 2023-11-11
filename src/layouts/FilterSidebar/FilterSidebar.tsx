@@ -1,16 +1,15 @@
+import {Dispatch, SetStateAction, useState} from 'react';
+import {Box, Slider, SxProps, Typography} from '@mui/material';
+
 import useGet from '@/hooks/useGet';
 import theme from '@/styles/theme/commonTheme';
-import {Filters, ResponseData} from '@/types';
-import {
-  BrandAttributes,
-  ColorAttributes,
-  GenderAttributes,
-  SizeAttributes,
-} from '@/types/attributes';
-import {Box, Slider, SxProps, Typography} from '@mui/material';
-import {Dispatch, SetStateAction, useState} from 'react';
 import {Category} from './components/Category';
-import {Data} from '@/types/entities';
+
+import {BrandsResponse} from '@/types/brand';
+import {ColorsResponse} from '@/types/color';
+import {Filters} from '@/types/data';
+import {GendersResponse} from '@/types/gender';
+import {SizesResponse} from '@/types/size';
 
 const styles: Record<string, SxProps> = {
   sidebar: {
@@ -66,16 +65,10 @@ type Props = {
 };
 
 export const FilterSidebar = ({setFilters}: Props) => {
-  const {data: genders} =
-    useGet<ResponseData<Data<GenderAttributes>[]>>('/genders');
-
-  const {data: colors} =
-    useGet<ResponseData<Data<ColorAttributes>[]>>('/colors');
-
-  const {data: brands} =
-    useGet<ResponseData<Data<BrandAttributes>[]>>('/brands');
-
-  const {data: sizes} = useGet<ResponseData<Data<SizeAttributes>[]>>('/sizes');
+  const {data: genders} = useGet<GendersResponse>('/genders');
+  const {data: colors} = useGet<ColorsResponse>('/colors');
+  const {data: brands} = useGet<BrandsResponse>('/brands');
+  const {data: sizes} = useGet<SizesResponse>('/sizes');
 
   const [price, setPrice] = useState<number[]>([20, 37]);
 

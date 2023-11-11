@@ -4,16 +4,11 @@ import ProductSizeList from '@/components/ProductSize/ProductSizeList';
 import Textarea from '@/components/Textarea/Textarea';
 import useGet from '@/hooks/useGet';
 import theme from '@/styles/theme/commonTheme';
-
-import {ResponseData} from '@/types';
-import {
-  BrandAttributes,
-  ColorAttributes,
-  GenderAttributes,
-  SizeAttributes,
-} from '@/types/attributes';
-import {Data} from '@/types/entities';
-import {ProductRequest} from '@/types/requests';
+import {BrandsResponse} from '@/types/brand';
+import {ColorsResponse} from '@/types/color';
+import {GendersResponse} from '@/types/gender';
+import {ProductRequest} from '@/types/product';
+import {SizesResponse} from '@/types/size';
 
 import {Box, Grid, SxProps} from '@mui/material';
 import {UseFormReturn} from 'react-hook-form';
@@ -51,16 +46,10 @@ type FormContainerProps = {
 };
 
 const FormContainer = ({formProps}: FormContainerProps) => {
-  const {data: genders} =
-    useGet<ResponseData<Data<GenderAttributes>[]>>('/genders');
-
-  const {data: colors} =
-    useGet<ResponseData<Data<ColorAttributes>[]>>('/colors');
-
-  const {data: brands} =
-    useGet<ResponseData<Data<BrandAttributes>[]>>('/brands');
-
-  const {data: sizes} = useGet<ResponseData<Data<SizeAttributes>[]>>('/sizes');
+  const {data: genders} = useGet<GendersResponse>('/genders');
+  const {data: colors} = useGet<ColorsResponse>('/colors');
+  const {data: brands} = useGet<BrandsResponse>('/brands');
+  const {data: sizes} = useGet<SizesResponse>('/sizes');
 
   const sizesMapped =
     sizes?.data.map(({id, attributes}) => ({

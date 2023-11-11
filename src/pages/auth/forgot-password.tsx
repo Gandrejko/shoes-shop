@@ -1,7 +1,6 @@
 import {SubmitHandler, useForm} from 'react-hook-form';
-import {Box, Typography, useMediaQuery} from '@mui/material';
+import {Box, Button, Typography, useMediaQuery} from '@mui/material';
 import Link from 'next/link';
-import {Button} from '@/components/Button/Button';
 import {Input} from '@/components/Inputs/Input';
 import Image from 'next/image';
 import axios from 'axios';
