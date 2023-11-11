@@ -1,8 +1,8 @@
-import {ProductRequest} from '@/types/requests';
 import {Box, SxProps, Typography} from '@mui/material';
 import {Controller, UseFormReturn} from 'react-hook-form';
 import ProductSizeItem from './ProductSizeItem';
-import {Size} from '@/types/entities';
+import {ProductRequest} from '@/types/product';
+import {Size} from '@/types/size';
 
 const styles: Record<string, SxProps> = {
   box: {width: '100%'},

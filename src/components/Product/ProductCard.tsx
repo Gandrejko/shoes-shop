@@ -1,5 +1,3 @@
-import {useState} from 'react';
-import Image from 'next/image';
 import {MoreHoriz} from '@mui/icons-material';
 import {
   Box,
@@ -11,9 +9,11 @@ import {
   SxProps,
   Typography,
 } from '@mui/material';
+import Image from 'next/image';
+import {useState} from 'react';
 
+import {ProductAttributes} from '@/types/product';
 import ButtonMenu from './ButtonMenu';
-import type {ProductAttributes} from '@/types/attributes';
 
 const styles: Record<string, SxProps> = {
   card: {

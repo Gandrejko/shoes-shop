@@ -1,10 +1,10 @@
 import theme from '@/styles/theme/commonTheme';
-import {ProductRequest} from '@/types/requests';
 import {Box, Button, SxProps, Typography} from '@mui/material';
 import {FieldErrors, useForm} from 'react-hook-form';
 import {toast} from 'react-toastify';
 import FormContainer from './components/FormContainer';
 import ImagesContainer from './components/ImagesContainer';
+import {ProductRequest} from '@/types/product';
 
 const styles: Record<string, SxProps> = {
   mainContainer: {
