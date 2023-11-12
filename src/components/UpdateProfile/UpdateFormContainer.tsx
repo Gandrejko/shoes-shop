@@ -1,41 +1,19 @@
+import {UpdateFormType} from '@/pages/settings';
 import {Box, Button, SxProps} from '@mui/material';
-import {UseFormReturn} from 'react-hook-form';
 import {Input} from '../Inputs/Input';
 
 const styles: Record<string, SxProps> = {
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    maxWidth: '100%',
-  },
   inputsBox: {
     marginBottom: {xs: 4, sm: 7},
   },
-  button: {alignSelf: 'flex-end', width: {xs: 117, sm: 152}},
+  button: {
+    alignSelf: 'flex-end',
+    width: {xs: 117, sm: 152},
+    fontSize: {xs: 12, sm: 16},
+  },
 };
 
-type UserDataType = {
-  id: number;
-  username: string;
-  email: string;
-  provider: string;
-  confirmed: boolean;
-  blocked: boolean;
-  createdAt: string;
-  updatedAt: string;
-  phoneNumber: string;
-  firstName: string;
-  lastName: string;
-};
-
-type UpdateFormContainerProps = {
-  formProps: Pick<
-    UseFormReturn<Partial<UserDataType>>,
-    'register' | 'control' | 'getValues' | 'setValue' | 'formState'
-  >;
-};
-
-const UpdateFormContainer = ({formProps}: UpdateFormContainerProps) => {
+const UpdateFormContainer = ({formProps}: UpdateFormType) => {
   return (
     <>
       <Box sx={styles.inputsBox}>
@@ -50,7 +28,7 @@ const UpdateFormContainer = ({formProps}: UpdateFormContainerProps) => {
           }}
           required
           errorMessage={formProps.formState.errors.firstName?.message}
-          style={{marginBottom: '24px'}}
+          marginBottom={24}
         />
         <Input
           placeholder="Last Name"
@@ -63,13 +41,14 @@ const UpdateFormContainer = ({formProps}: UpdateFormContainerProps) => {
           }}
           required
           errorMessage={formProps.formState.errors.lastName?.message}
-          style={{marginBottom: '24px'}}
+          marginBottom={24}
         />
         <Input
           placeholder="Email address"
           type="mail"
           labelText="Email"
           name="email"
+          disabled
           register={formProps.register}
           validationSchema={{
             required: 'Email is required',
@@ -80,7 +59,7 @@ const UpdateFormContainer = ({formProps}: UpdateFormContainerProps) => {
           }}
           required
           errorMessage={formProps.formState.errors.email?.message}
-          style={{marginBottom: '24px'}}
+          marginBottom={24}
         />
         <Input
           placeholder="Phone number"

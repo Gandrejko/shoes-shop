@@ -35,6 +35,7 @@ type InputProps = InputBaseProps & {
   name: string;
   errorMessage?: string;
   required?: boolean;
+  marginBottom?: number;
 };
 
 export const Input = ({
@@ -44,11 +45,12 @@ export const Input = ({
   validationSchema,
   errorMessage,
   required,
+  marginBottom,
   ...props
 }: InputProps) => {
   const id = useId();
   return (
-    <Box>
+    <Box sx={{marginBottom: {marginBottom}}}>
       <InputLabel htmlFor={id}>
         {labelText}
         {validationSchema.required && (

@@ -1,15 +1,28 @@
 import Header from '@/components/Header';
 import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
+import UpdateForm from '@/components/UpdateProfile/UpdateForm';
 import {Box, SxProps, Typography} from '@mui/material';
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import axios from 'axios';
 import {useSession} from 'next-auth/react';
 import {ReactElement} from 'react';
+import {UseFormReturn} from 'react-hook-form';
 import {toast} from 'react-toastify';
 import {NextPageWithLayout} from './_app';
-import UpdateForm from '@/components/UpdateProfile/UpdateForm';
-import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 
-type UserDataType = {
+const styles: Record<string, SxProps> = {
+  container: {
+    display: 'flex',
+    padding: {xs: 3, sm: 4, md: 6.5},
+    margin: {xs: '0 auto', md: 0},
+  },
+  box: {flex: 5},
+  header: {
+    marginBottom: {xs: '12px', sm: 4.5},
+  },
+};
+
+export type UserDataType = {
   id: number;
   username: string;
   email: string;
@@ -24,23 +37,11 @@ type UserDataType = {
   avatar: any;
 };
 
-const styles: Record<string, SxProps> = {
-  container: {
-    display: 'flex',
-    padding: {xs: 3, sm: 4, md: 6.5},
-    margin: {xs: '0 auto', md: 0},
-  },
-  box: {flex: 5},
-  h1: {
-    fontSize: {xs: 30, sm: 45},
-    marginBottom: {xs: '12px', sm: 4.5},
-  },
-  paragraph: {
-    fontSize: {xs: 12, sm: 15},
-    fontWeight: 300,
-    marginBottom: {xs: 3, sm: 6},
-    color: '#5c5c5c',
-  },
+export type UpdateFormType = {
+  formProps: Pick<
+    UseFormReturn<Partial<UserDataType>>,
+    'register' | 'control' | 'getValues' | 'setValue' | 'formState'
+  >;
 };
 
 const SettingsPage: NextPageWithLayout = () => {
@@ -78,8 +79,7 @@ const SettingsPage: NextPageWithLayout = () => {
 
       const res = await axios.putForm(
         `${process.env.API_URL}/users/${currentUser?.id}`,
-        // {...userUpdateData, avatar: userUpdateData.avatar?.id ?? null},
-        {data: JSON.stringify(userUpdateData)},
+        {...userUpdateData, avatar: userUpdateData.avatar?.id ?? null},
         config,
       );
       return res.data;
@@ -90,7 +90,7 @@ const SettingsPage: NextPageWithLayout = () => {
       toast.success('Your profile was successfully updated!');
     },
     onError: error => {
-      toast.error(error.message);
+      toast.error('Something went wrong. Please, try again!');
     },
   });
 
@@ -99,10 +99,10 @@ const SettingsPage: NextPageWithLayout = () => {
   return (
     <Box sx={styles.container}>
       <Box sx={styles.box}>
-        <Typography component="h1" sx={styles.h1}>
+        <Typography variant="h1" sx={styles.header}>
           My Profile
         </Typography>
-        <UpdateForm onSubmit={mutate} data={data} />
+        <UpdateForm onSubmit={mutate} userData={data} />
       </Box>
     </Box>
   );

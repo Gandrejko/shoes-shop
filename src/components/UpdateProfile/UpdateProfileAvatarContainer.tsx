@@ -1,10 +1,10 @@
+import {UpdateFormType} from '@/pages/settings';
 import {Avatar, Box, Button, SxProps} from '@mui/material';
-import {useMutation, useQueryClient} from '@tanstack/react-query';
+import {useMutation} from '@tanstack/react-query';
 import axios from 'axios';
 import {useSession} from 'next-auth/react';
 import Image from 'next/image';
 import {ChangeEvent} from 'react';
-import {UseFormReturn} from 'react-hook-form';
 import {toast} from 'react-toastify';
 import HiddenInput from '../Inputs/HiddenInput';
 
@@ -22,51 +22,29 @@ const styles: Record<string, SxProps> = {
   },
   avatarContainer: {
     position: 'relative',
-    overflow: 'hidden',
-
     width: {xs: 100, sm: 150},
     height: {xs: 100, sm: 150},
     marginRight: {xs: 3, sm: 9.5},
     borderRadius: '100%',
+    overflow: 'hidden',
   },
   avatar: {
+    fontSize: 45,
     width: {xs: 100, sm: 150},
     height: {xs: 100, sm: 150},
     backgroundColor: 'primary.main',
   },
   button: {
-    width: 152,
+    fontSize: {xs: 12, sm: 16},
+    width: {xs: 117, sm: 152},
   },
 };
 
-type UserDataType = {
-  id: number;
-  username: string;
-  email: string;
-  provider: string;
-  confirmed: boolean;
-  blocked: boolean;
-  createdAt: string;
-  updatedAt: string;
-  phoneNumber: string;
-  firstName: string;
-  lastName: string;
-  avatar: any;
-};
-
-type UpdateProfileAvatarContainerProps = {
-  formProps: Pick<
-    UseFormReturn<Partial<UserDataType>>,
-    'register' | 'control' | 'getValues' | 'setValue' | 'formState'
-  >;
-};
-
-const UpdateProfileAvatarContainer = ({
-  formProps,
-}: UpdateProfileAvatarContainerProps) => {
+const UpdateProfileAvatarContainer = ({formProps}: UpdateFormType) => {
   const {data: session} = useSession();
   const currentUser = session?.user;
   const token = session?.user.accessToken;
+  const avatar = formProps.getValues().avatar;
 
   const {mutate: uploadImage} = useMutation({
     mutationFn: async (formData: FormData) => {
@@ -85,7 +63,7 @@ const UpdateProfileAvatarContainer = ({
       formProps.setValue('avatar', {id: data.id, url: data.url});
     },
     onError: error => {
-      toast.error(error.message);
+      toast.error('Something went wrong. Please, try again!');
     },
   });
 
@@ -121,8 +99,6 @@ const UpdateProfileAvatarContainer = ({
     uploadImage(formData);
   };
 
-  const avatar = formProps.getValues().avatar;
-
   return (
     <Box sx={styles.headerBox}>
       <Box sx={styles.avatarContainer}>
@@ -131,6 +107,7 @@ const UpdateProfileAvatarContainer = ({
             src={avatar.url}
             alt={currentUser?.username}
             fill
+            sizes="100%"
             style={{objectFit: 'cover'}}
           />
         ) : (
