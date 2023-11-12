@@ -159,7 +159,9 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
           <Typography variant="h1">
             {product ? 'Edit product' : 'Add a product'}
           </Typography>
-          <Button type="submit">Save</Button>
+          <Button variant="contained" type="submit">
+            Save
+          </Button>
         </Box>
         <Typography sx={styles.description}>
           Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in
