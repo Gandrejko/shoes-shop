@@ -6,6 +6,7 @@ import {Modal} from '../Modal/Modal';
 import {useState} from 'react';
 import {useSession} from 'next-auth/react';
 import {useRouter} from 'next/router';
+import theme from '@/styles/theme/commonTheme';
 
 const styles: Record<string, SxProps> = {
   appBar: {
@@ -14,6 +15,10 @@ const styles: Record<string, SxProps> = {
     backgroundColor: '#FFFFFF',
     border: 'none',
     boxShadow: 'none',
+    zIndex: theme.zIndex.drawer + 1,
+    [theme.breakpoints.down('md')]: {
+      zIndex: theme.zIndex.drawer - 1,
+    },
   },
 };
 

@@ -1,5 +1,13 @@
 import {Dispatch, SetStateAction, useState} from 'react';
-import {Box, Slider, SxProps, Typography} from '@mui/material';
+import {
+  Drawer,
+  IconButton,
+  Slider,
+  Stack,
+  SxProps,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
 
 import useGet from '@/hooks/useGet';
 import theme from '@/styles/theme/commonTheme';
@@ -10,13 +18,20 @@ import {ColorsResponse} from '@/types/color';
 import {Filters} from '@/types/data';
 import {GendersResponse} from '@/types/gender';
 import {SizesResponse} from '@/types/size';
+import Image from 'next/image';
 
 const styles: Record<string, SxProps> = {
   sidebar: {
-    width: '320px',
+    '& .MuiDrawer-paper': {
+      width: 320,
+      height: {md: 'calc(100% - 120px)'},
+      marginTop: {md: '120px'},
+      border: 'none',
+    },
+    transition: 'width 0.2s ease-in-out',
   },
   header: {
-    padding: '44px 40px 16px',
+    padding: {xs: '26px 20px', md: '44px 40px 16px'},
   },
   slider: {
     marginTop: '25px',
@@ -61,16 +76,19 @@ const styles: Record<string, SxProps> = {
 };
 
 type Props = {
+  open: boolean;
+  onClose: () => void;
   setFilters: Dispatch<SetStateAction<Filters>>;
 };
 
-export const FilterSidebar = ({setFilters}: Props) => {
+export const FilterSidebar = ({setFilters, open, onClose}: Props) => {
+  const [price, setPrice] = useState<number[]>([20, 37]);
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
   const {data: genders} = useGet<GendersResponse>('/genders');
   const {data: colors} = useGet<ColorsResponse>('/colors');
   const {data: brands} = useGet<BrandsResponse>('/brands');
   const {data: sizes} = useGet<SizesResponse>('/sizes');
-
-  const [price, setPrice] = useState<number[]>([20, 37]);
 
   const handleChange = (event: Event, newValue: number | number[]) => {
     setPrice(newValue as number[]);
@@ -80,13 +98,27 @@ export const FilterSidebar = ({setFilters}: Props) => {
   const productCount = 137;
 
   return (
-    <Box sx={styles.sidebar}>
-      <Box sx={styles.header}>
-        <Typography>Shoes/{searchValue}</Typography>
-        <Typography sx={styles.searchValue}>
-          {searchValue} ({productCount})
-        </Typography>
-      </Box>
+    <Drawer
+      open={open}
+      onClose={onClose}
+      anchor={isMobile ? 'right' : 'left'}
+      variant={isMobile ? 'temporary' : 'persistent'}
+      sx={{...styles.sidebar, width: open ? 320 : 0}}
+    >
+      <Stack sx={styles.header}>
+        {isMobile ? (
+          <IconButton onClick={onClose} sx={{marginLeft: 'auto'}}>
+            <Image src="/icons/burgerClose.svg" alt="" width={20} height={20} />
+          </IconButton>
+        ) : (
+          <>
+            <Typography>Shoes/{searchValue}</Typography>
+            <Typography sx={styles.searchValue}>
+              {searchValue} ({productCount})
+            </Typography>
+          </>
+        )}
+      </Stack>
       <Category
         name="Gender"
         onChangeFilter={genderId => {
@@ -141,6 +173,6 @@ export const FilterSidebar = ({setFilters}: Props) => {
           name: attributes.value!,
         }))}
       />
-    </Box>
+    </Drawer>
   );
 };
