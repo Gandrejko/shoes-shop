@@ -1,25 +1,24 @@
 import {
   Box,
   Button,
-  Container,
   Stack,
   SxProps,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
 import Image from 'next/image';
-import {useRouter} from 'next/router';
-import {ReactElement, useState} from 'react';
+import {ReactElement, useEffect, useState} from 'react';
 
 import Header from '@/components/Header';
 import ProductList from '@/components/Product/ProductList';
 import {FilterSidebar} from '@/layouts/FilterSidebar/FilterSidebar';
 import {NextPageWithLayout} from '@/pages/_app';
-import {Filters} from '@/types';
+import theme from '@/styles/theme/commonTheme';
+import {Filters} from '@/types/data';
 
 const styles: Record<string, SxProps> = {
   container: {
-    padding: {xs: 0, md: '35px 16px'},
-    marginLeft: {xs: 0, md: 3},
+    padding: {xs: 0, md: '35px'},
     marginTop: 3,
   },
   productsContainer: {
@@ -33,33 +32,45 @@ const styles: Record<string, SxProps> = {
 };
 
 const MyProducts: NextPageWithLayout = () => {
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
   const [filters, setFilters] = useState({} as Filters);
+  const [showFilters, setShowFilters] = useState(!isMobile);
+
+  useEffect(() => {
+    setShowFilters(!isMobile);
+  }, [isMobile]);
 
   return (
-    <Stack direction="row">
-      <FilterSidebar setFilters={setFilters} />
-      <Container maxWidth="xl" sx={styles.container}>
+    <Stack direction="row" justifyContent="center">
+      <FilterSidebar
+        open={showFilters}
+        onClose={() => setShowFilters(false)}
+        setFilters={setFilters}
+      />
+      <Box sx={styles.container} marginLeft={showFilters && !isMobile ? 2 : 0}>
         <Box sx={styles.productsContainer}>
           <Stack direction="row" sx={styles.productsHeader}>
             <Typography variant="h1">Search Results</Typography>
             <Button
               variant="text"
               sx={{color: 'text.secondary'}}
+              onClick={() => setShowFilters(!showFilters)}
               endIcon={
                 <Image
-                  src="/icons/filtersHide.svg"
+                  src={`/icons/filters${showFilters ? 'Hide' : 'Show'}.svg`}
                   alt=""
                   width={24}
                   height={24}
                 />
               }
             >
-              Hide Filters
+              {showFilters && 'Hide'} Filters
             </Button>
           </Stack>
-          <ProductList params={filters} />
+          <ProductList params={filters} fullWidth={!showFilters} />
         </Box>
-      </Container>
+      </Box>
     </Stack>
   );
 };
