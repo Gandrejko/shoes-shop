@@ -121,8 +121,17 @@ export const FilterSidebar = ({setFilters, open, onClose}: Props) => {
       </Stack>
       <Category
         name="Gender"
-        onChangeFilter={genderId => {
-          setFilters(prevFilters => ({...prevFilters, gender: genderId}));
+        onAddFilter={genderId => {
+          setFilters(prevFilters => ({
+            ...prevFilters,
+            gender: [...prevFilters.genders!, genderId],
+          }));
+        }}
+        onRemoveFilter={genderId => {
+          setFilters(prevFilters => ({
+            ...prevFilters,
+            gender: prevFilters.genders!.filter(id => id !== genderId),
+          }));
         }}
         options={genders?.data.map(({id, attributes}) => ({
           id,
@@ -131,11 +140,18 @@ export const FilterSidebar = ({setFilters, open, onClose}: Props) => {
       />
       <Category
         name="Colors"
-        onChangeFilter={colorId =>
+        onAddFilter={colorId => {
           setFilters(prevFilters => ({
+            ...prevFilters,
             colors: [...prevFilters.colors!, colorId],
-          }))
-        }
+          }));
+        }}
+        onRemoveFilter={colorId => {
+          setFilters(prevFilters => ({
+            ...prevFilters,
+            colors: prevFilters.colors!.filter(id => id !== colorId),
+          }));
+        }}
         options={colors?.data.map(({id, attributes}) => ({
           id,
           name: attributes.name!,
@@ -143,15 +159,24 @@ export const FilterSidebar = ({setFilters, open, onClose}: Props) => {
       />
       <Category
         name="Brands"
-        onChangeFilter={brandId => {
-          setFilters(prevFilters => ({...prevFilters, brand: brandId}));
+        onAddFilter={brandId => {
+          setFilters(prevFilters => ({
+            ...prevFilters,
+            brands: [...prevFilters.brands!, brandId],
+          }));
+        }}
+        onRemoveFilter={brandId => {
+          setFilters(prevFilters => ({
+            ...prevFilters,
+            brands: prevFilters.brands!.filter(id => id !== brandId),
+          }));
         }}
         options={brands?.data.map(({id, attributes}) => ({
           id,
           name: attributes.name!,
         }))}
       />
-      <Category name="Price" onChangeFilter={() => {}}>
+      <Category name="Price">
         <Slider
           getAriaLabel={() => 'Temperature range'}
           value={price}
@@ -163,11 +188,18 @@ export const FilterSidebar = ({setFilters, open, onClose}: Props) => {
       </Category>
       <Category
         name="Sizes"
-        onChangeFilter={sizeId =>
+        onAddFilter={sizeId => {
           setFilters(prevFilters => ({
+            ...prevFilters,
             sizes: [...prevFilters.sizes!, sizeId],
-          }))
-        }
+          }));
+        }}
+        onRemoveFilter={sizeId => {
+          setFilters(prevFilters => ({
+            ...prevFilters,
+            sizes: prevFilters.sizes!.filter(id => id !== sizeId),
+          }));
+        }}
         options={sizes?.data.map(({id, attributes}) => ({
           id,
           name: attributes.value!,

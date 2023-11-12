@@ -7,6 +7,7 @@ export type User = {
   email: string;
   username: string;
   phoneNumber?: string | null;
+  avatar?: Image | null;
 };
 
 export type UserAttributes = Partial<

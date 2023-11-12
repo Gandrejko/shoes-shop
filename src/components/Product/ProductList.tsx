@@ -12,23 +12,11 @@ const styles: Record<string, SxProps> = {
 };
 
 type Props = {
-  params?: any;
+  products?: ProductsResponse;
   fullWidth?: boolean;
 };
 
-const ProductList = ({params = null, fullWidth = false}: Props) => {
-  const {data: products, isLoading} = useGet<ProductsResponse>(
-    '/products',
-    null,
-    {
-      populate: 'images,gender',
-      'filters[teamName]': 'team-3',
-      ...params,
-    },
-  );
-
-  if (isLoading) return <div>Loading...</div>;
-
+const ProductList = ({products, fullWidth = false}: Props) => {
   return (
     <Grid
       container

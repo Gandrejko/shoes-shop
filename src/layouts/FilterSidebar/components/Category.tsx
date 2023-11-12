@@ -33,14 +33,16 @@ type CategoryProps = {
     id: number;
     name: string | number;
   }[];
-  onChangeFilter: (id: number) => void;
+  onAddFilter?: (id: number) => void;
+  onRemoveFilter?: (id: number) => void;
 };
 
 export const Category = ({
   name,
   children,
   options,
-  onChangeFilter,
+  onAddFilter,
+  onRemoveFilter,
 }: CategoryProps) => {
   return (
     <>
@@ -57,7 +59,8 @@ export const Category = ({
                 key={id}
                 id={id}
                 name={name}
-                onChangeFilter={onChangeFilter}
+                onAddFilter={onAddFilter!}
+                onRemoveFilter={onRemoveFilter!}
               />
             ))}
           </Box>

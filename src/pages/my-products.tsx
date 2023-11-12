@@ -16,6 +16,10 @@ import {NextPageWithLayout} from '@/pages/_app';
 import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
 import ProductList from '@/components/Product/ProductList';
 import Header from '@/components/Header';
+import useGet from '@/hooks/useGet';
+import {ProductsResponse} from '@/types/product';
+import Link from 'next/link';
+import {useSession} from 'next-auth/react';
 
 const styles: Record<string, SxProps> = {
   container: {
@@ -76,7 +80,24 @@ const styles: Record<string, SxProps> = {
 
 const MyProducts: NextPageWithLayout = () => {
   const router = useRouter();
+  const {data} = useSession();
+
   const productId = router.query.productId as string;
+
+  const {
+    data: products,
+    isLoading,
+    isError,
+  } = useGet<ProductsResponse>('/products', null, {
+    populate: 'images,gender',
+    'filters[userID]': userID,
+    'filters[teamName]': 'team-3',
+  });
+
+  // TODO: show loading and error pages
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error</div>;
+
   const userImage = null; // TODO: temporary
 
   return (
@@ -106,11 +127,16 @@ const MyProducts: NextPageWithLayout = () => {
       <Box sx={styles.productsContainer}>
         <Stack direction="row" sx={styles.productsHeader}>
           <Typography variant="h1">My Products</Typography>
-          <Button sx={{textTransform: 'none', padding: '8px 24px'}}>
+          <Button
+            LinkComponent={Link}
+            href="/add-product"
+            variant="contained"
+            sx={{textTransform: 'none', padding: '8px 24px'}}
+          >
             Add product
           </Button>
         </Stack>
-        <ProductList />
+        <ProductList products={products} />
       </Box>
     </Container>
   );

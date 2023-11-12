@@ -15,6 +15,8 @@ import {FilterSidebar} from '@/layouts/FilterSidebar/FilterSidebar';
 import {NextPageWithLayout} from '@/pages/_app';
 import theme from '@/styles/theme/commonTheme';
 import {Filters} from '@/types/data';
+import useGet from '@/hooks/useGet';
+import {ProductsResponse} from '@/types/product';
 
 const styles: Record<string, SxProps> = {
   container: {
@@ -37,9 +39,20 @@ const MyProducts: NextPageWithLayout = () => {
   const [filters, setFilters] = useState({} as Filters);
   const [showFilters, setShowFilters] = useState(!isMobile);
 
+  const {data: products, isLoading} = useGet<ProductsResponse>(
+    '/products',
+    null,
+    {
+      populate: '*',
+      'filters[teamName]': 'team-3',
+    },
+  );
+
   useEffect(() => {
     setShowFilters(!isMobile);
   }, [isMobile]);
+
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     <Stack direction="row" justifyContent="center">
@@ -68,7 +81,7 @@ const MyProducts: NextPageWithLayout = () => {
               {showFilters && 'Hide'} Filters
             </Button>
           </Stack>
-          <ProductList params={filters} fullWidth={!showFilters} />
+          <ProductList products={products} fullWidth={!showFilters} />
         </Box>
       </Box>
     </Stack>

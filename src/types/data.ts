@@ -29,8 +29,10 @@ type Pagination = {
 };
 
 export type Filters = Partial<{
-  gender: number;
-  brand: number;
+  genders: number[];
   colors: number[];
+  brands: number[];
   sizes: number[];
+  minPrice: number;
+  maxPrice: number;
 }>;
