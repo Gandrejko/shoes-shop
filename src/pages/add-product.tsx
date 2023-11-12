@@ -11,11 +11,11 @@ const AddProduct = () => {
   const router = useRouter();
   const session = useSession();
   const token = session.data?.user.accessToken;
-  console.log(token);
+
   const {mutate} = useMutation({
     mutationFn: (data: any) => {
       return axios.post(
-        `${process.env.API_URL}/products`,
+        `https://shoes-shop-strapi.herokuapp.com/api/products`,
         {data},
         {
           headers: {
@@ -27,7 +27,7 @@ const AddProduct = () => {
     },
     onSuccess: () => {
       toast.success('Product added successfully');
-      router.push(`/`);
+      router.push('/my-products');
     },
     onError: () => {
       toast.error('Something went wrong');

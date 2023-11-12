@@ -9,18 +9,18 @@ const Home = () => {
 
   useEffect(() => {
     const value = JSON.parse(localStorage.getItem('signInJustNow') || '{}');
-
-    if (typeof value !== 'object' && value) {
+    
+    if (typeof value !== 'object' && value && session) {
       toast.success(`Hello, ${session?.user.username}!`);
       localStorage.setItem('signInJustNow', JSON.stringify(false));
     }
-  }, []);
+  }, [session?.user.username]);
 
   useEffect(() => {
     if (status === 'authenticated') {
       const value = localStorage.getItem('accessToken');
 
-      if (value === null || value === undefined) {
+      if (value) {
         localStorage.setItem(
           'accessToken',
           JSON.stringify(session?.user.accessToken),

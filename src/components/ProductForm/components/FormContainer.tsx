@@ -1,20 +1,17 @@
 import Dropdown from '@/components/Dropdown/Dropdown';
 import {Input} from '@/components/Inputs/Input';
 import ProductSizeList from '@/components/ProductSize/ProductSizeList';
-import theme from '@/styles/theme/commonTheme';
-import {
-  BrandsResponse,
-  ColorsResponse,
-  GendersResponse,
-  SizesResponse,
-} from '@/types';
-import {useQuery} from '@tanstack/react-query';
-import axios, {AxiosResponse} from 'axios';
-import {ProductData} from '../ProductForm';
-import {Box, Grid, SxProps} from '@mui/material';
-import React from 'react';
-import {Controller, UseFormReturn} from 'react-hook-form';
 import Textarea from '@/components/Textarea/Textarea';
+import useGet from '@/hooks/useGet';
+import theme from '@/styles/theme/commonTheme';
+import {BrandsResponse} from '@/types/brand';
+import {ColorsResponse} from '@/types/color';
+import {GendersResponse} from '@/types/gender';
+import {ProductRequest} from '@/types/product';
+import {SizesResponse} from '@/types/size';
+
+import {Box, Grid, SxProps} from '@mui/material';
+import {UseFormReturn} from 'react-hook-form';
 
 const styles: Record<string, SxProps> = {
   dropdowns: {
@@ -43,34 +40,22 @@ const styles: Record<string, SxProps> = {
 
 type FormContainerProps = {
   formProps: Pick<
-    UseFormReturn<ProductData>,
+    UseFormReturn<ProductRequest>,
     'register' | 'control' | 'getValues' | 'setValue'
   >;
 };
 
 const FormContainer = ({formProps}: FormContainerProps) => {
-  const {data: genders} = useQuery<AxiosResponse<GendersResponse>>({
-    queryKey: ['genders'],
-    queryFn: () => axios.get(`${process.env.API_URL}/genders`),
-  });
-  const {data: colors} = useQuery<AxiosResponse<ColorsResponse>>({
-    queryKey: ['colors'],
-    queryFn: () => axios.get(`${process.env.API_URL}/colors`),
-  });
-  const {data: brands} = useQuery<AxiosResponse<BrandsResponse>>({
-    queryKey: ['brands'],
-    queryFn: () => axios.get(`${process.env.API_URL}/brands`),
-  });
-  const {data: sizes} = useQuery<AxiosResponse<SizesResponse>>({
-    queryKey: ['sizes'],
-    queryFn: () => axios.get(`${process.env.API_URL}/sizes`),
-  });
+  const {data: genders} = useGet<GendersResponse>('/genders');
+  const {data: colors} = useGet<ColorsResponse>('/colors');
+  const {data: brands} = useGet<BrandsResponse>('/brands');
+  const {data: sizes} = useGet<SizesResponse>('/sizes');
 
   const sizesMapped =
-    sizes?.data.data.map(({id, attributes: {value}}) => ({
+    sizes?.data.map(({id, attributes}) => ({
       id,
-      value,
-    })) || [];
+      value: attributes.value!,
+    })) ?? [];
 
   const checkSize = (id: number, isChecked: boolean) => {
     const oldSizes = formProps.getValues('sizes') || [];
@@ -81,6 +66,7 @@ const FormContainer = ({formProps}: FormContainerProps) => {
         : oldSizes.filter(size => size.id !== id);
     formProps.setValue('sizes', newSizes);
   };
+
   return (
     <Grid sx={styles.formContainer}>
       <Input
@@ -113,9 +99,9 @@ const FormContainer = ({formProps}: FormContainerProps) => {
           labelText="Gender"
           register={formProps.register}
           validationSchema={undefined}
-          options={genders?.data.data.map(({id, attributes}) => ({
+          options={genders?.data.map(({id, attributes}) => ({
             value: id,
-            text: attributes.name,
+            text: attributes.name!,
           }))}
         />
         <Dropdown
@@ -123,9 +109,9 @@ const FormContainer = ({formProps}: FormContainerProps) => {
           labelText="Brand"
           register={formProps.register}
           validationSchema={undefined}
-          options={brands?.data.data.map(({id, attributes}) => ({
+          options={brands?.data.map(({id, attributes}) => ({
             value: id,
-            text: attributes.name,
+            text: attributes.name!,
           }))}
         />
       </Box>
