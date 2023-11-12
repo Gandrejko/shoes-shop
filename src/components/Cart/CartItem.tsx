@@ -1,5 +1,7 @@
-import {Box, Typography, Button} from '@mui/material';
+import { useState } from 'react';
+import { Box, Typography, Button } from '@mui/material';
 import Image from 'next/image';
+import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 
 type Product = {
   id: number;
@@ -8,9 +10,40 @@ type Product = {
   gender: string;
   available: string;
   price: number;
+  quantity: number;
+};
+type ProductItemProps = {
+ product: any;
+  cartIds: [id: number];
 };
 
-const ProductItem = ({product}: {product: Product}) => {
+const ProductItem: React.FC<ProductItemProps> = ({ product, cartIds }) => {
+  const queryClient = useQueryClient();
+
+  const { mutate: deleteProduct } = useMutation({
+    mutationKey: ['cart'],
+    mutationFn: async () => {
+      const updatedCart = Object.keys(cartIds).filter((productId) => productId !== product.id.toString());
+      localStorage.setItem('cart', JSON.stringify(updatedCart));
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['cart'] });
+    },
+  });
+
+
+  const { mutate: editProduct } = useMutation({
+    mutationKey: ['cart'],
+    mutationFn: async (type: "inc" | "dec") => {
+
+      localStorage.setItem('cart', JSON.stringify({...cartIds, [product.id]: type == "inc" ? cartIds[product.id] + 1 :  cartIds[product.id] - 1}));
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['cart'] });
+    },
+  });
+
+
   return (
     <Box
       sx={{
@@ -20,31 +53,15 @@ const ProductItem = ({product}: {product: Product}) => {
         marginTop: '40px',
       }}
     >
-      <Box sx={{display: 'flex', marginBottom: 4}}>
-        <Image
-          src={product.image}
-          alt={product.name}
-          width={220}
-          height={220}
-        />
+      <Box sx={{ display: 'flex', marginBottom: 4 }}>
+        <Image src={product?.image} alt={product?.name} width={220} height={220} />
         <Box>
-          <Typography sx={{fontWeight: '500', fontSize: 30, marginLeft: 2}}>
-            {product.name}
+          <Typography sx={{ fontWeight: '500', fontSize: 30, marginLeft: 2 }}>
+            {product?.name}
           </Typography>
-          <Typography sx={{color: '#5C5C5C', fontSize: 18, marginLeft: 2}}>
-            {product.gender}`&apos;s shoes
+          <Typography sx={{ color: '#5C5C5C', fontSize: 18, marginLeft: 2 }}>
+            {product?.gender}&apos;s shoes
           </Typography>
-          <Typography
-            sx={{
-              color: '#FE645E',
-              fontWeight: '600',
-              fontSize: 18,
-              marginLeft: 2,
-            }}
-          >
-            {product.available}
-          </Typography>
-
           <Box
             sx={{
               display: 'flex',
@@ -65,7 +82,7 @@ const ProductItem = ({product}: {product: Product}) => {
                 marginTop: 1,
               }}
             >
-              ${product.price}
+              ${product?.price}
             </Typography>
             <Box
               sx={{
@@ -85,11 +102,12 @@ const ProductItem = ({product}: {product: Product}) => {
                   borderRadius: '50%',
                   border: 'none',
                 }}
+                onClick={() => editProduct("dec")}
               >
                 -
               </Button>
-              <Typography sx={{fontWeight: '400', fontSize: 24, marginLeft: 2}}>
-                Quantity
+              <Typography sx={{ fontWeight: '400', fontSize: 24, marginLeft: 2 }}>
+                {cartIds[product?.id]}
               </Typography>
               <Button
                 sx={{
@@ -101,42 +119,24 @@ const ProductItem = ({product}: {product: Product}) => {
                   border: 'none',
                   marginLeft: 2,
                 }}
+                onClick={() => editProduct("inc")}
               >
                 +
               </Button>
-              <Typography
-                sx={{
-                  fontWeight: '400',
-                  fontSize: 24,
-                  marginLeft: 2,
-                  marginRight: 2,
-                }}
-              >
-                |
-              </Typography>
-              <Image
-                style={{cursor: 'pointer'}}
-                src="/icons/deleteFromChart.svg" // Use a leading slash for relative paths
-                width={32}
-                height={32}
-                alt="delete"
-              />
-              <Typography
-                sx={{
-                  cursor: 'pointer',
-                  fontWeight: '400',
-                  fontSize: 24,
-                  marginLeft: 1,
-                  color: '#6E7278',
-                }}
+
+              <Button
+                onClick={() => deleteProduct()}
+                variant='outlined'
+                sx={{ marginLeft: '10px', width: '90px' }}
               >
                 Delete
-              </Typography>
+              </Button>
+
             </Box>
           </Box>
         </Box>
       </Box>
-    </Box>
+    </Box >
   );
 };
 
