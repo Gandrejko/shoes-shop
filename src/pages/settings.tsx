@@ -1,14 +1,13 @@
 import Header from '@/components/Header';
 import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
 import {Box, SxProps, Typography} from '@mui/material';
-import {useQueryClient} from '@tanstack/react-query';
 import axios from 'axios';
 import {useSession} from 'next-auth/react';
 import {ReactElement} from 'react';
-import {useMutation} from 'react-query';
 import {toast} from 'react-toastify';
 import {NextPageWithLayout} from './_app';
 import UpdateForm from '@/components/UpdateProfile/UpdateForm';
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 
 type UserDataType = {
   id: number;
@@ -22,6 +21,7 @@ type UserDataType = {
   phoneNumber: string;
   firstName: string;
   lastName: string;
+  avatar: any;
 };
 
 const styles: Record<string, SxProps> = {
@@ -44,38 +44,57 @@ const styles: Record<string, SxProps> = {
 };
 
 const SettingsPage: NextPageWithLayout = () => {
-  // const queryClient = useQueryClient();
-  const {data: session, update} = useSession();
+  const queryClient = useQueryClient();
+  const {data: session, update, status} = useSession();
   const token = session?.user.accessToken;
   const currentUser = session?.user;
 
-  const {mutate, isLoading} = useMutation({
+  const {data, isLoading} = useQuery({
+    queryKey: ['users', currentUser?.id],
+    queryFn: async () => {
+      if (status === 'loading') return null;
+
+      const url = `${process.env.API_URL}/users/${currentUser?.id}`;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          populate: 'avatar',
+        },
+      };
+      const res = await axios.get(url, config);
+      return res.data;
+    },
+  });
+
+  const {mutate} = useMutation({
     mutationFn: async (userUpdateData: Partial<UserDataType>) => {
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data',
         },
       };
 
-      return axios.put(
-        `${process.env.API_URL}/users/${currentUser.id}`,
-        // {...userUpdateData, avatar: image.id},
-        {...userUpdateData},
+      const res = await axios.putForm(
+        `${process.env.API_URL}/users/${currentUser?.id}`,
+        // {...userUpdateData, avatar: userUpdateData.avatar?.id ?? null},
+        {data: JSON.stringify(userUpdateData)},
         config,
       );
+      return res.data;
     },
     onSuccess: newData => {
-      // queryClient.invalidateQueries({queryKey: ['users', currentUser.id]});
+      queryClient.invalidateQueries({queryKey: ['users', currentUser?.id]});
       update(newData);
       toast.success('Your profile was successfully updated!');
     },
-    onError: () => {
-      toast.error('Something went wrong. Please, try again.');
+    onError: error => {
+      toast.error(error.message);
     },
   });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div>Loading</div>;
 
   return (
     <Box sx={styles.container}>
@@ -83,7 +102,7 @@ const SettingsPage: NextPageWithLayout = () => {
         <Typography component="h1" sx={styles.h1}>
           My Profile
         </Typography>
-        <UpdateForm onSubmit={mutate} />
+        <UpdateForm onSubmit={mutate} data={data} />
       </Box>
     </Box>
   );

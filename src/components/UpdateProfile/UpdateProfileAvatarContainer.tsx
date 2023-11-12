@@ -1,5 +1,5 @@
 import {Avatar, Box, Button, SxProps} from '@mui/material';
-import {useMutation} from '@tanstack/react-query';
+import {useMutation, useQueryClient} from '@tanstack/react-query';
 import axios from 'axios';
 import {useSession} from 'next-auth/react';
 import Image from 'next/image';
@@ -30,7 +30,6 @@ const styles: Record<string, SxProps> = {
     borderRadius: '100%',
   },
   avatar: {
-    fontSize: {xs: 30, sm: 45},
     width: {xs: 100, sm: 150},
     height: {xs: 100, sm: 150},
     backgroundColor: 'primary.main',
@@ -83,7 +82,7 @@ const UpdateProfileAvatarContainer = ({
       return res.data[0];
     },
     onSuccess: (data: any) => {
-      formProps.setValue?.('avatar', {id: data.id, image: data.id});
+      formProps.setValue('avatar', {id: data.id, url: data.url});
     },
     onError: error => {
       toast.error(error.message);
@@ -103,7 +102,7 @@ const UpdateProfileAvatarContainer = ({
       return res.data;
     },
     onSuccess: () => {
-      formProps.setValue?.('avatar', null);
+      formProps.setValue('avatar', null);
     },
     onError: error => {
       toast.error(error.message);
@@ -112,26 +111,30 @@ const UpdateProfileAvatarContainer = ({
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
+
     if (!files) return;
 
     const formData = new FormData();
+
     formData.append('files', files[0]);
 
     uploadImage(formData);
   };
 
+  const avatar = formProps.getValues().avatar;
+
   return (
     <Box sx={styles.headerBox}>
       <Box sx={styles.avatarContainer}>
-        {currentUser.avatar ? (
+        {avatar ? (
           <Image
-            src={currentUser.avatar.url}
-            alt={currentUser.username}
+            src={avatar.url}
+            alt={currentUser?.username}
             fill
             style={{objectFit: 'cover'}}
           />
         ) : (
-          <Avatar sx={styles.avatar} src="/" alt={currentUser.username} />
+          <Avatar sx={styles.avatar} src="/" alt={currentUser?.username} />
         )}
       </Box>
       <Box sx={styles.buttonsBox}>
@@ -142,7 +145,7 @@ const UpdateProfileAvatarContainer = ({
         <Button
           variant="contained"
           type="button"
-          onClick={() => deleteImage(currentUser.avatar.id)}
+          onClick={() => deleteImage(avatar.id)}
           sx={styles.button}
         >
           Delete

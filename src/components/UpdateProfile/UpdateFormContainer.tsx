@@ -99,7 +99,7 @@ const UpdateFormContainer = ({formProps}: UpdateFormContainerProps) => {
           errorMessage={formProps.formState.errors.phoneNumber?.message}
         />
       </Box>
-      <Button variant="contained" type="submit" style={styles.button}>
+      <Button variant="contained" type="submit" sx={styles.button}>
         Save changes
       </Button>
     </>

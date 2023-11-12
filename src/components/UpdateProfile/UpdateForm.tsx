@@ -3,6 +3,7 @@ import {useSession} from 'next-auth/react';
 import {useForm} from 'react-hook-form';
 import UpdateFormContainer from './UpdateFormContainer';
 import UpdateProfileAvatarContainer from './UpdateProfileAvatarContainer';
+import {useQueryClient} from '@tanstack/react-query';
 
 type UserDataType = {
   id: number;
@@ -23,45 +24,32 @@ type UpdateFormProps = {
   onSubmit: (data: any) => void;
 };
 
-const UpdateForm = ({onSubmit}: UpdateFormProps) => {
+const UpdateForm = ({onSubmit, data}: UpdateFormProps) => {
   const {data: session} = useSession();
   const currentUser = session?.user;
-  const {
-    register,
-    handleSubmit,
-    control,
-    getValues,
-    setValue,
-    formState: {errors},
-  } = useForm<Partial<UserDataType>>({
-    defaultValues: {
-      firstName: currentUser.firstName ?? '',
-      lastName: currentUser.lastName ?? '',
-      email: currentUser.email,
-      phoneNumber: currentUser.phoneNumber ?? '',
-      avatar: currentUser.avatar,
-    },
-  });
 
-  const handleOnSubmit = () => {
-    const values = getValues();
-    const data = Object.keys(values).reduce((acc, key) => {
-      const value = (values as any)[key];
-      if (Boolean(value)) {
-        (acc as any)[key] = value;
-      }
-      return acc;
+  const {register, handleSubmit, control, getValues, setValue, formState} =
+    useForm<Partial<UserDataType>>({
+      defaultValues: {
+        firstName: data?.firstName ?? '',
+        lastName: data?.lastName ?? '',
+        email: data?.email,
+        phoneNumber: data?.phoneNumber ?? '',
+        avatar: data?.avatar ?? null,
+      },
     });
 
+  const handleOnSubmit = () => {
+    const data = getValues();
     onSubmit(data);
   };
 
   return (
     <Box component="form" onSubmit={handleSubmit(handleOnSubmit)}>
-      <UpdateFormContainer
+      <UpdateProfileAvatarContainer
         formProps={{register, control, getValues, setValue, formState}}
       />
-      <UpdateProfileAvatarContainer
+      <UpdateFormContainer
         formProps={{register, control, getValues, setValue, formState}}
       />
     </Box>
