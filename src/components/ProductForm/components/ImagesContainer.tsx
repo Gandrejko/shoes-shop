@@ -1,5 +1,8 @@
 import ImageCard from '@/components/ProductForm/components/ImageCard';
-import {ProductFormData} from '@/components/ProductForm/ProductForm';
+import {
+  ProductFormContext,
+  ProductFormData,
+} from '@/components/ProductForm/ProductForm';
 import theme from '@/styles/theme/commonTheme';
 import {ProductRequest} from '@/types/product';
 import {Box, Grid, InputBase, SxProps, Typography} from '@mui/material';
@@ -7,7 +10,7 @@ import {useMutation} from '@tanstack/react-query';
 import axios from 'axios';
 import {useSession} from 'next-auth/react';
 import Image from 'next/image';
-import React, {useRef} from 'react';
+import React, {useContext, useRef} from 'react';
 import {Controller, UseFormReturn} from 'react-hook-form';
 
 const styles: Record<string, SxProps> = {
@@ -41,6 +44,7 @@ type ImagesContainerProps = {
 };
 
 const ImagesContainer = ({formProps}: ImagesContainerProps) => {
+  const {images, setImages} = useContext(ProductFormContext);
   const session = useSession();
   const token = session.data?.user.accessToken;
   const inputRef = useRef<HTMLInputElement>();
@@ -49,12 +53,7 @@ const ImagesContainer = ({formProps}: ImagesContainerProps) => {
     mutationFn: (file: FormData) =>
       axios.post(`https://shoes-shop-strapi.herokuapp.com/api/upload`, file),
     onSuccess: (data: any) => {
-      const currentImages = formProps.getValues?.('images') || [];
-      const newImages = data.data.map((image: any) => ({
-        url: image.url,
-        id: image.id,
-      }));
-      formProps.setValue?.('images', [...currentImages, ...newImages]);
+      setImages((prevImages: any) => [...prevImages, ...data.data]);
     },
   });
 
@@ -86,60 +85,49 @@ const ImagesContainer = ({formProps}: ImagesContainerProps) => {
   };
 
   const handleDeleteImage = (id: number) => {
-    const currentImages = formProps.getValues?.('images') || [];
-    formProps.setValue?.(
-      'images',
-      currentImages.filter((image: any) => image.id !== id),
+    setImages((prevImages: any) =>
+      prevImages.filter((image: any) => image.id !== id),
     );
-    deleteImage(id);
   };
 
   return (
     <Box sx={styles.imagesContainer}>
       <Typography>Product images</Typography>
       <Grid container spacing={{sm: 2, md: 2, xs: 1}}>
-        <Controller
-          name="images"
-          control={formProps.control}
-          render={({field}) => (
-            <>
-              {field.value?.map((image: {url: string; id: number}) => (
-                <Grid item key={image.id} xs={12} sm={6} md={6} lg={8} xl={5}>
-                  <ImageCard
-                    image={image}
-                    onDelete={() => handleDeleteImage(image.id)}
-                  />
-                </Grid>
-              ))}
-              <Grid item xs={12} sm={6} md={6} lg={8} xl={5}>
-                <Box sx={styles.uploadImageCard}>
-                  <Image
-                    width={30}
-                    height={30}
-                    src="/icons/imageUpload.svg"
-                    alt="image upload"
-                  />
-                  <Typography>
-                    Drop your image here, <br /> or select{' '}
-                    <Typography
-                      component="span"
-                      onClick={() => inputRef.current?.click()}
-                      sx={styles.uploadImage}
-                    >
-                      click to browse
-                    </Typography>
-                  </Typography>
-                  <InputBase
-                    inputProps={{ref: inputRef, multiple: true}}
-                    type="file"
-                    sx={{display: 'none'}}
-                    onChange={handleFileChange}
-                  />
-                </Box>
-              </Grid>
-            </>
-          )}
-        />
+        {images.map((image: {url: string; id: number}) => (
+          <Grid item key={image.id} xs={12} sm={6} md={6} lg={8} xl={5}>
+            <ImageCard
+              image={image}
+              onDelete={() => handleDeleteImage(image.id)}
+            />
+          </Grid>
+        ))}
+        <Grid item xs={12} sm={6} md={6} lg={8} xl={5}>
+          <Box sx={styles.uploadImageCard}>
+            <Image
+              width={30}
+              height={30}
+              src="/icons/imageUpload.svg"
+              alt="image upload"
+            />
+            <Typography>
+              Drop your image here, <br /> or select{' '}
+              <Typography
+                component="span"
+                onClick={() => inputRef.current?.click()}
+                sx={styles.uploadImage}
+              >
+                click to browse
+              </Typography>
+            </Typography>
+            <InputBase
+              inputProps={{ref: inputRef, multiple: true}}
+              type="file"
+              sx={{display: 'none'}}
+              onChange={handleFileChange}
+            />
+          </Box>
+        </Grid>
       </Grid>
     </Box>
   );

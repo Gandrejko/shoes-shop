@@ -22,7 +22,7 @@ const styles: Record<string, SxProps> = {
 type DropdownProps = SelectProps & {
   labelText: string;
   name: string;
-  options?: {value: number; text: string}[];
+  options?: {value: number; name: string}[];
 };
 
 const Dropdown = ({labelText, name, options = [], ...props}: DropdownProps) => {
@@ -40,9 +40,9 @@ const Dropdown = ({labelText, name, options = [], ...props}: DropdownProps) => {
         <MenuItem key="none" value={0}>
           None
         </MenuItem>
-        {options.map(({value, text}) => (
+        {options.map(({value, name}) => (
           <MenuItem key={value} value={value}>
-            {text}
+            {name}
           </MenuItem>
         ))}
       </Select>

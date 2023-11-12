@@ -111,20 +111,24 @@ const FormContainer = ({formProps}: FormContainerProps) => {
           labelText="Gender"
           options={genders?.data.map(({id, attributes}) => ({
             value: id,
-            text: attributes.name!,
+            name: attributes.name!,
           }))}
-          value={gender}
-          onChange={e => setGender(e.target.value)}
+          value={gender.id}
+          onChange={e => {
+            setGender({id: e.target.value, name: e.target.name});
+          }}
         />
         <Dropdown
           name="brand"
           labelText="Brand"
           options={brands?.data.map(({id, attributes}) => ({
             value: id,
-            text: attributes.name!,
+            name: attributes.name!,
           }))}
-          value={brand}
-          onChange={e => setBrand(e.target.value)}
+          value={brand.id}
+          onChange={e => {
+            setBrand({id: e.target.value, name: e.target.name});
+          }}
         />
       </Box>
       <Textarea
