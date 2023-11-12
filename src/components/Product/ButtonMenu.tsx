@@ -19,7 +19,7 @@ const styles: Record<string, SxProps> = {
 };
 
 type ButtonMenuProps = MenuProps & {
-  productid: number;
+  productId: number;
 };
 
 const ButtonMenu = (props: ButtonMenuProps) => {
@@ -32,7 +32,7 @@ const ButtonMenu = (props: ButtonMenuProps) => {
         </MenuItem>
         <MenuItem
           onClick={() =>
-            router.push(`/my-products/?productId=${props.productid}`)
+            router.push(`/my-products/?productId=${props.productId}`)
           }
           sx={styles.menuItem}
           divider

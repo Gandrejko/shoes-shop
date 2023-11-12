@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import Image from 'next/image';
 import {HeaderProps} from '@/components/Header';
+import Link from 'next/link';
 
 const styles: Record<string, SxProps> = {
   mobileWrapper: {
@@ -55,7 +56,9 @@ const MobileHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
   return (
     <>
       <Toolbar sx={styles.mobileWrapper}>
-        <Image src="/icons/logo.svg" alt="logo" width={35.31} height={26.52} />
+        <Link href="/">
+          <Image src="/icons/logo.svg" alt="logo" width={35.31} height={26.52} />
+        </Link>
         <Stack direction="row" alignItems="center" spacing={1}>
           <IconButton onClick={() => {}}>
             <Image src="/icons/cart.svg" alt="cart" width={20} height={20} />

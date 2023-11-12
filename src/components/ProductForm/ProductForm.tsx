@@ -11,10 +11,14 @@ import axios, {AxiosResponse} from 'axios';
 import FormContainer from './components/FormContainer';
 import ImagesContainer from './components/ImagesContainer';
 import theme from '@/styles/theme/commonTheme';
+import {Box, Button, SxProps, Typography} from '@mui/material';
 import {Box, SxProps, Typography} from '@mui/material';
 import React, {createContext, useEffect, useMemo, useState} from 'react';
 import {FieldErrors, useForm} from 'react-hook-form';
 import {toast} from 'react-toastify';
+import FormContainer from './components/FormContainer';
+import ImagesContainer from './components/ImagesContainer';
+import {ProductRequest} from '@/types/product';
 
 const styles: Record<string, SxProps> = {
   mainContainer: {
@@ -52,24 +56,6 @@ const styles: Record<string, SxProps> = {
     },
   },
 };
-
-export type ProductData = {
-  name: string;
-  price: number;
-  gender?: number;
-  brand?: number;
-  description: string;
-  sizes: {
-    id: number;
-    value: number;
-  }[];
-  images: {
-    id: number;
-    url: string;
-  }[];
-};
-
-export const ProductFormContext = createContext<any>({});
 
 type ProductFormProps = {
   onSubmit: (data: any) => void;
@@ -140,7 +126,7 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
     onSubmit(data);
   };
 
-  const onError = (errors: FieldErrors<ProductData>) => {
+  const onError = (errors: FieldErrors<ProductRequest>) => {
     Object.entries(errors).forEach(([key, value]) => {
       if (value && value.message) {
         toast.error(value.message);

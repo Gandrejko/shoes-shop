@@ -2,7 +2,11 @@ import {ProductData} from '@/components/ProductForm/ProductForm';
 import {Box, SxProps, Typography} from '@mui/material';
 import React from 'react';
 import {Controller, UseFormReturn} from 'react-hook-form';
+import {Box, SxProps, Typography} from '@mui/material';
+import {Controller, UseFormReturn} from 'react-hook-form';
 import ProductSizeItem from './ProductSizeItem';
+import {ProductRequest} from '@/types/product';
+import {Size} from '@/types/size';
 
 const styles: Record<string, SxProps> = {
   box: {width: '100%'},
@@ -19,15 +23,10 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-type SizeItemType = {
-  id: number;
-  value: number;
-};
-
 type ProductListProps = {
   header: string;
   onClick: (id: number) => void;
-  sizes: SizeItemType[];
+  sizes: Size[];
   choosedSizes: {
     id: number;
     value: number;

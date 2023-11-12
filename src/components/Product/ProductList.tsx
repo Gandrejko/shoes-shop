@@ -1,5 +1,7 @@
-import {ProductAttributes} from '@/types/attributes';
 import {Grid, SxProps} from '@mui/material';
+
+import useGet from '@/hooks/useGet';
+import {ProductsResponse} from '@/types/product';
 import ProductCard from './ProductCard';
 
 const styles: Record<string, SxProps> = {
@@ -9,20 +11,23 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-export type Product = ProductAttributes & {
-  id: number;
-};
+const ProductList = () => {
+  const {data: products, isLoading} = useGet<ProductsResponse>(
+    '/products',
+    null,
+    {
+      populate: 'images,gender',
+      'filters[teamName]': 'team-3',
+    },
+  );
 
-type ProductListProps = {
-  products: Product[];
-};
+  if (isLoading) return <div>Loading...</div>;
 
-const ProductList = ({products}: ProductListProps) => {
   return (
     <Grid container spacing={{xs: 2, sm: 5, md: 5, lg: 6, xl: 8}}>
-      {products.map(product => (
+      {products?.data.map(product => (
         <Grid key={product.id} item xs={6} lg={4} xl={3} sx={styles.gridItem}>
-          <ProductCard product={product} />
+          <ProductCard product={{...product.attributes, id: product.id}} />
         </Grid>
       ))}
     </Grid>

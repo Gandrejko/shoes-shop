@@ -42,7 +42,7 @@ export default function SignIn() {
       redirect: false,
     }).then((value: SignInResponse | undefined) => {
       if (value?.ok) {
-        toast.success(`Hello, ${session?.user.username}!`);
+        localStorage.setItem('signInJustNow', JSON.stringify(true));
         router.push('/');
       } else {
         toast.error('Wrong credentials!');
