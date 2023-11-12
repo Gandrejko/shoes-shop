@@ -36,14 +36,7 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-type ImagesContainerProps = {
-  formProps: Pick<
-    UseFormReturn<ProductFormData>,
-    'register' | 'control' | 'getValues' | 'setValue'
-  >;
-};
-
-const ImagesContainer = ({formProps}: ImagesContainerProps) => {
+const ImagesContainer = () => {
   const {images, setImages} = useContext(ProductFormContext);
   const session = useSession();
   const token = session.data?.user.accessToken;
@@ -51,7 +44,7 @@ const ImagesContainer = ({formProps}: ImagesContainerProps) => {
 
   const {mutate} = useMutation({
     mutationFn: (file: FormData) =>
-      axios.post(`https://shoes-shop-strapi.herokuapp.com/api/upload`, file),
+      axios.post(`${process.env.API_URL}/upload`, file),
     onSuccess: (data: any) => {
       setImages((prevImages: any) => [...prevImages, ...data.data]);
     },
@@ -59,15 +52,12 @@ const ImagesContainer = ({formProps}: ImagesContainerProps) => {
 
   const {mutate: deleteImage} = useMutation({
     mutationFn: (id: number) =>
-      axios.delete(
-        `https://shoes-shop-strapi.herokuapp.com/api/upload/files/${id}`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + token,
-          },
+      axios.delete(`${process.env.API_URL}/upload/files/${id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token,
         },
-      ),
+      }),
   });
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -121,7 +111,7 @@ const ImagesContainer = ({formProps}: ImagesContainerProps) => {
               </Typography>
             </Typography>
             <InputBase
-              inputProps={{ref: inputRef, multiple: true}}
+              inputProps={{ref: inputRef, multiple: true, accept: 'image/*'}}
               type="file"
               sx={{display: 'none'}}
               onChange={handleFileChange}

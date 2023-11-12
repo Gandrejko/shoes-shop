@@ -77,10 +77,16 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
   const [choosedSizes, setChoosedSizes] = useState<Size[]>([]);
   const [images, setImages] = useState<Pick<Image, 'id' | 'url'>[]>([]);
 
-  const {register, reset, handleSubmit, control, getValues, setValue} =
-    useForm<ProductFormData>({
-      defaultValues: useMemo(() => createDefaultProduct(product), [product]),
-    });
+  const {
+    register,
+    reset,
+    handleSubmit,
+    getValues,
+    setValue,
+    formState: {errors},
+  } = useForm<ProductFormData>({
+    defaultValues: useMemo(() => createDefaultProduct(product), [product]),
+  });
 
   useEffect(() => {
     const productGender = product?.gender?.data;
@@ -123,19 +129,9 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
         }
         return acc;
       },
-      {
-        teamName: 'team-3',
-      },
+      {teamName: 'team-3'},
     );
     onSubmit(data);
-  };
-
-  const onError = (errors: FieldErrors<ProductRequest>) => {
-    Object.entries(errors).forEach(([key, value]) => {
-      if (value && value.message) {
-        toast.error(value.message);
-      }
-    });
   };
 
   return (
@@ -149,12 +145,15 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
         setChoosedSizes,
         images,
         setImages,
+        register,
+        errors,
+        setValue,
       }}
     >
       <Box
         sx={styles.mainContainer}
         component="form"
-        onSubmit={handleSubmit(handleOnSubmit, onError)}
+        onSubmit={handleSubmit(handleOnSubmit)}
       >
         <Box sx={styles.header}>
           <Typography variant="h1">
@@ -170,10 +169,8 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
           in a type specimen book. It usually begins with:
         </Typography>
         <Box sx={styles.form}>
-          <FormContainer formProps={{register, control, getValues, setValue}} />
-          <ImagesContainer
-            formProps={{register, control, getValues, setValue}}
-          />
+          <FormContainer />
+          <ImagesContainer />
         </Box>
       </Box>
     </ProductFormContext.Provider>

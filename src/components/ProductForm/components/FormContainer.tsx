@@ -40,16 +40,18 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-type FormContainerProps = {
-  formProps: Pick<
-    UseFormReturn<ProductFormData>,
-    'register' | 'control' | 'getValues' | 'setValue'
-  >;
-};
-
-const FormContainer = ({formProps}: FormContainerProps) => {
-  const {gender, setGender, brand, setBrand, choosedSizes, setChoosedSizes} =
-    useContext(ProductFormContext);
+const FormContainer = () => {
+  const {
+    gender,
+    setGender,
+    brand,
+    setBrand,
+    choosedSizes,
+    setChoosedSizes,
+    register,
+    errors,
+    setValue,
+  } = useContext(ProductFormContext);
   const {data: genders} = useGet<GendersResponse>('/genders');
   const {data: colors} = useGet<ColorsResponse>('/colors');
   const {data: brands} = useGet<BrandsResponse>('/brands');
@@ -83,15 +85,17 @@ const FormContainer = ({formProps}: FormContainerProps) => {
     <Grid sx={styles.formContainer}>
       <Input
         labelText="Product name"
-        register={formProps.register}
+        register={register}
         validationSchema={{required: 'Product name is required'}}
         name="name"
         placeholder="Nike Air Max 90"
+        errorMessage={errors.name?.message}
       />
       <Input
         name="price"
         labelText="Price"
-        register={formProps.register}
+        register={register}
+        errorMessage={errors.price?.message}
         validationSchema={{
           required: 'Price is required',
           min: {
@@ -99,10 +103,7 @@ const FormContainer = ({formProps}: FormContainerProps) => {
             message: 'Price must be greater than 0',
           },
           onChange: e =>
-            formProps.setValue(
-              'price',
-              Number(e.target.value.replace(/\D/g, '')),
-            ),
+            setValue('price', Number(e.target.value.replace(/\D/g, ''))),
         }}
       />
       <Box sx={styles.dropdowns}>
@@ -133,11 +134,12 @@ const FormContainer = ({formProps}: FormContainerProps) => {
       </Box>
       <Textarea
         labelText="Description"
-        register={formProps.register}
+        register={register}
+        errorMessage={errors.description?.message}
         validationSchema={{
           required: 'Description is required',
           onChange: e =>
-            formProps.setValue(
+            setValue(
               'description',
               e.target.value.length > 300
                 ? e.target.value.slice(0, 300)
