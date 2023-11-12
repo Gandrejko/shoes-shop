@@ -1,4 +1,5 @@
 import ImageCard from '@/components/ProductForm/components/ImageCard';
+import {ProductFormData} from '@/components/ProductForm/ProductForm';
 import theme from '@/styles/theme/commonTheme';
 import {ProductRequest} from '@/types/product';
 import {Box, Grid, InputBase, SxProps, Typography} from '@mui/material';
@@ -34,7 +35,7 @@ const styles: Record<string, SxProps> = {
 
 type ImagesContainerProps = {
   formProps: Pick<
-    UseFormReturn<ProductRequest>,
+    UseFormReturn<ProductFormData>,
     'register' | 'control' | 'getValues' | 'setValue'
   >;
 };

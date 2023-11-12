@@ -1,6 +1,5 @@
 import {Size} from '@/types/size';
 import {Button, SxProps} from '@mui/material';
-import {useState} from 'react';
 
 const styles = (isChecked: boolean): SxProps => ({
   fontWeight: 'fontWeighRegular',

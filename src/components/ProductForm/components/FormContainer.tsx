@@ -4,15 +4,7 @@ import ProductSizeList from '@/components/ProductSize/ProductSizeList';
 import Textarea from '@/components/Textarea/Textarea';
 import useGet from '@/hooks/useGet';
 import theme from '@/styles/theme/commonTheme';
-import {
-  BrandsResponse,
-  ColorsResponse,
-  GendersResponse,
-  SizesResponse,
-} from '@/types';
-import {useQuery} from '@tanstack/react-query';
-import axios, {AxiosResponse} from 'axios';
-import {ProductData, ProductFormContext} from '../ProductForm';
+import {ProductFormContext, ProductFormData} from '../ProductForm';
 import {BrandsResponse} from '@/types/brand';
 import {ColorsResponse} from '@/types/color';
 import {GendersResponse} from '@/types/gender';
@@ -22,8 +14,6 @@ import {SizesResponse} from '@/types/size';
 import {Box, Grid, SxProps} from '@mui/material';
 import React, {useContext} from 'react';
 import {Controller, UseFormReturn} from 'react-hook-form';
-import Textarea from '@/components/Textarea/Textarea';
-import {UseFormReturn} from 'react-hook-form';
 
 const styles: Record<string, SxProps> = {
   dropdowns: {
@@ -52,12 +42,14 @@ const styles: Record<string, SxProps> = {
 
 type FormContainerProps = {
   formProps: Pick<
-    UseFormReturn<ProductRequest>,
+    UseFormReturn<ProductFormData>,
     'register' | 'control' | 'getValues' | 'setValue'
   >;
 };
 
 const FormContainer = ({formProps}: FormContainerProps) => {
+  const {gender, setGender, brand, setBrand, choosedSizes, setChoosedSizes} =
+    useContext(ProductFormContext);
   const {data: genders} = useGet<GendersResponse>('/genders');
   const {data: colors} = useGet<ColorsResponse>('/colors');
   const {data: brands} = useGet<BrandsResponse>('/brands');
@@ -117,7 +109,7 @@ const FormContainer = ({formProps}: FormContainerProps) => {
         <Dropdown
           name="gender"
           labelText="Gender"
-          options={genders?.data.data.map(({id, attributes}) => ({
+          options={genders?.data.map(({id, attributes}) => ({
             value: id,
             text: attributes.name!,
           }))}
@@ -127,7 +119,7 @@ const FormContainer = ({formProps}: FormContainerProps) => {
         <Dropdown
           name="brand"
           labelText="Brand"
-          options={brands?.data.data.map(({id, attributes}) => ({
+          options={brands?.data.map(({id, attributes}) => ({
             value: id,
             text: attributes.name!,
           }))}

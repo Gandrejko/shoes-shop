@@ -1,24 +1,11 @@
-import {Button} from '@/components/Button/Button';
-import {
-  BrandsResponse,
-  ColorsResponse,
-  GendersResponse,
-  SizesResponse,
-} from '@/types';
-import {ProductAttributes} from '@/types/attributes';
-import {useMutation, useQuery} from '@tanstack/react-query';
-import axios, {AxiosResponse} from 'axios';
 import FormContainer from './components/FormContainer';
 import ImagesContainer from './components/ImagesContainer';
 import theme from '@/styles/theme/commonTheme';
 import {Box, Button, SxProps, Typography} from '@mui/material';
-import {Box, SxProps, Typography} from '@mui/material';
 import React, {createContext, useEffect, useMemo, useState} from 'react';
 import {FieldErrors, useForm} from 'react-hook-form';
 import {toast} from 'react-toastify';
-import FormContainer from './components/FormContainer';
-import ImagesContainer from './components/ImagesContainer';
-import {ProductRequest} from '@/types/product';
+import {Product, ProductAttributes, ProductRequest} from '@/types/product';
 
 const styles: Record<string, SxProps> = {
   mainContainer: {
@@ -57,6 +44,10 @@ const styles: Record<string, SxProps> = {
   },
 };
 
+export const ProductFormContext = createContext<any>({});
+
+export type ProductFormData = Pick<Product, 'name' | 'description' | 'price'>;
+
 type ProductFormProps = {
   onSubmit: (data: any) => void;
   product?: ProductAttributes;
@@ -88,7 +79,7 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
   >([]);
 
   const {register, reset, handleSubmit, control, getValues, setValue} =
-    useForm<ProductData>({
+    useForm<ProductFormData>({
       defaultValues: useMemo(() => createDefaultProduct(product), [product]),
     });
 

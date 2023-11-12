@@ -1,7 +1,3 @@
-import {ProductData} from '@/components/ProductForm/ProductForm';
-import {Box, SxProps, Typography} from '@mui/material';
-import React from 'react';
-import {Controller, UseFormReturn} from 'react-hook-form';
 import {Box, SxProps, Typography} from '@mui/material';
 import {Controller, UseFormReturn} from 'react-hook-form';
 import ProductSizeItem from './ProductSizeItem';
