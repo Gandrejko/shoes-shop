@@ -106,7 +106,11 @@ const MyProducts: NextPageWithLayout = () => {
       <Box sx={styles.productsContainer}>
         <Stack direction="row" sx={styles.productsHeader}>
           <Typography variant="h1">My Products</Typography>
-          <Button sx={{textTransform: 'none', padding: '8px 24px'}}>
+          <Button
+            sx={{textTransform: 'none', padding: '8px 24px'}}
+            onClick={() => router.push('/add-product')}
+            variant="contained"
+          >
             Add product
           </Button>
         </Stack>
