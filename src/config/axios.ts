@@ -5,9 +5,9 @@ const axios = axiosInstance.create({
 });
 
 axios.interceptors.request.use(config => {
-  const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mzk1LCJpYXQiOjE2OTkzNzU4OTQsImV4cCI6MTcwMTk2Nzg5NH0.Toa8YhgAK-KC1FWVmbwLLTUrRpsZHdOZ7_fvTl_Mei0';
-  if (token) {
+  const response = localStorage.getItem('accessToken');
+  if (response) {
+    const token = JSON.parse(response);
     config.headers.Authorization = token ? `Bearer ${token}` : '';
   }
 
