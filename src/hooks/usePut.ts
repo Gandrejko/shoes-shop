@@ -22,7 +22,10 @@ function usePut<Req extends {id?: number} = any, Res = any>(
   return useMutation<Res, Error, Req>({
     ...options,
     mutationFn: async newData => {
-      const res = await axios.put<Res>(`${endpoint}/${newData.id}`, newData, {
+      const requestEndpoint = newData.id
+        ? `${endpoint}/${newData.id}`
+        : endpoint;
+      const res = await axios.put<Res>(requestEndpoint, newData, {
         params,
       });
       return res.data;
