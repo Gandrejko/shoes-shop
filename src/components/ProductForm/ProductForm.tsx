@@ -1,10 +1,15 @@
-import theme from '@/styles/theme/commonTheme';
-import {Box, Button, SxProps, Typography} from '@mui/material';
-import {FieldErrors, useForm} from 'react-hook-form';
-import {toast} from 'react-toastify';
+import {Brand} from '@/types/brand';
+import {Gender} from '@/types/gender';
+import {Image} from '@/types/image';
+import {Size} from '@/types/size';
 import FormContainer from './components/FormContainer';
 import ImagesContainer from './components/ImagesContainer';
-import {ProductRequest} from '@/types/product';
+import theme from '@/styles/theme/commonTheme';
+import {Box, Button, SxProps, Typography} from '@mui/material';
+import React, {createContext, useEffect, useMemo, useState} from 'react';
+import {FieldErrors, useForm} from 'react-hook-form';
+import {toast} from 'react-toastify';
+import {Product, ProductAttributes, ProductRequest} from '@/types/product';
 
 const styles: Record<string, SxProps> = {
   mainContainer: {
@@ -43,27 +48,79 @@ const styles: Record<string, SxProps> = {
   },
 };
 
+export const ProductFormContext = createContext<any>({});
+
+export type ProductFormData = Pick<Product, 'name' | 'description' | 'price'>;
+
 type ProductFormProps = {
   onSubmit: (data: any) => void;
-  product?: any;
+  product?: ProductAttributes;
 };
 
+const createDefaultProduct = (
+  product?: ProductAttributes,
+): ProductFormData => ({
+  name: product?.name || '',
+  price: product?.price || 0,
+  description: product?.description || '',
+});
+
 const ProductForm = ({onSubmit, product}: ProductFormProps) => {
-  const {register, handleSubmit, control, getValues, setValue} =
-    useForm<ProductRequest>({
-      defaultValues: {
-        name: '',
-        price: 0,
-        gender: undefined,
-        brand: undefined,
-        description: '',
-        sizes: [],
-        images: [],
-      },
-    });
+  const [gender, setGender] = useState<Gender>({
+    id: 0,
+    name: 'None',
+  });
+  const [brand, setBrand] = useState<Brand>({
+    id: 0,
+    name: 'None',
+  });
+  const [choosedSizes, setChoosedSizes] = useState<Size[]>([]);
+  const [images, setImages] = useState<Pick<Image, 'id' | 'url'>[]>([]);
+
+  const {
+    register,
+    reset,
+    handleSubmit,
+    getValues,
+    setValue,
+    formState: {errors},
+  } = useForm<ProductFormData>({
+    defaultValues: useMemo(() => createDefaultProduct(product), [product]),
+  });
+
+  useEffect(() => {
+    const productGender = product?.gender?.data;
+    const productBrand = product?.brand?.data;
+    reset(createDefaultProduct(product));
+    productGender &&
+      setGender({id: productGender.id, name: productGender.attributes.name});
+    productBrand &&
+      setBrand({
+        id: productBrand.id,
+        name: productBrand.attributes.name,
+      });
+    setChoosedSizes(
+      product?.sizes?.data?.map(({id, attributes}) => ({
+        id,
+        value: attributes.value,
+      })) || [],
+    );
+    setImages(
+      product?.images?.data?.map(({id, attributes}) => ({
+        id,
+        url: attributes.url,
+      })) || [],
+    );
+  }, [product]);
 
   const handleOnSubmit = () => {
-    const values = getValues();
+    const values = {
+      ...getValues(),
+      gender: gender.id !== 0 ? gender : undefined,
+      brand: brand.id !== 0 ? brand : undefined,
+      sizes: choosedSizes,
+      images,
+    };
     const data = Object.keys(values).reduce(
       (acc, key) => {
         const value = (values as any)[key];
@@ -72,45 +129,53 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
         }
         return acc;
       },
-      {
-        teamName: 'team-3',
-      },
+      {teamName: 'team-3'},
     );
     onSubmit(data);
   };
 
-  const onError = (errors: FieldErrors<ProductRequest>) => {
-    Object.entries(errors).forEach(([key, value]) => {
-      if (value && value.message) {
-        toast.error(value.message);
-      }
-    });
-  };
-
   return (
-    <Box
-      sx={styles.mainContainer}
-      component="form"
-      onSubmit={handleSubmit(handleOnSubmit, onError)}
+    <ProductFormContext.Provider
+      value={{
+        gender,
+        setGender,
+        brand,
+        setBrand,
+        choosedSizes,
+        setChoosedSizes,
+        images,
+        setImages,
+        register,
+        errors,
+        setValue,
+      }}
     >
-      <Box sx={styles.header}>
-        <Typography variant="h1">
-          {product ? 'Edit product' : 'Add a product'}
+      <Box
+        sx={styles.mainContainer}
+        component="form"
+        onSubmit={handleSubmit(handleOnSubmit)}
+      >
+        <Box sx={styles.header}>
+          <Typography variant="h1">
+            {product ? 'Edit product' : 'Add a product'}
+          </Typography>
+          <Button variant="contained" type="submit">
+            Save
+          </Button>
+        </Box>
+        <Typography sx={styles.description}>
+          Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in
+          laying out print, graphic or web designs. The passage is attributed to
+          an unknown typesetter in the 15th century who is thought to have
+          scrambled parts of Cicero&apos;s De Finibus Bonorum et Malorum for use
+          in a type specimen book. It usually begins with:
         </Typography>
-        <Button type="submit">Save</Button>
+        <Box sx={styles.form}>
+          <FormContainer />
+          <ImagesContainer />
+        </Box>
       </Box>
-      <Typography sx={styles.description}>
-        Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in
-        laying out print, graphic or web designs. The passage is attributed to
-        an unknown typesetter in the 15th century who is thought to have
-        scrambled parts of Cicero&apos;s De Finibus Bonorum et Malorum for use
-        in a type specimen book. It usually begins with:
-      </Typography>
-      <Box sx={styles.form}>
-        <FormContainer formProps={{register, control, getValues, setValue}} />
-        <ImagesContainer formProps={{register, control, getValues, setValue}} />
-      </Box>
-    </Box>
+    </ProductFormContext.Provider>
   );
 };
 

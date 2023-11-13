@@ -13,7 +13,7 @@ const EmptyCartPage = () => {
       }}
     >
       <Image
-        src="/icons/chart.svg"
+        src="/icons/cart.svg"
         alt="cart"
         width={32}
         height={32}
@@ -36,7 +36,7 @@ const EmptyCartPage = () => {
         Post can contain video, images and text.
       </Typography>
 
-      <Button variant="contained" sx={{width: '10%', height: '10%'}}>
+      <Button variant="contained" sx={{width: '10%', height: '4%'}}>
         Add product
       </Button>
     </Box>

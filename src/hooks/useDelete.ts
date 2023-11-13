@@ -3,7 +3,7 @@ import {
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
-import axios from '@/services/axios';
+import axios from '@/config/axios';
 
 /**
  * @description useDelete is a custom hook that wraps around react-query's useMutation hook. It is used to make a **DELETE** request to the backend.
@@ -21,8 +21,9 @@ function useDelete<Res = any>(
 
   return useMutation({
     ...options,
-    mutationFn: async id => {
-      const res = await axios.delete<Res>(`${endpoint}/${id}`, {params});
+    mutationFn: async (id?: number) => {
+      const requestEndpoint = id ? `${endpoint}/${id}` : endpoint;
+      const res = await axios.delete<Res>(requestEndpoint, {params});
       return res.data;
     },
     onSuccess: (...props) => {

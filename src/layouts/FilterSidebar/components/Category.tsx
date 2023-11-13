@@ -33,20 +33,39 @@ type CategoryProps = {
     id: number;
     name: string | number;
   }[];
+  checkedIds?: number[];
+  onAddFilter?: (id: number) => void;
+  onRemoveFilter?: (id: number) => void;
 };
 
-export const Category = ({name, children, options}: CategoryProps) => {
+export const Category = ({
+  name,
+  children,
+  options,
+  checkedIds,
+  onAddFilter,
+  onRemoveFilter,
+}: CategoryProps) => {
   return (
     <>
       <Divider />
       <Accordion defaultExpanded disableGutters sx={styles.accordion}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{paddingLeft: 0}}>
           <Typography>{name}</Typography>
         </AccordionSummary>
-        <AccordionDetails>
+        <AccordionDetails sx={{paddingLeft: 0}}>
           {children}
           <Box sx={styles.options}>
-            {options?.map(({id, name}) => <Option key={id} name={name} />)}
+            {options?.map(({id, name}) => (
+              <Option
+                key={id}
+                id={id}
+                name={name}
+                checked={checkedIds?.includes(id)!}
+                onAddFilter={onAddFilter!}
+                onRemoveFilter={onRemoveFilter!}
+              />
+            ))}
           </Box>
         </AccordionDetails>
       </Accordion>

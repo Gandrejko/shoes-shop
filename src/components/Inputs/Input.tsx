@@ -34,8 +34,6 @@ type InputProps = InputBaseProps & {
   validationSchema: RegisterOptions<any>;
   name: string;
   errorMessage?: string;
-  required?: boolean;
-  marginBottom?: number;
 };
 
 export const Input = ({
@@ -44,8 +42,6 @@ export const Input = ({
   name,
   validationSchema,
   errorMessage,
-  required,
-  marginBottom,
   ...props
 }: InputProps) => {
   const id = useId();
@@ -61,7 +57,12 @@ export const Input = ({
       </InputLabel>
       <InputBase
         id={id}
-        sx={styles.input}
+        sx={{
+          ...styles.input,
+          border: !!errorMessage
+            ? `2px solid ${theme.palette.error.main}`
+            : `1px solid ${theme.palette.grey['A700']}`,
+        }}
         {...props}
         {...register(name, validationSchema)}
         error={!!errorMessage}

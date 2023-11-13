@@ -18,9 +18,6 @@ export type ImageAttributes = Partial<
   }
 >;
 
-export type ImageRequest = Partial<{
-  files: any; // TODO: add correct type
-}>;
-
+export type ImageRequest = FormData;
 export type ImageResponse = ImageAttributes;
 export type ImagesResponse = ImageAttributes[];

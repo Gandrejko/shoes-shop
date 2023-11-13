@@ -1,6 +1,5 @@
 import {Size} from '@/types/size';
 import {Button, SxProps} from '@mui/material';
-import {useState} from 'react';
 
 const styles = (isChecked: boolean): SxProps => ({
   fontWeight: 'fontWeighRegular',
@@ -18,20 +17,16 @@ const styles = (isChecked: boolean): SxProps => ({
 
 type SiteItemPropsType = {
   size: Size;
-  onClick: (id: number, isChecked: boolean) => void;
+  onClick: (id: number) => void;
+  isChecked: boolean;
 };
 
-const ProductSizeItem = ({size, onClick}: SiteItemPropsType) => {
-  const [isChecked, setIsChecked] = useState(false);
-  const handleClick = () => {
-    setIsChecked(!isChecked);
-    onClick(size.id, !isChecked);
-  };
+const ProductSizeItem = ({size, onClick, isChecked}: SiteItemPropsType) => {
   return (
     <Button
       sx={styles(isChecked)}
       variant={isChecked ? 'contained' : 'outlined'}
-      onClick={handleClick}
+      onClick={() => onClick(size.id)}
     >
       eu-{size.value}
     </Button>

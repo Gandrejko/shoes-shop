@@ -1,3 +1,4 @@
+import {useRouter} from 'next/navigation';
 import {ReactNode} from 'react';
 import Image from 'next/image';
 import {Box, Divider, List, ListItem, SxProps, Typography} from '@mui/material';
@@ -55,6 +56,7 @@ type SidebarLayoutProps = {
 };
 
 export const SidebarLayout = ({children, currentTab}: SidebarLayoutProps) => {
+  const router = useRouter();
   const image = false;
   const name = 'Jane Meldrum';
 
@@ -87,8 +89,9 @@ export const SidebarLayout = ({children, currentTab}: SidebarLayoutProps) => {
           <ListItem
             sx={{
               ...styles.tab,
-              color: currentTab === 'products' ? 'FE645E' : '#000',
+              color: currentTab === 'products' ? '#FE645E' : '#000',
             }}
+            onClick={() => router.push('/my-products')}
           >
             <Image
               width={20}
@@ -101,7 +104,7 @@ export const SidebarLayout = ({children, currentTab}: SidebarLayoutProps) => {
           <ListItem
             sx={{
               ...styles.tab,
-              color: currentTab === 'settings' ? 'FE645E' : '#000',
+              color: currentTab === 'settings' ? '#FE645E' : '#000',
             }}
           >
             <Image
@@ -115,7 +118,7 @@ export const SidebarLayout = ({children, currentTab}: SidebarLayoutProps) => {
           <ListItem
             sx={{
               ...styles.tab,
-              color: currentTab === 'logout' ? 'FE645E' : '#000',
+              color: currentTab === 'logout' ? '#FE645E' : '#000',
             }}
             onClick={logoutFunction}
           >

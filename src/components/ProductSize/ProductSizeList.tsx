@@ -21,37 +21,35 @@ const styles: Record<string, SxProps> = {
 
 type ProductListProps = {
   header: string;
-  control: UseFormReturn<ProductRequest>['control'];
-  onClick: (id: number, isChecked: boolean) => void;
+  onClick: (id: number) => void;
   sizes: Size[];
+  choosedSizes: {
+    id: number;
+    value: number;
+  }[];
 };
 
 const ProductSizeList = ({
   header,
-  control,
   onClick,
   sizes,
+  choosedSizes,
 }: ProductListProps) => {
   return (
     <Box sx={styles.box}>
       <Typography sx={styles.header}>{header}</Typography>
       {/* Think this typography should be h4. If yes, I can add h4 config to the theme and here use I can set like component='h4'*/}
       <Box sx={styles.sizesBox}>
-        <Controller
-          name="sizes"
-          control={control}
-          render={({field}) => (
-            <>
-              {sizes.map(({id, value}) => (
-                <ProductSizeItem
-                  key={id}
-                  size={{id, value}}
-                  onClick={onClick}
-                />
-              ))}
-            </>
-          )}
-        />
+        {sizes.map(({id, value}) => (
+          <ProductSizeItem
+            isChecked={Boolean(
+              choosedSizes.find((size: any) => size.id === id),
+            )}
+            key={id}
+            size={{id, value}}
+            onClick={onClick}
+          />
+        ))}
       </Box>
     </Box>
   );
