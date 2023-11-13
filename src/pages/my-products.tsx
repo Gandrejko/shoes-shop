@@ -13,7 +13,7 @@ import {useRouter} from 'next/router';
 import {ReactElement} from 'react';
 
 import Header from '@/components/Header';
-import ProductList from '@/components/Product/ProductList';
+import {ProductList} from '@/components/Product';
 import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
 import useGet from '@/hooks/useGet';
 import {NextPageWithLayout} from '@/pages/_app';

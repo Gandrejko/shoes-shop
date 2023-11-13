@@ -10,12 +10,12 @@ import Image from 'next/image';
 import {ReactElement, useEffect, useMemo, useState} from 'react';
 
 import Header from '@/components/Header';
-import ProductList from '@/components/Product/ProductList';
+import {ProductList} from '@/components/Product';
+import useGet from '@/hooks/useGet';
 import {FilterSidebar} from '@/layouts/FilterSidebar/FilterSidebar';
 import {NextPageWithLayout} from '@/pages/_app';
 import theme from '@/styles/theme/commonTheme';
 import {Filters} from '@/types/data';
-import useGet from '@/hooks/useGet';
 import {ProductsResponse} from '@/types/product';
 
 const styles: Record<string, SxProps> = {
