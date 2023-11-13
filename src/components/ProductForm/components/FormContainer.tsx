@@ -1,21 +1,17 @@
 import Dropdown from '@/components/Dropdown/Dropdown';
 import {Input} from '@/components/Inputs/Input';
-import ProductSizeItem from '@/components/ProductSize/ProductSizeItem';
-import ProductSizeList from '@/components/ProductSize/ProductSizeList';
 import Textarea from '@/components/Textarea/Textarea';
 import useGet from '@/hooks/useGet';
 import theme from '@/styles/theme/commonTheme';
 import {CategoriesResponse} from '@/types/category';
-import {ProductFormContext, ProductFormData} from '../ProductForm';
+import {ProductFormContext} from '../ProductForm';
 import {BrandsResponse} from '@/types/brand';
 import {ColorsResponse} from '@/types/color';
 import {GendersResponse} from '@/types/gender';
-import {ProductRequest} from '@/types/product';
 import {SizesResponse} from '@/types/size';
 
 import {Box, Button, Grid, SxProps, Typography} from '@mui/material';
 import React, {useContext} from 'react';
-import {Controller, UseFormReturn} from 'react-hook-form';
 
 const styles: Record<string, SxProps> = {
   dropdowns: {
@@ -40,11 +36,23 @@ const styles: Record<string, SxProps> = {
     gap: '1rem',
     flexShrink: 1,
   },
-  categories: {
+  buttonsList: {
     paddingTop: '1rem',
     display: 'flex',
     gap: '1rem',
     flexWrap: 'wrap',
+  },
+  button: {
+    fontWeight: 'fontWeighRegular',
+    fontSize: {xs: 10, sm: 15},
+    textTransform: 'uppercase',
+    borderColor: 'grey.A700',
+    color: 'text.secondary',
+    padding: {xs: '8px 15px', sm: '10px 20px'},
+    '&:hover': {
+      borderColor: 'grey.A700',
+      backgroundColor: 'grey.A100',
+    },
   },
 };
 
@@ -70,15 +78,9 @@ const FormContainer = () => {
   const {data: sizes} = useGet<SizesResponse>('/sizes');
   const {data: categories} = useGet<CategoriesResponse>('/categories');
 
-  const sizesMapped =
-    sizes?.data.map(({id, attributes}) => ({
-      id,
-      value: attributes.value!,
-    })) ?? [];
-
   const checkSize = (id: number) => {
     setChoosedSizes((prevState: any) => {
-      const newSize = sizesMapped.find(size => size.id === id);
+      const newSize = sizes?.data.find(size => size.id === id);
       const isSizeAlreadyChoosed = prevState.find(
         (size: any) => size.id === id,
       );
@@ -86,7 +88,7 @@ const FormContainer = () => {
         return prevState;
       }
       if (!isSizeAlreadyChoosed) {
-        return [...prevState, newSize];
+        return [...prevState, sizes?.data.find(size => size.id === id)];
       } else {
         return prevState.filter((size: any) => size.id !== id);
       }
@@ -95,7 +97,7 @@ const FormContainer = () => {
 
   const checkCategory = (id: number) => {
     setChoosedCategories((prevState: any) => {
-      const newCategory = categories?.data.find(size => size.id === id);
+      const newCategory = categories?.data.find(category => category.id === id);
       const isCategoryAlreadyChoosed = prevState.find(
         (category: any) => category.id === id,
       );
@@ -179,22 +181,25 @@ const FormContainer = () => {
       />
       <Box>
         <Typography>Categories</Typography>
-        <Box sx={styles.categories}>
-          {categories?.data.map(({id, attributes: {name}}) => (
-            <Button
-              key={id}
-              variant={
-                Boolean(
-                  choosedCategories.find((category: any) => category.id === id),
-                )
-                  ? 'contained'
-                  : 'outlined'
-              }
-              onClick={() => checkCategory(id)}
-            >
-              {name}
-            </Button>
-          ))}
+        <Box sx={styles.buttonsList}>
+          {categories?.data.map(({id, attributes: {name}}) => {
+            const isChecked = Boolean(
+              choosedCategories.find((category: any) => category.id === id),
+            );
+            return (
+              <Button
+                key={id}
+                sx={{
+                  ...styles.button,
+                  color: isChecked ? 'white' : 'text.secondary',
+                }}
+                variant={isChecked ? 'contained' : 'outlined'}
+                onClick={() => checkCategory(id)}
+              >
+                {name}
+              </Button>
+            );
+          })}
         </Box>
       </Box>
       <Dropdown
@@ -208,12 +213,29 @@ const FormContainer = () => {
           setColor({id: e.target.value, name: e.target.name});
         }}
       />
-      <ProductSizeList
-        header="Add size"
-        sizes={sizesMapped}
-        choosedSizes={choosedSizes}
-        onClick={checkSize}
-      />
+      <Box>
+        <Typography>Sizes</Typography>
+        <Box sx={styles.buttonsList}>
+          {sizes?.data.map(({id, attributes: {value}}) => {
+            const isChecked = Boolean(
+              choosedSizes.find((category: any) => category.id === id),
+            );
+            return (
+              <Button
+                key={id}
+                sx={{
+                  ...styles.button,
+                  color: isChecked ? 'white' : 'text.secondary',
+                }}
+                variant={isChecked ? 'contained' : 'outlined'}
+                onClick={() => checkSize(id)}
+              >
+                EU-{value}
+              </Button>
+            );
+          })}
+        </Box>
+      </Box>
     </Grid>
   );
 };
