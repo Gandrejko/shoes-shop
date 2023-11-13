@@ -10,14 +10,13 @@ import {
 } from '@mui/material';
 import Image from 'next/image';
 import {useRouter} from 'next/router';
-import {ReactElement} from 'react';
+import {ReactElement, useMemo} from 'react';
 
 import Header from '@/components/Header';
 import {ProductList} from '@/components/Product';
 import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
 import useGet from '@/hooks/useGet';
 import {NextPageWithLayout} from '@/pages/_app';
-import {ProductsResponse} from '@/types/product';
 import {UserResponse} from '@/types/user';
 import {useSession} from 'next-auth/react';
 import Link from 'next/link';
@@ -87,16 +86,12 @@ const MyProducts: NextPageWithLayout = () => {
   const sessionUser = data?.user;
 
   const productId = router.query.productId as string;
-
-  const {
-    data: products,
-    isLoading: isLoadingProducts,
-    isError: isErrorProducts,
-  } = useGet<ProductsResponse>('/products', null, {
-    populate: 'images,gender',
-    'filters[teamName]': 'team-3',
-    'filters[userID]': sessionUser?.id,
-  });
+  const productParams = useMemo(() => {
+    return {
+      populate: 'images,gender',
+      'filters[userID]': sessionUser?.id,
+    };
+  }, [sessionUser?.id]);
 
   const {
     data: userData,
@@ -108,8 +103,8 @@ const MyProducts: NextPageWithLayout = () => {
   });
 
   // TODO: show loading and error pages
-  if (isLoadingUser || isLoadingProducts) return <div>Loading...</div>;
-  if (isErrorUser || isErrorProducts) return <div>Error</div>;
+  if (isLoadingUser) return <div>Loading...</div>;
+  if (isErrorUser) return <div>Error</div>;
 
   return (
     <Container maxWidth="xl" sx={styles.container}>
@@ -163,7 +158,7 @@ const MyProducts: NextPageWithLayout = () => {
             Add product
           </Button>
         </Stack>
-        <ProductList products={products} />
+        <ProductList params={productParams} />
       </Box>
     </Container>
   );

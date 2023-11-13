@@ -1,5 +1,6 @@
 import {Grid, SxProps} from '@mui/material';
 
+import useGet from '@/hooks/useGet';
 import {ProductsResponse} from '@/types/product';
 import ProductCard from './ProductCard';
 
@@ -11,11 +12,22 @@ const styles: Record<string, SxProps> = {
 };
 
 type Props = {
-  products?: ProductsResponse;
+  params?: Record<string, number | string> | null;
   fullWidth?: boolean;
 };
 
-const ProductList = ({products, fullWidth = false}: Props) => {
+const ProductList = ({params = null, fullWidth = false}: Props) => {
+  const {data: products, isLoading} = useGet<ProductsResponse>(
+    '/products',
+    null,
+    {
+      'filters[teamName]': 'team-3',
+      ...params,
+    },
+  );
+
+  if (isLoading) return <div>Loading...</div>;
+
   return (
     <Grid
       container

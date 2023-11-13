@@ -48,7 +48,7 @@ const MyProducts: NextPageWithLayout = () => {
   });
 
   const params = useMemo(() => {
-    const newFilters: Record<string, number> = {};
+    const newFilters: Record<string, string | number> = {};
     Object.entries(filters).forEach(([key, value]) => {
       if (Array.isArray(value)) {
         value.forEach((item, index) => {
@@ -59,24 +59,13 @@ const MyProducts: NextPageWithLayout = () => {
 
     newFilters['filters[price][gte]'] = filters.minPrice;
     newFilters['filters[price][lte]'] = filters.maxPrice;
+    newFilters['populate'] = '*';
     return newFilters;
   }, [filters]);
-
-  const {data: products, isLoading} = useGet<ProductsResponse>(
-    '/products',
-    null,
-    {
-      populate: '*',
-      'filters[teamName]': 'team-3',
-      ...params,
-    },
-  );
 
   useEffect(() => {
     setShowFilters(!isMobile);
   }, [isMobile]);
-
-  if (isLoading) return <div>Loading...</div>;
 
   return (
     <Stack direction="row" justifyContent="center">
@@ -106,7 +95,7 @@ const MyProducts: NextPageWithLayout = () => {
               {showFilters && 'Hide'} Filters
             </Button>
           </Stack>
-          <ProductList products={products} fullWidth={!showFilters} />
+          <ProductList params={params} fullWidth={!showFilters} />
         </Box>
       </Box>
     </Stack>
