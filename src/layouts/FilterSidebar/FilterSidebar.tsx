@@ -77,11 +77,12 @@ const styles: Record<string, SxProps> = {
 
 type Props = {
   open: boolean;
+  filters: Filters;
   onClose: () => void;
   setFilters: Dispatch<SetStateAction<Filters>>;
 };
 
-export const FilterSidebar = ({setFilters, open, onClose}: Props) => {
+export const FilterSidebar = ({filters, setFilters, open, onClose}: Props) => {
   const [price, setPrice] = useState<number[]>([20, 37]);
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -92,6 +93,7 @@ export const FilterSidebar = ({setFilters, open, onClose}: Props) => {
 
   const handleChange = (event: Event, newValue: number | number[]) => {
     setPrice(newValue as number[]);
+    // TODO: filter by price
   };
 
   const searchValue = 'Air Force 1';
@@ -121,16 +123,17 @@ export const FilterSidebar = ({setFilters, open, onClose}: Props) => {
       </Stack>
       <Category
         name="Gender"
+        checkedIds={filters.gender}
         onAddFilter={genderId => {
           setFilters(prevFilters => ({
             ...prevFilters,
-            gender: [...prevFilters.genders!, genderId],
+            gender: [...prevFilters.gender, genderId],
           }));
         }}
         onRemoveFilter={genderId => {
           setFilters(prevFilters => ({
             ...prevFilters,
-            gender: prevFilters.genders!.filter(id => id !== genderId),
+            gender: prevFilters.gender.filter(id => id !== genderId),
           }));
         }}
         options={genders?.data.map(({id, attributes}) => ({
@@ -140,16 +143,17 @@ export const FilterSidebar = ({setFilters, open, onClose}: Props) => {
       />
       <Category
         name="Colors"
+        checkedIds={filters.color}
         onAddFilter={colorId => {
           setFilters(prevFilters => ({
             ...prevFilters,
-            colors: [...prevFilters.colors!, colorId],
+            color: [...prevFilters.color, colorId],
           }));
         }}
         onRemoveFilter={colorId => {
           setFilters(prevFilters => ({
             ...prevFilters,
-            colors: prevFilters.colors!.filter(id => id !== colorId),
+            color: prevFilters.color.filter(id => id !== colorId),
           }));
         }}
         options={colors?.data.map(({id, attributes}) => ({
@@ -159,16 +163,17 @@ export const FilterSidebar = ({setFilters, open, onClose}: Props) => {
       />
       <Category
         name="Brands"
+        checkedIds={filters.brand}
         onAddFilter={brandId => {
           setFilters(prevFilters => ({
             ...prevFilters,
-            brands: [...prevFilters.brands!, brandId],
+            brand: [...prevFilters.brand, brandId],
           }));
         }}
         onRemoveFilter={brandId => {
           setFilters(prevFilters => ({
             ...prevFilters,
-            brands: prevFilters.brands!.filter(id => id !== brandId),
+            brand: prevFilters.brand.filter(id => id !== brandId),
           }));
         }}
         options={brands?.data.map(({id, attributes}) => ({
@@ -188,6 +193,7 @@ export const FilterSidebar = ({setFilters, open, onClose}: Props) => {
       </Category>
       <Category
         name="Sizes"
+        checkedIds={filters.sizes}
         onAddFilter={sizeId => {
           setFilters(prevFilters => ({
             ...prevFilters,

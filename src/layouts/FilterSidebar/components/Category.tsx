@@ -33,6 +33,7 @@ type CategoryProps = {
     id: number;
     name: string | number;
   }[];
+  checkedIds?: number[];
   onAddFilter?: (id: number) => void;
   onRemoveFilter?: (id: number) => void;
 };
@@ -41,6 +42,7 @@ export const Category = ({
   name,
   children,
   options,
+  checkedIds,
   onAddFilter,
   onRemoveFilter,
 }: CategoryProps) => {
@@ -59,6 +61,7 @@ export const Category = ({
                 key={id}
                 id={id}
                 name={name}
+                checked={checkedIds?.includes(id)!}
                 onAddFilter={onAddFilter!}
                 onRemoveFilter={onRemoveFilter!}
               />

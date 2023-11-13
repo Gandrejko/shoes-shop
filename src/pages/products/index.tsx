@@ -7,7 +7,7 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import Image from 'next/image';
-import {ReactElement, useEffect, useState} from 'react';
+import {ReactElement, useEffect, useMemo, useState} from 'react';
 
 import Header from '@/components/Header';
 import ProductList from '@/components/Product/ProductList';
@@ -22,6 +22,7 @@ const styles: Record<string, SxProps> = {
   container: {
     padding: {xs: 0, md: '35px'},
     marginTop: 3,
+    width: 1,
   },
   productsContainer: {
     padding: {xs: '0 24px', md: 0},
@@ -36,8 +37,30 @@ const styles: Record<string, SxProps> = {
 const MyProducts: NextPageWithLayout = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-  const [filters, setFilters] = useState({} as Filters);
   const [showFilters, setShowFilters] = useState(!isMobile);
+  const [filters, setFilters] = useState<Filters>({
+    brand: [],
+    color: [],
+    gender: [],
+    sizes: [],
+    minPrice: 0,
+    maxPrice: Infinity,
+  });
+
+  const params = useMemo(() => {
+    const newFilters: Record<string, number> = {};
+    Object.entries(filters).forEach(([key, value]) => {
+      if (Array.isArray(value)) {
+        value.forEach((item, index) => {
+          newFilters[`filters[${key}][${index}]`] = item;
+        });
+      }
+    });
+
+    newFilters['filters[price][gte]'] = filters.minPrice;
+    newFilters['filters[price][lte]'] = filters.maxPrice;
+    return newFilters;
+  }, [filters]);
 
   const {data: products, isLoading} = useGet<ProductsResponse>(
     '/products',
@@ -45,6 +68,7 @@ const MyProducts: NextPageWithLayout = () => {
     {
       populate: '*',
       'filters[teamName]': 'team-3',
+      ...params,
     },
   );
 
@@ -58,6 +82,7 @@ const MyProducts: NextPageWithLayout = () => {
     <Stack direction="row" justifyContent="center">
       <FilterSidebar
         open={showFilters}
+        filters={filters}
         onClose={() => setShowFilters(false)}
         setFilters={setFilters}
       />

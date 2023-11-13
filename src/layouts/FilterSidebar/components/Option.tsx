@@ -11,6 +11,7 @@ const styles = {
 type OptionProps = {
   id: number;
   name: string | number;
+  checked: boolean;
   onAddFilter: (id: number) => void;
   onRemoveFilter: (id: number) => void;
 };
@@ -18,6 +19,7 @@ type OptionProps = {
 export const Option = ({
   id,
   name,
+  checked,
   onAddFilter,
   onRemoveFilter,
 }: OptionProps) => {
@@ -33,6 +35,7 @@ export const Option = ({
         color="primary"
         id={String(id)}
         sx={{paddingLeft: 0}}
+        checked={checked}
         onChange={handleChange}
       />
       <InputLabel htmlFor={String(id)}>{name}</InputLabel>
