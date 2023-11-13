@@ -1,6 +1,5 @@
 import {Grid, SxProps} from '@mui/material';
 
-import useGet from '@/hooks/useGet';
 import {ProductsResponse} from '@/types/product';
 import ProductCard from './ProductCard';
 
