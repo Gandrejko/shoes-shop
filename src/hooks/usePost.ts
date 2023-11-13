@@ -3,7 +3,7 @@ import {
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
-import axios from '@/services/axios';
+import axios from '@/config/axios';
 
 /**
  * @description usePost is a custom hook that wraps around react-query's useMutation hook. It is used to make a **POST** request to the backend.

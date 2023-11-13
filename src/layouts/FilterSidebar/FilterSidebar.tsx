@@ -1,19 +1,37 @@
+import {Dispatch, SetStateAction, useState} from 'react';
+import {
+  Drawer,
+  IconButton,
+  Slider,
+  Stack,
+  SxProps,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
+
 import useGet from '@/hooks/useGet';
 import theme from '@/styles/theme/commonTheme';
+import {Category} from './components/Category';
+
 import {BrandsResponse} from '@/types/brand';
 import {ColorsResponse} from '@/types/color';
+import {Filters} from '@/types/data';
 import {GendersResponse} from '@/types/gender';
 import {SizesResponse} from '@/types/size';
-import {Box, Slider, SxProps, Typography} from '@mui/material';
-import {useState} from 'react';
-import {Category} from './components/Category';
+import Image from 'next/image';
 
 const styles: Record<string, SxProps> = {
   sidebar: {
-    width: '320px',
+    '& .MuiDrawer-paper': {
+      width: 320,
+      height: {md: 'calc(100% - 120px)'},
+      marginTop: {md: '120px'},
+      border: 'none',
+    },
+    transition: 'width 0.2s ease-in-out',
   },
   header: {
-    padding: '44px 40px 16px',
+    padding: {xs: '26px 20px', md: '44px 40px 16px'},
   },
   slider: {
     marginTop: '25px',
@@ -57,36 +75,71 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-type CategoryInfo = {
-  id: number;
-  name: string;
+type Props = {
+  open: boolean;
+  filters: Filters;
+  searchText: string;
+  productCount: number;
+  onClose: () => void;
+  setFilters: Dispatch<SetStateAction<Filters>>;
 };
 
-export const FilterSidebar = () => {
+export const FilterSidebar = ({
+  filters,
+  setFilters,
+  open,
+  onClose,
+  searchText,
+  productCount,
+}: Props) => {
+  const [priceRange, setPriceRange] = useState<number[]>([
+    filters.minPrice,
+    filters.maxPrice,
+  ]);
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
   const {data: genders} = useGet<GendersResponse>('/genders');
   const {data: colors} = useGet<ColorsResponse>('/colors');
   const {data: brands} = useGet<BrandsResponse>('/brands');
   const {data: sizes} = useGet<SizesResponse>('/sizes');
 
-  const [price, setPrice] = useState<number[]>([20, 37]);
-
-  const handleChange = (event: Event, newValue: number | number[]) => {
-    setPrice(newValue as number[]);
-  };
-
-  const searchValue = 'Air Force 1';
-  const productCount = 137;
-
   return (
-    <Box sx={styles.sidebar}>
-      <Box sx={styles.header}>
-        <Typography>Shoes/{searchValue}</Typography>
-        <Typography sx={styles.searchValue}>
-          {searchValue} ({productCount})
-        </Typography>
-      </Box>
+    <Drawer
+      open={open}
+      onClose={onClose}
+      anchor={isMobile ? 'right' : 'left'}
+      variant={isMobile ? 'temporary' : 'persistent'}
+      sx={{...styles.sidebar, width: open ? 320 : 0}}
+    >
+      <Stack sx={styles.header}>
+        {isMobile ? (
+          <IconButton onClick={onClose} sx={{marginLeft: 'auto'}}>
+            <Image src="/icons/burgerClose.svg" alt="" width={20} height={20} />
+          </IconButton>
+        ) : (
+          <>
+            <Typography>Shoes/{searchText}</Typography>
+            <Typography sx={styles.searchText}>
+              {searchText} ({productCount})
+            </Typography>
+          </>
+        )}
+      </Stack>
       <Category
         name="Gender"
+        checkedIds={filters.gender}
+        onAddFilter={genderId => {
+          setFilters(prevFilters => ({
+            ...prevFilters,
+            gender: [...prevFilters.gender, genderId],
+          }));
+        }}
+        onRemoveFilter={genderId => {
+          setFilters(prevFilters => ({
+            ...prevFilters,
+            gender: prevFilters.gender.filter(id => id !== genderId),
+          }));
+        }}
         options={genders?.data.map(({id, attributes}) => ({
           id,
           name: attributes.name!,
@@ -94,6 +147,19 @@ export const FilterSidebar = () => {
       />
       <Category
         name="Colors"
+        checkedIds={filters.color}
+        onAddFilter={colorId => {
+          setFilters(prevFilters => ({
+            ...prevFilters,
+            color: [...prevFilters.color, colorId],
+          }));
+        }}
+        onRemoveFilter={colorId => {
+          setFilters(prevFilters => ({
+            ...prevFilters,
+            color: prevFilters.color.filter(id => id !== colorId),
+          }));
+        }}
         options={colors?.data.map(({id, attributes}) => ({
           id,
           name: attributes.name!,
@@ -101,6 +167,19 @@ export const FilterSidebar = () => {
       />
       <Category
         name="Brands"
+        checkedIds={filters.brand}
+        onAddFilter={brandId => {
+          setFilters(prevFilters => ({
+            ...prevFilters,
+            brand: [...prevFilters.brand, brandId],
+          }));
+        }}
+        onRemoveFilter={brandId => {
+          setFilters(prevFilters => ({
+            ...prevFilters,
+            brand: prevFilters.brand.filter(id => id !== brandId),
+          }));
+        }}
         options={brands?.data.map(({id, attributes}) => ({
           id,
           name: attributes.name!,
@@ -108,21 +187,45 @@ export const FilterSidebar = () => {
       />
       <Category name="Price">
         <Slider
-          getAriaLabel={() => 'Temperature range'}
-          value={price}
-          onChange={handleChange}
+          max={1000}
+          value={priceRange}
+          onChange={(_, value) => setPriceRange(value as number[])}
+          onChangeCommitted={(_, value) => {
+            setFilters(prevFilters => ({
+              ...prevFilters,
+              minPrice: (value as number[])[0],
+              maxPrice: (value as number[])[1],
+            }));
+          }}
+          valueLabelFormat={value => `$${value}`}
           valueLabelDisplay="auto"
-          getAriaValueText={() => price.toString()}
+          getAriaLabel={() => 'Price range'}
+          getAriaValueText={() =>
+            [filters.minPrice, filters.maxPrice].toString()
+          }
           sx={styles.slider}
         />
       </Category>
       <Category
         name="Sizes"
+        checkedIds={filters.sizes}
+        onAddFilter={sizeId => {
+          setFilters(prevFilters => ({
+            ...prevFilters,
+            sizes: [...prevFilters.sizes!, sizeId],
+          }));
+        }}
+        onRemoveFilter={sizeId => {
+          setFilters(prevFilters => ({
+            ...prevFilters,
+            sizes: prevFilters.sizes!.filter(id => id !== sizeId),
+          }));
+        }}
         options={sizes?.data.map(({id, attributes}) => ({
           id,
           name: attributes.value!,
         }))}
       />
-    </Box>
+    </Drawer>
   );
 };
