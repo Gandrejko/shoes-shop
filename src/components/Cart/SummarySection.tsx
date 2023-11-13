@@ -1,6 +1,10 @@
 import {Box, Typography, Button} from '@mui/material';
 
 const SummarySection = ({products}: {products: any[]}) => {
+  const total = products.reduce((accumulator, product) => {
+    return accumulator + product.price * product.quantity;
+  }, 0);
+
   return (
     <Box>
       <Typography
@@ -8,18 +12,6 @@ const SummarySection = ({products}: {products: any[]}) => {
         sx={{fontWeight: '500', fontSize: 45, marginBottom: '70px'}}
       >
         Summary
-      </Typography>
-
-      <Typography
-        component="h4"
-        sx={{
-          fontWeight: '400',
-          fontSize: 20,
-          marginTop: 4,
-          marginBottom: '20px',
-        }}
-      >
-        Do you have a promocode?
       </Typography>
 
       <Box sx={{display: 'flex', flexDirection: 'Column'}}>
@@ -38,7 +30,7 @@ const SummarySection = ({products}: {products: any[]}) => {
             Subtotal
           </Typography>
           <Typography component="h4" sx={{fontSize: 30, marginTop: 4}}>
-            0
+            ${total.toFixed(2)}
           </Typography>
         </Box>
 
@@ -60,7 +52,7 @@ const SummarySection = ({products}: {products: any[]}) => {
             component="h4"
             sx={{fontWeight: '400', fontSize: 30, marginTop: 4}}
           >
-            0
+            $0
           </Typography>
         </Box>
 
@@ -75,7 +67,7 @@ const SummarySection = ({products}: {products: any[]}) => {
             component="h4"
             sx={{fontWeight: '400', fontSize: 30, marginTop: 4}}
           >
-            0
+            $0
           </Typography>
         </Box>
       </Box>
@@ -100,10 +92,10 @@ const SummarySection = ({products}: {products: any[]}) => {
           component="h4"
           sx={{fontWeight: '600', fontSize: 30, marginTop: 4}}
         >
-          0
+          ${total.toFixed(2)}
         </Typography>
       </Box>
-      <Button variant='outlined' sx={{width:'100%', marginTop:'100px'}}>
+      <Button variant="contained" sx={{width: '100%', marginTop: '100px'}}>
         Checkout
       </Button>
     </Box>
