@@ -11,12 +11,10 @@ import {ReactElement, useEffect, useMemo, useState} from 'react';
 
 import Header from '@/components/Header';
 import {ProductList} from '@/components/Product';
-import useGet from '@/hooks/useGet';
 import {FilterSidebar} from '@/layouts/FilterSidebar/FilterSidebar';
 import {NextPageWithLayout} from '@/pages/_app';
 import theme from '@/styles/theme/commonTheme';
 import {Filters} from '@/types/data';
-import {ProductsResponse} from '@/types/product';
 
 const styles: Record<string, SxProps> = {
   container: {
@@ -43,8 +41,8 @@ const MyProducts: NextPageWithLayout = () => {
     color: [],
     gender: [],
     sizes: [],
-    minPrice: 0,
-    maxPrice: Infinity,
+    minPrice: 100,
+    maxPrice: 300,
   });
 
   const params = useMemo(() => {
@@ -57,11 +55,13 @@ const MyProducts: NextPageWithLayout = () => {
       }
     });
 
-    newFilters['filters[price][gte]'] = filters.minPrice;
-    newFilters['filters[price][lte]'] = filters.maxPrice;
+    newFilters['filters[price][$gte]'] = filters.minPrice;
+    newFilters['filters[price][$lte]'] = filters.maxPrice;
     newFilters['populate'] = '*';
     return newFilters;
   }, [filters]);
+
+  console.log(params);
 
   useEffect(() => {
     setShowFilters(!isMobile);
@@ -72,6 +72,8 @@ const MyProducts: NextPageWithLayout = () => {
       <FilterSidebar
         open={showFilters}
         filters={filters}
+        searchText="Air Force 1"
+        productCount={100}
         onClose={() => setShowFilters(false)}
         setFilters={setFilters}
       />

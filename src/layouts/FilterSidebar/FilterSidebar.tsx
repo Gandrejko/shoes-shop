@@ -78,26 +78,30 @@ const styles: Record<string, SxProps> = {
 type Props = {
   open: boolean;
   filters: Filters;
+  searchText: string;
+  productCount: number;
   onClose: () => void;
   setFilters: Dispatch<SetStateAction<Filters>>;
 };
 
-export const FilterSidebar = ({filters, setFilters, open, onClose}: Props) => {
-  const [price, setPrice] = useState<number[]>([20, 37]);
+export const FilterSidebar = ({
+  filters,
+  setFilters,
+  open,
+  onClose,
+  searchText,
+  productCount,
+}: Props) => {
+  const [priceRange, setPriceRange] = useState<number[]>([
+    filters.minPrice,
+    filters.maxPrice,
+  ]);
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const {data: genders} = useGet<GendersResponse>('/genders');
   const {data: colors} = useGet<ColorsResponse>('/colors');
   const {data: brands} = useGet<BrandsResponse>('/brands');
   const {data: sizes} = useGet<SizesResponse>('/sizes');
-
-  const handleChange = (event: Event, newValue: number | number[]) => {
-    setPrice(newValue as number[]);
-    // TODO: filter by price
-  };
-
-  const searchValue = 'Air Force 1';
-  const productCount = 137;
 
   return (
     <Drawer
@@ -114,9 +118,9 @@ export const FilterSidebar = ({filters, setFilters, open, onClose}: Props) => {
           </IconButton>
         ) : (
           <>
-            <Typography>Shoes/{searchValue}</Typography>
-            <Typography sx={styles.searchValue}>
-              {searchValue} ({productCount})
+            <Typography>Shoes/{searchText}</Typography>
+            <Typography sx={styles.searchText}>
+              {searchText} ({productCount})
             </Typography>
           </>
         )}
@@ -183,11 +187,22 @@ export const FilterSidebar = ({filters, setFilters, open, onClose}: Props) => {
       />
       <Category name="Price">
         <Slider
-          getAriaLabel={() => 'Temperature range'}
-          value={price}
-          onChange={handleChange}
+          max={1000}
+          value={priceRange}
+          onChange={(_, value) => setPriceRange(value as number[])}
+          onChangeCommitted={(_, value) => {
+            setFilters(prevFilters => ({
+              ...prevFilters,
+              minPrice: (value as number[])[0],
+              maxPrice: (value as number[])[1],
+            }));
+          }}
+          valueLabelFormat={value => `$${value}`}
           valueLabelDisplay="auto"
-          getAriaValueText={() => price.toString()}
+          getAriaLabel={() => 'Price range'}
+          getAriaValueText={() =>
+            [filters.minPrice, filters.maxPrice].toString()
+          }
           sx={styles.slider}
         />
       </Category>
