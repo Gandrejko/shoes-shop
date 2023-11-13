@@ -1,12 +1,11 @@
 import {UpdateFormType} from '@/pages/settings';
-import {Avatar, Box, Button, SxProps} from '@mui/material';
+import {Avatar, Box, Button, InputBase, SxProps} from '@mui/material';
 import {useMutation} from '@tanstack/react-query';
 import axios from 'axios';
 import {useSession} from 'next-auth/react';
 import Image from 'next/image';
-import {ChangeEvent} from 'react';
+import {ChangeEvent, useRef} from 'react';
 import {toast} from 'react-toastify';
-import HiddenInput from '../Inputs/HiddenInput';
 
 const styles: Record<string, SxProps> = {
   headerBox: {
@@ -38,6 +37,7 @@ const styles: Record<string, SxProps> = {
     fontSize: {xs: 12, sm: 16},
     width: {xs: 117, sm: 152},
   },
+  inputHidden: {display: 'none'},
 };
 
 const UpdateProfileAvatarContainer = ({formProps}: UpdateFormType) => {
@@ -45,6 +45,7 @@ const UpdateProfileAvatarContainer = ({formProps}: UpdateFormType) => {
   const currentUser = session?.user;
   const token = session?.user.accessToken;
   const avatar = formProps.getValues().avatar;
+  const inputRef = useRef<HTMLInputElement>();
 
   const {mutate: uploadImage} = useMutation({
     mutationFn: async (formData: FormData) => {
@@ -117,7 +118,12 @@ const UpdateProfileAvatarContainer = ({formProps}: UpdateFormType) => {
       <Box sx={styles.buttonsBox}>
         <Button variant="outlined" component="label" sx={styles.button}>
           Change photo
-          <HiddenInput type="file" onChange={handleFileChange} />
+          <InputBase
+            inputProps={{ref: inputRef}}
+            type="file"
+            sx={styles.inputHidden}
+            onChange={handleFileChange}
+          />
         </Button>
         <Button
           variant="contained"
