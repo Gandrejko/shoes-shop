@@ -34,6 +34,7 @@ type InputProps = InputBaseProps & {
   validationSchema: RegisterOptions<any>;
   name: string;
   errorMessage?: string;
+  marginBottom?: number;
 };
 
 export const Input = ({
@@ -42,6 +43,7 @@ export const Input = ({
   name,
   validationSchema,
   errorMessage,
+  marginBottom,
   ...props
 }: InputProps) => {
   const id = useId();
