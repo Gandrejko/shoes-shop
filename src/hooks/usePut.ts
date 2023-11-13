@@ -22,11 +22,9 @@ function usePut<Req extends {id?: number} = any, Res = any>(
   return useMutation<Res, Error, Req>({
     ...options,
     mutationFn: async newData => {
-      const res = await axios.putForm<Res>(
-        `${endpoint}/${newData.id}`,
-        {data: JSON.stringify(newData)},
-        {params},
-      );
+      const res = await axios.put<Res>(`${endpoint}/${newData.id}`, newData, {
+        params,
+      });
       return res.data;
     },
     onSuccess: (...props) => {
