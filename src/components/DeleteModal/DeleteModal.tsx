@@ -44,35 +44,35 @@ const styles: Record<string, SxProps> = {
 };
 
 type DeleteModalProps = {
-  modalHeader: string;
-  modalDescr: string;
+  header: string;
+  description: string;
   isModalOpen: boolean;
-  handleModalClose: () => void;
-  handleDelete: () => void;
+  onClose: () => void;
+  onDelete: () => void;
 };
 
 const DeleteModal = ({
-  modalDescr,
-  modalHeader,
+  description,
+  header,
   isModalOpen,
-  handleModalClose,
-  handleDelete,
+  onClose,
+  onDelete,
 }: DeleteModalProps) => {
   return (
     <Dialog open={true} PaperProps={{sx: styles.modalPaper}}>
       <DialogTitle variant="h1" sx={styles.title}>
-        {modalHeader}
+        {header}
       </DialogTitle>
       <IconButton
         aria-label="closeModal"
         sx={styles.closeButton}
-        onClick={handleModalClose}
+        onClick={onClose}
       >
         <Image src="icons/modalClose.svg" alt="close modal" fill sizes="100%" />
       </IconButton>
       <DialogContent sx={styles.content}>
         <Typography variant="body1" sx={styles.descr}>
-          {modalDescr}
+          {description}
         </Typography>
       </DialogContent>
       <Divider variant="fullWidth" />
@@ -80,11 +80,15 @@ const DeleteModal = ({
         <Button
           variant="outlined"
           sx={{width: '282px', height: '61px'}}
-          onClick={handleModalClose}
+          onClick={onClose}
         >
           Cancel
         </Button>
-        <Button variant="contained" sx={{width: '282px', height: '61px'}}>
+        <Button
+          variant="contained"
+          sx={{width: '282px', height: '61px'}}
+          onClick={onDelete}
+        >
           Delete
         </Button>
       </DialogActions>
