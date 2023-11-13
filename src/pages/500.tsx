@@ -1,5 +1,12 @@
 import Image from 'next/image';
-import {Box, Typography, Stack, SxProps, useMediaQuery, Button} from '@mui/material';
+import {
+  Box,
+  Typography,
+  Stack,
+  SxProps,
+  useMediaQuery,
+  Button,
+} from '@mui/material';
 import Header from '@/components/Header';
 import Link from 'next/link';
 import theme from '@/styles/theme/commonTheme';
@@ -76,7 +83,7 @@ const Error500 = () => {
           </Box>
           <Box sx={styles.button}>
             <Link href="/">
-              <Button variant="contained" sx={{width: "152px", height: "40px"}}>
+              <Button variant="contained" sx={{width: '152px', height: '40px'}}>
                 Go Back
               </Button>
             </Link>
@@ -102,12 +109,18 @@ const Error500 = () => {
               </Typography>
               <Stack direction="row" spacing={4}>
                 <Link href="/">
-                  <Button variant="outlined" sx={{width: "152px", height: "40px"}}>
+                  <Button
+                    variant="outlined"
+                    sx={{width: '152px', height: '40px'}}
+                  >
                     Go Back
                   </Button>
                 </Link>
                 <Link href="/">
-                  <Button variant="contained" sx={{width: "152px", height: "40px"}}>
+                  <Button
+                    variant="contained"
+                    sx={{width: '152px', height: '40px'}}
+                  >
                     Home
                   </Button>
                 </Link>

@@ -79,12 +79,12 @@ const DeleteModal = ({
       <DialogActions sx={styles.actions}>
         <Button
           variant="outlined"
-          sx={styles.button}
+          sx={{width: '282px', height: '61px'}}
           onClick={handleModalClose}
         >
           Cancel
         </Button>
-        <Button variant="contained" sx={styles.button} onClick={handleDelete}>
+        <Button variant="contained" sx={{width: '282px', height: '61px'}}>
           Delete
         </Button>
       </DialogActions>

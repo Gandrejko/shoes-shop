@@ -14,6 +14,7 @@ import {useState} from 'react';
 
 import {ProductAttributes} from '@/types/product';
 import ButtonMenu from './ButtonMenu';
+import {useRouter} from 'next/router';
 
 const styles: Record<string, SxProps> = {
   card: {
@@ -48,6 +49,9 @@ type Props = {
 const ProductCard = ({product}: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
+  const router = useRouter();
+  const showControls = router.pathname === '/my-products';
+
   return (
     <Card sx={styles.card}>
       <Box sx={styles.imageContainer}>
@@ -59,23 +63,29 @@ const ProductCard = ({product}: Props) => {
             style={{objectFit: 'cover'}}
           />
         ) : (
-          <Paper sx={{height: 1, backgroundColor: 'grey.A200'}} />
+          <Paper
+            sx={{height: 1, backgroundColor: 'grey.A200', borderRadius: 0}}
+          />
         )}
-        <IconButton
-          aria-label="settings"
-          sx={styles.moreButton}
-          onClick={e => setAnchorEl(e.currentTarget)}
-        >
-          <MoreHoriz />
-        </IconButton>
-        <ButtonMenu
-          productId={product.id!}
-          open={Boolean(anchorEl)}
-          onClose={() => setAnchorEl(null)}
-          anchorEl={anchorEl}
-          anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
-          transformOrigin={{vertical: 'top', horizontal: 'right'}}
-        />
+        {showControls && (
+          <>
+            <IconButton
+              aria-label="settings"
+              sx={styles.moreButton}
+              onClick={e => setAnchorEl(e.currentTarget)}
+            >
+              <MoreHoriz />
+            </IconButton>
+            <ButtonMenu
+              productId={product.id!}
+              open={Boolean(anchorEl)}
+              onClose={() => setAnchorEl(null)}
+              anchorEl={anchorEl}
+              anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
+              transformOrigin={{vertical: 'top', horizontal: 'right'}}
+            />
+          </>
+        )}
       </Box>
       <CardContent sx={styles.cardContent}>
         <Stack direction="row" sx={styles.productDescription}>

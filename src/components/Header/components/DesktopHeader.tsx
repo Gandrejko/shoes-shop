@@ -69,7 +69,9 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
             spacing={4}
           >
             <Link href="/auth/sign-in">
-              <Button variant="outlined" sx={{width: "145px", height: "48px"}} >Sign In</Button>
+              <Button variant="outlined" sx={{width: '145px', height: '48px'}}>
+                Sign In
+              </Button>
             </Link>
             <SearchInput
               name="not-used-2"

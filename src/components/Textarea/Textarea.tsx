@@ -1,5 +1,8 @@
+import theme from '@/styles/theme/commonTheme';
 import {Box, InputBase, InputLabel, Typography} from '@mui/material';
 import {InputBaseProps} from '@mui/material/InputBase/InputBase';
+import Image from 'next/image';
+import warningIcon from 'public/icons/warning.svg';
 import {useId} from 'react';
 import {RegisterOptions, UseFormRegister} from 'react-hook-form';
 
@@ -13,6 +16,13 @@ const styles = {
     border: '1px solid #494949',
     padding: '8px 15px',
   },
+  errorWrapper: {
+    color: '#FE645E',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '4px',
+    marginTop: '8px',
+  },
 };
 
 type TextareaProps = InputBaseProps & {
@@ -20,6 +30,7 @@ type TextareaProps = InputBaseProps & {
   register: UseFormRegister<any>;
   validationSchema: RegisterOptions<any>;
   name: string;
+  errorMessage?: string;
 };
 
 const Textarea = ({
@@ -27,6 +38,7 @@ const Textarea = ({
   register,
   name,
   validationSchema,
+  errorMessage,
   ...props
 }: TextareaProps) => {
   const id = useId();
@@ -41,13 +53,25 @@ const Textarea = ({
         )}
       </InputLabel>
       <InputBase
-        sx={styles.textarea}
+        sx={{
+          ...styles.textarea,
+          border: !!errorMessage
+            ? `2px solid ${theme.palette.error.main}`
+            : `1px solid ${theme.palette.grey['A700']}`,
+        }}
         id={id}
         fullWidth
         multiline
         {...props}
         {...register(name, validationSchema)}
+        error={!!errorMessage}
       />
+      {errorMessage && (
+        <Box sx={styles.errorWrapper}>
+          <Image src={warningIcon} alt="" />
+          {errorMessage}
+        </Box>
+      )}
     </Box>
   );
 };

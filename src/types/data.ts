@@ -27,3 +27,12 @@ type Pagination = {
   pageCount: number;
   total: number;
 };
+
+export type Filters = {
+  gender: number[];
+  color: number[];
+  brand: number[];
+  sizes: number[];
+  minPrice: number;
+  maxPrice: number;
+};
