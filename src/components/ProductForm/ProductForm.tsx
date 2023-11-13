@@ -1,4 +1,5 @@
 import {Brand} from '@/types/brand';
+import {Category} from '@/types/category';
 import {Color} from '@/types/color';
 import {Gender} from '@/types/gender';
 import {Image} from '@/types/image';
@@ -80,6 +81,7 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
     name: 'None',
   });
   const [choosedSizes, setChoosedSizes] = useState<Size[]>([]);
+  const [choosedCategories, setChoosedCategories] = useState<Category[]>([]);
   const [images, setImages] = useState<Pick<Image, 'id' | 'url'>[]>([]);
 
   const {
@@ -96,6 +98,7 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
   useEffect(() => {
     const productGender = product?.gender?.data;
     const productBrand = product?.brand?.data;
+    const productColor = product?.color?.data;
     reset(createDefaultProduct(product));
     productGender &&
       setGender({id: productGender.id, name: productGender.attributes.name});
@@ -104,10 +107,18 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
         id: productBrand.id,
         name: productBrand.attributes.name,
       });
+    productColor &&
+      setColor({id: productColor.id, name: productColor.attributes.name});
     setChoosedSizes(
       product?.sizes?.data?.map(({id, attributes}) => ({
         id,
         value: attributes.value,
+      })) || [],
+    );
+    setChoosedCategories(
+      product?.categories?.data?.map(({id, attributes}) => ({
+        id,
+        name: attributes.name,
       })) || [],
     );
     setImages(
@@ -125,6 +136,7 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
       brand: brand.id !== 0 ? brand : undefined,
       color: color.id !== 0 ? color : undefined,
       sizes: choosedSizes,
+      categories: choosedCategories,
       images,
     };
     const data = Object.keys(values).reduce(
@@ -156,6 +168,8 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
         setValue,
         color,
         setColor,
+        choosedCategories,
+        setChoosedCategories,
       }}
     >
       <Box

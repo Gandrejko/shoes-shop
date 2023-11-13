@@ -1,9 +1,11 @@
 import Dropdown from '@/components/Dropdown/Dropdown';
 import {Input} from '@/components/Inputs/Input';
+import ProductSizeItem from '@/components/ProductSize/ProductSizeItem';
 import ProductSizeList from '@/components/ProductSize/ProductSizeList';
 import Textarea from '@/components/Textarea/Textarea';
 import useGet from '@/hooks/useGet';
 import theme from '@/styles/theme/commonTheme';
+import {CategoriesResponse} from '@/types/category';
 import {ProductFormContext, ProductFormData} from '../ProductForm';
 import {BrandsResponse} from '@/types/brand';
 import {ColorsResponse} from '@/types/color';
@@ -11,7 +13,7 @@ import {GendersResponse} from '@/types/gender';
 import {ProductRequest} from '@/types/product';
 import {SizesResponse} from '@/types/size';
 
-import {Box, Grid, SxProps} from '@mui/material';
+import {Box, Button, Grid, SxProps, Typography} from '@mui/material';
 import React, {useContext} from 'react';
 import {Controller, UseFormReturn} from 'react-hook-form';
 
@@ -38,6 +40,12 @@ const styles: Record<string, SxProps> = {
     gap: '1rem',
     flexShrink: 1,
   },
+  categories: {
+    paddingTop: '1rem',
+    display: 'flex',
+    gap: '1rem',
+    flexWrap: 'wrap',
+  },
 };
 
 const FormContainer = () => {
@@ -53,11 +61,14 @@ const FormContainer = () => {
     setValue,
     color,
     setColor,
+    choosedCategories,
+    setChoosedCategories,
   } = useContext(ProductFormContext);
   const {data: genders} = useGet<GendersResponse>('/genders');
   const {data: colors} = useGet<ColorsResponse>('/colors');
   const {data: brands} = useGet<BrandsResponse>('/brands');
   const {data: sizes} = useGet<SizesResponse>('/sizes');
+  const {data: categories} = useGet<CategoriesResponse>('/categories');
 
   const sizesMapped =
     sizes?.data.map(({id, attributes}) => ({
@@ -78,6 +89,23 @@ const FormContainer = () => {
         return [...prevState, newSize];
       } else {
         return prevState.filter((size: any) => size.id !== id);
+      }
+    });
+  };
+
+  const checkCategory = (id: number) => {
+    setChoosedCategories((prevState: any) => {
+      const newCategory = categories?.data.find(size => size.id === id);
+      const isCategoryAlreadyChoosed = prevState.find(
+        (category: any) => category.id === id,
+      );
+      if (!newCategory) {
+        return prevState;
+      }
+      if (!isCategoryAlreadyChoosed) {
+        return [...prevState, {id, name: newCategory.attributes.name}];
+      } else {
+        return prevState.filter((category: any) => category.id !== id);
       }
     });
   };
@@ -109,7 +137,6 @@ const FormContainer = () => {
       />
       <Box sx={styles.dropdowns}>
         <Dropdown
-          name="gender"
           labelText="Gender"
           options={genders?.data.map(({id, attributes}) => ({
             value: id,
@@ -121,7 +148,6 @@ const FormContainer = () => {
           }}
         />
         <Dropdown
-          name="brand"
           labelText="Brand"
           options={brands?.data.map(({id, attributes}) => ({
             value: id,
@@ -151,8 +177,27 @@ const FormContainer = () => {
         minRows={8}
         placeholder="Do not exceed 300 characters."
       />
+      <Box>
+        <Typography>Categories</Typography>
+        <Box sx={styles.categories}>
+          {categories?.data.map(({id, attributes: {name}}) => (
+            <Button
+              key={id}
+              variant={
+                Boolean(
+                  choosedCategories.find((category: any) => category.id === id),
+                )
+                  ? 'contained'
+                  : 'outlined'
+              }
+              onClick={() => checkCategory(id)}
+            >
+              {name}
+            </Button>
+          ))}
+        </Box>
+      </Box>
       <Dropdown
-        name="color"
         labelText="Color"
         options={colors?.data.map(({id, attributes}) => ({
           value: id,
