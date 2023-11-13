@@ -119,7 +119,7 @@ const UpdateProfileAvatarContainer = ({formProps}: UpdateFormType) => {
         <Button variant="outlined" component="label" sx={styles.button}>
           Change photo
           <InputBase
-            inputProps={{ref: inputRef}}
+            inputProps={{ref: inputRef, accept: 'image/*'}}
             type="file"
             sx={styles.inputHidden}
             onChange={handleFileChange}

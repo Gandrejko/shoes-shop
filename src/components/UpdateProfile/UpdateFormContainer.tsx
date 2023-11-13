@@ -26,7 +26,6 @@ const UpdateFormContainer = ({formProps}: UpdateFormType) => {
           validationSchema={{
             required: 'Name is required',
           }}
-          required
           errorMessage={formProps.formState.errors.firstName?.message}
           marginBottom={24}
         />
@@ -39,7 +38,6 @@ const UpdateFormContainer = ({formProps}: UpdateFormType) => {
           validationSchema={{
             required: 'Surname is required',
           }}
-          required
           errorMessage={formProps.formState.errors.lastName?.message}
           marginBottom={24}
         />
@@ -57,7 +55,6 @@ const UpdateFormContainer = ({formProps}: UpdateFormType) => {
               message: 'This email is invalid',
             },
           }}
-          required
           errorMessage={formProps.formState.errors.email?.message}
           marginBottom={24}
         />
@@ -74,7 +71,6 @@ const UpdateFormContainer = ({formProps}: UpdateFormType) => {
               message: 'This phone is invalid',
             },
           }}
-          required
           errorMessage={formProps.formState.errors.phoneNumber?.message}
         />
       </Box>
