@@ -1,4 +1,5 @@
 import {
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -8,7 +9,6 @@ import {
   SxProps,
 } from '@mui/material';
 import Image from 'next/image';
-import {Button} from '../Button/Button';
 
 const styles: Record<string, SxProps> = {
   modalPaper: {
@@ -60,14 +60,15 @@ const DeleteModal = ({isModalOpen, handleModalClose}: DeleteModalProps) => {
       <Divider variant="fullWidth" />
       <DialogActions>
         <Button
-          width="282px"
-          height="61px"
-          isTransparent
+          variant="outlined"
+          sx={{width: "282px", height: "61px"}}
           onClick={handleModalClose}
         >
           Cancel
         </Button>
-        <Button width="282px" height="61px">
+        <Button
+          variant="contained"
+          sx={{width: "282px", height: "61px"}}>
           Delete
         </Button>
       </DialogActions>

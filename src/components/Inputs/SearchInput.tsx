@@ -8,46 +8,73 @@ const styles = {
   search: {
     display: 'flex',
     alignItems: 'center',
-    gap: '10px',
+    gap: '12px',
     width: '320px',
     borderRadius: '50px',
     border: '1px solid #494949',
-    padding: '8px 15px',
-    height: '48px',
+    paddingLeft: '15px',
   },
   searchHuge: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
     width: '100%',
-    padding: '15px 25px',
+    maxWidth: '1071px',
+    paddingLeft: '32px',
+    border: '1px solid #494949',
+    borderRadius: '50px',
   },
   input: {
     width: '100%',
+    padding: '8px 15px',
+    border: 'none',
+    outline: 'none',
+  },
+  inputHuge: {
+    width: '100%',
+    padding: '19px 15px 17px',
+    border: 'none',
+    outline: 'none',
+
+    '& .MuiInputBase-input': {
+      fontSize: '24px',
+      lineHeight: 'normal',
+    },
   },
 };
 
 type SearchInputProps = InputBaseProps & {
-  register?: UseFormRegister<any>;
-  validationSchema?: RegisterOptions<any>;
-  name?: string;
+  register: UseFormRegister<any> | false;
+  validationSchema: RegisterOptions<any> | false;
+  name: string;
+  giantMode?: boolean;
+  errorMessage?: string;
 };
 
 export const SearchInput = ({
   register,
   name,
   validationSchema,
+  giantMode = false,
+  errorMessage,
   ...props
 }: SearchInputProps) => {
   const id = useId();
+
   const registerProps =
-    register && name ? register(name, validationSchema) : {};
+    register && name
+      ? register(name, validationSchema ? validationSchema : {})
+      : {};
   return (
-    <Box sx={styles.search}>
+    <Box sx={giantMode ? styles.searchHuge : styles.search}>
       <Image width={20} height={20} src="icons/search.svg" alt="search" />
       <InputBase
         placeholder="Search"
         id={id}
-        sx={styles.input}
+        sx={giantMode ? styles.inputHuge : styles.input}
         {...props}
         {...registerProps}
+        error={!!errorMessage}
       />
     </Box>
   );

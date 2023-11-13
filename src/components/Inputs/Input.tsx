@@ -19,6 +19,13 @@ const styles = {
     outline: 'none',
     underline: 'none',
   },
+  errorWrapper: {
+    color: '#FE645E',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '4px',
+    marginTop: '8px',
+  },
 };
 
 type InputProps = InputBaseProps & {
@@ -27,6 +34,7 @@ type InputProps = InputBaseProps & {
   validationSchema: RegisterOptions<any>;
   name: string;
   errorMessage?: string;
+  required?: boolean;
 };
 
 export const Input = ({
@@ -35,6 +43,7 @@ export const Input = ({
   name,
   validationSchema,
   errorMessage,
+  required,
   ...props
 }: InputProps) => {
   const id = useId();
@@ -56,7 +65,7 @@ export const Input = ({
         error={!!errorMessage}
       />
       {errorMessage && (
-        <Box sx={{color: 'red', display: 'flex', gap: '4px', marginTop: '8px'}}>
+        <Box sx={styles.errorWrapper}>
           <Image src={warningIcon} alt="" />
           {errorMessage}
         </Box>

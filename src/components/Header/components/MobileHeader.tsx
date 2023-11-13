@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import Image from 'next/image';
 import {HeaderProps} from '@/components/Header';
+import Link from 'next/link';
 
 const styles: Record<string, SxProps> = {
   mobileWrapper: {
@@ -45,7 +46,7 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-const MobileHeader = ({userLoggedIn}: HeaderProps) => {
+const MobileHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
   const [openDrawer, setOpenDrawer] = useState(false);
 
   const iOS =
@@ -55,12 +56,14 @@ const MobileHeader = ({userLoggedIn}: HeaderProps) => {
   return (
     <>
       <Toolbar sx={styles.mobileWrapper}>
-        <Image src="/icons/logo.svg" alt="logo" width={35.31} height={26.52} />
+        <Link href="/">
+          <Image src="/icons/logo.svg" alt="logo" width={35.31} height={26.52} />
+        </Link>
         <Stack direction="row" alignItems="center" spacing={1}>
           <IconButton onClick={() => {}}>
             <Image src="/icons/cart.svg" alt="cart" width={20} height={20} />
           </IconButton>
-          <IconButton onClick={() => {}}>
+          <IconButton onClick={handleModalOpen}>
             <Image
               src="/icons/search.svg"
               alt="search"

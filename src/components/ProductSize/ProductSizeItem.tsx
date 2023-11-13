@@ -1,3 +1,4 @@
+import {Size} from '@/types/size';
 import {Button, SxProps} from '@mui/material';
 import {useState} from 'react';
 
@@ -15,13 +16,8 @@ const styles = (isChecked: boolean): SxProps => ({
   },
 });
 
-type SizeItemType = {
-  id: number;
-  value: number;
-};
-
 type SiteItemPropsType = {
-  size: SizeItemType;
+  size: Size;
   onClick: (id: number, isChecked: boolean) => void;
 };
 

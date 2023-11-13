@@ -1,19 +1,10 @@
-import {Button} from '@/components/Button/Button';
-import {
-  BrandsResponse,
-  ColorsResponse,
-  GendersResponse,
-  SizesResponse,
-} from '@/types';
-import {useQuery} from '@tanstack/react-query';
-import axios, {AxiosResponse} from 'axios';
-import FormContainer from './components/FormContainer';
-import ImagesContainer from './components/ImagesContainer';
 import theme from '@/styles/theme/commonTheme';
-import {Box, SxProps, Typography} from '@mui/material';
-import React, {useEffect} from 'react';
+import {Box, Button, SxProps, Typography} from '@mui/material';
 import {FieldErrors, useForm} from 'react-hook-form';
 import {toast} from 'react-toastify';
+import FormContainer from './components/FormContainer';
+import ImagesContainer from './components/ImagesContainer';
+import {ProductRequest} from '@/types/product';
 
 const styles: Record<string, SxProps> = {
   mainContainer: {
@@ -52,22 +43,6 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-export type ProductData = {
-  name: string;
-  price: number;
-  gender?: number;
-  brand?: number;
-  description: string;
-  sizes: {
-    id: number;
-    value: number;
-  }[];
-  images: {
-    id: number;
-    url: string;
-  }[];
-};
-
 type ProductFormProps = {
   onSubmit: (data: any) => void;
   product?: any;
@@ -75,7 +50,7 @@ type ProductFormProps = {
 
 const ProductForm = ({onSubmit, product}: ProductFormProps) => {
   const {register, handleSubmit, control, getValues, setValue} =
-    useForm<ProductData>({
+    useForm<ProductRequest>({
       defaultValues: {
         name: '',
         price: 0,
@@ -104,7 +79,7 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
     onSubmit(data);
   };
 
-  const onError = (errors: FieldErrors<ProductData>) => {
+  const onError = (errors: FieldErrors<ProductRequest>) => {
     Object.entries(errors).forEach(([key, value]) => {
       if (value && value.message) {
         toast.error(value.message);

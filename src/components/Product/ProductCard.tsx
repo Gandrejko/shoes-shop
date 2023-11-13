@@ -1,16 +1,18 @@
-import {useState} from 'react';
-import Image from 'next/image';
 import {MoreHoriz} from '@mui/icons-material';
 import {
   Box,
   Card,
   CardContent,
   IconButton,
+  Paper,
   Stack,
   SxProps,
   Typography,
 } from '@mui/material';
+import Image from 'next/image';
+import {useState} from 'react';
 
+import {ProductAttributes} from '@/types/product';
 import ButtonMenu from './ButtonMenu';
 
 const styles: Record<string, SxProps> = {
@@ -39,30 +41,26 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-type Product = {
-  id: number;
-  name: string;
-  price: number;
-  image: string;
-  gender: string;
+type Props = {
+  product: ProductAttributes;
 };
 
-type ProductCardProps = {
-  product: Product;
-};
-
-const ProductCard = ({product}: ProductCardProps) => {
+const ProductCard = ({product}: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   return (
     <Card sx={styles.card}>
       <Box sx={styles.imageContainer}>
-        <Image
-          src={product.image}
-          alt={product.name}
-          fill
-          style={{objectFit: 'cover'}}
-        />
+        {product.images?.data ? (
+          <Image
+            src={product.images.data[0].attributes.url}
+            alt={product.name!}
+            fill
+            style={{objectFit: 'cover'}}
+          />
+        ) : (
+          <Paper sx={{height: 1, backgroundColor: 'grey.A200'}} />
+        )}
         <IconButton
           aria-label="settings"
           sx={styles.moreButton}
@@ -71,7 +69,7 @@ const ProductCard = ({product}: ProductCardProps) => {
           <MoreHoriz />
         </IconButton>
         <ButtonMenu
-          productid={product.id}
+          productId={product.id!}
           open={Boolean(anchorEl)}
           onClose={() => setAnchorEl(null)}
           anchorEl={anchorEl}
@@ -85,12 +83,16 @@ const ProductCard = ({product}: ProductCardProps) => {
             <Typography variant="h3" fontSize={14}>
               {product.name}
             </Typography>
-            <Typography
-              variant="h5"
-              fontSize={14}
-              textTransform="capitalize"
-              color={theme => theme.palette.text.secondary}
-            >{`${product.gender}'s Shoes`}</Typography>
+            {product.gender?.data && (
+              <Typography
+                variant="h5"
+                fontSize={14}
+                textTransform="capitalize"
+                color={theme => theme.palette.text.secondary}
+              >
+                {`${product.gender.data.attributes.name}'s Shoes`}
+              </Typography>
+            )}
           </Box>
           <Typography variant="h3" fontSize={14}>
             ${product.price}
