@@ -19,7 +19,8 @@ const styles: Record<string, SxProps> = {
     borderRadius: 2,
     boxShadow: 'none',
     backgroundColor: 'common.white',
-    maxWidth: {xs: '88%', sm: '65%', md: '55%', lg: '50%', xl: '34%'},
+    maxWidth: 600,
+    margin: 4,
   },
   title: {p: 0},
   content: {
@@ -59,7 +60,7 @@ const DeleteModal = ({
   onDelete,
 }: DeleteModalProps) => {
   return (
-    <Dialog open={true} PaperProps={{sx: styles.modalPaper}}>
+    <Dialog open={isModalOpen} PaperProps={{sx: styles.modalPaper}}>
       <DialogTitle variant="h1" sx={styles.title}>
         {header}
       </DialogTitle>
