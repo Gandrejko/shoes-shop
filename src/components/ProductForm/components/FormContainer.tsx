@@ -73,15 +73,15 @@ const FormContainer = () => {
     setChoosedCategories,
     isLoading,
   } = useContext(ProductFormContext);
-  const {data: genders, isPending: isGendersLoading} =
+  const {data: genders, isLoading: isGendersLoading} =
     useGet<GendersResponse>('/genders');
-  const {data: colors, isPending: isColorsLoading} =
+  const {data: colors, isLoading: isColorsLoading} =
     useGet<ColorsResponse>('/colors');
-  const {data: brands, isPending: isBrandsLoading} =
+  const {data: brands, isLoading: isBrandsLoading} =
     useGet<BrandsResponse>('/brands');
-  const {data: sizes, isPending: isSizesLoading} =
+  const {data: sizes, isLoading: isSizesLoading} =
     useGet<SizesResponse>('/sizes');
-  const {data: categories, isPending: isCategoriesLoading} =
+  const {data: categories, isLoading: isCategoriesLoading} =
     useGet<CategoriesResponse>('/categories');
 
   const checkSize = (id: number) => {
