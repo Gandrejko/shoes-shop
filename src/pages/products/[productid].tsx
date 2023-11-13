@@ -100,11 +100,6 @@ const styles: Record<string, SxProps> = {
   }
 };
 
-// const { data: product, error } = useQuery<AxiosResponse<any>>({
-//   queryKey: ['products', productId],
-//   queryFn: () => axios.get(`${process.env.API_URL}/products/${productId}`, {params: {populate: '*'} }),
-// });
-
 const SingleProductPage = () => {
   const router = useRouter();
   const productId = router.query.productid;
