@@ -3,7 +3,8 @@ import {
   Box,
   useTheme,
   useMediaQuery,
-  SxProps, Button,
+  SxProps,
+  Button,
 } from '@mui/material';
 import {useForm} from 'react-hook-form';
 import {SearchInput} from '../Inputs/SearchInput';
@@ -63,7 +64,7 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
   return (
     <>
       <MuiModal
-        open={isOpen}
+        open={true}
         onClose={handleOnClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -92,7 +93,7 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
               />
               <Button
                 variant="outlined"
-                sx={{width: "148px", height: "80px"}}
+                sx={{width: '148px', height: '80px'}}
                 onClick={handleOnSearch}
               >
                 Search

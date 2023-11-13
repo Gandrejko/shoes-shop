@@ -116,33 +116,9 @@ let theme = createTheme({
         }),
       },
     },
-    MuiDialogTitle: {
+    MuiBackdrop: {
       styleOverrides: {
-        root: {
-          padding: 0,
-        },
-      },
-    },
-    MuiDialogContent: {
-      styleOverrides: {
-        root: ({theme}) => ({
-          padding: 0,
-          color: theme.palette.text.secondary,
-        }),
-      },
-    },
-    MuiDialogActions: {
-      styleOverrides: {
-        root: ({theme}) => ({
-          padding: 0,
-          justifyContent: 'space-between',
-          [theme.breakpoints.down('md')]: {
-            gap: theme.spacing(2),
-          },
-          [theme.breakpoints.up('md')]: {
-            gap: theme.spacing(4),
-          },
-        }),
+        root: {backgroundColor: 'rgba(243, 243, 243, 0.5)'},
       },
     },
     MuiSelect: {
