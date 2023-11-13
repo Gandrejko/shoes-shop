@@ -51,6 +51,8 @@ const FormContainer = () => {
     register,
     errors,
     setValue,
+    color,
+    setColor,
   } = useContext(ProductFormContext);
   const {data: genders} = useGet<GendersResponse>('/genders');
   const {data: colors} = useGet<ColorsResponse>('/colors');
@@ -73,7 +75,6 @@ const FormContainer = () => {
         return prevState;
       }
       if (!isSizeAlreadyChoosed) {
-        console.log(newSize);
         return [...prevState, newSize];
       } else {
         return prevState.filter((size: any) => size.id !== id);
@@ -149,6 +150,18 @@ const FormContainer = () => {
         name="description"
         minRows={8}
         placeholder="Do not exceed 300 characters."
+      />
+      <Dropdown
+        name="color"
+        labelText="Color"
+        options={colors?.data.map(({id, attributes}) => ({
+          value: id,
+          name: attributes.name!,
+        }))}
+        value={color.id}
+        onChange={e => {
+          setColor({id: e.target.value, name: e.target.name});
+        }}
       />
       <ProductSizeList
         header="Add size"

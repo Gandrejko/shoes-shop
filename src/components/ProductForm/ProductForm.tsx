@@ -1,4 +1,5 @@
 import {Brand} from '@/types/brand';
+import {Color} from '@/types/color';
 import {Gender} from '@/types/gender';
 import {Image} from '@/types/image';
 import {Size} from '@/types/size';
@@ -74,6 +75,10 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
     id: 0,
     name: 'None',
   });
+  const [color, setColor] = useState<Color>({
+    id: 0,
+    name: 'None',
+  });
   const [choosedSizes, setChoosedSizes] = useState<Size[]>([]);
   const [images, setImages] = useState<Pick<Image, 'id' | 'url'>[]>([]);
 
@@ -118,6 +123,7 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
       ...getValues(),
       gender: gender.id !== 0 ? gender : undefined,
       brand: brand.id !== 0 ? brand : undefined,
+      color: color.id !== 0 ? color : undefined,
       sizes: choosedSizes,
       images,
     };
@@ -148,6 +154,8 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
         register,
         errors,
         setValue,
+        color,
+        setColor,
       }}
     >
       <Box
