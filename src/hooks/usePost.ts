@@ -22,11 +22,7 @@ function usePost<Req = any, Res = any>(
   return useMutation<Res, Error, Req>({
     ...options,
     mutationFn: async newData => {
-      const res = await axios.postForm<Res>(
-        endpoint,
-        {data: JSON.stringify(newData)},
-        {params},
-      );
+      const res = await axios.post<Res>(endpoint, newData, {params});
       return res.data;
     },
     onSuccess: (...props) => {
