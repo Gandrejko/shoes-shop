@@ -79,7 +79,9 @@ export default function ForgotPassword() {
               />
             </Box>
 
-            <Button type="submit">Reset password</Button>
+            <Button type="submit" variant="contained">
+              Reset password
+            </Button>
           </Box>
           <Box sx={styles.fpLinksContainer}>
             <Link href={'/auth/reset-password'} style={styles.link}>

@@ -11,8 +11,8 @@ export const styles = {
     top: '50px',
     left: '50%',
     transform: 'translate(-50%, 0)',
-    paddingBottom: {sm: '0', xs: '14px'},
-    borderBottom: {sm: `none', xs: '1px  solid ${theme.palette.grey['A100']}`},
+    paddingBottom: {md: '0', xs: '14px'},
+    borderBottom: {md: 'none', xs: `1px  solid ${theme.palette.grey['A100']}`},
   },
   headerImage: {
     marginLeft: '40px',
@@ -78,7 +78,7 @@ export const styles = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: {lg: 'center', sm: 'flex-start'},
-    flexDirection: {md: 'row', sm: 'column', xs: 'row'},
+    flexDirection: {md: 'row', xs: 'row'},
   },
   checkbox: {
     '& .MuiSvgIcon-root': {

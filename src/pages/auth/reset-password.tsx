@@ -107,7 +107,9 @@ export default function ResetPassword() {
               />
             </Box>
 
-            <Button type="submit">Reset password</Button>
+            <Button type="submit" variant="contained">
+              Reset password
+            </Button>
           </Box>
           <Box sx={styles.linksContainer}>
             <Link href={'/auth/sign-in'} style={styles.link}>
