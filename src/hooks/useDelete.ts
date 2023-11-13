@@ -21,8 +21,9 @@ function useDelete<Res = any>(
 
   return useMutation({
     ...options,
-    mutationFn: async id => {
-      const res = await axios.delete<Res>(`${endpoint}/${id}`, {params});
+    mutationFn: async (id?: number) => {
+      const requestEndpoint = id ? `${endpoint}/${id}` : endpoint;
+      const res = await axios.delete<Res>(requestEndpoint, {params});
       return res.data;
     },
     onSuccess: (...props) => {
