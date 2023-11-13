@@ -1,15 +1,35 @@
-import React, { useEffect } from 'react';
-import { Box, Container, Typography, SxProps, Card, CardMedia, Grid, Button } from '@mui/material';
+import React, {useEffect} from 'react';
+import {
+  Box,
+  Container,
+  Typography,
+  SxProps,
+  Card,
+  CardMedia,
+  Grid,
+  Button,
+} from '@mui/material';
 import products from '@/temp/data';
 import ImageSlider from '@/components/ImageSlider/ImageSlider';
-import axios, { AxiosResponse } from 'axios';
-import { useQuery, useMutation } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
+import axios, {AxiosResponse} from 'axios';
+import {useQuery, useMutation} from '@tanstack/react-query';
+import {useRouter} from 'next/router';
 import Header from '@/components/Header';
-import { toast } from 'react-toastify';
+import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const sizes = ['EU-36', 'EU-37', 'EU-38', 'EU-39', 'EU-40', 'EU-41', 'EU-42', 'EU-43', 'EU-44', 'EU-45'];
+const sizes = [
+  'EU-36',
+  'EU-37',
+  'EU-38',
+  'EU-39',
+  'EU-40',
+  'EU-41',
+  'EU-42',
+  'EU-43',
+  'EU-44',
+  'EU-45',
+];
 
 type Product = {
   id: number;
@@ -21,10 +41,9 @@ type Product = {
   quantity: number;
 };
 
-
 const styles: Record<string, SxProps> = {
   container: {
-    padding: { xs: '16px', md: '35px', display: 'flex', gap: '50px' },
+    padding: {xs: '16px', md: '35px', display: 'flex', gap: '50px'},
   },
   productContainer: {
     width: '100%',
@@ -91,21 +110,20 @@ const styles: Record<string, SxProps> = {
     width: '100%',
   },
 
-
   description: {
     marginTop: '40px',
     display: 'flex',
     flexDirection: 'column',
-    gap: '30px'
-  }
+    gap: '30px',
+  },
 };
 
 const SingleProductPage = () => {
   const router = useRouter();
   const productId = router.query.productid;
-  const product = products.find((el) => el?.id.toString);
+  const product = products.find(el => el?.id.toString);
 
-  const { mutate } = useMutation({
+  const {mutate} = useMutation({
     mutationKey: ['cart'],
     mutationFn: async (data: any) => {
       if (!product) {
@@ -117,7 +135,10 @@ const SingleProductPage = () => {
         return;
       }
       toast.success('You have successfully added an item to your cart');
-      localStorage.setItem('cart', JSON.stringify({...existingData, [product.id]: product?.quantity}));
+      localStorage.setItem(
+        'cart',
+        JSON.stringify({...existingData, [product.id]: product?.quantity}),
+      );
     },
   });
 
@@ -142,10 +163,15 @@ const SingleProductPage = () => {
               {product?.gender}&apos;s Shoes
             </Typography>
             <Grid container spacing={2}>
-              {products?.map((p) => (
+              {products?.map(p => (
                 <Grid item key={p.id} xs={4} sm={3} md={2}>
                   <Card sx={styles.productImageCard}>
-                    <CardMedia component="img" alt={p.name} image={p.image} sx={{ height: '4%' }} />
+                    <CardMedia
+                      component="img"
+                      alt={p.name}
+                      image={p.image}
+                      sx={{height: '4%'}}
+                    />
                   </Card>
                 </Grid>
               ))}
@@ -164,17 +190,29 @@ const SingleProductPage = () => {
             </Box>
           </Box>
           <Box sx={styles.btnContainer}>
-            <Button onClick={mutate} variant="contained" sx={styles.addToCartButton}>
+            <Button
+              onClick={mutate}
+              variant="contained"
+              sx={styles.addToCartButton}
+            >
               Favorite
             </Button>
-            <Button onClick={mutate} variant="contained" sx={styles.addToCartButton}>
+            <Button
+              onClick={mutate}
+              variant="contained"
+              sx={styles.addToCartButton}
+            >
               Add to Bag
             </Button>
           </Box>
           <Box sx={styles.description}>
             <Typography variant="h4">Description</Typography>
             <Typography variant="h4" sx={styles.productLabel}>
-              Boasting the first-ever Max Air unit created specifically for Nike Sportswear, the Nike Air Max 270 delivers an Air unit that absorbs and gives back energy with every springy step. Updated for modern comfort, it nods to the original, 1991 Air Max 180 with its exaggerated tongue top and heritage tongue logo.
+              Boasting the first-ever Max Air unit created specifically for Nike
+              Sportswear, the Nike Air Max 270 delivers an Air unit that absorbs
+              and gives back energy with every springy step. Updated for modern
+              comfort, it nods to the original, 1991 Air Max 180 with its
+              exaggerated tongue top and heritage tongue logo.
             </Typography>
           </Box>
         </Box>

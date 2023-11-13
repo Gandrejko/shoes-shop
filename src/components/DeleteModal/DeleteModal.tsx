@@ -61,14 +61,12 @@ const DeleteModal = ({isModalOpen, handleModalClose}: DeleteModalProps) => {
       <DialogActions>
         <Button
           variant="outlined"
-          sx={{width: "282px", height: "61px"}}
+          sx={{width: '282px', height: '61px'}}
           onClick={handleModalClose}
         >
           Cancel
         </Button>
-        <Button
-          variant="contained"
-          sx={{width: "282px", height: "61px"}}>
+        <Button variant="contained" sx={{width: '282px', height: '61px'}}>
           Delete
         </Button>
       </DialogActions>

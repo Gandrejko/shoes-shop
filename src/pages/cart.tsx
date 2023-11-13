@@ -1,9 +1,9 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import {Box, Typography} from '@mui/material';
 import ProductItem from '@/components/Cart/CartItem';
 import SummarySection from '@/components/Cart/SummarySection';
 import EmptyCartPage from '@/components/Cart/EmptyCartPage';
-import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
+import {useQuery, useQueryClient, useMutation} from '@tanstack/react-query';
 import Header from '@/components/Header';
 
 // Import your mock product data
@@ -22,30 +22,44 @@ type Product = {
 const CartPage = () => {
   const queryClient = useQueryClient();
 
-  const { data: cartIds } = useQuery({
+  const {data: cartIds} = useQuery({
     queryKey: ['cart'],
     queryFn: async () => JSON.parse(localStorage.getItem('cart') || '{}'),
   });
 
-  const cartProducts = cartIds ?  Object.keys(cartIds).map((id) => products.find((product) => product.id === +id)).filter(item => item!= undefined) : [];
+  const cartProducts = cartIds
+    ? Object.keys(cartIds)
+        .map(id => products.find(product => product.id === +id))
+        .filter(item => item != undefined)
+    : [];
   const isEmpty = !cartIds || cartIds.length === 0;
-  console.log(cartProducts)
+  console.log(cartProducts);
   return (
     <>
       <Header />
-      <Box sx={{ display: 'flex', gap: '10%', marginLeft: '10%', marginRight: '10%' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          gap: '10%',
+          marginLeft: '10%',
+          marginRight: '10%',
+        }}
+      >
         {isEmpty ? (
-          <Box sx={{ width: '100%', textAlign: 'center' }}>
+          <Box sx={{width: '100%', textAlign: 'center'}}>
             <EmptyCartPage />
           </Box>
         ) : (
           <>
-            <Box sx={{ width: '62%' }}>
-              <Typography component="h1" sx={{ fontWeight: 500, fontSize: 45, marginBottom: 2 }}>
+            <Box sx={{width: '62%'}}>
+              <Typography
+                component="h1"
+                sx={{fontWeight: 500, fontSize: 45, marginBottom: 2}}
+              >
                 Cart
               </Typography>
 
-              {cartProducts.map((product) => (
+              {cartProducts.map(product => (
                 <ProductItem
                   cartIds={cartIds}
                   key={product?.id}
@@ -53,8 +67,15 @@ const CartPage = () => {
                 />
               ))}
             </Box>
-            <Box sx={{ width: '38%' }}>
-              <SummarySection products={Object.entries(cartIds).map(([id, quantity]) => ({ id, quantity, price: products.find(product => product.id.toString() === id)?.price }))} />
+            <Box sx={{width: '38%'}}>
+              <SummarySection
+                products={Object.entries(cartIds).map(([id, quantity]) => ({
+                  id,
+                  quantity,
+                  price: products.find(product => product.id.toString() === id)
+                    ?.price,
+                }))}
+              />
             </Box>
           </>
         )}
