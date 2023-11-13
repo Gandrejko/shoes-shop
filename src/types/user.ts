@@ -1,20 +1,19 @@
-import {Data, RequestData} from './data';
 import {Image} from './image';
-import {Product} from './product';
+import {ProductAttributes} from './product';
 
 export type User = {
   id: number;
   email: string;
   username: string;
+  firstName: string | null;
+  lastName: string | null;
   phoneNumber?: string | null;
+  avatar?: Partial<Image> | null;
 };
 
 export type UserAttributes = Partial<
   User & {
-    firstName: string | null;
-    lastName: string | null;
-    avatar: RequestData<Data<Image>> | null;
-    products: RequestData<Data<Product>[]>;
+    products: ProductAttributes[];
   }
 >;
 
