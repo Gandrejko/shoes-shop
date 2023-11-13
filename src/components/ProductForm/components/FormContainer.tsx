@@ -71,12 +71,18 @@ const FormContainer = () => {
     setColor,
     choosedCategories,
     setChoosedCategories,
+    isLoading,
   } = useContext(ProductFormContext);
-  const {data: genders} = useGet<GendersResponse>('/genders');
-  const {data: colors} = useGet<ColorsResponse>('/colors');
-  const {data: brands} = useGet<BrandsResponse>('/brands');
-  const {data: sizes} = useGet<SizesResponse>('/sizes');
-  const {data: categories} = useGet<CategoriesResponse>('/categories');
+  const {data: genders, isPending: isGendersLoading} =
+    useGet<GendersResponse>('/genders');
+  const {data: colors, isPending: isColorsLoading} =
+    useGet<ColorsResponse>('/colors');
+  const {data: brands, isPending: isBrandsLoading} =
+    useGet<BrandsResponse>('/brands');
+  const {data: sizes, isPending: isSizesLoading} =
+    useGet<SizesResponse>('/sizes');
+  const {data: categories, isPending: isCategoriesLoading} =
+    useGet<CategoriesResponse>('/categories');
 
   const checkSize = (id: number) => {
     setChoosedSizes((prevState: any) => {
@@ -88,7 +94,7 @@ const FormContainer = () => {
         return prevState;
       }
       if (!isSizeAlreadyChoosed) {
-        return [...prevState, sizes?.data.find(size => size.id === id)];
+        return [...prevState, newSize];
       } else {
         return prevState.filter((size: any) => size.id !== id);
       }
@@ -121,12 +127,14 @@ const FormContainer = () => {
         name="name"
         placeholder="Nike Air Max 90"
         errorMessage={errors.name?.message}
+        disabled={isLoading}
       />
       <Input
         name="price"
         labelText="Price"
         register={register}
         errorMessage={errors.price?.message}
+        disabled={isLoading}
         validationSchema={{
           required: 'Price is required',
           min: {
@@ -148,6 +156,7 @@ const FormContainer = () => {
           onChange={e => {
             setGender({id: e.target.value, name: e.target.name});
           }}
+          disabled={isLoading || isGendersLoading}
         />
         <Dropdown
           labelText="Brand"
@@ -159,12 +168,14 @@ const FormContainer = () => {
           onChange={e => {
             setBrand({id: e.target.value, name: e.target.name});
           }}
+          disabled={isLoading || isBrandsLoading}
         />
       </Box>
       <Textarea
         labelText="Description"
         register={register}
         errorMessage={errors.description?.message}
+        disabled={isLoading}
         validationSchema={{
           required: 'Description is required',
           onChange: e =>
@@ -195,6 +206,7 @@ const FormContainer = () => {
                 }}
                 variant={isChecked ? 'contained' : 'outlined'}
                 onClick={() => checkCategory(id)}
+                disabled={isLoading || isCategoriesLoading}
               >
                 {name}
               </Button>
@@ -212,6 +224,7 @@ const FormContainer = () => {
         onChange={e => {
           setColor({id: e.target.value, name: e.target.name});
         }}
+        disabled={isLoading || isColorsLoading}
       />
       <Box>
         <Typography>Sizes</Typography>
@@ -227,6 +240,7 @@ const FormContainer = () => {
                   ...styles.button,
                   color: isChecked ? 'white' : 'text.secondary',
                 }}
+                disabled={isLoading || isSizesLoading}
                 variant={isChecked ? 'contained' : 'outlined'}
                 onClick={() => checkSize(id)}
               >

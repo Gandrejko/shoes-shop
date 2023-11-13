@@ -57,6 +57,7 @@ export type ProductFormData = Pick<Product, 'name' | 'description' | 'price'>;
 type ProductFormProps = {
   onSubmit: (data: any) => void;
   product?: ProductAttributes;
+  isLoading?: boolean;
 };
 
 const createDefaultProduct = (
@@ -67,7 +68,7 @@ const createDefaultProduct = (
   description: product?.description || '',
 });
 
-const ProductForm = ({onSubmit, product}: ProductFormProps) => {
+const ProductForm = ({onSubmit, product, isLoading}: ProductFormProps) => {
   const [gender, setGender] = useState<Gender>({
     id: 0,
     name: 'None',
@@ -170,6 +171,7 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
         setColor,
         choosedCategories,
         setChoosedCategories,
+        isLoading,
       }}
     >
       <Box
@@ -181,7 +183,7 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
           <Typography variant="h1">
             {product ? 'Edit product' : 'Add a product'}
           </Typography>
-          <Button variant="contained" type="submit">
+          <Button variant="contained" type="submit" disabled={isLoading}>
             Save
           </Button>
         </Box>
