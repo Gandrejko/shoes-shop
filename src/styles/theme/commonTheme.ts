@@ -118,7 +118,7 @@ let theme = createTheme({
     },
     MuiBackdrop: {
       styleOverrides: {
-        root: {backgroundColor: 'rgba(243, 243, 243, 0.5)'},
+        root: {backgroundColor: 'rgba(243, 243, 243, 0.9)'},
       },
     },
     MuiSelect: {

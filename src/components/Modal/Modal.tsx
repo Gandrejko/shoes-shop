@@ -64,7 +64,7 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
   return (
     <>
       <MuiModal
-        open={true}
+        open={isOpen}
         onClose={handleOnClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
