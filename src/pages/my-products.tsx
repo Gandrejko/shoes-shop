@@ -1,21 +1,25 @@
 import EditProduct from '@/components/EditProduct/EditProduct';
-import Image from 'next/image';
-import {useRouter} from 'next/router';
-import {ReactElement} from 'react';
 import {
   Avatar,
   Box,
+  Button,
   Container,
   Stack,
   SxProps,
   Typography,
-  Button,
 } from '@mui/material';
+import Image from 'next/image';
+import {useRouter} from 'next/router';
+import {ReactElement, useMemo} from 'react';
 
-import {NextPageWithLayout} from '@/pages/_app';
-import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
-import ProductList from '@/components/Product/ProductList';
 import Header from '@/components/Header';
+import {ProductList} from '@/components/Product';
+import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
+import useGet from '@/hooks/useGet';
+import {NextPageWithLayout} from '@/pages/_app';
+import {UserResponse} from '@/types/user';
+import {useSession} from 'next-auth/react';
+import Link from 'next/link';
 
 const styles: Record<string, SxProps> = {
   container: {
@@ -49,6 +53,8 @@ const styles: Record<string, SxProps> = {
     alignItems: 'flex-end',
   },
   avatarContainer: {
+    position: 'relative',
+    overflow: 'hidden',
     width: {xs: 64, sm: 90, md: 120},
     height: {xs: 64, sm: 90, md: 120},
     border: '4px solid #fff',
@@ -76,26 +82,63 @@ const styles: Record<string, SxProps> = {
 
 const MyProducts: NextPageWithLayout = () => {
   const router = useRouter();
+  const {data} = useSession();
+  const sessionUser = data?.user;
+
   const productId = router.query.productId as string;
-  const userImage = null; // TODO: temporary
+  const productParams = useMemo(() => {
+    return {
+      populate: 'images,gender',
+      'filters[userID]': sessionUser?.id,
+    };
+  }, [sessionUser?.id]);
+
+  const {
+    data: userData,
+    isLoading: isLoadingUser,
+    isError: isErrorUser,
+    // TODO: change to sessionUser?.id
+  } = useGet<UserResponse>(`/users/395`, null, {
+    populate: 'avatar',
+  });
+
+  // TODO: show loading and error pages
+  if (isLoadingUser) return <div>Loading...</div>;
+  if (isErrorUser) return <div>Error</div>;
 
   return (
     <Container maxWidth="xl" sx={styles.container}>
       {productId && <EditProduct productId={productId} />}
       <Box sx={styles.pageHeader}>
         <Box sx={styles.bannerContainer}>
-          <Image src="/images/myProductsBanner.png" alt="My products" fill />
+          <Image
+            src="/images/myProductsBanner.png"
+            alt="My products"
+            fill
+            style={{objectFit: 'cover'}}
+          />
         </Box>
         <Stack sx={styles.profileContainer} direction="row">
           <Box sx={styles.avatarContainer}>
-            {userImage && <Image src={userImage} alt="Jane Meldrum" fill />}
-            {!userImage && (
-              <Avatar sx={styles.avatar} src="/" alt="Jane Meldrum" />
+            {userData?.avatar ? (
+              <Image
+                src={userData.avatar.url!}
+                alt={`${userData?.username}`}
+                fill
+              />
+            ) : (
+              <Avatar
+                sx={styles.avatar}
+                src="/"
+                alt={`${userData?.username}`}
+              />
             )}
           </Box>
           <Stack sx={styles.profileInfo}>
             <Typography variant="h4" fontSize={14}>
-              Jane Meldrum
+              {userData?.firstName && userData?.lastName
+                ? `${userData?.firstName} ${userData?.lastName}`
+                : `${userData?.username}`}
             </Typography>
             <Typography fontWeight={300} fontSize={14}>
               1374 bonus points
@@ -107,14 +150,15 @@ const MyProducts: NextPageWithLayout = () => {
         <Stack direction="row" sx={styles.productsHeader}>
           <Typography variant="h1">My Products</Typography>
           <Button
-            sx={{textTransform: 'none', padding: '8px 24px'}}
-            onClick={() => router.push('/add-product')}
+            LinkComponent={Link}
+            href="/add-product"
             variant="contained"
+            sx={{textTransform: 'none', padding: '8px 24px'}}
           >
             Add product
           </Button>
         </Stack>
-        <ProductList />
+        <ProductList params={productParams} />
       </Box>
     </Container>
   );

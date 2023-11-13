@@ -20,7 +20,7 @@ const Home = () => {
     if (status === 'authenticated') {
       const value = localStorage.getItem('accessToken');
 
-      if (value) {
+      if (!value) {
         localStorage.setItem(
           'accessToken',
           JSON.stringify(session?.user.accessToken),

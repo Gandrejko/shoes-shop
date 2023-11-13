@@ -1,5 +1,5 @@
 import {UseQueryOptions, useQuery} from '@tanstack/react-query';
-import axios from '@/services/axios';
+import axios from '@/config/axios';
 
 /**
  * @description useGet is a custom hook that wraps around react-query's useQuery hook. It is used to make a **GET** request to the backend.
