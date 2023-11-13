@@ -32,7 +32,7 @@ export default function SignIn() {
   });
   const router = useRouter();
   const {data: session} = useSession();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const onSubmit: SubmitHandler<SignInType> = async data => {
     signIn('credentials', {
@@ -77,13 +77,12 @@ export default function SignIn() {
                 register={register}
                 name="email"
                 validationSchema={{
-                  required: true,
+                  required: 'Entered value does not match email format',
                   pattern: {
                     value: /\S+@\S+\.\S+/,
                     message: 'Entered value does not match email format',
                   },
                 }}
-                required={true}
                 errorMessage={errors.email?.message}
               />
               <Input
@@ -91,13 +90,12 @@ export default function SignIn() {
                 register={register}
                 name="password"
                 validationSchema={{
-                  required: true,
+                  required: 'Min length is 8',
                   minLength: {
-                    value: 6,
-                    message: 'Min length is 6',
+                    value: 8,
+                    message: 'Min length is 8',
                   },
                 }}
-                required={true}
                 type="password"
                 errorMessage={errors.password?.message}
               />
@@ -133,6 +131,7 @@ export default function SignIn() {
               src="/images/signInBanner.png"
               alt="picture of our brand"
               fill={true}
+              style={{objectFit: 'cover'}}
             />
           </Box>
         )}

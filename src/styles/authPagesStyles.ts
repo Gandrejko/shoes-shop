@@ -35,7 +35,6 @@ export const styles = {
     maxWidth: {
       xl: 'calc(50% - 305px - 196px)',
       lg: 'calc(50% - 13% - 10%)',
-      sm: 'calc(50% - 9% - 6%)',
     },
   },
   title: {

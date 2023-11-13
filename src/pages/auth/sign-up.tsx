@@ -41,7 +41,7 @@ export default function SignUp() {
     formState: {errors},
   } = useForm<SignUpType>();
   const router = useRouter();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const onSubmit: SubmitHandler<SignUpType> = async data => {
     const {confirmPassword, ...restData} = data;
@@ -76,7 +76,6 @@ export default function SignUp() {
                 validationSchema={{
                   required: 'This field is required',
                 }}
-                required
                 errorMessage={errors.username?.message}
               />
               <Input
@@ -84,13 +83,12 @@ export default function SignUp() {
                 register={register}
                 name="email"
                 validationSchema={{
-                  required: true,
+                  required: 'Entered value does not match email format',
                   pattern: {
                     value: /\S+@\S+\.\S+/,
                     message: 'Entered value does not match email format',
                   },
                 }}
-                required
                 errorMessage={errors.email?.message}
               />
               <Input
@@ -98,13 +96,12 @@ export default function SignUp() {
                 register={register}
                 name="password"
                 validationSchema={{
-                  required: true,
+                  required: 'Min length is 8',
                   minLength: {
                     value: 8,
                     message: 'Min length is 8',
                   },
                 }}
-                required
                 type="password"
                 errorMessage={errors.password?.message}
               />
@@ -113,14 +110,13 @@ export default function SignUp() {
                 register={register}
                 name="confirmPassword"
                 validationSchema={{
-                  required: true,
+                  required: 'Your passwords do no match',
                   validate: (val: string) => {
                     if (watch('password') != val) {
                       return 'Your passwords do no match';
                     }
                   },
                 }}
-                required
                 type="password"
                 errorMessage={errors.confirmPassword?.message}
               />
@@ -143,6 +139,7 @@ export default function SignUp() {
               src="/images/signUpBanner.png"
               alt="picture of our brand"
               fill={true}
+              style={{objectFit: 'cover'}}
             />
           </Box>
         )}

@@ -37,7 +37,7 @@ export default function ForgotPassword() {
     handleSubmit,
     formState: {errors},
   } = useForm<ForgotPasswordType>();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const onSubmit: SubmitHandler<ForgotPasswordType> = async data => {
     mutate(data);
@@ -69,13 +69,12 @@ export default function ForgotPassword() {
                 register={register}
                 name="email"
                 validationSchema={{
-                  required: true,
+                  required: 'Entered value does not match email format',
                   pattern: {
                     value: /\S+@\S+\.\S+/,
                     message: 'Entered value does not match email format',
                   },
                 }}
-                required
                 errorMessage={errors.email?.message}
               />
             </Box>
@@ -97,6 +96,7 @@ export default function ForgotPassword() {
               src="/images/resetForgotBanner.png"
               alt="picture of our brand"
               fill={true}
+              style={{objectFit: 'cover'}}
             />
           </Box>
         )}
