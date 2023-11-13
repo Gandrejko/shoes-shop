@@ -3,6 +3,7 @@ import {Grid, SxProps} from '@mui/material';
 import useGet from '@/hooks/useGet';
 import {ProductsResponse} from '@/types/product';
 import ProductCard from './ProductCard';
+import ProductCardSkeleton from './ProductCardSkeleton';
 
 const styles: Record<string, SxProps> = {
   gridItem: {
@@ -26,14 +27,26 @@ const ProductList = ({params = null, fullWidth = false}: Props) => {
     },
   );
 
-  if (isLoading) return <div>Loading...</div>;
-
   return (
     <Grid
       container
       spacing={{xs: 2, sm: 5, lg: 6, xl: 8}}
       columns={{xs: 12, md: 12, lg: 12, xl: fullWidth ? 10 : 12}}
     >
+      {isLoading &&
+        new Array(8).fill(0).map((_, index) => (
+          <Grid
+            key={index}
+            item
+            xs={6}
+            md={fullWidth ? 4 : 6}
+            lg={fullWidth ? 3 : 4}
+            xl={fullWidth ? 2 : 3}
+            sx={styles.gridItem}
+          >
+            <ProductCardSkeleton />
+          </Grid>
+        ))}
       {products?.data.map(product => (
         <Grid
           key={product.id}

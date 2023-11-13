@@ -61,8 +61,6 @@ const MyProducts: NextPageWithLayout = () => {
     return newFilters;
   }, [filters]);
 
-  console.log(params);
-
   useEffect(() => {
     setShowFilters(!isMobile);
   }, [isMobile]);
