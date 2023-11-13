@@ -1,5 +1,12 @@
 import Image from 'next/image';
-import {Box, Typography, Stack, SxProps, useMediaQuery, Button} from '@mui/material';
+import {
+  Box,
+  Typography,
+  Stack,
+  SxProps,
+  useMediaQuery,
+  Button,
+} from '@mui/material';
 import Header from '@/components/Header';
 import Link from 'next/link';
 import theme from '@/styles/theme/commonTheme';
@@ -76,12 +83,18 @@ const Error404 = () => {
           <Box sx={styles.buttons}>
             <Stack direction="row" spacing={3}>
               <Link href="/">
-                <Button variant="outlined" sx={{width: "152px", height: "40px"}} >
+                <Button
+                  variant="outlined"
+                  sx={{width: '152px', height: '40px'}}
+                >
                   Go Back
                 </Button>
               </Link>
               <Link href="/">
-                <Button variant="contained" sx={{width: "152px", height: "40px"}}>
+                <Button
+                  variant="contained"
+                  sx={{width: '152px', height: '40px'}}
+                >
                   Home
                 </Button>
               </Link>
@@ -100,12 +113,18 @@ const Error404 = () => {
               </Typography>
               <Stack direction="row" spacing={4} flexWrap="wrap">
                 <Link href="/">
-                  <Button variant="outlined" sx={{width: "152px", height: "40px"}}>
+                  <Button
+                    variant="outlined"
+                    sx={{width: '152px', height: '40px'}}
+                  >
                     Go Back
                   </Button>
                 </Link>
                 <Link href="/">
-                  <Button variant="contained" sx={{width: "152px", height: "40px"}}>
+                  <Button
+                    variant="contained"
+                    sx={{width: '152px', height: '40px'}}
+                  >
                     Home
                   </Button>
                 </Link>

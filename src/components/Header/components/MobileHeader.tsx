@@ -57,7 +57,12 @@ const MobileHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
     <>
       <Toolbar sx={styles.mobileWrapper}>
         <Link href="/">
-          <Image src="/icons/logo.svg" alt="logo" width={35.31} height={26.52} />
+          <Image
+            src="/icons/logo.svg"
+            alt="logo"
+            width={35.31}
+            height={26.52}
+          />
         </Link>
         <Stack direction="row" alignItems="center" spacing={1}>
           <IconButton onClick={() => {}}>

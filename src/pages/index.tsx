@@ -9,7 +9,7 @@ const Home = () => {
 
   useEffect(() => {
     const value = JSON.parse(localStorage.getItem('signInJustNow') || '{}');
-    
+
     if (typeof value !== 'object' && value && session) {
       toast.success(`Hello, ${session?.user.username}!`);
       localStorage.setItem('signInJustNow', JSON.stringify(false));
