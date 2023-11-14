@@ -22,13 +22,14 @@ export const styles = {
     margin: '0 auto',
     width: '100%',
     maxWidth: '1920px',
+    height: '100vh',
   },
   wrapper: {
     flex: '1',
     margin: {
-      xl: '155px 305px 0 196px',
-      lg: '155px 13% 0 10%',
-      sm: '180px 9% 0 6%',
+      xl: '155px 305px 20px 196px',
+      lg: '155px 13% 20px 10%',
+      sm: '180px 9% 20px 6%',
       xs: '125px 20px 0',
     },
     width: '50%',
@@ -69,8 +70,7 @@ export const styles = {
   imageWrapper: {
     width: '50%',
     maxWidth: '960px',
-    height: '100vh',
-    maxHeight: '1112px',
+    height: '100%',
     position: 'relative',
   },
   checkboxContainer: {

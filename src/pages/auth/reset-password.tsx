@@ -3,13 +3,13 @@ import {SubmitHandler, useForm} from 'react-hook-form';
 import {Box, Button, Typography, useMediaQuery} from '@mui/material';
 import Link from 'next/link';
 import {Input} from '@/components/Inputs/Input';
-import Image from 'next/image';
 import axios from 'axios';
 import {useMutation} from '@tanstack/react-query';
 import {toast} from 'react-toastify';
-import logoIcon from '../../../public/icons/logo.svg';
 import theme from '@/styles/theme/commonTheme';
 import {styles} from '@/styles/authPagesStyles';
+import {ReactElement} from 'react';
+import {AuthLayot} from '@/components/AuthLayout/AuthLayout';
 
 type ResetPasswordType = {
   password: string;
@@ -17,9 +17,9 @@ type ResetPasswordType = {
   code: string;
 };
 
-export default function ResetPassword() {
+const ResetPassword = () => {
   const router = useRouter();
-  const {mutate, isSuccess} = useMutation({
+  const {mutate} = useMutation({
     mutationKey: ['reset-password'],
     mutationFn: (userData: ResetPasswordType) =>
       axios.post(
@@ -56,78 +56,66 @@ export default function ResetPassword() {
   };
 
   return (
-    <Box sx={styles.tab}>
-      <Box sx={styles.header}>
-        <Link href="/" style={styles.headerImage}>
-          <Image src={logoIcon} alt="" />
-        </Link>
-      </Box>
-      <Box sx={styles.container}>
-        <Box sx={styles.wrapper}>
-          <Typography variant="h1" sx={styles.title}>
-            Reset password
-          </Typography>
-          <Typography variant="body1" sx={styles.titleText}>
-            Please create new password here
-          </Typography>
-          <Box
-            component="form"
-            onSubmit={handleSubmit(onSubmit)}
-            sx={styles.formContainer}
-          >
-            <Box sx={styles.form}>
-              <Input
-                labelText="Password"
-                register={register}
-                name="password"
-                validationSchema={{
-                  required: 'Min length is 8',
-                  minLength: {
-                    value: 8,
-                    message: 'Min length is 8',
-                  },
-                }}
-                type="password"
-                errorMessage={errors.password?.message}
-              />
-              <Input
-                labelText="Confirm password"
-                register={register}
-                name="confirmPassword"
-                validationSchema={{
-                  required: 'Your passwords do no match',
-                  validate: (val: string) => {
-                    if (watch('password') != val) {
-                      return 'Your passwords do no match';
-                    }
-                  },
-                }}
-                type="password"
-                errorMessage={errors.confirmPassword?.message}
-              />
-            </Box>
-
-            <Button type="submit" variant="contained">
-              Reset password
-            </Button>
-          </Box>
-          <Box sx={styles.linksContainer}>
-            <Link href={'/auth/sign-in'} style={styles.link}>
-              <Typography>Back to log in</Typography>
-            </Link>
-          </Box>
+    <Box>
+      <Box
+        component="form"
+        onSubmit={handleSubmit(onSubmit)}
+        sx={styles.formContainer}
+      >
+        <Box sx={styles.form}>
+          <Input
+            labelText="Password"
+            register={register}
+            name="password"
+            validationSchema={{
+              required: 'Min length is 8',
+              minLength: {
+                value: 8,
+                message: 'Min length is 8',
+              },
+            }}
+            type="password"
+            errorMessage={errors.password?.message}
+          />
+          <Input
+            labelText="Confirm password"
+            register={register}
+            name="confirmPassword"
+            validationSchema={{
+              required: 'Your passwords do no match',
+              validate: (val: string) => {
+                if (watch('password') != val) {
+                  return 'Your passwords do no match';
+                }
+              },
+            }}
+            type="password"
+            errorMessage={errors.confirmPassword?.message}
+          />
         </Box>
-        {!isMobile && (
-          <Box sx={styles.imageWrapper}>
-            <Image
-              src="/images/resetForgotBanner.png"
-              alt="picture of our brand"
-              fill={true}
-              style={{objectFit: 'cover'}}
-            />
-          </Box>
-        )}
+
+        <Button type="submit" variant="contained">
+          Reset password
+        </Button>
+      </Box>
+      <Box sx={styles.linksContainer}>
+        <Link href={'/auth/sign-in'} style={styles.link}>
+          <Typography>Back to log in</Typography>
+        </Link>
       </Box>
     </Box>
   );
-}
+};
+
+ResetPassword.getLayout = function getLayout(page: ReactElement) {
+  return (
+    <AuthLayot
+      title="Reset password"
+      subtTitle="Please create new password here"
+    >
+      {page}
+    </AuthLayot>
+  );
+};
+
+export default ResetPassword;
