@@ -41,9 +41,7 @@ const styles: Record<string, SxProps> = {
     top: '8%',
     width: 16,
     height: 16,
-    // '&:hover': {
-    //   borderRadius: 0,
-    // },
+    borderRadius: 0,
   },
 };
 
