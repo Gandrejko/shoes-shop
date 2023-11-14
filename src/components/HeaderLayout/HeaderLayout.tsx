@@ -8,6 +8,10 @@ const styles: Record<string, SxProps> = {
     width: '100vw',
     overflow: 'hidden',
   },
+  children: {
+    overflow: 'hidden',
+    overflowY: 'scroll',
+  },
 };
 
 type HeaderLayoutProps = {
@@ -18,7 +22,7 @@ const HeaderLayout = ({children}: HeaderLayoutProps) => {
   return (
     <Box sx={styles.layout}>
       <Header />
-      {children}
+      <Box sx={styles.children}>{children}</Box>
     </Box>
   );
 };
