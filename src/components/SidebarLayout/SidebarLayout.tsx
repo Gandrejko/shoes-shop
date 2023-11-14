@@ -4,6 +4,7 @@ import Image from 'next/image';
 import {Box, Divider, List, ListItem, SxProps, Typography} from '@mui/material';
 import {destroyCookie} from 'nookies';
 import {signOut} from 'next-auth/react';
+import Header from '../Header';
 
 const styles: Record<string, SxProps> = {
   layout: {

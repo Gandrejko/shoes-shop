@@ -1,19 +1,17 @@
 import Dropdown from '@/components/Dropdown/Dropdown';
 import {Input} from '@/components/Inputs/Input';
-import ProductSizeList from '@/components/ProductSize/ProductSizeList';
 import Textarea from '@/components/Textarea/Textarea';
 import useGet from '@/hooks/useGet';
 import theme from '@/styles/theme/commonTheme';
-import {ProductFormContext, ProductFormData} from '../ProductForm';
+import {CategoriesResponse} from '@/types/category';
+import {ProductFormContext} from '../ProductForm';
 import {BrandsResponse} from '@/types/brand';
 import {ColorsResponse} from '@/types/color';
 import {GendersResponse} from '@/types/gender';
-import {ProductRequest} from '@/types/product';
 import {SizesResponse} from '@/types/size';
 
-import {Box, Grid, SxProps} from '@mui/material';
+import {Box, Button, Grid, SxProps, Typography} from '@mui/material';
 import React, {useContext} from 'react';
-import {Controller, UseFormReturn} from 'react-hook-form';
 
 const styles: Record<string, SxProps> = {
   dropdowns: {
@@ -29,7 +27,7 @@ const styles: Record<string, SxProps> = {
     },
   },
   formContainer: {
-    width: 440,
+    width: 540,
     [theme.breakpoints.down('md')]: {
       width: 'auto',
     },
@@ -37,6 +35,24 @@ const styles: Record<string, SxProps> = {
     flexDirection: 'column',
     gap: '1rem',
     flexShrink: 1,
+  },
+  buttonsList: {
+    paddingTop: '1rem',
+    display: 'flex',
+    gap: '1rem',
+    flexWrap: 'wrap',
+  },
+  button: {
+    fontWeight: 'fontWeighRegular',
+    fontSize: {xs: 10, sm: 15},
+    textTransform: 'uppercase',
+    borderColor: 'grey.A700',
+    color: 'text.secondary',
+    padding: {xs: '8px 15px', sm: '10px 20px'},
+    '&:hover': {
+      borderColor: 'grey.A700',
+      backgroundColor: 'grey.A100',
+    },
   },
 };
 
@@ -51,21 +67,26 @@ const FormContainer = () => {
     register,
     errors,
     setValue,
+    color,
+    setColor,
+    choosedCategories,
+    setChoosedCategories,
+    isLoading,
   } = useContext(ProductFormContext);
-  const {data: genders} = useGet<GendersResponse>('/genders');
-  const {data: colors} = useGet<ColorsResponse>('/colors');
-  const {data: brands} = useGet<BrandsResponse>('/brands');
-  const {data: sizes} = useGet<SizesResponse>('/sizes');
-
-  const sizesMapped =
-    sizes?.data.map(({id, attributes}) => ({
-      id,
-      value: attributes.value!,
-    })) ?? [];
+  const {data: genders, isLoading: isGendersLoading} =
+    useGet<GendersResponse>('/genders');
+  const {data: colors, isLoading: isColorsLoading} =
+    useGet<ColorsResponse>('/colors');
+  const {data: brands, isLoading: isBrandsLoading} =
+    useGet<BrandsResponse>('/brands');
+  const {data: sizes, isLoading: isSizesLoading} =
+    useGet<SizesResponse>('/sizes');
+  const {data: categories, isLoading: isCategoriesLoading} =
+    useGet<CategoriesResponse>('/categories');
 
   const checkSize = (id: number) => {
     setChoosedSizes((prevState: any) => {
-      const newSize = sizesMapped.find(size => size.id === id);
+      const newSize = sizes?.data.find(size => size.id === id);
       const isSizeAlreadyChoosed = prevState.find(
         (size: any) => size.id === id,
       );
@@ -73,10 +94,26 @@ const FormContainer = () => {
         return prevState;
       }
       if (!isSizeAlreadyChoosed) {
-        console.log(newSize);
         return [...prevState, newSize];
       } else {
         return prevState.filter((size: any) => size.id !== id);
+      }
+    });
+  };
+
+  const checkCategory = (id: number) => {
+    setChoosedCategories((prevState: any) => {
+      const newCategory = categories?.data.find(category => category.id === id);
+      const isCategoryAlreadyChoosed = prevState.find(
+        (category: any) => category.id === id,
+      );
+      if (!newCategory) {
+        return prevState;
+      }
+      if (!isCategoryAlreadyChoosed) {
+        return [...prevState, {id, name: newCategory.attributes.name}];
+      } else {
+        return prevState.filter((category: any) => category.id !== id);
       }
     });
   };
@@ -90,12 +127,14 @@ const FormContainer = () => {
         name="name"
         placeholder="Nike Air Max 90"
         errorMessage={errors.name?.message}
+        disabled={isLoading}
       />
       <Input
         name="price"
         labelText="Price"
         register={register}
         errorMessage={errors.price?.message}
+        disabled={isLoading}
         validationSchema={{
           required: 'Price is required',
           min: {
@@ -108,7 +147,6 @@ const FormContainer = () => {
       />
       <Box sx={styles.dropdowns}>
         <Dropdown
-          name="gender"
           labelText="Gender"
           options={genders?.data.map(({id, attributes}) => ({
             value: id,
@@ -118,9 +156,9 @@ const FormContainer = () => {
           onChange={e => {
             setGender({id: e.target.value, name: e.target.name});
           }}
+          disabled={isLoading || isGendersLoading}
         />
         <Dropdown
-          name="brand"
           labelText="Brand"
           options={brands?.data.map(({id, attributes}) => ({
             value: id,
@@ -130,12 +168,26 @@ const FormContainer = () => {
           onChange={e => {
             setBrand({id: e.target.value, name: e.target.name});
           }}
+          disabled={isLoading || isBrandsLoading}
         />
       </Box>
+      <Dropdown
+        labelText="Color"
+        options={colors?.data.map(({id, attributes}) => ({
+          value: id,
+          name: attributes.name!,
+        }))}
+        value={color.id}
+        onChange={e => {
+          setColor({id: e.target.value, name: e.target.name});
+        }}
+        disabled={isLoading || isColorsLoading}
+      />
       <Textarea
         labelText="Description"
         register={register}
         errorMessage={errors.description?.message}
+        disabled={isLoading}
         validationSchema={{
           required: 'Description is required',
           onChange: e =>
@@ -150,12 +202,54 @@ const FormContainer = () => {
         minRows={8}
         placeholder="Do not exceed 300 characters."
       />
-      <ProductSizeList
-        header="Add size"
-        sizes={sizesMapped}
-        choosedSizes={choosedSizes}
-        onClick={checkSize}
-      />
+      <Box>
+        <Typography>Categories</Typography>
+        <Box sx={styles.buttonsList}>
+          {categories?.data.map(({id, attributes: {name}}) => {
+            const isChecked = Boolean(
+              choosedCategories.find((category: any) => category.id === id),
+            );
+            return (
+              <Button
+                key={id}
+                sx={{
+                  ...styles.button,
+                  color: isChecked ? 'white' : 'text.secondary',
+                }}
+                variant={isChecked ? 'contained' : 'outlined'}
+                onClick={() => checkCategory(id)}
+                disabled={isLoading || isCategoriesLoading}
+              >
+                {name}
+              </Button>
+            );
+          })}
+        </Box>
+      </Box>
+      <Box>
+        <Typography>Sizes</Typography>
+        <Box sx={styles.buttonsList}>
+          {sizes?.data.map(({id, attributes: {value}}) => {
+            const isChecked = Boolean(
+              choosedSizes.find((category: any) => category.id === id),
+            );
+            return (
+              <Button
+                key={id}
+                sx={{
+                  ...styles.button,
+                  color: isChecked ? 'white' : 'text.secondary',
+                }}
+                disabled={isLoading || isSizesLoading}
+                variant={isChecked ? 'contained' : 'outlined'}
+                onClick={() => checkSize(id)}
+              >
+                EU-{value}
+              </Button>
+            );
+          })}
+        </Box>
+      </Box>
     </Grid>
   );
 };

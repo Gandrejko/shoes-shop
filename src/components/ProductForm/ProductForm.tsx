@@ -1,4 +1,6 @@
 import {Brand} from '@/types/brand';
+import {Category} from '@/types/category';
+import {Color} from '@/types/color';
 import {Gender} from '@/types/gender';
 import {Image} from '@/types/image';
 import {Size} from '@/types/size';
@@ -55,6 +57,7 @@ export type ProductFormData = Pick<Product, 'name' | 'description' | 'price'>;
 type ProductFormProps = {
   onSubmit: (data: any) => void;
   product?: ProductAttributes;
+  isLoading?: boolean;
 };
 
 const createDefaultProduct = (
@@ -65,7 +68,7 @@ const createDefaultProduct = (
   description: product?.description || '',
 });
 
-const ProductForm = ({onSubmit, product}: ProductFormProps) => {
+const ProductForm = ({onSubmit, product, isLoading}: ProductFormProps) => {
   const [gender, setGender] = useState<Gender>({
     id: 0,
     name: 'None',
@@ -74,7 +77,12 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
     id: 0,
     name: 'None',
   });
+  const [color, setColor] = useState<Color>({
+    id: 0,
+    name: 'None',
+  });
   const [choosedSizes, setChoosedSizes] = useState<Size[]>([]);
+  const [choosedCategories, setChoosedCategories] = useState<Category[]>([]);
   const [images, setImages] = useState<Pick<Image, 'id' | 'url'>[]>([]);
 
   const {
@@ -91,6 +99,7 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
   useEffect(() => {
     const productGender = product?.gender?.data;
     const productBrand = product?.brand?.data;
+    const productColor = product?.color?.data;
     reset(createDefaultProduct(product));
     productGender &&
       setGender({id: productGender.id, name: productGender.attributes.name});
@@ -99,10 +108,18 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
         id: productBrand.id,
         name: productBrand.attributes.name,
       });
+    productColor &&
+      setColor({id: productColor.id, name: productColor.attributes.name});
     setChoosedSizes(
       product?.sizes?.data?.map(({id, attributes}) => ({
         id,
         value: attributes.value,
+      })) || [],
+    );
+    setChoosedCategories(
+      product?.categories?.data?.map(({id, attributes}) => ({
+        id,
+        name: attributes.name,
       })) || [],
     );
     setImages(
@@ -118,7 +135,9 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
       ...getValues(),
       gender: gender.id !== 0 ? gender : undefined,
       brand: brand.id !== 0 ? brand : undefined,
+      color: color.id !== 0 ? color : undefined,
       sizes: choosedSizes,
+      categories: choosedCategories,
       images,
     };
     const data = Object.keys(values).reduce(
@@ -148,6 +167,11 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
         register,
         errors,
         setValue,
+        color,
+        setColor,
+        choosedCategories,
+        setChoosedCategories,
+        isLoading,
       }}
     >
       <Box
@@ -159,7 +183,7 @@ const ProductForm = ({onSubmit, product}: ProductFormProps) => {
           <Typography variant="h1">
             {product ? 'Edit product' : 'Add a product'}
           </Typography>
-          <Button variant="contained" type="submit">
+          <Button variant="contained" type="submit" disabled={isLoading}>
             Save
           </Button>
         </Box>
