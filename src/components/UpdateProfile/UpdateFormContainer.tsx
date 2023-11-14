@@ -3,8 +3,9 @@ import {Box, Button, SxProps} from '@mui/material';
 import {Input} from '../Inputs/Input';
 
 const styles: Record<string, SxProps> = {
+  input: {mb: 3},
   inputsBox: {
-    marginBottom: {xs: 4, sm: 7},
+    mb: {xs: 4, sm: 7},
   },
   button: {
     alignSelf: 'flex-end',
@@ -22,30 +23,31 @@ const UpdateFormContainer = ({formProps}: UpdateFormType) => {
           type="text"
           labelText="Name"
           name="firstName"
+          boxSx={styles.input}
           register={formProps.register}
           validationSchema={{
             required: 'Name is required',
           }}
           errorMessage={formProps.formState.errors.firstName?.message}
-          marginBottom={24}
         />
         <Input
           placeholder="Last Name"
           type="text"
           labelText="Surname"
           name="lastName"
+          boxSx={styles.input}
           register={formProps.register}
           validationSchema={{
             required: 'Surname is required',
           }}
           errorMessage={formProps.formState.errors.lastName?.message}
-          marginBottom={24}
         />
         <Input
           placeholder="Email address"
           type="mail"
           labelText="Email"
           name="email"
+          boxSx={styles.input}
           disabled
           register={formProps.register}
           validationSchema={{
@@ -56,7 +58,6 @@ const UpdateFormContainer = ({formProps}: UpdateFormType) => {
             },
           }}
           errorMessage={formProps.formState.errors.email?.message}
-          marginBottom={24}
         />
         <Input
           placeholder="Phone number"
