@@ -7,10 +7,12 @@ const styles: Record<string, SxProps> = {
     height: '100vh',
     width: '100vw',
     overflow: 'hidden',
+    display: 'flex',
+    flexDirection: 'column',
   },
   children: {
     overflow: 'hidden',
-    overflowY: 'scroll',
+    overflowY: 'visible',
   },
 };
 

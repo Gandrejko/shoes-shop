@@ -9,9 +9,11 @@ import Header from '../Header';
 const styles: Record<string, SxProps> = {
   layout: {
     display: 'flex',
+    height: '100%',
   },
   sidebar: {
     width: 320,
+    height: '100%',
     flexShrink: 0,
     display: {md: 'block', xs: 'none'},
   },
@@ -47,6 +49,12 @@ const styles: Record<string, SxProps> = {
     gap: '15px',
     listStyle: 'none',
     padding: '0 16px',
+  },
+  children: {
+    width: '100%',
+    height: '100%',
+    overflow: 'hidden',
+    overflowY: 'visible',
   },
 };
 
@@ -132,7 +140,7 @@ export const SidebarLayout = ({children, currentTab}: SidebarLayoutProps) => {
           </ListItem>
         </List>
       </Box>
-      {children}
+      <Box sx={styles.children}>{children}</Box>
     </Box>
   );
 };
