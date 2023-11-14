@@ -27,7 +27,7 @@ const styles: Record<string, SxProps> = {
     },
   },
   formContainer: {
-    width: 440,
+    width: 540,
     [theme.breakpoints.down('md')]: {
       width: 'auto',
     },
@@ -171,6 +171,18 @@ const FormContainer = () => {
           disabled={isLoading || isBrandsLoading}
         />
       </Box>
+      <Dropdown
+        labelText="Color"
+        options={colors?.data.map(({id, attributes}) => ({
+          value: id,
+          name: attributes.name!,
+        }))}
+        value={color.id}
+        onChange={e => {
+          setColor({id: e.target.value, name: e.target.name});
+        }}
+        disabled={isLoading || isColorsLoading}
+      />
       <Textarea
         labelText="Description"
         register={register}
@@ -214,18 +226,6 @@ const FormContainer = () => {
           })}
         </Box>
       </Box>
-      <Dropdown
-        labelText="Color"
-        options={colors?.data.map(({id, attributes}) => ({
-          value: id,
-          name: attributes.name!,
-        }))}
-        value={color.id}
-        onChange={e => {
-          setColor({id: e.target.value, name: e.target.name});
-        }}
-        disabled={isLoading || isColorsLoading}
-      />
       <Box>
         <Typography>Sizes</Typography>
         <Box sx={styles.buttonsList}>

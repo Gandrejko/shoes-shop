@@ -76,6 +76,8 @@ const ImagesContainer = () => {
       formData.append('files', e.target.files[i]);
     }
 
+    e.target.value = '';
+
     mutate(formData);
   };
 
