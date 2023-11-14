@@ -41,6 +41,9 @@ const styles: Record<string, SxProps> = {
     top: '8%',
     width: 16,
     height: 16,
+    // '&:hover': {
+    //   borderRadius: 0,
+    // },
   },
 };
 
@@ -78,18 +81,10 @@ const DeleteModal = ({
       </DialogContent>
       <Divider variant="fullWidth" />
       <DialogActions sx={styles.actions}>
-        <Button
-          variant="outlined"
-          sx={{width: '282px', height: '61px'}}
-          onClick={onClose}
-        >
+        <Button variant="outlined" sx={styles.button} onClick={onClose}>
           Cancel
         </Button>
-        <Button
-          variant="contained"
-          sx={{width: '282px', height: '61px'}}
-          onClick={onDelete}
-        >
+        <Button variant="contained" sx={styles.button} onClick={onDelete}>
           Delete
         </Button>
       </DialogActions>
