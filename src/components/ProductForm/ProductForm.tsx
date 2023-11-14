@@ -72,7 +72,9 @@ const ProductForm = ({onSubmit, product, isLoading}: ProductFormProps) => {
   const [choosedCategories, setChoosedCategories] = useState<number[]>(
     product?.categories?.data.map(({id}) => id) || [],
   );
-  const [images, setImages] = useState<Pick<Image, 'id' | 'url'>[]>([]);
+  const [images, setImages] = useState<Pick<Image, 'id' | 'url'>[]>(
+    product?.images?.data?.map(({id, attributes: {url}}) => ({id, url})) || [],
+  );
 
   const {
     register,
