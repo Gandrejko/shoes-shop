@@ -4,6 +4,7 @@ import {Color} from '@/types/color';
 import {Gender} from '@/types/gender';
 import {Image} from '@/types/image';
 import {Size} from '@/types/size';
+import {useSession} from 'next-auth/react';
 import FormContainer from './components/FormContainer';
 import ImagesContainer from './components/ImagesContainer';
 import theme from '@/styles/theme/commonTheme';
@@ -61,6 +62,7 @@ type ProductFormProps = {
 };
 
 const ProductForm = ({onSubmit, product, isLoading}: ProductFormProps) => {
+  const session = useSession();
   const [gender, setGender] = useState<number>(product?.gender?.data?.id || 0);
   const [brand, setBrand] = useState<number>(product?.brand?.data?.id || 0);
   const [color, setColor] = useState<number>(product?.color?.data?.id || 0);
@@ -96,6 +98,7 @@ const ProductForm = ({onSubmit, product, isLoading}: ProductFormProps) => {
       categories: choosedCategories,
       images,
       teamName: 'team-3',
+      userID: session.data?.user.id,
     };
     const filteredValues = Object.entries(values).filter(
       ([key, value]) =>
