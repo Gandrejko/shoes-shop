@@ -106,6 +106,7 @@ const ProductForm = ({onSubmit, product, isLoading}: ProductFormProps) => {
       },
       {teamName: 'team-3'},
     );
+    console.log(body);
     onSubmit(body);
   };
 

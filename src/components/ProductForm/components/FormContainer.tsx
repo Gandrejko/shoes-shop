@@ -1,5 +1,6 @@
 import Dropdown from '@/components/Dropdown/Dropdown';
 import {Input} from '@/components/Inputs/Input';
+import ButtonsList from '@/components/ProductForm/components/ButtonsList';
 import Textarea from '@/components/Textarea/Textarea';
 import useGet from '@/hooks/useGet';
 import theme from '@/styles/theme/commonTheme';
@@ -10,7 +11,7 @@ import {ColorsResponse} from '@/types/color';
 import {GendersResponse} from '@/types/gender';
 import {SizesResponse} from '@/types/size';
 
-import {Box, Button, Grid, SxProps, Typography} from '@mui/material';
+import {Box, Grid, SxProps} from '@mui/material';
 import React, {useContext} from 'react';
 
 const styles: Record<string, SxProps> = {
@@ -35,24 +36,6 @@ const styles: Record<string, SxProps> = {
     flexDirection: 'column',
     gap: '1rem',
     flexShrink: 1,
-  },
-  buttonsList: {
-    paddingTop: '1rem',
-    display: 'flex',
-    gap: '1rem',
-    flexWrap: 'wrap',
-  },
-  button: {
-    fontWeight: 'fontWeighRegular',
-    fontSize: {xs: 10, sm: 15},
-    textTransform: 'uppercase',
-    borderColor: 'grey.A700',
-    color: 'text.secondary',
-    padding: {xs: '8px 15px', sm: '10px 20px'},
-    '&:hover': {
-      borderColor: 'grey.A700',
-      backgroundColor: 'grey.A100',
-    },
   },
 };
 
@@ -83,32 +66,6 @@ const FormContainer = () => {
     useGet<SizesResponse>('/sizes');
   const {data: categories, isLoading: isCategoriesLoading} =
     useGet<CategoriesResponse>('/categories');
-
-  const checkSize = (id: number) => {
-    setChoosedSizes((prevState: any) => {
-      const isSizeAlreadyChoosed = prevState.find(
-        (sizeId: number) => sizeId === id,
-      );
-      if (!isSizeAlreadyChoosed) {
-        return [...prevState, id];
-      } else {
-        return prevState.filter((sizeId: number) => sizeId !== id);
-      }
-    });
-  };
-
-  const checkCategory = (id: number) => {
-    setChoosedCategories((prevState: any) => {
-      const isCategoryAlreadyChoosed = prevState.find(
-        (categoryId: number) => categoryId === id,
-      );
-      if (!isCategoryAlreadyChoosed) {
-        return [...prevState, id];
-      } else {
-        return prevState.filter((categoryId: number) => categoryId !== id);
-      }
-    });
-  };
 
   return (
     <Grid sx={styles.formContainer}>
@@ -194,54 +151,31 @@ const FormContainer = () => {
         minRows={8}
         placeholder="Do not exceed 300 characters."
       />
-      <Box>
-        <Typography>Categories</Typography>
-        <Box sx={styles.buttonsList}>
-          {categories?.data.map(({id, attributes: {name}}) => {
-            const isChecked = Boolean(
-              choosedCategories.find((categoryId: number) => categoryId === id),
-            );
-            return (
-              <Button
-                key={id}
-                sx={{
-                  ...styles.button,
-                  color: isChecked ? 'white' : 'text.secondary',
-                }}
-                variant={isChecked ? 'contained' : 'outlined'}
-                onClick={() => checkCategory(id)}
-                disabled={isLoading || isCategoriesLoading}
-              >
-                {name}
-              </Button>
-            );
-          })}
-        </Box>
-      </Box>
-      <Box>
-        <Typography>Sizes</Typography>
-        <Box sx={styles.buttonsList}>
-          {sizes?.data.map(({id, attributes: {value}}) => {
-            const isChecked = Boolean(
-              choosedSizes.find((sizeId: number) => sizeId === id),
-            );
-            return (
-              <Button
-                key={id}
-                sx={{
-                  ...styles.button,
-                  color: isChecked ? 'white' : 'text.secondary',
-                }}
-                disabled={isLoading || isSizesLoading}
-                variant={isChecked ? 'contained' : 'outlined'}
-                onClick={() => checkSize(id)}
-              >
-                EU-{value}
-              </Button>
-            );
-          })}
-        </Box>
-      </Box>
+      <ButtonsList
+        header="Categories"
+        data={
+          categories?.data.map(({id, attributes: {name}}) => ({
+            id,
+            name: name || '',
+          })) || []
+        }
+        choosedData={choosedCategories}
+        setChoosedData={setChoosedCategories}
+        disabled={isLoading || isCategoriesLoading}
+      />
+      <ButtonsList
+        header="Sizes"
+        data={
+          sizes?.data.map(({id, attributes: {value}}) => ({
+            id,
+            name: value ? value.toString() : '',
+          })) || []
+        }
+        choosedData={choosedSizes}
+        setChoosedData={setChoosedSizes}
+        disabled={isLoading || isSizesLoading}
+        namePrefix="EU-"
+      />
     </Grid>
   );
 };
