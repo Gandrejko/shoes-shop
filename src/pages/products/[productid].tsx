@@ -1,4 +1,7 @@
-import React, {useEffect} from 'react';
+import HeaderLayout from '@/components/HeaderLayout/HeaderLayout';
+import useGet from '@/hooks/useGet';
+import {ProductResponse} from '@/types/product';
+import React, {useEffect, useState} from 'react';
 import {
   Box,
   Container,
@@ -11,35 +14,10 @@ import {
 } from '@mui/material';
 import products from '@/temp/data';
 import ImageSlider from '@/components/ImageSlider/ImageSlider';
-import axios, {AxiosResponse} from 'axios';
-import {useQuery, useMutation} from '@tanstack/react-query';
 import {useRouter} from 'next/router';
-import Header from '@/components/Header';
-import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-const sizes = [
-  'EU-36',
-  'EU-37',
-  'EU-38',
-  'EU-39',
-  'EU-40',
-  'EU-41',
-  'EU-42',
-  'EU-43',
-  'EU-44',
-  'EU-45',
-];
-
-type Product = {
-  id: number;
-  name: string;
-  image: string;
-  gender: string;
-  available: string;
-  price: number;
-  quantity: number;
-};
+import {useMutation} from '@tanstack/react-query';
+import {toast} from 'react-toastify';
 
 const styles: Record<string, SxProps> = {
   container: {
@@ -86,9 +64,10 @@ const styles: Record<string, SxProps> = {
     justifyContent: 'space-between',
     display: 'flex',
   },
-  picturesContainer: {
-    marginBottom: '20px',
+  subheader: {
+    display: 'flex',
     width: '100%',
+    gap: '10px',
   },
   buttonSize: {
     padding: '12px 16px',
@@ -98,9 +77,6 @@ const styles: Record<string, SxProps> = {
   },
   sizesContainer: {
     marginTop: '10px',
-    display: 'flex',
-    flexWrap: 'wrap',
-    gap: '26px',
     width: '100%',
   },
   btnContainer: {
@@ -109,42 +85,66 @@ const styles: Record<string, SxProps> = {
     gap: '26px',
     width: '100%',
   },
-
   description: {
     marginTop: '40px',
     display: 'flex',
     flexDirection: 'column',
     gap: '30px',
   },
+  buttonsList: {
+    paddingTop: '1rem',
+    display: 'flex',
+    gap: '1rem',
+    flexWrap: 'wrap',
+  },
+  button: {
+    fontWeight: 'fontWeighRegular',
+    fontSize: {xs: 10, sm: 15},
+    textTransform: 'uppercase',
+    borderColor: 'grey.A700',
+    color: 'text.secondary',
+    padding: {xs: '8px 15px', sm: '10px 20px'},
+    '&:hover': {
+      borderColor: 'grey.A700',
+      backgroundColor: 'grey.A100',
+    },
+  },
 };
 
 const SingleProductPage = () => {
   const router = useRouter();
-  const productId = router.query.productid;
-  const product = products.find(el => el?.id.toString);
+  const productId = router.query.productid as string;
+  const [choosedSize, setChoosedSize] = useState<number>(0);
+
+  const {data} = useGet<ProductResponse>(
+    `products/${productId}`,
+    {
+      enabled: productId !== undefined,
+    },
+    {
+      populate: '*',
+    },
+  );
+  const product = {id: data?.data.id, ...data?.data.attributes};
 
   const {mutate} = useMutation({
     mutationKey: ['cart'],
-    mutationFn: async (data: any) => {
-      if (!product) {
-        return;
-      }
-      const existingData = JSON.parse(localStorage.getItem('cart') || '[]');
-      if (product.id in existingData) {
+    mutationFn: async () => {
+      const existingData = JSON.parse(localStorage.getItem('cart') || '{}');
+      if (productId in existingData) {
         toast.error('This item is already in your cart');
         return;
       }
       toast.success('You have successfully added an item to your cart');
       localStorage.setItem(
         'cart',
-        JSON.stringify({...existingData, [product.id]: product?.quantity}),
+        JSON.stringify({...existingData, [productId]: 1}),
       );
     },
   });
 
   return (
-    <>
-      <Header />
+    <HeaderLayout>
       <Container maxWidth="xl" sx={styles.container}>
         <Box sx={styles.productContainer}>
           <ImageSlider />
@@ -158,47 +158,46 @@ const SingleProductPage = () => {
               ${product?.price}
             </Typography>
           </Box>
-          <Box sx={styles.picturesContainer}>
+          <Box sx={styles.subheader}>
             <Typography variant="h4" sx={styles.productGender}>
-              {product?.gender}&apos;s Shoes
+              {product?.gender?.data?.attributes.name}&apos;s Shoes
             </Typography>
-            <Grid container spacing={2}>
-              {products?.map(p => (
-                <Grid item key={p.id} xs={4} sm={3} md={2}>
-                  <Card sx={styles.productImageCard}>
-                    <CardMedia
-                      component="img"
-                      alt={p.name}
-                      image={p.image}
-                      sx={{height: '4%'}}
-                    />
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
+            |
+            <Typography variant="h4" sx={styles.productGender}>
+              {product?.color?.data?.attributes.name}
+            </Typography>
           </Box>
           <Box sx={styles.sizesContainer}>
             <Typography variant="h4" sx={styles.productLabel}>
               Select Size
             </Typography>
-            <Box sx={styles.sizesContainer}>
-              {sizes.map((size, index) => (
-                <Button key={index} variant="outlined" sx={styles.buttonSize}>
-                  {size}
-                </Button>
-              ))}
+            <Box sx={styles.buttonsList}>
+              {product.sizes?.data
+                .sort((a, b) => a.attributes.value - b.attributes.value)
+                .map(({id, attributes: {value}}) => {
+                  const isChecked = id === choosedSize;
+                  return (
+                    <Button
+                      key={id}
+                      sx={{
+                        ...styles.button,
+                        color: isChecked ? 'white' : 'text.secondary',
+                      }}
+                      variant={isChecked ? 'contained' : 'outlined'}
+                      onClick={() => setChoosedSize(id)}
+                    >
+                      EU-{value}
+                    </Button>
+                  );
+                })}
             </Box>
           </Box>
           <Box sx={styles.btnContainer}>
-            <Button
-              onClick={mutate}
-              variant="contained"
-              sx={styles.addToCartButton}
-            >
+            <Button variant="contained" sx={styles.addToCartButton}>
               Favorite
             </Button>
             <Button
-              onClick={mutate}
+              onClick={() => mutate()}
               variant="contained"
               sx={styles.addToCartButton}
             >
@@ -217,7 +216,7 @@ const SingleProductPage = () => {
           </Box>
         </Box>
       </Container>
-    </>
+    </HeaderLayout>
   );
 };
 
