@@ -94,19 +94,13 @@ const ProductForm = ({onSubmit, product, isLoading}: ProductFormProps) => {
       sizes: choosedSizes,
       categories: choosedCategories,
       images,
+      teamName: 'team-3',
     };
-
-    const body = Object.keys(values).reduce(
-      (acc, key) => {
-        const value = (values as any)[key];
-        if (Boolean(value)) {
-          (acc as any)[key] = value;
-        }
-        return acc;
-      },
-      {teamName: 'team-3'},
+    const filteredValues = Object.entries(values).filter(
+      ([key, value]) =>
+        !(Array.isArray(value) && value.length === 0) && Boolean(value),
     );
-    console.log(body);
+    const body = Object.fromEntries(filteredValues);
     onSubmit(body);
   };
 
