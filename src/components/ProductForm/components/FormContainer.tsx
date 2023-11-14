@@ -50,6 +50,7 @@ const FormContainer = () => {
     register,
     errors,
     setValue,
+    trigger,
     color,
     setColor,
     choosedCategories,
@@ -138,13 +139,14 @@ const FormContainer = () => {
         disabled={isLoading}
         validationSchema={{
           required: 'Description is required',
-          onChange: e =>
-            setValue(
-              'description',
-              e.target.value.length > 300
-                ? e.target.value.slice(0, 300)
-                : e.target.value,
-            ),
+          maxLength: {
+            value: 300,
+            message: 'Description must not exceed 300 characters',
+          },
+          onChange: e => {
+            if (e.target.value.length > 300) trigger('description');
+            return e.target.value;
+          },
         }}
         name="description"
         minRows={8}

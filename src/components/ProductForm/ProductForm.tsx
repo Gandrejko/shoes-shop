@@ -77,6 +77,7 @@ const ProductForm = ({onSubmit, product, isLoading}: ProductFormProps) => {
     handleSubmit,
     setValue,
     formState: {errors},
+    trigger,
   } = useForm<ProductFormData>({
     defaultValues: {
       name: product?.name || '',
@@ -123,6 +124,7 @@ const ProductForm = ({onSubmit, product, isLoading}: ProductFormProps) => {
         choosedCategories,
         setChoosedCategories,
         isLoading,
+        trigger,
       }}
     >
       <Box
