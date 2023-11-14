@@ -90,8 +90,7 @@ const FormContainer = () => {
             value: 1,
             message: 'Price must be greater than 0',
           },
-          onChange: e =>
-            setValue('price', Number(e.target.value.replace(/\D/g, ''))),
+          onChange: e => setValue('price', e.target.value.replace(/\D/g, '')),
         }}
       />
       <Box sx={styles.dropdowns}>
