@@ -3,20 +3,35 @@ import {Box, Typography} from '@mui/material';
 import ProductItem from '@/components/Cart/CartItem';
 import SummarySection from '@/components/Cart/SummarySection';
 import EmptyCartPage from '@/components/Cart/EmptyCartPage';
-import {useQuery, useQueryClient, useMutation} from '@tanstack/react-query';
+import {useQuery, useQueryClient} from '@tanstack/react-query';
 import Header from '@/components/Header';
-
-// Import your mock product data
+import theme from '@/styles/theme/commonTheme';
 import products from '@/temp/data';
 
-type Product = {
-  id: number;
-  name: string;
-  image: string;
-  gender: string;
-  available: string;
-  price: number;
-  quantity: number;
+const cartPageStyles = {
+  container: {
+    display: 'flex',
+    gap: '10%',
+    margin: {
+      xl: '100px 10% 50px 10%',
+      lg: '50px 8% 50px 8%',
+      sm: '50px 5% 50px 5%',
+      xs: '30px 5% 50px 5%',
+    },
+    [theme.breakpoints.down('lg')]: {
+      flexDirection: 'column',
+    },
+  },
+  emptyCartContainer: {
+    fontSize: {
+      xl: '155px 305px 0 196px',
+      lg: '155px 13% 0 10%',
+      sm: '180px 9% 0 6%',
+      xs: '125px 20px 0',
+    },
+    width: '100%',
+    textAlign: 'center',
+  },
 };
 
 const CartPage = () => {
@@ -33,32 +48,23 @@ const CartPage = () => {
         .filter(item => item != undefined)
     : [];
   const isEmpty = !cartIds || cartIds.length === 0;
-  console.log(cartProducts);
+
   return (
     <>
       <Header />
-      <Box
-        sx={{
-          display: 'flex',
-          gap: '10%',
-          marginLeft: '10%',
-          marginRight: '10%',
-        }}
-      >
-        {isEmpty ? (
-          <Box sx={{width: '100%', textAlign: 'center'}}>
+      <Box sx={cartPageStyles.container}>
+        {isEmpty && (
+          <Box sx={cartPageStyles.emptyCartContainer}>
             <EmptyCartPage />
           </Box>
-        ) : (
-          <>
-            <Box sx={{width: '62%'}}>
-              <Typography
-                component="h1"
-                sx={{fontWeight: 500, fontSize: 45, marginBottom: 2}}
-              >
-                Cart
-              </Typography>
+        )}
 
+        {!isEmpty && (
+          <>
+            <Box
+              sx={{width: '62%', '@media (max-width: 1230px)': {width: '100%'}}}
+            >
+              <Typography variant="h1">Cart</Typography>
               {cartProducts.map(product => (
                 <ProductItem
                   cartIds={cartIds}
@@ -67,7 +73,13 @@ const CartPage = () => {
                 />
               ))}
             </Box>
-            <Box sx={{width: '38%'}}>
+            <Box
+              sx={{
+                flexShrink: 2,
+                width: '38%',
+                '@media (max-width: 1230px)': {width: '100%'},
+              }}
+            >
               <SummarySection
                 products={Object.entries(cartIds).map(([id, quantity]) => ({
                   id,
