@@ -9,7 +9,7 @@ import {
 import Image from 'next/image';
 import {ReactElement, useEffect, useMemo, useState} from 'react';
 
-import Header from '@/components/Header';
+import HeaderLayout from '@/components/HeaderLayout/HeaderLayout';
 import {ProductList} from '@/components/Product';
 import {FilterSidebar} from '@/layouts/FilterSidebar/FilterSidebar';
 import {NextPageWithLayout} from '@/pages/_app';
@@ -103,12 +103,7 @@ const MyProducts: NextPageWithLayout = () => {
 };
 
 MyProducts.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <>
-      <Header />
-      {page}
-    </>
-  );
+  return <HeaderLayout>{page}</HeaderLayout>;
 };
 
 export default MyProducts;

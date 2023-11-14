@@ -21,11 +21,10 @@ const styles: Record<string, SxProps> = {
 
 type DropdownProps = SelectProps & {
   labelText: string;
-  name: string;
   options?: {value: number; name: string}[];
 };
 
-const Dropdown = ({labelText, name, options = [], ...props}: DropdownProps) => {
+const Dropdown = ({labelText, options = [], ...props}: DropdownProps) => {
   const id = useId();
   return (
     <Box sx={styles.dropdown}>
