@@ -85,6 +85,8 @@ const EditProduct = ({productId}: EditProductProps) => {
     },
   });
 
+  const product = data?.data.data.attributes;
+
   return (
     <Modal
       sx={styles.modal}
@@ -92,11 +94,13 @@ const EditProduct = ({productId}: EditProductProps) => {
       onClose={() => router.push('/my-products')}
     >
       <Box sx={styles.modalContent}>
-        <ProductForm
-          isLoading={isPending || isLoading}
-          onSubmit={mutate}
-          product={data?.data.data.attributes}
-        />
+        {product && (
+          <ProductForm
+            isLoading={isPending || isLoading}
+            onSubmit={mutate}
+            product={product}
+          />
+        )}
       </Box>
     </Modal>
   );

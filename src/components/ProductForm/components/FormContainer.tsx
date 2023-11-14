@@ -86,34 +86,26 @@ const FormContainer = () => {
 
   const checkSize = (id: number) => {
     setChoosedSizes((prevState: any) => {
-      const newSize = sizes?.data.find(size => size.id === id);
       const isSizeAlreadyChoosed = prevState.find(
-        (size: any) => size.id === id,
+        (sizeId: number) => sizeId === id,
       );
-      if (!newSize) {
-        return prevState;
-      }
       if (!isSizeAlreadyChoosed) {
-        return [...prevState, newSize];
+        return [...prevState, id];
       } else {
-        return prevState.filter((size: any) => size.id !== id);
+        return prevState.filter((sizeId: number) => sizeId !== id);
       }
     });
   };
 
   const checkCategory = (id: number) => {
     setChoosedCategories((prevState: any) => {
-      const newCategory = categories?.data.find(category => category.id === id);
       const isCategoryAlreadyChoosed = prevState.find(
-        (category: any) => category.id === id,
+        (categoryId: number) => categoryId === id,
       );
-      if (!newCategory) {
-        return prevState;
-      }
       if (!isCategoryAlreadyChoosed) {
-        return [...prevState, {id, name: newCategory.attributes.name}];
+        return [...prevState, id];
       } else {
-        return prevState.filter((category: any) => category.id !== id);
+        return prevState.filter((categoryId: number) => categoryId !== id);
       }
     });
   };
@@ -152,9 +144,9 @@ const FormContainer = () => {
             value: id,
             name: attributes.name!,
           }))}
-          value={gender.id}
+          value={gender}
           onChange={e => {
-            setGender({id: e.target.value, name: e.target.name});
+            setGender(e.target.value);
           }}
           disabled={isLoading || isGendersLoading}
         />
@@ -164,9 +156,9 @@ const FormContainer = () => {
             value: id,
             name: attributes.name!,
           }))}
-          value={brand.id}
+          value={brand}
           onChange={e => {
-            setBrand({id: e.target.value, name: e.target.name});
+            setBrand(e.target.value);
           }}
           disabled={isLoading || isBrandsLoading}
         />
@@ -177,9 +169,9 @@ const FormContainer = () => {
           value: id,
           name: attributes.name!,
         }))}
-        value={color.id}
+        value={color}
         onChange={e => {
-          setColor({id: e.target.value, name: e.target.name});
+          setColor(e.target.value);
         }}
         disabled={isLoading || isColorsLoading}
       />
@@ -207,7 +199,7 @@ const FormContainer = () => {
         <Box sx={styles.buttonsList}>
           {categories?.data.map(({id, attributes: {name}}) => {
             const isChecked = Boolean(
-              choosedCategories.find((category: any) => category.id === id),
+              choosedCategories.find((categoryId: number) => categoryId === id),
             );
             return (
               <Button
@@ -231,7 +223,7 @@ const FormContainer = () => {
         <Box sx={styles.buttonsList}>
           {sizes?.data.map(({id, attributes: {value}}) => {
             const isChecked = Boolean(
-              choosedSizes.find((category: any) => category.id === id),
+              choosedSizes.find((sizeId: number) => sizeId === id),
             );
             return (
               <Button
