@@ -88,9 +88,9 @@ const ProductForm = ({onSubmit, product, isLoading}: ProductFormProps) => {
   const handleOnSubmit = (data: ProductRequest) => {
     const values = {
       ...data,
-      gender: gender,
-      brand: brand,
-      color: color,
+      gender,
+      brand,
+      color,
       sizes: choosedSizes,
       categories: choosedCategories,
       images,

@@ -155,7 +155,7 @@ const FormContainer = () => {
         data={
           categories?.data.map(({id, attributes: {name}}) => ({
             id,
-            name: name || '',
+            name: name!,
           })) || []
         }
         choosedData={choosedCategories}
@@ -167,7 +167,7 @@ const FormContainer = () => {
         data={
           sizes?.data.map(({id, attributes: {value}}) => ({
             id,
-            name: value ? value.toString() : '',
+            name: value!.toString(),
           })) || []
         }
         choosedData={choosedSizes}

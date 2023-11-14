@@ -43,13 +43,11 @@ const ButtonsList = ({
   header,
 }: ButtonsListProps) => {
   const checkButton = (id: number, isChecked: boolean) => {
-    setChoosedData(prevState => {
-      if (!isChecked) {
-        return [...prevState, id];
-      } else {
-        return prevState.filter((buttonId: number) => buttonId !== id);
-      }
-    });
+    if (isChecked) {
+      setChoosedData(choosedData.filter((buttonId: number) => buttonId !== id));
+    } else {
+      setChoosedData([...choosedData, id]);
+    }
   };
   return (
     <Box>
