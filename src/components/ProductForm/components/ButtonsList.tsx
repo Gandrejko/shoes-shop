@@ -42,12 +42,9 @@ const ButtonsList = ({
   namePrefix,
   header,
 }: ButtonsListProps) => {
-  const checkButton = (id: number) => {
+  const checkButton = (id: number, isChecked: boolean) => {
     setChoosedData(prevState => {
-      const isButtonAlreadyChoosed = prevState.find(
-        (buttonId: number) => buttonId === id,
-      );
-      if (!isButtonAlreadyChoosed) {
+      if (!isChecked) {
         return [...prevState, id];
       } else {
         return prevState.filter((buttonId: number) => buttonId !== id);
@@ -70,7 +67,7 @@ const ButtonsList = ({
                 color: isChecked ? 'white' : 'text.secondary',
               }}
               variant={isChecked ? 'contained' : 'outlined'}
-              onClick={() => checkButton(id)}
+              onClick={() => checkButton(id, isChecked)}
               disabled={disabled}
             >
               {namePrefix}
