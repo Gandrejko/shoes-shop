@@ -46,7 +46,7 @@ const EditProduct = ({productId}: EditProductProps) => {
   const session = useSession();
   const token = session.data?.user.accessToken;
 
-  const {data, error} = useQuery({
+  const {data, error, isLoading} = useQuery({
     queryKey: ['product', productId],
     queryFn: () =>
       axios.get(`${process.env.API_URL}/products/${productId}`, {
@@ -63,7 +63,7 @@ const EditProduct = ({productId}: EditProductProps) => {
     }
   }, [error]);
 
-  const {mutate} = useMutation({
+  const {mutate, isPending} = useMutation({
     mutationFn: (data: any) => {
       return axios.put(
         `${process.env.API_URL}/products/${productId}`,
@@ -93,8 +93,9 @@ const EditProduct = ({productId}: EditProductProps) => {
     >
       <Box sx={styles.modalContent}>
         <ProductForm
+          isLoading={isPending || isLoading}
           onSubmit={mutate}
-          product={data?.data.data.attributes || []}
+          product={data?.data.data.attributes}
         />
       </Box>
     </Modal>

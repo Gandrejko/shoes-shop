@@ -12,10 +12,10 @@ const AddProduct = () => {
   const session = useSession();
   const token = session.data?.user.accessToken;
 
-  const {mutate} = useMutation({
+  const {mutate, isPending} = useMutation({
     mutationFn: (data: any) => {
       return axios.post(
-        `https://shoes-shop-strapi.herokuapp.com/api/products`,
+        `${process.env.API_URL}/products`,
         {data},
         {
           headers: {
@@ -35,7 +35,7 @@ const AddProduct = () => {
   });
   return (
     <SidebarLayout>
-      <ProductForm onSubmit={mutate} />
+      <ProductForm onSubmit={mutate} isLoading={isPending} />
     </SidebarLayout>
   );
 };

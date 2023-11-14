@@ -37,12 +37,16 @@ const styles: Record<string, SxProps> = {
 };
 
 const ImagesContainer = () => {
-  const {images, setImages} = useContext(ProductFormContext);
+  const {
+    images,
+    setImages,
+    isLoading: isSendLoading,
+  } = useContext(ProductFormContext);
   const session = useSession();
   const token = session.data?.user.accessToken;
   const inputRef = useRef<HTMLInputElement>();
 
-  const {mutate} = useMutation({
+  const {mutate, isPending: isUploadLoading} = useMutation({
     mutationFn: (file: FormData) =>
       axios.post(`${process.env.API_URL}/upload`, file),
     onSuccess: (data: any) => {
@@ -50,7 +54,7 @@ const ImagesContainer = () => {
     },
   });
 
-  const {mutate: deleteImage} = useMutation({
+  const {mutate: deleteImage, isPending: isDeleteLoading} = useMutation({
     mutationFn: (id: number) =>
       axios.delete(`${process.env.API_URL}/upload/files/${id}`, {
         headers: {
@@ -59,6 +63,7 @@ const ImagesContainer = () => {
         },
       }),
   });
+  const isLoading = isSendLoading || isUploadLoading || isDeleteLoading;
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     let formData = new FormData();
@@ -70,6 +75,8 @@ const ImagesContainer = () => {
     for (let i = 0; i < e.target.files.length; i++) {
       formData.append('files', e.target.files[i]);
     }
+
+    e.target.value = '';
 
     mutate(formData);
   };
@@ -89,6 +96,7 @@ const ImagesContainer = () => {
             <ImageCard
               image={image}
               onDelete={() => handleDeleteImage(image.id)}
+              isLoading={isLoading}
             />
           </Grid>
         ))}
@@ -104,7 +112,7 @@ const ImagesContainer = () => {
               Drop your image here, <br /> or select{' '}
               <Typography
                 component="span"
-                onClick={() => inputRef.current?.click()}
+                onClick={() => !isLoading && inputRef.current?.click()}
                 sx={styles.uploadImage}
               >
                 click to browse
