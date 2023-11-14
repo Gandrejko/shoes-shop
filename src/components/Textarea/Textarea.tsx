@@ -62,6 +62,7 @@ const Textarea = ({
         id={id}
         fullWidth
         multiline
+        inputProps={{style: {overflowX: 'hidden'}}}
         {...props}
         {...register(name, validationSchema)}
         error={!!errorMessage}

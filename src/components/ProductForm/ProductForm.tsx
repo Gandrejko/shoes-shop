@@ -4,6 +4,7 @@ import {Color} from '@/types/color';
 import {Gender} from '@/types/gender';
 import {Image} from '@/types/image';
 import {Size} from '@/types/size';
+import {useSession} from 'next-auth/react';
 import FormContainer from './components/FormContainer';
 import ImagesContainer from './components/ImagesContainer';
 import theme from '@/styles/theme/commonTheme';
@@ -60,97 +61,53 @@ type ProductFormProps = {
   isLoading?: boolean;
 };
 
-const createDefaultProduct = (
-  product?: ProductAttributes,
-): ProductFormData => ({
-  name: product?.name || '',
-  price: product?.price || 0,
-  description: product?.description || '',
-});
-
 const ProductForm = ({onSubmit, product, isLoading}: ProductFormProps) => {
-  const [gender, setGender] = useState<Gender>({
-    id: 0,
-    name: 'None',
-  });
-  const [brand, setBrand] = useState<Brand>({
-    id: 0,
-    name: 'None',
-  });
-  const [color, setColor] = useState<Color>({
-    id: 0,
-    name: 'None',
-  });
-  const [choosedSizes, setChoosedSizes] = useState<Size[]>([]);
-  const [choosedCategories, setChoosedCategories] = useState<Category[]>([]);
-  const [images, setImages] = useState<Pick<Image, 'id' | 'url'>[]>([]);
+  const session = useSession();
+  const [gender, setGender] = useState<number>(product?.gender?.data?.id || 0);
+  const [brand, setBrand] = useState<number>(product?.brand?.data?.id || 0);
+  const [color, setColor] = useState<number>(product?.color?.data?.id || 0);
+  const [choosedSizes, setChoosedSizes] = useState<number[]>(
+    product?.sizes?.data.map(({id}) => id) || [],
+  );
+  const [choosedCategories, setChoosedCategories] = useState<number[]>(
+    product?.categories?.data.map(({id}) => id) || [],
+  );
+  const [images, setImages] = useState<Pick<Image, 'id' | 'url'>[]>(
+    product?.images?.data?.map(({id, attributes: {url}}) => ({id, url})) || [],
+  );
 
   const {
     register,
-    reset,
     handleSubmit,
-    getValues,
     setValue,
     formState: {errors},
+    trigger,
   } = useForm<ProductFormData>({
-    defaultValues: useMemo(() => createDefaultProduct(product), [product]),
+    defaultValues: {
+      name: product?.name || '',
+      price: product?.price || 0,
+      description: product?.description || '',
+    },
   });
 
-  useEffect(() => {
-    const productGender = product?.gender?.data;
-    const productBrand = product?.brand?.data;
-    const productColor = product?.color?.data;
-    reset(createDefaultProduct(product));
-    productGender &&
-      setGender({id: productGender.id, name: productGender.attributes.name});
-    productBrand &&
-      setBrand({
-        id: productBrand.id,
-        name: productBrand.attributes.name,
-      });
-    productColor &&
-      setColor({id: productColor.id, name: productColor.attributes.name});
-    setChoosedSizes(
-      product?.sizes?.data?.map(({id, attributes}) => ({
-        id,
-        value: attributes.value,
-      })) || [],
-    );
-    setChoosedCategories(
-      product?.categories?.data?.map(({id, attributes}) => ({
-        id,
-        name: attributes.name,
-      })) || [],
-    );
-    setImages(
-      product?.images?.data?.map(({id, attributes}) => ({
-        id,
-        url: attributes.url,
-      })) || [],
-    );
-  }, [product]);
-
-  const handleOnSubmit = () => {
+  const handleOnSubmit = (data: ProductRequest) => {
     const values = {
-      ...getValues(),
-      gender: gender.id !== 0 ? gender : undefined,
-      brand: brand.id !== 0 ? brand : undefined,
-      color: color.id !== 0 ? color : undefined,
+      ...data,
+      gender,
+      brand,
+      color,
       sizes: choosedSizes,
       categories: choosedCategories,
       images,
+      teamName: 'team-3',
+      userID: session.data?.user.id,
     };
-    const data = Object.keys(values).reduce(
-      (acc, key) => {
-        const value = (values as any)[key];
-        if (Boolean(value)) {
-          (acc as any)[key] = value;
-        }
-        return acc;
-      },
-      {teamName: 'team-3'},
+    const filteredValues = Object.entries(values).filter(
+      ([key, value]) =>
+        !(Array.isArray(value) && value.length === 0) && Boolean(value),
     );
-    onSubmit(data);
+    const body = Object.fromEntries(filteredValues);
+    onSubmit(body);
   };
 
   return (
@@ -172,6 +129,7 @@ const ProductForm = ({onSubmit, product, isLoading}: ProductFormProps) => {
         choosedCategories,
         setChoosedCategories,
         isLoading,
+        trigger,
       }}
     >
       <Box

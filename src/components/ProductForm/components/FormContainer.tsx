@@ -1,5 +1,6 @@
 import Dropdown from '@/components/Dropdown/Dropdown';
 import {Input} from '@/components/Inputs/Input';
+import ButtonsList from '@/components/ProductForm/components/ButtonsList';
 import Textarea from '@/components/Textarea/Textarea';
 import useGet from '@/hooks/useGet';
 import theme from '@/styles/theme/commonTheme';
@@ -10,7 +11,7 @@ import {ColorsResponse} from '@/types/color';
 import {GendersResponse} from '@/types/gender';
 import {SizesResponse} from '@/types/size';
 
-import {Box, Button, Grid, SxProps, Typography} from '@mui/material';
+import {Box, Grid, SxProps} from '@mui/material';
 import React, {useContext} from 'react';
 
 const styles: Record<string, SxProps> = {
@@ -36,24 +37,6 @@ const styles: Record<string, SxProps> = {
     gap: '1rem',
     flexShrink: 1,
   },
-  buttonsList: {
-    paddingTop: '1rem',
-    display: 'flex',
-    gap: '1rem',
-    flexWrap: 'wrap',
-  },
-  button: {
-    fontWeight: 'fontWeighRegular',
-    fontSize: {xs: 10, sm: 15},
-    textTransform: 'uppercase',
-    borderColor: 'grey.A700',
-    color: 'text.secondary',
-    padding: {xs: '8px 15px', sm: '10px 20px'},
-    '&:hover': {
-      borderColor: 'grey.A700',
-      backgroundColor: 'grey.A100',
-    },
-  },
 };
 
 const FormContainer = () => {
@@ -67,6 +50,7 @@ const FormContainer = () => {
     register,
     errors,
     setValue,
+    trigger,
     color,
     setColor,
     choosedCategories,
@@ -83,40 +67,6 @@ const FormContainer = () => {
     useGet<SizesResponse>('/sizes');
   const {data: categories, isLoading: isCategoriesLoading} =
     useGet<CategoriesResponse>('/categories');
-
-  const checkSize = (id: number) => {
-    setChoosedSizes((prevState: any) => {
-      const newSize = sizes?.data.find(size => size.id === id);
-      const isSizeAlreadyChoosed = prevState.find(
-        (size: any) => size.id === id,
-      );
-      if (!newSize) {
-        return prevState;
-      }
-      if (!isSizeAlreadyChoosed) {
-        return [...prevState, newSize];
-      } else {
-        return prevState.filter((size: any) => size.id !== id);
-      }
-    });
-  };
-
-  const checkCategory = (id: number) => {
-    setChoosedCategories((prevState: any) => {
-      const newCategory = categories?.data.find(category => category.id === id);
-      const isCategoryAlreadyChoosed = prevState.find(
-        (category: any) => category.id === id,
-      );
-      if (!newCategory) {
-        return prevState;
-      }
-      if (!isCategoryAlreadyChoosed) {
-        return [...prevState, {id, name: newCategory.attributes.name}];
-      } else {
-        return prevState.filter((category: any) => category.id !== id);
-      }
-    });
-  };
 
   return (
     <Grid sx={styles.formContainer}>
@@ -141,8 +91,7 @@ const FormContainer = () => {
             value: 1,
             message: 'Price must be greater than 0',
           },
-          onChange: e =>
-            setValue('price', Number(e.target.value.replace(/\D/g, ''))),
+          onChange: e => setValue('price', e.target.value.replace(/\D/g, '')),
         }}
       />
       <Box sx={styles.dropdowns}>
@@ -152,9 +101,9 @@ const FormContainer = () => {
             value: id,
             name: attributes.name!,
           }))}
-          value={gender.id}
+          value={gender}
           onChange={e => {
-            setGender({id: e.target.value, name: e.target.name});
+            setGender(e.target.value);
           }}
           disabled={isLoading || isGendersLoading}
         />
@@ -164,9 +113,9 @@ const FormContainer = () => {
             value: id,
             name: attributes.name!,
           }))}
-          value={brand.id}
+          value={brand}
           onChange={e => {
-            setBrand({id: e.target.value, name: e.target.name});
+            setBrand(e.target.value);
           }}
           disabled={isLoading || isBrandsLoading}
         />
@@ -177,9 +126,9 @@ const FormContainer = () => {
           value: id,
           name: attributes.name!,
         }))}
-        value={color.id}
+        value={color}
         onChange={e => {
-          setColor({id: e.target.value, name: e.target.name});
+          setColor(e.target.value);
         }}
         disabled={isLoading || isColorsLoading}
       />
@@ -190,66 +139,44 @@ const FormContainer = () => {
         disabled={isLoading}
         validationSchema={{
           required: 'Description is required',
-          onChange: e =>
-            setValue(
-              'description',
-              e.target.value.length > 300
-                ? e.target.value.slice(0, 300)
-                : e.target.value,
-            ),
+          maxLength: {
+            value: 300,
+            message: 'Description must not exceed 300 characters',
+          },
+          onChange: e => {
+            if (e.target.value.length > 300) trigger('description');
+            return e.target.value;
+          },
         }}
         name="description"
         minRows={8}
         placeholder="Do not exceed 300 characters."
       />
-      <Box>
-        <Typography>Categories</Typography>
-        <Box sx={styles.buttonsList}>
-          {categories?.data.map(({id, attributes: {name}}) => {
-            const isChecked = Boolean(
-              choosedCategories.find((category: any) => category.id === id),
-            );
-            return (
-              <Button
-                key={id}
-                sx={{
-                  ...styles.button,
-                  color: isChecked ? 'white' : 'text.secondary',
-                }}
-                variant={isChecked ? 'contained' : 'outlined'}
-                onClick={() => checkCategory(id)}
-                disabled={isLoading || isCategoriesLoading}
-              >
-                {name}
-              </Button>
-            );
-          })}
-        </Box>
-      </Box>
-      <Box>
-        <Typography>Sizes</Typography>
-        <Box sx={styles.buttonsList}>
-          {sizes?.data.map(({id, attributes: {value}}) => {
-            const isChecked = Boolean(
-              choosedSizes.find((category: any) => category.id === id),
-            );
-            return (
-              <Button
-                key={id}
-                sx={{
-                  ...styles.button,
-                  color: isChecked ? 'white' : 'text.secondary',
-                }}
-                disabled={isLoading || isSizesLoading}
-                variant={isChecked ? 'contained' : 'outlined'}
-                onClick={() => checkSize(id)}
-              >
-                EU-{value}
-              </Button>
-            );
-          })}
-        </Box>
-      </Box>
+      <ButtonsList
+        header="Categories"
+        data={
+          categories?.data.map(({id, attributes: {name}}) => ({
+            id,
+            name: name!,
+          })) || []
+        }
+        choosedData={choosedCategories}
+        setChoosedData={setChoosedCategories}
+        disabled={isLoading || isCategoriesLoading}
+      />
+      <ButtonsList
+        header="Sizes"
+        data={
+          sizes?.data.map(({id, attributes: {value}}) => ({
+            id,
+            name: value!.toString(),
+          })) || []
+        }
+        choosedData={choosedSizes}
+        setChoosedData={setChoosedSizes}
+        disabled={isLoading || isSizesLoading}
+        namePrefix="EU-"
+      />
     </Grid>
   );
 };

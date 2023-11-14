@@ -2,7 +2,7 @@ import ProductForm from '@/components/ProductForm/ProductForm';
 import theme from '@/styles/theme/commonTheme';
 import {Modal} from '@mui/material';
 import {Box, SxProps} from '@mui/material';
-import {useMutation, useQuery} from '@tanstack/react-query';
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import axios, {Axios, AxiosError} from 'axios';
 import {useSession} from 'next-auth/react';
 import {useRouter} from 'next/router';
@@ -45,6 +45,7 @@ const EditProduct = ({productId}: EditProductProps) => {
   const router = useRouter();
   const session = useSession();
   const token = session.data?.user.accessToken;
+  const queryClient = useQueryClient();
 
   const {data, error, isLoading} = useQuery({
     queryKey: ['product', productId],
@@ -80,10 +81,13 @@ const EditProduct = ({productId}: EditProductProps) => {
       toast.error(error.message);
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ['products']});
       toast.success('Product updated successfully');
       router.push('/my-products');
     },
   });
+
+  const product = data?.data.data.attributes;
 
   return (
     <Modal
@@ -92,11 +96,13 @@ const EditProduct = ({productId}: EditProductProps) => {
       onClose={() => router.push('/my-products')}
     >
       <Box sx={styles.modalContent}>
-        <ProductForm
-          isLoading={isPending || isLoading}
-          onSubmit={mutate}
-          product={data?.data.data.attributes}
-        />
+        {product && (
+          <ProductForm
+            isLoading={isPending || isLoading}
+            onSubmit={mutate}
+            product={product}
+          />
+        )}
       </Box>
     </Modal>
   );
