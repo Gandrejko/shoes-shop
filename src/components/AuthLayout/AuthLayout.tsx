@@ -4,7 +4,7 @@ import Image from 'next/image';
 import {useRouter} from 'next/router';
 import logoIcon from '../../../public/icons/logo.svg';
 import theme from '@/styles/theme/commonTheme';
-import {styles} from '../../styles/authPagesStyles';
+import {styles} from './authPagesStyles';
 import {ReactNode} from 'react';
 
 type AuthLayoutProps = {
@@ -13,16 +13,20 @@ type AuthLayoutProps = {
   subtTitle: string;
 };
 
-const chooseCurrentImage = (currentPage: string) => {
-  if (currentPage === 'sign-in') return 'signInBanner.png';
-  if (currentPage === 'sign-up') return 'signUpBanner.png';
-  if (currentPage === 'reset-password') return 'resetForgotBanner.png';
-  if (currentPage === 'forgot-password') return 'resetForgotBanner.png';
+const images = {
+  'sign-in': 'signInBanner.png',
+  'sign-up': 'signUpBanner.png',
+  'reset-password': 'resetForgotBanner.png',
+  'forgot-password': 'resetForgotBanner.png',
 };
 
-export const AuthLayot = ({children, title, subtTitle}: AuthLayoutProps) => {
+type ImagesType = keyof typeof images;
+
+const chooseCurrentImage = (currentPage: ImagesType) => images[currentPage];
+
+export const AuthLayout = ({children, title, subtTitle}: AuthLayoutProps) => {
   const router = useRouter();
-  const currentTab = router.route.replace('/auth/', '');
+  const currentTab = router.route.replace('/auth/', '') as ImagesType;
   const currentImage = chooseCurrentImage(currentTab);
 
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));

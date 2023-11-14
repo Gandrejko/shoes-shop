@@ -6,8 +6,8 @@ import axios from 'axios';
 import {useMutation} from '@tanstack/react-query';
 import {useRouter} from 'next/router';
 import {toast} from 'react-toastify';
-import {styles} from '@/styles/authPagesStyles';
-import {AuthLayot} from '@/components/AuthLayout/AuthLayout';
+import {styles} from '@/components/AuthLayout/authPagesStyles';
+import {AuthLayout} from '@/components/AuthLayout/AuthLayout';
 import {ReactElement} from 'react';
 
 type ForgotPasswordType = {
@@ -78,12 +78,12 @@ const ForgotPassword = () => {
 
 ForgotPassword.getLayout = function getLayout(page: ReactElement) {
   return (
-    <AuthLayot
+    <AuthLayout
       title="Forgot password?"
       subtTitle="Don’t worry, we’ll send you reset instructions."
     >
       {page}
-    </AuthLayot>
+    </AuthLayout>
   );
 };
 

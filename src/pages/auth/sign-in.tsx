@@ -11,9 +11,9 @@ import Link from 'next/link';
 import {Input} from '@/components/Inputs/Input';
 import {useRouter} from 'next/router';
 import {toast} from 'react-toastify';
-import {styles} from '../../styles/authPagesStyles';
+import {styles} from '../../components/AuthLayout/authPagesStyles';
 import {ReactElement} from 'react';
-import {AuthLayot} from '@/components/AuthLayout/AuthLayout';
+import {AuthLayout} from '@/components/AuthLayout/AuthLayout';
 
 interface SignInType {
   email: string;
@@ -112,12 +112,12 @@ const SignIn = () => {
 
 SignIn.getLayout = function getLayout(page: ReactElement) {
   return (
-    <AuthLayot
+    <AuthLayout
       title="Welcome back"
       subtTitle="Welcome back! Please enter your details to log into your account."
     >
       {page}
-    </AuthLayot>
+    </AuthLayout>
   );
 };
 

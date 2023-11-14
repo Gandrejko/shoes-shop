@@ -7,9 +7,9 @@ import axios from 'axios';
 import {useMutation} from '@tanstack/react-query';
 import {toast} from 'react-toastify';
 import theme from '@/styles/theme/commonTheme';
-import {styles} from '@/styles/authPagesStyles';
+import {styles} from '@/components/AuthLayout/authPagesStyles';
 import {ReactElement} from 'react';
-import {AuthLayot} from '@/components/AuthLayout/AuthLayout';
+import {AuthLayout} from '@/components/AuthLayout/AuthLayout';
 
 type ResetPasswordType = {
   password: string;
@@ -109,12 +109,12 @@ const ResetPassword = () => {
 
 ResetPassword.getLayout = function getLayout(page: ReactElement) {
   return (
-    <AuthLayot
+    <AuthLayout
       title="Reset password"
       subtTitle="Please create new password here"
     >
       {page}
-    </AuthLayot>
+    </AuthLayout>
   );
 };
 

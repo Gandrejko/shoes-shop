@@ -6,9 +6,9 @@ import {useMutation} from '@tanstack/react-query';
 import axios from 'axios';
 import {useRouter} from 'next/router';
 import {toast} from 'react-toastify';
-import {styles} from '@/styles/authPagesStyles';
+import {styles} from '@/components/AuthLayout/authPagesStyles';
 import {ReactElement} from 'react';
-import {AuthLayot} from '@/components/AuthLayout/AuthLayout';
+import {AuthLayout} from '@/components/AuthLayout/AuthLayout';
 
 type SignUpType = {
   email: string;
@@ -123,12 +123,12 @@ const SignUp = () => {
 
 SignUp.getLayout = function getLayout(page: ReactElement) {
   return (
-    <AuthLayot
+    <AuthLayout
       title="Create an account"
       subtTitle="Create an account to get an easy access to your dream shopping"
     >
       {page}
-    </AuthLayot>
+    </AuthLayout>
   );
 };
 
