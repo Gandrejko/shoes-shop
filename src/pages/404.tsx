@@ -1,15 +1,15 @@
-import Image from 'next/image';
+import HeaderLayout from '@/components/HeaderLayout/HeaderLayout';
+import theme from '@/styles/theme/commonTheme';
 import {
   Box,
-  Typography,
+  Button,
   Stack,
   SxProps,
+  Typography,
   useMediaQuery,
-  Button,
 } from '@mui/material';
-import Header from '@/components/Header';
+import Image from 'next/image';
 import Link from 'next/link';
-import theme from '@/styles/theme/commonTheme';
 
 const styles: Record<string, SxProps> = {
   page: {
@@ -103,42 +103,43 @@ const Error404 = () => {
         </>
       ) : (
         <>
-          <Header />
-          <Box sx={styles.main}>
-            <Box sx={styles.info}>
-              <Typography variant="h1">Error 404</Typography>
-              <Typography variant="h4">
-                Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed
-                diam nonummy nibh euismod tincidunt ut laoreet dolore magna
-              </Typography>
-              <Stack direction="row" spacing={4} flexWrap="wrap">
-                <Link href="/">
-                  <Button
-                    variant="outlined"
-                    sx={{width: '152px', height: '40px'}}
-                  >
-                    Go Back
-                  </Button>
-                </Link>
-                <Link href="/">
-                  <Button
-                    variant="contained"
-                    sx={{width: '152px', height: '40px'}}
-                  >
-                    Home
-                  </Button>
-                </Link>
-              </Stack>
+          <HeaderLayout>
+            <Box sx={styles.main}>
+              <Box sx={styles.info}>
+                <Typography variant="h1">Error 404</Typography>
+                <Typography variant="h4">
+                  Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed
+                  diam nonummy nibh euismod tincidunt ut laoreet dolore magna
+                </Typography>
+                <Stack direction="row" spacing={4} flexWrap="wrap">
+                  <Link href="/">
+                    <Button
+                      variant="outlined"
+                      sx={{width: '152px', height: '40px'}}
+                    >
+                      Go Back
+                    </Button>
+                  </Link>
+                  <Link href="/">
+                    <Button
+                      variant="contained"
+                      sx={{width: '152px', height: '40px'}}
+                    >
+                      Home
+                    </Button>
+                  </Link>
+                </Stack>
+              </Box>
+              <Box sx={styles.banner}>
+                <Image
+                  src="/images/404PageBanner.png"
+                  alt="404 error"
+                  objectFit="cover"
+                  fill
+                />
+              </Box>
             </Box>
-            <Box sx={styles.banner}>
-              <Image
-                src="/images/404PageBanner.png"
-                alt="404 error"
-                objectFit="cover"
-                fill
-              />
-            </Box>
-          </Box>
+          </HeaderLayout>
         </>
       )}
     </Stack>

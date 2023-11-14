@@ -1,3 +1,4 @@
+import HeaderLayout from '@/components/HeaderLayout/HeaderLayout';
 import ProductForm from '@/components/ProductForm/ProductForm';
 import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
 import {useMutation} from '@tanstack/react-query';
@@ -34,9 +35,11 @@ const AddProduct = () => {
     },
   });
   return (
-    <SidebarLayout>
-      <ProductForm onSubmit={mutate} isLoading={isPending} />
-    </SidebarLayout>
+    <HeaderLayout>
+      <SidebarLayout>
+        <ProductForm onSubmit={mutate} isLoading={isPending} />
+      </SidebarLayout>
+    </HeaderLayout>
   );
 };
 export default AddProduct;

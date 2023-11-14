@@ -12,7 +12,7 @@ import Image from 'next/image';
 import {useRouter} from 'next/router';
 import {ReactElement, useMemo} from 'react';
 
-import Header from '@/components/Header';
+import HeaderLayout from '@/components/HeaderLayout/HeaderLayout';
 import {ProductList} from '@/components/Product';
 import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
 import useGet from '@/hooks/useGet';
@@ -166,10 +166,9 @@ const MyProducts: NextPageWithLayout = () => {
 
 MyProducts.getLayout = function getLayout(page: ReactElement) {
   return (
-    <>
-      <Header />
-      <SidebarLayout currentTab="products">{page}</SidebarLayout>;
-    </>
+    <HeaderLayout>
+      <SidebarLayout currentTab="products">{page}</SidebarLayout>
+    </HeaderLayout>
   );
 };
 

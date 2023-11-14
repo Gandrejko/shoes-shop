@@ -1,4 +1,4 @@
-import Header from '@/components/Header';
+import HeaderLayout from '@/components/HeaderLayout/HeaderLayout';
 import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
 import UpdateForm from '@/components/UpdateProfile/UpdateForm';
 import {Box, SxProps, Typography} from '@mui/material';
@@ -110,10 +110,9 @@ const SettingsPage: NextPageWithLayout = () => {
 
 SettingsPage.getLayout = function (page: ReactElement) {
   return (
-    <>
-      <Header />
-      <SidebarLayout currentTab="settings">{page}</SidebarLayout>;
-    </>
+    <HeaderLayout>
+      <SidebarLayout currentTab="settings">{page}</SidebarLayout>
+    </HeaderLayout>
   );
 };
 

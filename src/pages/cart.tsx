@@ -1,12 +1,11 @@
-import React from 'react';
-import {Box, Typography} from '@mui/material';
 import ProductItem from '@/components/Cart/CartItem';
-import SummarySection from '@/components/Cart/SummarySection';
 import EmptyCartPage from '@/components/Cart/EmptyCartPage';
-import {useQuery, useQueryClient, useMutation} from '@tanstack/react-query';
-import Header from '@/components/Header';
+import SummarySection from '@/components/Cart/SummarySection';
+import {Box, Typography} from '@mui/material';
+import {useQuery, useQueryClient} from '@tanstack/react-query';
 
 // Import your mock product data
+import HeaderLayout from '@/components/HeaderLayout/HeaderLayout';
 import products from '@/temp/data';
 
 type Product = {
@@ -35,8 +34,7 @@ const CartPage = () => {
   const isEmpty = !cartIds || cartIds.length === 0;
   console.log(cartProducts);
   return (
-    <>
-      <Header />
+    <HeaderLayout>
       <Box
         sx={{
           display: 'flex',
@@ -80,7 +78,7 @@ const CartPage = () => {
           </>
         )}
       </Box>
-    </>
+    </HeaderLayout>
   );
 };
 
