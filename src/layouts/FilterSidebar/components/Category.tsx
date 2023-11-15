@@ -1,4 +1,4 @@
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
   Accordion,
   AccordionDetails,
@@ -6,10 +6,10 @@ import {
   Box,
   Divider,
   Typography,
-} from '@mui/material'
-import { useRouter } from 'next/router'
-import { ReactNode, useMemo } from 'react'
-import { Option } from './Option'
+} from '@mui/material';
+import {useRouter} from 'next/router';
+import {ReactNode, useMemo} from 'react';
+import {Option} from './Option';
 
 const styles = {
   accordion: {
@@ -34,8 +34,6 @@ type CategoryProps = {
     id: number;
     value: string | number;
   }[];
-  onAddFilter?: (id: number) => void;
-  onRemoveFilter?: (id: number) => void;
 };
 
 export const Category = ({name, children, options}: CategoryProps) => {
