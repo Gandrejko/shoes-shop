@@ -1,4 +1,4 @@
-import Header from '@/components/Header';
+import HeaderLayout from '@/components/HeaderLayout/HeaderLayout';
 import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
 import {useSession} from 'next-auth/react';
 import {ReactElement, useEffect} from 'react';
@@ -34,10 +34,9 @@ const Home = () => {
 
 Home.getLayout = function getLayout(page: ReactElement) {
   return (
-    <>
-      <Header />
+    <HeaderLayout>
       <SidebarLayout currentTab="products">{page}</SidebarLayout>
-    </>
+    </HeaderLayout>
   );
 };
 

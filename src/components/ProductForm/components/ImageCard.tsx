@@ -45,9 +45,10 @@ type ImageCardProps = {
     url: string;
   };
   onDelete: () => void;
+  isLoading?: boolean;
 };
 
-const ImageCard = ({image, onDelete}: ImageCardProps) => {
+const ImageCard = ({image, onDelete, isLoading}: ImageCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
   return (
     <Card
@@ -69,7 +70,10 @@ const ImageCard = ({image, onDelete}: ImageCardProps) => {
             pointerEvents: isHovered ? 'auto' : 'none',
           }}
         >
-          <CardActionArea sx={styles.circle} onClick={() => onDelete()}>
+          <CardActionArea
+            sx={styles.circle}
+            onClick={() => !isLoading && onDelete()}
+          >
             <Image
               width={20}
               height={20}

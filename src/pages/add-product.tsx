@@ -1,3 +1,4 @@
+import HeaderLayout from '@/components/HeaderLayout/HeaderLayout';
 import ProductForm from '@/components/ProductForm/ProductForm';
 import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
 import {useMutation} from '@tanstack/react-query';
@@ -12,10 +13,10 @@ const AddProduct = () => {
   const session = useSession();
   const token = session.data?.user.accessToken;
 
-  const {mutate} = useMutation({
+  const {mutate, isPending} = useMutation({
     mutationFn: (data: any) => {
       return axios.post(
-        `https://shoes-shop-strapi.herokuapp.com/api/products`,
+        `${process.env.API_URL}/products`,
         {data},
         {
           headers: {
@@ -34,9 +35,11 @@ const AddProduct = () => {
     },
   });
   return (
-    <SidebarLayout>
-      <ProductForm onSubmit={mutate} />
-    </SidebarLayout>
+    <HeaderLayout>
+      <SidebarLayout>
+        <ProductForm onSubmit={mutate} isLoading={isPending} />
+      </SidebarLayout>
+    </HeaderLayout>
   );
 };
 export default AddProduct;

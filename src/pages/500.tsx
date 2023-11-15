@@ -1,15 +1,15 @@
-import Image from 'next/image';
+import HeaderLayout from '@/components/HeaderLayout/HeaderLayout';
+import theme from '@/styles/theme/commonTheme';
 import {
   Box,
-  Typography,
+  Button,
   Stack,
   SxProps,
+  Typography,
   useMediaQuery,
-  Button,
 } from '@mui/material';
-import Header from '@/components/Header';
+import Image from 'next/image';
 import Link from 'next/link';
-import theme from '@/styles/theme/commonTheme';
 
 const styles: Record<string, SxProps> = {
   page: {
@@ -91,42 +91,43 @@ const Error500 = () => {
         </>
       ) : (
         <>
-          <Header />
-          <Box sx={styles.main}>
-            <Image
-              src="/images/500PageBanner.png"
-              alt="500 error"
-              fill
-              objectFit="cover"
-            />
-            <Box sx={styles.wrapper}>
-              <Typography variant="h1" sx={styles.text}>
-                We lost that page...
-              </Typography>
-              <Typography variant="h4" sx={styles.text}>
-                Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed
-                diam nonummy nibh euismod tincidunt ut laoreet dolore magna
-              </Typography>
-              <Stack direction="row" spacing={4}>
-                <Link href="/">
-                  <Button
-                    variant="outlined"
-                    sx={{width: '152px', height: '40px'}}
-                  >
-                    Go Back
-                  </Button>
-                </Link>
-                <Link href="/">
-                  <Button
-                    variant="contained"
-                    sx={{width: '152px', height: '40px'}}
-                  >
-                    Home
-                  </Button>
-                </Link>
-              </Stack>
+          <HeaderLayout>
+            <Box sx={styles.main}>
+              <Image
+                src="/images/500PageBanner.png"
+                alt="500 error"
+                fill
+                objectFit="cover"
+              />
+              <Box sx={styles.wrapper}>
+                <Typography variant="h1" sx={styles.text}>
+                  We lost that page...
+                </Typography>
+                <Typography variant="h4" sx={styles.text}>
+                  Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed
+                  diam nonummy nibh euismod tincidunt ut laoreet dolore magna
+                </Typography>
+                <Stack direction="row" spacing={4}>
+                  <Link href="/">
+                    <Button
+                      variant="outlined"
+                      sx={{width: '152px', height: '40px'}}
+                    >
+                      Go Back
+                    </Button>
+                  </Link>
+                  <Link href="/">
+                    <Button
+                      variant="contained"
+                      sx={{width: '152px', height: '40px'}}
+                    >
+                      Home
+                    </Button>
+                  </Link>
+                </Stack>
+              </Box>
             </Box>
-          </Box>
+          </HeaderLayout>
         </>
       )}
     </Stack>
