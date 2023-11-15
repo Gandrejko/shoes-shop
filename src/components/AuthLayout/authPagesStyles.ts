@@ -11,8 +11,8 @@ export const styles = {
     top: '50px',
     left: '50%',
     transform: 'translate(-50%, 0)',
-    paddingBottom: {sm: '0', xs: '14px'},
-    borderBottom: {sm: `none', xs: '1px  solid ${theme.palette.grey['A100']}`},
+    paddingBottom: {md: '0', xs: '14px'},
+    borderBottom: {md: 'none', xs: `1px  solid ${theme.palette.grey['A100']}`},
   },
   headerImage: {
     marginLeft: '40px',
@@ -22,20 +22,21 @@ export const styles = {
     margin: '0 auto',
     width: '100%',
     maxWidth: '1920px',
+    height: '100%',
+    minHeight: '100vh',
   },
   wrapper: {
     flex: '1',
     margin: {
-      xl: '155px 305px 0 196px',
-      lg: '155px 13% 0 10%',
-      sm: '180px 9% 0 6%',
+      xl: '155px 305px 20px 196px',
+      lg: '155px 13% 20px 10%',
+      sm: '180px 9% 20px 6%',
       xs: '125px 20px 0',
     },
     width: '50%',
     maxWidth: {
       xl: 'calc(50% - 305px - 196px)',
       lg: 'calc(50% - 13% - 10%)',
-      sm: 'calc(50% - 9% - 6%)',
     },
   },
   title: {
@@ -70,8 +71,6 @@ export const styles = {
   imageWrapper: {
     width: '50%',
     maxWidth: '960px',
-    height: '100vh',
-    maxHeight: '1112px',
     position: 'relative',
   },
   checkboxContainer: {
@@ -79,7 +78,7 @@ export const styles = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: {lg: 'center', sm: 'flex-start'},
-    flexDirection: {md: 'row', sm: 'column', xs: 'row'},
+    flexDirection: {md: 'row', xs: 'row'},
   },
   checkbox: {
     '& .MuiSvgIcon-root': {
