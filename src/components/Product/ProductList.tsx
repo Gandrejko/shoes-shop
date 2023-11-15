@@ -2,8 +2,8 @@ import {Grid, SxProps} from '@mui/material';
 
 import useGet from '@/hooks/useGet';
 import {ProductsResponse} from '@/types/product';
-import ProductCard from './ProductCard';
-import ProductCardSkeleton from './ProductCardSkeleton';
+import ProductCard from './components/ProductCard';
+import ProductCardSkeleton from './components/ProductCardSkeleton';
 
 const styles: Record<string, SxProps> = {
   gridItem: {
