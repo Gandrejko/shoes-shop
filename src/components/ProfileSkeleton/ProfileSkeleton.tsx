@@ -6,8 +6,8 @@ const styles = {
     gap: {xs: 2, sm: 3},
   },
   avatarContainer: {
-    width: {xs: 80, sm: 106, md: 136},
-    height: {xs: 80, sm: 106, md: 136},
+    width: {xs: 64, sm: 90, md: 120},
+    height: {xs: 64, sm: 90, md: 120},
   },
   profileInfoContainer: {
     marginBottom: {xs: 0, sm: 1, md: 3},
