@@ -11,7 +11,7 @@ export const ProfileSkeleton = ({
   avatarWidth = '120px',
   avatarHeight = '120px',
   textHeigth = '23px',
-  textWidth = '141px',
+  textWidth = '282px',
 }: ProfileSkeleton) => {
   return (
     <Box sx={{width: 1}}>
