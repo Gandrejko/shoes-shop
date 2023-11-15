@@ -4,7 +4,6 @@ import {
   Box,
   Button,
   Container,
-  Skeleton,
   Stack,
   SxProps,
   Typography,
@@ -19,6 +18,7 @@ import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
 import {NextPageWithLayout} from '@/pages/_app';
 import {useSession} from 'next-auth/react';
 import Link from 'next/link';
+import {ProfileSkeleton} from '@/components/ProfileSkeleton/ProfileSkeleton';
 
 const styles: Record<string, SxProps> = {
   container: {
@@ -95,7 +95,7 @@ const MyProducts: NextPageWithLayout = () => {
 
   useEffect(() => {
     if (data) {
-      // setIsLoading(false);
+      setIsLoading(false);
     }
   }, [data]);
 
@@ -111,33 +111,39 @@ const MyProducts: NextPageWithLayout = () => {
             style={{objectFit: 'cover'}}
           />
         </Box>
-        <Stack sx={styles.profileContainer} direction="row">
-          <Box sx={styles.avatarContainer}>
-            {sessionUser?.image ? (
-              <Image
-                src={sessionUser.image}
-                alt={`${sessionUser?.username}`}
-                fill
-              />
-            ) : (
-              <Avatar
-                sx={styles.avatar}
-                src="/"
-                alt={`${sessionUser?.username}`}
-              />
-            )}
+        {isLoading ? (
+          <Box sx={styles.profileContainer}>
+            <ProfileSkeleton />
           </Box>
-          <Stack sx={styles.profileInfo}>
-            <Typography variant="h4" fontSize={14}>
-              {sessionUser?.firstName && sessionUser?.lastName
-                ? `${sessionUser?.firstName} ${sessionUser?.lastName}`
-                : `${sessionUser?.username}`}
-            </Typography>
-            <Typography fontWeight={300} fontSize={14}>
-              1374 bonus points
-            </Typography>
+        ) : (
+          <Stack sx={styles.profileContainer} direction="row">
+            <Box sx={styles.avatarContainer}>
+              {sessionUser?.image ? (
+                <Image
+                  src={sessionUser.image}
+                  alt={`${sessionUser?.username}`}
+                  fill
+                />
+              ) : (
+                <Avatar
+                  sx={styles.avatar}
+                  src="/"
+                  alt={`${sessionUser?.username}`}
+                />
+              )}
+            </Box>
+            <Stack sx={styles.profileInfo}>
+              <Typography variant="h4" fontSize={14}>
+                {sessionUser?.firstName && sessionUser?.lastName
+                  ? `${sessionUser?.firstName} ${sessionUser?.lastName}`
+                  : `${sessionUser?.username}`}
+              </Typography>
+              <Typography fontWeight={300} fontSize={14}>
+                1374 bonus points
+              </Typography>
+            </Stack>
           </Stack>
-        </Stack>
+        )}
       </Box>
       <Box sx={styles.productsContainer}>
         <Stack direction="row" sx={styles.productsHeader}>
