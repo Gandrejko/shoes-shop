@@ -10,14 +10,12 @@ import {
 } from '@mui/material';
 import Image from 'next/image';
 import {useRouter} from 'next/router';
-import {ReactElement, useMemo} from 'react';
+import {ReactElement, useMemo, useState, useEffect} from 'react';
 
 import HeaderLayout from '@/components/HeaderLayout/HeaderLayout';
 import {ProductList} from '@/components/Product';
 import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
-import useGet from '@/hooks/useGet';
 import {NextPageWithLayout} from '@/pages/_app';
-import {UserResponse} from '@/types/user';
 import {useSession} from 'next-auth/react';
 import Link from 'next/link';
 
@@ -83,6 +81,7 @@ const styles: Record<string, SxProps> = {
 const MyProducts: NextPageWithLayout = () => {
   const router = useRouter();
   const {data} = useSession();
+  const [isLoading, setIsLoading] = useState(true);
   const sessionUser = data?.user;
 
   const productId = router.query.productId as string;
@@ -93,18 +92,13 @@ const MyProducts: NextPageWithLayout = () => {
     };
   }, [sessionUser?.id]);
 
-  const {
-    data: userData,
-    isLoading: isLoadingUser,
-    isError: isErrorUser,
-    // TODO: change to sessionUser?.id
-  } = useGet<UserResponse>(`/users/395`, null, {
-    populate: 'avatar',
-  });
+  useEffect(() => {
+    if (data) {
+      setIsLoading(false);
+    }
+  }, [data]);
 
-  // TODO: show loading and error pages
-  if (isLoadingUser) return <div>Loading...</div>;
-  if (isErrorUser) return <div>Error</div>;
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     <Container maxWidth="xl" sx={styles.container}>
@@ -120,25 +114,25 @@ const MyProducts: NextPageWithLayout = () => {
         </Box>
         <Stack sx={styles.profileContainer} direction="row">
           <Box sx={styles.avatarContainer}>
-            {userData?.avatar ? (
+            {data?.user.id && sessionUser?.image ? (
               <Image
-                src={userData.avatar.url!}
-                alt={`${userData?.username}`}
+                src={sessionUser.image}
+                alt={`${sessionUser?.username}`}
                 fill
               />
             ) : (
               <Avatar
                 sx={styles.avatar}
                 src="/"
-                alt={`${userData?.username}`}
+                alt={`${sessionUser?.username}`}
               />
             )}
           </Box>
           <Stack sx={styles.profileInfo}>
             <Typography variant="h4" fontSize={14}>
-              {userData?.firstName && userData?.lastName
-                ? `${userData?.firstName} ${userData?.lastName}`
-                : `${userData?.username}`}
+              {sessionUser?.firstName && sessionUser?.lastName
+                ? `${sessionUser?.firstName} ${sessionUser?.lastName}`
+                : `${sessionUser?.username}`}
             </Typography>
             <Typography fontWeight={300} fontSize={14}>
               1374 bonus points
