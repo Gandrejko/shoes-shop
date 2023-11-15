@@ -102,7 +102,7 @@ const Products: NextPageWithLayout = () => {
   );
 };
 
-MyProducts.getLayout = function getLayout(page: ReactElement) {
+Products.getLayout = function getLayout(page: ReactElement) {
   return <HeaderLayout>{page}</HeaderLayout>;
 };
 

@@ -1,6 +1,6 @@
 import HeaderLayout from '@/components/HeaderLayout/HeaderLayout';
 import useGet from '@/hooks/useGet';
-import {ProductResponse, ProductsResponse} from '@/types/product';
+import {ProductResponse} from '@/types/product';
 import React, {useState} from 'react';
 import {Box, Container, Typography, SxProps, Button} from '@mui/material';
 import ImageSlider from '@/components/ImageSlider/ImageSlider';
@@ -10,11 +10,13 @@ import {toast} from 'react-toastify';
 
 const styles: Record<string, SxProps> = {
   container: {
-    padding: {xs: '16px', md: '35px', display: 'flex', gap: '50px'},
+    padding: {xs: '16px', md: '35px'},
+    display: 'flex',
+    flexDirection: {xs: 'column', md: 'row'},
+    gap: '3vw',
   },
   productContainer: {
     width: '100%',
-    padding: '24px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -136,7 +138,11 @@ const Product = () => {
     <HeaderLayout>
       <Container maxWidth="xl" sx={styles.container}>
         <Box sx={styles.productContainer}>
-          <ImageSlider />
+          <ImageSlider
+            images={
+              product?.images?.data?.map(({attributes: {url}}) => url) || []
+            }
+          />
         </Box>
         <Box sx={styles.productContainer}>
           <Box sx={styles.textContainer}>
