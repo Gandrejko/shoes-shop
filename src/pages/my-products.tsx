@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   Container,
+  Skeleton,
   Stack,
   SxProps,
   Typography,
@@ -104,12 +105,16 @@ const MyProducts: NextPageWithLayout = () => {
       {productId && <EditProduct productId={productId} />}
       <Box sx={styles.pageHeader}>
         <Box sx={styles.bannerContainer}>
-          <Image
-            src="/images/myProductsBanner.png"
-            alt="My products"
-            fill
-            style={{objectFit: 'cover'}}
-          />
+          {isLoading ? (
+            <Skeleton variant="rectangular" sx={{height: 1}} />
+          ) : (
+            <Image
+              src="/images/myProductsBanner.png"
+              alt="My products"
+              fill
+              style={{objectFit: 'cover'}}
+            />
+          )}
         </Box>
         {isLoading ? (
           <Box sx={styles.profileContainer}>
