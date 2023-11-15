@@ -1,29 +1,31 @@
 import {Box, Skeleton, Stack} from '@mui/material';
 
-type ProfileSkeleton = {
-  avatarWidth?: string;
-  avatarHeight?: string;
-  textWidth?: string;
-  textHeigth?: string;
+const styles = {
+  container: {
+    alignItems: 'end',
+    gap: {xs: 2, sm: 3},
+  },
+  avatarContainer: {
+    width: {xs: 80, sm: 106, md: 136},
+    height: {xs: 80, sm: 106, md: 136},
+  },
+  profileInfoContainer: {
+    marginBottom: {xs: 0, sm: 1, md: 3},
+  },
+  profileInfo: {
+    width: {xs: '200px', sm: '250px', md: '350px'},
+    height: {xs: '20px', sm: '26px'},
+  },
 };
 
-export const ProfileSkeleton = ({
-  avatarWidth = '120px',
-  avatarHeight = '120px',
-  textHeigth = '23px',
-  textWidth = '282px',
-}: ProfileSkeleton) => {
+export const ProfileSkeleton = () => {
   return (
-    <Box sx={{width: 1}}>
-      <Stack direction="row" sx={{gap: '28px', alignItems: 'end'}}>
-        <Skeleton
-          variant="circular"
-          width={avatarWidth}
-          height={avatarHeight}
-        />
-        <Stack sx={{marginBottom: '15px'}}>
-          <Skeleton variant="text" width={textWidth} height={textHeigth} />
-          <Skeleton variant="text" width={textWidth} height={textHeigth} />
+    <Box>
+      <Stack direction="row" sx={styles.container}>
+        <Skeleton variant="circular" sx={styles.avatarContainer} />
+        <Stack sx={styles.profileInfoContainer}>
+          <Skeleton variant="text" sx={styles.profileInfo} />
+          <Skeleton variant="text" sx={styles.profileInfo} />
         </Stack>
       </Stack>
     </Box>
