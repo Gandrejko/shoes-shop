@@ -13,6 +13,8 @@ import {
 import Image from 'next/image';
 import {HeaderProps} from '@/components/Header';
 import Link from 'next/link';
+import Sidebar from '@/components/Sidebar/Sidebar';
+import {useRouter} from 'next/navigation';
 
 const styles: Record<string, SxProps> = {
   mobileWrapper: {
@@ -48,6 +50,7 @@ const styles: Record<string, SxProps> = {
 
 const MobileHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
   const [openDrawer, setOpenDrawer] = useState(false);
+  const router = useRouter();
 
   const iOS =
     typeof navigator !== 'undefined' &&
@@ -106,38 +109,14 @@ const MobileHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
             </IconButton>
           </Box>
           {userLoggedIn ? (
-            <List sx={styles.tabs}>
-              <ListItem sx={styles.tab}>
-                <Image
-                  width={20}
-                  height={20}
-                  src="/icons/myProducts.svg"
-                  alt="my-products"
-                />
-                <Typography>My products</Typography>
-              </ListItem>
-              <ListItem sx={styles.tab}>
-                <Image
-                  width={20}
-                  height={20}
-                  src="/icons/settings.svg"
-                  alt="settings"
-                />
-                <Typography>Settings</Typography>
-              </ListItem>
-              <ListItem sx={styles.tab}>
-                <Image
-                  width={20}
-                  height={20}
-                  src="/icons/logout.svg"
-                  alt="logout"
-                />
-                <Typography>Log out</Typography>
-              </ListItem>
-            </List>
+           <Sidebar closeDrawer={() => setOpenDrawer(false)} />
           ) : (
             <List sx={styles.tabs}>
-              <ListItem sx={styles.tab}>
+              <ListItem sx={styles.tab}
+                        onClick={() => {
+                          router.push('/auth/sign-in')
+                          setOpenDrawer(false)}}
+              >
                 <Image
                   width={20}
                   height={20}

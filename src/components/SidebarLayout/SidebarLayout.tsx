@@ -5,7 +5,15 @@ import Sidebar from '@/components/Sidebar/Sidebar';
 const styles: Record<string, SxProps> = {
   layout: {
     display: 'flex',
-  }
+  },
+  sidebar: {
+    width: 320,
+    flexShrink: 0,
+    display: {md: 'block', xs: 'none'},
+  },
+  content: {
+    flex: 1,
+  },
 };
 
 type SidebarLayoutProps = {
@@ -14,12 +22,14 @@ type SidebarLayoutProps = {
 };
 
 export const SidebarLayout = ({children, currentTab}: SidebarLayoutProps) => {
-
   return (
     <Box sx={styles.layout}>
-      <Sidebar
-        currentTab={currentTab} />
-      {children}
+      <Box sx={styles.sidebar}>
+        <Sidebar currentTab={currentTab} />
+      </Box>
+      <Box sx={styles.content}>
+        {children}
+      </Box>
     </Box>
   );
 };

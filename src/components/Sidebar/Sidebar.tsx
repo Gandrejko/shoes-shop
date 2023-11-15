@@ -5,11 +5,6 @@ import {signOut} from 'next-auth/react';
 import {useRouter} from 'next/navigation';
 
 const styles: Record<string, SxProps> = {
-  sidebar: {
-    width: 320,
-    flexShrink: 0,
-    display: {md: 'block', xs: 'none'},
-  },
   user: {
     display: 'flex',
     alignItems: 'center',
@@ -48,9 +43,10 @@ const styles: Record<string, SxProps> = {
 
 type SidebarProps = {
   currentTab?: 'products' | 'settings' | 'logout';
+  closeDrawer?: () => void;
 };
 
-const Sidebar = ({currentTab}: SidebarProps) => {
+const Sidebar = ({currentTab, closeDrawer}: SidebarProps) => {
   const router = useRouter();
   const image = false;
   const name = 'Jane Meldrum';
@@ -61,7 +57,7 @@ const Sidebar = ({currentTab}: SidebarProps) => {
   };
 
   return (
-    <Box sx={styles.sidebar}>
+    <Box >
       <Box sx={styles.user}>
         <Box sx={styles.avatarContainer}>
           {image && <Image src={image} width={64} height={64} alt="user" />}
@@ -85,7 +81,11 @@ const Sidebar = ({currentTab}: SidebarProps) => {
             ...styles.tab,
             color: currentTab === 'products' ? '#FE645E' : '#000',
           }}
-          onClick={() => router.push('/my-products')}
+          onClick={() => {
+            router.push('/my-products')
+            if (closeDrawer) {
+              closeDrawer();
+          }}}
         >
           <Image
             width={20}
@@ -100,7 +100,12 @@ const Sidebar = ({currentTab}: SidebarProps) => {
             ...styles.tab,
             color: currentTab === 'settings' ? '#FE645E' : '#000',
           }}
-          onClick={() => router.push('/update-profile')}
+          onClick={() => {
+            router.push('/settings')
+            if (closeDrawer) {
+              closeDrawer();
+            }
+          }}
         >
           <Image
             width={20}
@@ -117,16 +122,11 @@ const Sidebar = ({currentTab}: SidebarProps) => {
           }}
           onClick={logoutFunction}
         >
-          <Image
-            width={20}
-            height={20}
-            src="/icons/logout.svg"
-            alt="logout"
-          />
+          <Image width={20} height={20} src="/icons/logout.svg" alt="logout" />
           <Typography>Log out</Typography>
         </ListItem>
       </List>
-    </Box>
+    </Box >
   );
 };
 
