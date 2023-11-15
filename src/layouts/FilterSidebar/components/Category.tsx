@@ -1,4 +1,4 @@
-import {Option} from './Option';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import {
   Accordion,
   AccordionDetails,
@@ -6,9 +6,10 @@ import {
   Box,
   Divider,
   Typography,
-} from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import {ReactNode} from 'react';
+} from '@mui/material'
+import { useRouter } from 'next/router'
+import { ReactNode, useMemo } from 'react'
+import { Option } from './Option'
 
 const styles = {
   accordion: {
@@ -31,21 +32,54 @@ type CategoryProps = {
   children?: ReactNode;
   options?: {
     id: number;
-    name: string | number;
+    value: string | number;
   }[];
-  checkedIds?: number[];
   onAddFilter?: (id: number) => void;
   onRemoveFilter?: (id: number) => void;
 };
 
-export const Category = ({
-  name,
-  children,
-  options,
-  checkedIds,
-  onAddFilter,
-  onRemoveFilter,
-}: CategoryProps) => {
+export const Category = ({name, children, options}: CategoryProps) => {
+  const router = useRouter();
+
+  const currentValues = useMemo(() => {
+    const currentFilter = router.query[name.toLowerCase()];
+    return currentFilter ? (currentFilter as string).split(',') : [];
+  }, [name, router.query]);
+
+  const updateFilter = (option: string | number, action: 'add' | 'remove') => {
+    let newValues: string[];
+
+    if (action === 'add') {
+      newValues = [...currentValues, String(option)];
+    }
+    if (action === 'remove') {
+      newValues = currentValues.filter(value => value !== String(option));
+    }
+
+    const updatedQuery = {
+      ...router.query,
+      [name.toLowerCase()]: newValues!.join(','),
+    };
+    if (newValues!.length === 0) delete updatedQuery[name.toLowerCase()];
+
+    router.push(
+      {
+        pathname: router.pathname,
+        query: updatedQuery,
+      },
+      undefined,
+      {shallow: true},
+    );
+  };
+
+  const handleAddFilter = (option: string | number) => {
+    updateFilter(option, 'add');
+  };
+
+  const handleRemoveFilter = (option: string | number) => {
+    updateFilter(option, 'remove');
+  };
+
   return (
     <>
       <Divider />
@@ -56,14 +90,13 @@ export const Category = ({
         <AccordionDetails sx={{paddingLeft: 0}}>
           {children}
           <Box sx={styles.options}>
-            {options?.map(({id, name}) => (
+            {options?.map(({id, value}) => (
               <Option
                 key={id}
-                id={id}
-                name={name}
-                checked={checkedIds?.includes(id)!}
-                onAddFilter={onAddFilter!}
-                onRemoveFilter={onRemoveFilter!}
+                value={value}
+                checked={currentValues.includes(String(value))}
+                onAddFilter={() => handleAddFilter!(value)}
+                onRemoveFilter={() => handleRemoveFilter!(value)}
               />
             ))}
           </Box>

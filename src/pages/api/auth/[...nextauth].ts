@@ -24,7 +24,21 @@ export const authOptions: AuthOptions = {
             },
           );
 
-          return {...response.data.user, access_token: response.data.jwt};
+          const userInfo = await axios.get(
+            `https://shoes-shop-strapi.herokuapp.com/api/users/${response.data.user.id}?populate=*`,
+            {
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${response.data.jwt}`,
+              },
+            },
+          );
+
+          return {
+            ...response.data.user,
+            access_token: response.data.jwt,
+            image: userInfo.data.avatar,
+          };
         } catch {
           return null;
         }
@@ -35,8 +49,10 @@ export const authOptions: AuthOptions = {
     session({session, token}) {
       session.user.id = token.id;
       session.user.username = token.username;
-      session.user.name = token.name;
       session.user.accessToken = token.accessToken;
+      session.user.firstName = token.firstName;
+      session.user.lastName = token.lastName;
+      session.user.image = token.image;
 
       return session;
     },
@@ -45,15 +61,16 @@ export const authOptions: AuthOptions = {
         token.accessToken = user.access_token;
         token.id = user.id;
         token.username = user.username;
-        token.name = user.firstName
-          ? user.firstName + ' '
-          : '' + (user.lastName || '');
+        token.firstName = user.firstName || '';
+        token.lastName = user.lastName || '';
+        token.image = user.image;
       }
       return token;
     },
   },
   pages: {
     signIn: '/auth/sign-in',
+    error: '/404',
   },
   session: {
     strategy: 'jwt',

@@ -5,6 +5,7 @@ import {
   Toolbar,
   Typography,
   Button,
+  Link as MuiLink,
 } from '@mui/material';
 import {SearchInput} from '@/components/Inputs/SearchInput';
 import {HeaderProps} from '@/components/Header';
@@ -17,6 +18,14 @@ const styles: Record<string, SxProps> = {
     display: 'flex',
     justifyContent: 'space-between',
   },
+  link: {
+    textDecoration: 'none',
+    color: 'inherit',
+    transition: 'color 0.2s ease-in-out',
+    '&:hover': {
+      color: 'primary.main',
+    },
+  },
 };
 
 const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
@@ -27,7 +36,9 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
           <Link href="/">
             <Image src="/icons/logo.svg" alt="logo" width={40} height={30} />
           </Link>
-          <Typography variant="body1">Products</Typography>
+          <MuiLink component={Link} href="/products" sx={styles.link}>
+            <Typography variant="body1">Products</Typography>
+          </MuiLink>
         </Stack>
         {userLoggedIn ? (
           <Stack

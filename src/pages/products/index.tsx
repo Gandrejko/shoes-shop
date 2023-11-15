@@ -10,11 +10,11 @@ import Image from 'next/image';
 import {ReactElement, useEffect, useMemo, useState} from 'react';
 
 import HeaderLayout from '@/components/HeaderLayout/HeaderLayout';
-import {ProductList} from '@/components/Product';
+import ProductList from '@/components/Product/ProductList';
 import {FilterSidebar} from '@/layouts/FilterSidebar/FilterSidebar';
 import {NextPageWithLayout} from '@/pages/_app';
 import theme from '@/styles/theme/commonTheme';
-import {Filters} from '@/types/data';
+import {useRouter} from 'next/router';
 
 const styles: Record<string, SxProps> = {
   container: {
@@ -32,34 +32,46 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-const Products: NextPageWithLayout = () => {
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+const MyProducts: NextPageWithLayout = () => {
+  const router = useRouter();
 
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [showFilters, setShowFilters] = useState(!isMobile);
-  const [filters, setFilters] = useState<Filters>({
-    brand: [],
-    color: [],
-    gender: [],
-    sizes: [],
-    minPrice: 100,
-    maxPrice: 300,
-  });
 
   const params = useMemo(() => {
-    const newFilters: Record<string, string | number> = {};
-    Object.entries(filters).forEach(([key, value]) => {
-      if (Array.isArray(value)) {
-        value.forEach((item, index) => {
-          newFilters[`filters[${key}][${index}]`] = item;
-        });
-      }
+    const query = router.query;
+    const newParams: Record<string, string | number> = {};
+
+    const genders = query.gender ? (query.gender as string).split(',') : [];
+    const brands = query.brand ? (query.brand as string).split(',') : [];
+    const colors = query.color ? (query.color as string).split(',') : [];
+    const sizes = query.sizes ? (query.sizes as string).split(',') : [];
+
+    const minPrice = query.minPrice || 0;
+    const maxPrice = query.maxPrice || 1000;
+
+    genders.forEach((value, index) => {
+      newParams[`filters[gender][name][${index}]`] = value;
     });
 
-    newFilters['filters[price][$gte]'] = filters.minPrice;
-    newFilters['filters[price][$lte]'] = filters.maxPrice;
-    newFilters['populate'] = '*';
-    return newFilters;
-  }, [filters]);
+    brands.forEach((value, index) => {
+      newParams[`filters[brand][name][${index}]`] = value;
+    });
+
+    colors.forEach((value, index) => {
+      newParams[`filters[color][name][${index}]`] = value;
+    });
+
+    sizes.forEach((value, index) => {
+      newParams[`filters[sizes][value][${index}]`] = value;
+    });
+
+    newParams['filters[price][$gte]'] = minPrice as string;
+    newParams['filters[price][$lte]'] = maxPrice as string;
+    newParams['populate'] = '*';
+
+    return newParams;
+  }, [router.query]);
 
   useEffect(() => {
     setShowFilters(!isMobile);
@@ -69,11 +81,9 @@ const Products: NextPageWithLayout = () => {
     <Stack direction="row" justifyContent="center">
       <FilterSidebar
         open={showFilters}
-        filters={filters}
         searchText="Air Force 1"
         productCount={100}
         onClose={() => setShowFilters(false)}
-        setFilters={setFilters}
       />
       <Box sx={styles.container} marginLeft={showFilters && !isMobile ? 2 : 0}>
         <Box sx={styles.productsContainer}>
@@ -102,8 +112,8 @@ const Products: NextPageWithLayout = () => {
   );
 };
 
-Products.getLayout = function getLayout(page: ReactElement) {
+MyProducts.getLayout = function getLayout(page: ReactElement) {
   return <HeaderLayout>{page}</HeaderLayout>;
 };
 
-export default Products;
+export default MyProducts;
