@@ -1,4 +1,45 @@
-import {Box, Typography, Button} from '@mui/material';
+import {Box, Typography, Button, SxProps} from '@mui/material';
+
+const styles: Record<string, SxProps> = {
+  container: {
+    marginTop: '70px',
+    marginBottom: '70px',
+  },
+  heading: {
+    marginBottom: 2,
+  },
+  section: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  sectionItem: {
+    fontWeight: '400',
+    fontSize: 30,
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginTop: 4,
+  },
+  totalSection: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginTop: '60px',
+    paddingBottom: '30px',
+    borderTop: '1px solid #EAECF0',
+    borderBottom: '1px solid #EAECF0',
+  },
+  totalItem: {
+    marginTop: 4,
+  },
+  checkoutButton: {
+    width: '100%',
+    marginTop: {
+      xl: '100px',
+      lg: '100px',
+      sm: '50px',
+      xs: '50px',
+    },
+  },
+};
 
 const SummarySection = ({products}: {products: any[]}) => {
   const total = products.reduce((accumulator, product) => {
@@ -6,96 +47,37 @@ const SummarySection = ({products}: {products: any[]}) => {
   }, 0);
 
   return (
-    <Box>
-      <Typography
-        component="h4"
-        sx={{fontWeight: '500', fontSize: 45, marginBottom: '70px'}}
-      >
+    <Box sx={styles.container}>
+      <Typography variant="h1" component="h2" sx={styles.heading}>
         Summary
       </Typography>
 
-      <Box sx={{display: 'flex', flexDirection: 'Column'}}>
-        <Box
-          sx={{
-            fontWeight: '400',
-            fontSize: 30,
-            display: 'flex',
-            justifyContent: 'space-between',
-          }}
-        >
-          <Typography
-            component="h4"
-            sx={{fontWeight: '400', fontSize: 30, marginTop: 4}}
-          >
-            Subtotal
-          </Typography>
-          <Typography component="h4" sx={{fontSize: 30, marginTop: 4}}>
-            ${total.toFixed(2)}
-          </Typography>
+      <Box sx={styles.section}>
+        <Box sx={styles.sectionItem}>
+          <Typography variant="h2">Subtotal</Typography>
+          <Typography variant="h2">${total.toFixed(2)}</Typography>
         </Box>
 
-        <Box
-          sx={{
-            fontWeight: '400',
-            fontSize: 30,
-            display: 'flex',
-            justifyContent: 'space-between',
-          }}
-        >
-          <Typography
-            component="h4"
-            sx={{fontWeight: '400', fontSize: 30, marginTop: 4}}
-          >
-            Shipping
-          </Typography>
-          <Typography
-            component="h4"
-            sx={{fontWeight: '400', fontSize: 30, marginTop: 4}}
-          >
-            $0
-          </Typography>
+        <Box sx={styles.sectionItem}>
+          <Typography variant="h2">Shipping</Typography>
+          <Typography variant="h2">$0</Typography>
         </Box>
 
-        <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
-          <Typography
-            component="h4"
-            sx={{fontWeight: '400', fontSize: 30, marginTop: 4}}
-          >
-            Tax
-          </Typography>
-          <Typography
-            component="h4"
-            sx={{fontWeight: '400', fontSize: 30, marginTop: 4}}
-          >
-            $0
-          </Typography>
+        <Box sx={styles.sectionItem}>
+          <Typography variant="h2">Tax</Typography>
+          <Typography variant="h2">$0</Typography>
         </Box>
       </Box>
 
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          marginTop: '60px',
-          paddingBottom: '30px',
-          borderTop: '1px solid #EAECF0',
-          borderBottom: '1px solid #EAECF0',
-        }}
-      >
-        <Typography
-          component="h4"
-          sx={{fontWeight: '600', fontSize: 30, marginTop: 4}}
-        >
+      <Box sx={styles.totalSection}>
+        <Typography variant="h2" sx={styles.totalItem}>
           Total
         </Typography>
-        <Typography
-          component="h4"
-          sx={{fontWeight: '600', fontSize: 30, marginTop: 4}}
-        >
+        <Typography variant="h2" sx={styles.totalItem}>
           ${total.toFixed(2)}
         </Typography>
       </Box>
-      <Button variant="contained" sx={{width: '100%', marginTop: '100px'}}>
+      <Button variant="contained" sx={styles.checkoutButton}>
         Checkout
       </Button>
     </Box>
