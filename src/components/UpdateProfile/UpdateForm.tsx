@@ -1,4 +1,4 @@
-import {UserResponse} from '@/types/user';
+import {UserRequest, UserResponse} from '@/types/user';
 import {Box, SxProps, Typography} from '@mui/material';
 import {useForm} from 'react-hook-form';
 import UpdateFormContainer from './UpdateFormContainer';
@@ -15,13 +15,13 @@ const styles: Record<string, SxProps> = {
 };
 
 type UpdateFormProps = {
-  onSubmit: (data: any) => void;
+  onSubmit: (data: UserRequest) => void;
   userData: UserResponse;
 };
 
 const UpdateForm = ({onSubmit, userData}: UpdateFormProps) => {
   const {register, handleSubmit, control, getValues, setValue, formState} =
-    useForm<UserResponse>({
+    useForm<UserRequest>({
       defaultValues: {
         firstName: userData?.firstName ?? '',
         lastName: userData?.lastName ?? '',
@@ -31,9 +31,8 @@ const UpdateForm = ({onSubmit, userData}: UpdateFormProps) => {
       },
     });
 
-  const handleOnSubmit = () => {
-    const data = getValues();
-    onSubmit(data);
+  const handleOnSubmit = (userData: UserRequest) => {
+    onSubmit(userData);
   };
 
   return (

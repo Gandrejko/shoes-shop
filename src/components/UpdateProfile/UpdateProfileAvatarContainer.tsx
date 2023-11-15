@@ -56,7 +56,7 @@ const UpdateProfileAvatarContainer = ({formProps}: UpdateFormType) => {
         formProps.setValue('avatar', {id: image.id, url: image.url});
       },
       onError: error => {
-        toast.error('Something went wrong. Please, try again!');
+        toast.error(error.message);
       },
     },
     null,
@@ -81,7 +81,6 @@ const UpdateProfileAvatarContainer = ({formProps}: UpdateFormType) => {
     if (!files) return;
 
     const formData = new FormData();
-
     formData.append('files', files[0]);
 
     uploadImage(formData);
@@ -92,7 +91,7 @@ const UpdateProfileAvatarContainer = ({formProps}: UpdateFormType) => {
       <Box sx={styles.avatarContainer}>
         {avatar ? (
           <Image
-            src={avatar?.url}
+            src={avatar?.url!}
             alt={currentUser?.username}
             fill
             sizes="100%"
@@ -115,7 +114,7 @@ const UpdateProfileAvatarContainer = ({formProps}: UpdateFormType) => {
         <Button
           variant="contained"
           type="button"
-          onClick={() => deleteImage(avatar?.id)}
+          onClick={() => deleteImage(avatar?.id!)}
           sx={styles.button}
         >
           Delete

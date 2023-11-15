@@ -5,7 +5,6 @@ import useGet from '@/hooks/useGet';
 import usePut from '@/hooks/usePut';
 import {UserRequest, UserResponse} from '@/types/user';
 import {Box, SxProps, Typography} from '@mui/material';
-import {useQueryClient} from '@tanstack/react-query';
 import {useSession} from 'next-auth/react';
 import {ReactElement} from 'react';
 import {UseFormReturn} from 'react-hook-form';
@@ -26,37 +25,30 @@ const styles: Record<string, SxProps> = {
 
 export type UpdateFormType = {
   formProps: Pick<
-    UseFormReturn<UserResponse>,
+    UseFormReturn<UserRequest>,
     'register' | 'control' | 'getValues' | 'setValue' | 'formState'
   >;
 };
 
 const SettingsPage: NextPageWithLayout = () => {
-  const queryClient = useQueryClient();
   const {data: session, update} = useSession();
-  const token = session?.user.accessToken;
-  const currentUser = session?.user;
+  const sessionUser = session?.user;
 
-  console.log(session);
-
-  const {data, isLoading} = useGet<UserResponse>(
-    `/users/${currentUser?.id}`,
-    {enabled: Boolean(currentUser)},
-    {
-      populate: 'avatar',
-    },
+  const {data: userData, isLoading} = useGet<UserResponse>(
+    `/users/${sessionUser?.id}`,
+    {enabled: Boolean(sessionUser)},
+    {populate: 'avatar'},
   );
 
   const {mutate} = usePut<UserRequest, UserResponse>(
-    `/users/${currentUser?.id}`,
+    `/users/${sessionUser?.id}`,
     {
       onSuccess: newData => {
-        queryClient.invalidateQueries({queryKey: ['users', currentUser?.id]});
         update(newData);
         toast.success('Your profile was successfully updated!');
       },
       onError: error => {
-        toast.error('Something went wrong. Please, try again!');
+        toast.error(error.message);
       },
     },
   );
@@ -69,7 +61,7 @@ const SettingsPage: NextPageWithLayout = () => {
         <Typography variant="h1" sx={styles.header}>
           My Profile
         </Typography>
-        <UpdateForm onSubmit={mutate} userData={data} />
+        <UpdateForm onSubmit={mutate} userData={userData!} />
       </Box>
     </Box>
   );
