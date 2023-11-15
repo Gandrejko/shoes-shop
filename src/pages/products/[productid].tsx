@@ -1,21 +1,10 @@
 import HeaderLayout from '@/components/HeaderLayout/HeaderLayout';
 import useGet from '@/hooks/useGet';
-import {ProductResponse} from '@/types/product';
-import React, {useEffect, useState} from 'react';
-import {
-  Box,
-  Container,
-  Typography,
-  SxProps,
-  Card,
-  CardMedia,
-  Grid,
-  Button,
-} from '@mui/material';
-import products from '@/temp/data';
+import {ProductResponse, ProductsResponse} from '@/types/product';
+import React, {useState} from 'react';
+import {Box, Container, Typography, SxProps, Button} from '@mui/material';
 import ImageSlider from '@/components/ImageSlider/ImageSlider';
 import {useRouter} from 'next/router';
-import 'react-toastify/dist/ReactToastify.css';
 import {useMutation} from '@tanstack/react-query';
 import {toast} from 'react-toastify';
 
@@ -111,7 +100,7 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-const SingleProductPage = () => {
+const Product = () => {
   const router = useRouter();
   const productId = router.query.productid as string;
   const [choosedSize, setChoosedSize] = useState<number>(0);
@@ -220,4 +209,4 @@ const SingleProductPage = () => {
   );
 };
 
-export default SingleProductPage;
+export default Product;

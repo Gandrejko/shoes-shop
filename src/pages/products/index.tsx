@@ -32,7 +32,7 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-const MyProducts: NextPageWithLayout = () => {
+const Products: NextPageWithLayout = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const [showFilters, setShowFilters] = useState(!isMobile);
@@ -106,4 +106,4 @@ MyProducts.getLayout = function getLayout(page: ReactElement) {
   return <HeaderLayout>{page}</HeaderLayout>;
 };
 
-export default MyProducts;
+export default Products;

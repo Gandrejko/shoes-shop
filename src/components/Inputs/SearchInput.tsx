@@ -3,6 +3,7 @@ import {InputBaseProps} from '@mui/material/InputBase/InputBase';
 import Image from 'next/image';
 import {useId} from 'react';
 import {RegisterOptions, UseFormRegister} from 'react-hook-form';
+import searchIcon from 'public/icons/search.svg';
 
 const styles = {
   search: {
@@ -67,7 +68,7 @@ export const SearchInput = ({
       : {};
   return (
     <Box sx={giantMode ? styles.searchHuge : styles.search}>
-      <Image width={20} height={20} src="icons/search.svg" alt="search" />
+      <Image width={20} height={20} src={searchIcon} alt="search" />
       <InputBase
         placeholder="Search"
         id={id}
