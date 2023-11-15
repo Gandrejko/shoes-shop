@@ -11,6 +11,8 @@ import {SearchInput} from '@/components/Inputs/SearchInput';
 import {HeaderProps} from '@/components/Header';
 import Image from 'next/image';
 import Link from 'next/link';
+import {useState} from 'react';
+import {ProfilePopup} from './ProfilePopup';
 
 const styles: Record<string, SxProps> = {
   desktopWrapper: {
@@ -29,6 +31,16 @@ const styles: Record<string, SxProps> = {
 };
 
 const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <>
       <Toolbar sx={styles.desktopWrapper}>
@@ -62,7 +74,10 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
                   height={24}
                 />
               </IconButton>
-              <IconButton onClick={() => {}}>
+              <IconButton
+                onClick={handleClick}
+                aria-describedby={'profile-popup'}
+              >
                 <Image
                   src="icons/avatar.svg"
                   alt="avatar"
@@ -70,6 +85,7 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
                   height={24}
                 />
               </IconButton>
+              <ProfilePopup anchorEl={anchorEl} handleOnClose={handleClose} />
             </Stack>
           </Stack>
         ) : (
