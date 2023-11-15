@@ -14,7 +14,7 @@ import {useRouter} from 'next/router';
 import {ReactElement, useMemo, useState, useEffect} from 'react';
 
 import HeaderLayout from '@/components/HeaderLayout/HeaderLayout';
-import {ProductList} from '@/components/Product';
+import ProductList from '@/components/Product/ProductList';
 import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
 import {NextPageWithLayout} from '@/pages/_app';
 import {useSession} from 'next-auth/react';
@@ -24,7 +24,7 @@ import {ProfileSkeleton} from '@/components/ProfileSkeleton/ProfileSkeleton';
 const styles: Record<string, SxProps> = {
   container: {
     padding: {xs: 0, md: '35px 16px'},
-    marginLeft: {xs: 0, md: 3},
+    paddingLeft: {xs: 0, md: 4},
   },
   pageHeader: {
     position: 'relative',
