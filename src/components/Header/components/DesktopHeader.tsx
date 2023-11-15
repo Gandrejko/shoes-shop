@@ -27,7 +27,9 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
           <Link href="/">
             <Image src="/icons/logo.svg" alt="logo" width={40} height={30} />
           </Link>
-          <Typography variant="body1">Products</Typography>
+          <Link href="/products">
+            <Typography variant="body1">Products</Typography>
+          </Link>
         </Stack>
         {userLoggedIn ? (
           <Stack
