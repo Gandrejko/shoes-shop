@@ -90,6 +90,7 @@ let theme = createTheme({
       styleOverrides: {
         root: {
           textTransform: 'none',
+          whiteSpace: 'nowrap',
         },
         contained: ({theme}) => ({
           color: theme.palette.common.white,

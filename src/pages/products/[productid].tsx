@@ -1,7 +1,7 @@
 import HeaderLayout from '@/components/HeaderLayout/HeaderLayout';
 import useGet from '@/hooks/useGet';
 import {ProductResponse} from '@/types/product';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Box, Container, Typography, SxProps, Button} from '@mui/material';
 import ImageSlider from '@/components/ImageSlider/ImageSlider';
 import {useRouter} from 'next/router';
@@ -26,10 +26,6 @@ const styles: Record<string, SxProps> = {
     width: '100%',
     maxWidth: '400px',
   },
-  productName: {
-    fontSize: '45px',
-    fontWeight: 500,
-  },
   productLabel: {
     textAlign: 'left',
     fontSize: '18px',
@@ -42,9 +38,22 @@ const styles: Record<string, SxProps> = {
     fontSize: '18px',
     fontWeight: 500,
   },
+  btnContainer: {
+    marginTop: '10px',
+    display: 'flex',
+    flexDirection: {
+      xs: 'column',
+      sm: 'row',
+    },
+    gap: '10px',
+    width: '100%',
+  },
   addToCartButton: {
-    minWidth: '48%',
-    padding: '16px 70px',
+    flexBasis: '50%',
+    padding: {
+      xs: '10px 15px',
+      sm: '16px 20px',
+    },
     borderRadius: '10px',
     cursor: 'pointer',
     transition: 'background-color 0.3s',
@@ -68,12 +77,6 @@ const styles: Record<string, SxProps> = {
   },
   sizesContainer: {
     marginTop: '10px',
-    width: '100%',
-  },
-  btnContainer: {
-    marginTop: '10px',
-    display: 'flex',
-    gap: '26px',
     width: '100%',
   },
   description: {
@@ -107,7 +110,7 @@ const Product = () => {
   const productId = router.query.productid as string;
   const [choosedSize, setChoosedSize] = useState<number>(0);
 
-  const {data} = useGet<ProductResponse>(
+  const {data, error} = useGet<ProductResponse>(
     `products/${productId}`,
     {
       enabled: productId !== undefined,
@@ -116,6 +119,11 @@ const Product = () => {
       populate: '*',
     },
   );
+  useEffect(() => {
+    if (error) {
+      router.push('/404');
+    }
+  }, [error]);
   const product = {id: data?.data.id, ...data?.data.attributes};
 
   const {mutate} = useMutation({
@@ -134,6 +142,10 @@ const Product = () => {
     },
   });
 
+  const gender = product?.gender?.data?.attributes.name;
+  const color = product?.color?.data?.attributes.name;
+  const sizes = product?.sizes?.data;
+
   return (
     <HeaderLayout>
       <Container maxWidth="xl" sx={styles.container}>
@@ -146,47 +158,50 @@ const Product = () => {
         </Box>
         <Box sx={styles.productContainer}>
           <Box sx={styles.textContainer}>
-            <Typography variant="h1" sx={styles.productName}>
-              {product?.name}
-            </Typography>
+            <Typography variant="h1">{product?.name}</Typography>
             <Typography variant="h4" sx={styles.productPrice}>
               ${product?.price}
             </Typography>
           </Box>
           <Box sx={styles.subheader}>
-            <Typography variant="h4" sx={styles.productGender}>
-              {product?.gender?.data?.attributes.name}&apos;s Shoes
-            </Typography>
-            |
-            <Typography variant="h4" sx={styles.productGender}>
-              {product?.color?.data?.attributes.name}
-            </Typography>
+            {gender && (
+              <Typography variant="h4" sx={styles.productGender}>
+                {gender}&apos;s Shoes
+              </Typography>
+            )}
+            {color && (
+              <Typography variant="h4" sx={styles.productGender}>
+                | {color}
+              </Typography>
+            )}
           </Box>
-          <Box sx={styles.sizesContainer}>
-            <Typography variant="h4" sx={styles.productLabel}>
-              Select Size
-            </Typography>
-            <Box sx={styles.buttonsList}>
-              {product.sizes?.data
-                .sort((a, b) => a.attributes.value - b.attributes.value)
-                .map(({id, attributes: {value}}) => {
-                  const isChecked = id === choosedSize;
-                  return (
-                    <Button
-                      key={id}
-                      sx={{
-                        ...styles.button,
-                        color: isChecked ? 'white' : 'text.secondary',
-                      }}
-                      variant={isChecked ? 'contained' : 'outlined'}
-                      onClick={() => setChoosedSize(id)}
-                    >
-                      EU-{value}
-                    </Button>
-                  );
-                })}
+          {sizes && (
+            <Box sx={styles.sizesContainer}>
+              <Typography variant="h4" sx={styles.productLabel}>
+                Select Size
+              </Typography>
+              <Box sx={styles.buttonsList}>
+                {sizes
+                  .sort((a, b) => a.attributes.value - b.attributes.value)
+                  .map(({id, attributes: {value}}) => {
+                    const isChecked = id === choosedSize;
+                    return (
+                      <Button
+                        key={id}
+                        sx={{
+                          ...styles.button,
+                          color: isChecked ? 'white' : 'text.secondary',
+                        }}
+                        variant={isChecked ? 'contained' : 'outlined'}
+                        onClick={() => setChoosedSize(id)}
+                      >
+                        EU-{value}
+                      </Button>
+                    );
+                  })}
+              </Box>
             </Box>
-          </Box>
+          )}
           <Box sx={styles.btnContainer}>
             <Button variant="contained" sx={styles.addToCartButton}>
               Favorite
