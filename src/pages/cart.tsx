@@ -1,12 +1,13 @@
 import React from 'react';
-import {Box, Typography} from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import ProductItem from '@/components/Cart/CartItem';
 import SummarySection from '@/components/Cart/SummarySection';
 import EmptyCartPage from '@/components/Cart/EmptyCartPage';
-import {useQuery, useQueryClient} from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Header from '@/components/Header';
 import theme from '@/styles/theme/commonTheme';
-import products from '@/temp/data';
+import useGet from '@/hooks/useGet';
+import { ProductsResponse } from '@/types/product';
 
 const cartPageStyles = {
   container: {
@@ -34,66 +35,70 @@ const cartPageStyles = {
   },
 };
 
+const txtAddFields = (ids: string[]) => ids.map(id => `filters[id]=${id}`).join('&');
+
+
 const CartPage = () => {
   const queryClient = useQueryClient();
 
-  const {data: cartIds} = useQuery({
+  const { data: cartIds } = useQuery({
     queryKey: ['cart'],
     queryFn: async () => JSON.parse(localStorage.getItem('cart') || '{}'),
   });
+  const params = cartIds && txtAddFields(Object.keys(cartIds));
 
-  const cartProducts = cartIds
-    ? Object.keys(cartIds)
-        .map(id => products.find(product => product.id === +id))
-        .filter(item => item != undefined)
-    : [];
-  const isEmpty = !cartIds || cartIds.length === 0;
+  const isNotEmpty = params !== undefined && params.length != 0
 
-  return (
-    <>
-      <Header />
-      <Box sx={cartPageStyles.container}>
-        {isEmpty && (
-          <Box sx={cartPageStyles.emptyCartContainer}>
-            <EmptyCartPage />
-          </Box>
-        )}
-
-        {!isEmpty && (
-          <>
-            <Box
-              sx={{width: '62%', '@media (max-width: 1230px)': {width: '100%'}}}
-            >
-              <Typography variant="h1">Cart</Typography>
-              {cartProducts.map(product => (
-                <ProductItem
-                  cartIds={cartIds}
-                  key={product?.id}
-                  product={product}
-                />
-              ))}
-            </Box>
-            <Box
-              sx={{
-                flexShrink: 2,
-                width: '38%',
-                '@media (max-width: 1230px)': {width: '100%'},
-              }}
-            >
-              <SummarySection
-                products={Object.entries(cartIds).map(([id, quantity]) => ({
-                  id,
-                  quantity,
-                  price: products.find(product => product.id.toString() === id)
-                    ?.price,
-                }))}
-              />
-            </Box>
-          </>
-        )}
-      </Box>
-    </>
+  const { data: products } = useGet<ProductsResponse>(
+    `/products?${params}`, {
+    enabled: isNotEmpty},
+    {
+      populate: '*',
+    },
   );
+
+
+
+return (
+  <>
+    <Header />
+    <Box sx={cartPageStyles.container}>
+      {!isNotEmpty && (
+        <Box sx={cartPageStyles.emptyCartContainer}>
+          <EmptyCartPage />
+        </Box>
+      )}
+
+      {isNotEmpty && (
+        <>
+          <Box
+            sx={{ width: '62%', '@media (max-width: 1230px)': { width: '100%' } }}
+          >
+            <Typography variant="h1">Cart</Typography>
+            {products && products.data.map(({ id, attributes }) => (
+              <ProductItem productID={id} cartIds={cartIds} key={id} product={attributes} />
+            ))}
+          </Box>
+          <Box
+            sx={{
+              flexShrink: 2,
+              width: '38%',
+              '@media (max-width: 1230px)': { width: '100%' },
+            }}
+          >
+            <SummarySection
+              products={Object.entries(cartIds).map(([id, quantity]) => ({
+                id,
+                quantity,
+                price: products?.data.find(({ id: productID }) => productID.toString() === id)?.attributes.price || 0
+              }))}
+            />
+          </Box>
+        </>
+      )}
+    </Box>
+  </>
+);
 };
 
 export default CartPage;
