@@ -24,7 +24,10 @@ const UpdateFormContainer = ({formProps}: UpdateFormType) => {
           name="firstName"
           register={formProps.register}
           validationSchema={{
-            required: 'Name is required',
+            minLength: {
+              value: 3,
+              message: 'Minimum length is 3',
+            },
           }}
           errorMessage={formProps.formState.errors.firstName?.message}
           marginBottom={24}
@@ -36,7 +39,10 @@ const UpdateFormContainer = ({formProps}: UpdateFormType) => {
           name="lastName"
           register={formProps.register}
           validationSchema={{
-            required: 'Surname is required',
+            minLength: {
+              value: 3,
+              message: 'Minimum length is 3',
+            },
           }}
           errorMessage={formProps.formState.errors.lastName?.message}
           marginBottom={24}
@@ -49,7 +55,6 @@ const UpdateFormContainer = ({formProps}: UpdateFormType) => {
           disabled
           register={formProps.register}
           validationSchema={{
-            required: 'Email is required',
             pattern: {
               value: /\S+@\S+\.\S+/,
               message: 'This email is invalid',
@@ -65,10 +70,9 @@ const UpdateFormContainer = ({formProps}: UpdateFormType) => {
           name="phoneNumber"
           register={formProps.register}
           validationSchema={{
-            required: 'Phone number is required',
             pattern: {
               value: /^\(\d{3}\) \d{3}-\d{4}$/,
-              message: 'This phone is invalid',
+              message: 'Phone should have type (949) 354-2574',
             },
           }}
           errorMessage={formProps.formState.errors.phoneNumber?.message}
