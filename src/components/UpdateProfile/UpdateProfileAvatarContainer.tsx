@@ -28,7 +28,8 @@ const styles: Record<string, SxProps> = {
     overflow: 'hidden',
   },
   avatar: {
-    fontSize: 45,
+    fontSize: 40,
+    textTransform: 'uppercase',
     width: {xs: 100, sm: 150},
     height: {xs: 100, sm: 150},
     backgroundColor: 'primary.main',
