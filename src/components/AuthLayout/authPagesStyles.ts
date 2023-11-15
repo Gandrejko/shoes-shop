@@ -22,7 +22,8 @@ export const styles = {
     margin: '0 auto',
     width: '100%',
     maxWidth: '1920px',
-    height: '100vh',
+    height: '100%',
+    minHeight: '100vh',
   },
   wrapper: {
     flex: '1',
@@ -70,7 +71,6 @@ export const styles = {
   imageWrapper: {
     width: '50%',
     maxWidth: '960px',
-    height: '100%',
     position: 'relative',
   },
   checkboxContainer: {
