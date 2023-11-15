@@ -1,7 +1,8 @@
+import useDelete from '@/hooks/useDelete';
+import usePost from '@/hooks/usePost';
 import {UpdateFormType} from '@/pages/settings';
+import {ImageRequest, ImageResponse} from '@/types/image';
 import {Avatar, Box, Button, InputBase, SxProps} from '@mui/material';
-import {useMutation} from '@tanstack/react-query';
-import axios from 'axios';
 import {useSession} from 'next-auth/react';
 import Image from 'next/image';
 import {ChangeEvent, useRef} from 'react';
@@ -44,50 +45,35 @@ const styles: Record<string, SxProps> = {
 const UpdateProfileAvatarContainer = ({formProps}: UpdateFormType) => {
   const {data: session} = useSession();
   const currentUser = session?.user;
-  const token = session?.user.accessToken;
   const avatar = formProps.getValues().avatar;
   const inputRef = useRef<HTMLInputElement>();
 
-  const {mutate: uploadImage} = useMutation({
-    mutationFn: async (formData: FormData) => {
-      const url = `${process.env.API_URL}/upload`;
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data',
-        },
-      };
+  const {mutate: uploadImage} = usePost<ImageRequest, ImageResponse>(
+    '/upload',
+    {
+      onSuccess: (data: any) => {
+        const image = data[0];
+        formProps.setValue('avatar', {id: image.id, url: image.url});
+      },
+      onError: error => {
+        toast.error('Something went wrong. Please, try again!');
+      },
+    },
+    null,
+  );
 
-      const res = await axios.post(url, formData, config);
-      return res.data[0];
+  const {mutate: deleteImage} = useDelete<any>(
+    '/upload/files',
+    {
+      onSuccess: () => {
+        formProps.setValue('avatar', null);
+      },
+      onError: error => {
+        toast.error(error.message);
+      },
     },
-    onSuccess: (data: any) => {
-      formProps.setValue('avatar', {id: data.id, url: data.url});
-    },
-    onError: error => {
-      toast.error('Something went wrong. Please, try again!');
-    },
-  });
-
-  const {mutate: deleteImage} = useMutation({
-    mutationFn: async (id: number) => {
-      const url = `${process.env.API_URL}/upload/files/${id}`;
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-
-      const res = await axios.delete(url, config);
-      return res.data;
-    },
-    onSuccess: () => {
-      formProps.setValue('avatar', null);
-    },
-    onError: error => {
-      toast.error(error.message);
-    },
-  });
+    null,
+  );
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -106,7 +92,7 @@ const UpdateProfileAvatarContainer = ({formProps}: UpdateFormType) => {
       <Box sx={styles.avatarContainer}>
         {avatar ? (
           <Image
-            src={avatar.url}
+            src={avatar?.url}
             alt={currentUser?.username}
             fill
             sizes="100%"
@@ -129,7 +115,7 @@ const UpdateProfileAvatarContainer = ({formProps}: UpdateFormType) => {
         <Button
           variant="contained"
           type="button"
-          onClick={() => deleteImage(avatar.id)}
+          onClick={() => deleteImage(avatar?.id)}
           sx={styles.button}
         >
           Delete

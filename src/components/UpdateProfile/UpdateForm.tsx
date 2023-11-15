@@ -1,4 +1,4 @@
-import {UserDataType} from '@/pages/settings';
+import {UserResponse} from '@/types/user';
 import {Box, SxProps, Typography} from '@mui/material';
 import {useForm} from 'react-hook-form';
 import UpdateFormContainer from './UpdateFormContainer';
@@ -16,12 +16,12 @@ const styles: Record<string, SxProps> = {
 
 type UpdateFormProps = {
   onSubmit: (data: any) => void;
-  userData: Partial<UserDataType>;
+  userData: UserResponse;
 };
 
 const UpdateForm = ({onSubmit, userData}: UpdateFormProps) => {
   const {register, handleSubmit, control, getValues, setValue, formState} =
-    useForm<Partial<UserDataType>>({
+    useForm<UserResponse>({
       defaultValues: {
         firstName: userData?.firstName ?? '',
         lastName: userData?.lastName ?? '',

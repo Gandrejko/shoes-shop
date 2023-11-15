@@ -1,9 +1,11 @@
 import HeaderLayout from '@/components/HeaderLayout/HeaderLayout';
 import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
 import UpdateForm from '@/components/UpdateProfile/UpdateForm';
+import useGet from '@/hooks/useGet';
+import usePut from '@/hooks/usePut';
+import {UserRequest, UserResponse} from '@/types/user';
 import {Box, SxProps, Typography} from '@mui/material';
-import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
-import axios from 'axios';
+import {useQueryClient} from '@tanstack/react-query';
 import {useSession} from 'next-auth/react';
 import {ReactElement} from 'react';
 import {UseFormReturn} from 'react-hook-form';
@@ -22,77 +24,42 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-export type UserDataType = {
-  id: number;
-  username: string;
-  email: string;
-  provider: string;
-  confirmed: boolean;
-  blocked: boolean;
-  createdAt: string;
-  updatedAt: string;
-  phoneNumber: string;
-  firstName: string;
-  lastName: string;
-  avatar: any;
-};
-
 export type UpdateFormType = {
   formProps: Pick<
-    UseFormReturn<Partial<UserDataType>>,
+    UseFormReturn<UserResponse>,
     'register' | 'control' | 'getValues' | 'setValue' | 'formState'
   >;
 };
 
 const SettingsPage: NextPageWithLayout = () => {
   const queryClient = useQueryClient();
-  const {data: session, update, status} = useSession();
+  const {data: session, update} = useSession();
   const token = session?.user.accessToken;
   const currentUser = session?.user;
 
-  const {data, isLoading} = useQuery({
-    queryKey: ['users', currentUser?.id],
-    queryFn: async () => {
-      if (status === 'loading') return null;
+  console.log(session);
 
-      const url = `${process.env.API_URL}/users/${currentUser?.id}`;
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        params: {
-          populate: 'avatar',
-        },
-      };
-      const res = await axios.get(url, config);
-      return res.data;
+  const {data, isLoading} = useGet<UserResponse>(
+    `/users/${currentUser?.id}`,
+    {enabled: Boolean(currentUser)},
+    {
+      populate: 'avatar',
     },
-  });
+  );
 
-  const {mutate} = useMutation({
-    mutationFn: async (userUpdateData: Partial<UserDataType>) => {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-
-      const res = await axios.putForm(
-        `${process.env.API_URL}/users/${currentUser?.id}`,
-        {...userUpdateData, avatar: userUpdateData.avatar?.id ?? null},
-        config,
-      );
-      return res.data;
+  const {mutate} = usePut<UserRequest, UserResponse>(
+    `/users/${currentUser?.id}`,
+    {
+      onSuccess: newData => {
+        queryClient.invalidateQueries({queryKey: ['users', currentUser?.id]});
+        update(newData);
+        toast.success('Your profile was successfully updated!');
+      },
+      onError: error => {
+        toast.error('Something went wrong. Please, try again!');
+      },
     },
-    onSuccess: newData => {
-      queryClient.invalidateQueries({queryKey: ['users', currentUser?.id]});
-      update(newData);
-      toast.success('Your profile was successfully updated!');
-    },
-    onError: error => {
-      toast.error('Something went wrong. Please, try again!');
-    },
-  });
+  );
 
   if (isLoading) return <div>Loading</div>;
 
