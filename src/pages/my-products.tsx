@@ -13,7 +13,7 @@ import {useRouter} from 'next/router';
 import {ReactElement, useMemo} from 'react';
 
 import HeaderLayout from '@/components/HeaderLayout/HeaderLayout';
-import {ProductList} from '@/components/Product';
+import ProductList from '@/components/Product/ProductList';
 import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
 import useGet from '@/hooks/useGet';
 import {NextPageWithLayout} from '@/pages/_app';
@@ -24,7 +24,7 @@ import Link from 'next/link';
 const styles: Record<string, SxProps> = {
   container: {
     padding: {xs: 0, md: '35px 16px'},
-    marginLeft: {xs: 0, md: 3},
+    paddingLeft: {xs: 0, md: 4},
   },
   pageHeader: {
     position: 'relative',
@@ -95,7 +95,6 @@ const MyProducts: NextPageWithLayout = () => {
 
   const {
     data: userData,
-    isLoading: isLoadingUser,
     isError: isErrorUser,
     // TODO: change to sessionUser?.id
   } = useGet<UserResponse>(`/users/395`, null, {
@@ -103,7 +102,6 @@ const MyProducts: NextPageWithLayout = () => {
   });
 
   // TODO: show loading and error pages
-  if (isLoadingUser) return <div>Loading...</div>;
   if (isErrorUser) return <div>Error</div>;
 
   return (
