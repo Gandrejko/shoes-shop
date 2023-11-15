@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   Container,
+  Skeleton,
   Stack,
   SxProps,
   Typography,
@@ -94,11 +95,9 @@ const MyProducts: NextPageWithLayout = () => {
 
   useEffect(() => {
     if (data) {
-      setIsLoading(false);
+      // setIsLoading(false);
     }
   }, [data]);
-
-  if (isLoading) return <div>Loading...</div>;
 
   return (
     <Container maxWidth="xl" sx={styles.container}>
@@ -114,7 +113,7 @@ const MyProducts: NextPageWithLayout = () => {
         </Box>
         <Stack sx={styles.profileContainer} direction="row">
           <Box sx={styles.avatarContainer}>
-            {data?.user.id && sessionUser?.image ? (
+            {sessionUser?.image ? (
               <Image
                 src={sessionUser.image}
                 alt={`${sessionUser?.username}`}
