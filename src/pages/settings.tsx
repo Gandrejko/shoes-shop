@@ -40,11 +40,18 @@ const SettingsPage: NextPageWithLayout = () => {
     {populate: 'avatar'},
   );
 
+  console.log(sessionUser);
+
   const {mutate} = usePut<UserRequest, UserResponse>(
     `/users/${sessionUser?.id}`,
     {
       onSuccess: newData => {
-        update(newData);
+        update({
+          user: {
+            ...newData,
+            image: userData?.avatar,
+          },
+        });
         toast.success('Your profile was successfully updated!');
       },
       onError: error => {
