@@ -90,6 +90,7 @@ let theme = createTheme({
       styleOverrides: {
         root: {
           textTransform: 'none',
+          whiteSpace: 'nowrap',
         },
         contained: ({theme}) => ({
           color: theme.palette.common.white,
@@ -114,11 +115,6 @@ let theme = createTheme({
           borderRadius: 2,
           borderColor: theme.palette.grey.A700,
         }),
-      },
-    },
-    MuiBackdrop: {
-      styleOverrides: {
-        root: {backgroundColor: 'rgba(243, 243, 243, 0.9)'},
       },
     },
     MuiSelect: {

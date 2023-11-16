@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import {useRouter, useSearchParams} from 'next/navigation';
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {Box, Button, Typography, useMediaQuery} from '@mui/material';
@@ -109,12 +110,17 @@ const ResetPassword = () => {
 
 ResetPassword.getLayout = function getLayout(page: ReactElement) {
   return (
-    <AuthLayout
-      title="Reset password"
-      subtTitle="Please create new password here"
-    >
-      {page}
-    </AuthLayout>
+    <>
+      <Head>
+        <title>Reset password</title>
+      </Head>
+      <AuthLayout
+        title="Reset password"
+        subtTitle="Please create new password here"
+      >
+        {page}
+      </AuthLayout>
+    </>
   );
 };
 

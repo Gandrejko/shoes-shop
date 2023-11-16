@@ -14,6 +14,11 @@ import modalCloseIcon from '../../../public/icons/modalClose.svg';
 
 const style = {
   modal: {
+    '& .MuiModal-backdrop': {
+      backgroundColor: '#F3F3F3',
+      opacity: '0.9 !important',
+      backdropFilter: 'blur(100px)',
+    },
     '& .MuiBox-root': {
       outline: 'none',
     },

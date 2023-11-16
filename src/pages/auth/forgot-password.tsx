@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {Box, Button, Typography} from '@mui/material';
 import Link from 'next/link';
@@ -78,12 +79,17 @@ const ForgotPassword = () => {
 
 ForgotPassword.getLayout = function getLayout(page: ReactElement) {
   return (
-    <AuthLayout
-      title="Forgot password?"
-      subtTitle="Don’t worry, we’ll send you reset instructions."
-    >
-      {page}
-    </AuthLayout>
+    <>
+      <Head>
+        <title>Forgot password</title>
+      </Head>
+      <AuthLayout
+        title="Forgot password?"
+        subtTitle="Don’t worry, we’ll send you reset instructions."
+      >
+        {page}
+      </AuthLayout>
+    </>
   );
 };
 

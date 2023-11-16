@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import {
-  Box, Divider,
+  Box,
+  Divider,
   IconButton,
   List,
   ListItem,
@@ -17,6 +18,13 @@ import Sidebar from '@/components/Sidebar/Sidebar';
 import {useRouter} from 'next/navigation';
 
 const styles: Record<string, SxProps> = {
+  modal: {
+    '& .MuiModal-backdrop': {
+      backgroundColor: '#F3F3F3',
+      opacity: '0.9 !important',
+      backdropFilter: 'blur(100px)',
+    },
+  },
   mobileWrapper: {
     height: '60px',
     display: 'flex',
@@ -99,6 +107,7 @@ const MobileHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
         onClose={() => setOpenDrawer(false)}
         onOpen={() => setOpenDrawer(true)}
         anchor="right"
+        sx={styles.modal}
       >
         <Box sx={styles.boxWrapper}>
           <Box sx={styles.closeBtnWrapper}>
@@ -113,15 +122,17 @@ const MobileHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
           </Box>
           {userLoggedIn ? (
             <Box sx={styles.sidebar}>
-            <Divider />
-           <Sidebar closeDrawer={() => setOpenDrawer(false)} />
-              </Box>
+              <Divider />
+              <Sidebar closeDrawer={() => setOpenDrawer(false)} />
+            </Box>
           ) : (
             <List sx={styles.tabs}>
-              <ListItem sx={styles.tab}
-                        onClick={() => {
-                          router.push('/auth/sign-in')
-                          setOpenDrawer(false)}}
+              <ListItem
+                sx={styles.tab}
+                onClick={() => {
+                  router.push('/auth/sign-in');
+                  setOpenDrawer(false);
+                }}
               >
                 <Image
                   width={20}
