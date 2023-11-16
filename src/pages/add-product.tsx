@@ -4,6 +4,7 @@ import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
 import {useMutation} from '@tanstack/react-query';
 import axios from 'axios';
 import {useSession} from 'next-auth/react';
+import Head from 'next/head';
 import {useRouter} from 'next/navigation';
 import React from 'react';
 import {toast} from 'react-toastify';
@@ -35,11 +36,16 @@ const AddProduct = () => {
     },
   });
   return (
-    <HeaderLayout>
-      <SidebarLayout>
-        <ProductForm onSubmit={mutate} isLoading={isPending} />
-      </SidebarLayout>
-    </HeaderLayout>
+    <>
+      <Head>
+        <title>Add product</title>
+      </Head>
+      <HeaderLayout>
+        <SidebarLayout>
+          <ProductForm onSubmit={mutate} isLoading={isPending} />
+        </SidebarLayout>
+      </HeaderLayout>
+    </>
   );
 };
 export default AddProduct;

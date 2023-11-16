@@ -9,6 +9,7 @@ import {toast} from 'react-toastify';
 import {styles} from '@/components/AuthLayout/authPagesStyles';
 import {ReactElement} from 'react';
 import {AuthLayout} from '@/components/AuthLayout/AuthLayout';
+import Head from 'next/head';
 
 type SignUpType = {
   email: string;
@@ -123,12 +124,17 @@ const SignUp = () => {
 
 SignUp.getLayout = function getLayout(page: ReactElement) {
   return (
-    <AuthLayout
-      title="Create an account"
-      subtTitle="Create an account to get an easy access to your dream shopping"
-    >
-      {page}
-    </AuthLayout>
+    <>
+      <Head>
+        <title>Sign up</title>
+      </Head>
+      <AuthLayout
+        title="Create an account"
+        subtTitle="Create an account to get an easy access to your dream shopping"
+      >
+        {page}
+      </AuthLayout>
+    </>
   );
 };
 

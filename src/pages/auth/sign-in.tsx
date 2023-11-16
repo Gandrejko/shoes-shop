@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {SignInResponse, signIn} from 'next-auth/react';
 import {
@@ -112,12 +113,17 @@ const SignIn = () => {
 
 SignIn.getLayout = function getLayout(page: ReactElement) {
   return (
-    <AuthLayout
-      title="Welcome back"
-      subtTitle="Welcome back! Please enter your details to log into your account."
-    >
-      {page}
-    </AuthLayout>
+    <>
+      <Head>
+        <title>Sign in</title>
+      </Head>
+      <AuthLayout
+        title="Welcome back"
+        subtTitle="Welcome back! Please enter your details to log into your account."
+      >
+        {page}
+      </AuthLayout>
+    </>
   );
 };
 
