@@ -46,7 +46,11 @@ const MyProducts: NextPageWithLayout = () => {
     const brands = query.brand ? (query.brand as string).split(',') : [];
     const colors = query.color ? (query.color as string).split(',') : [];
     const sizes = query.sizes ? (query.sizes as string).split(',') : [];
+    const categories = query.categories
+      ? (query.categories as string).split(',')
+      : [];
 
+    const searchString = query.searchingString || '';
     const minPrice = query.minPrice || 0;
     const maxPrice = query.maxPrice || 1000;
 
@@ -62,10 +66,15 @@ const MyProducts: NextPageWithLayout = () => {
       newParams[`filters[color][name][${index}]`] = value;
     });
 
+    categories.forEach((value, index) => {
+      newParams[`filters[categories][name][${index}]`] = value;
+    });
+
     sizes.forEach((value, index) => {
       newParams[`filters[sizes][value][${index}]`] = value;
     });
 
+    newParams['filters[name][$containsi]'] = searchString as string;
     newParams['filters[price][$gte]'] = minPrice as string;
     newParams['filters[price][$lte]'] = maxPrice as string;
     newParams['populate'] = '*';
@@ -81,7 +90,7 @@ const MyProducts: NextPageWithLayout = () => {
     <Stack direction="row" justifyContent="center">
       <FilterSidebar
         open={showFilters}
-        searchText="Air Force 1"
+        searchingString={params['filters[name][$containsi]'] as string}
         productCount={100}
         onClose={() => setShowFilters(false)}
       />

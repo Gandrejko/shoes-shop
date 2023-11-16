@@ -5,6 +5,7 @@ import {
   Toolbar,
   Typography,
   Button,
+  Avatar,
   Link as MuiLink,
 } from '@mui/material';
 import {SearchInput} from '@/components/Inputs/SearchInput';
@@ -13,12 +14,20 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {useState} from 'react';
 import {ProfilePopup} from './ProfilePopup';
+import {useRouter} from 'next/navigation';
+import {useSession} from 'next-auth/react';
 
 const styles: Record<string, SxProps> = {
   desktopWrapper: {
     height: '120px',
     display: 'flex',
     justifyContent: 'space-between',
+  },
+  avatar: {
+    bgcolor: 'primary.main',
+    fontSize: {sm: 12, md: 14},
+    height: '24px',
+    width: '24px',
   },
   link: {
     textDecoration: 'none',
@@ -40,6 +49,10 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const router = useRouter();
+  //TODO: need to add user image
+  const {data} = useSession();
+  const sessionUser = data?.user;
 
   return (
     <>
@@ -66,7 +79,7 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
               onClick={handleModalOpen}
             />
             <Stack direction="row" spacing={0.5}>
-              <IconButton onClick={() => {}}>
+              <IconButton onClick={() => router.push('/cart')}>
                 <Image
                   src="/icons/cart.svg"
                   alt="cart"
