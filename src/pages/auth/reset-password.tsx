@@ -58,6 +58,10 @@ const ResetPassword = () => {
   const onSubmit: SubmitHandler<
     Omit<ResetPasswordType, 'code'>
   > = async data => {
+    if (!code) {
+      toast.info('You need to add code from your email');
+      return;
+    }
     mutate({...data, code});
   };
 
