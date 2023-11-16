@@ -9,9 +9,10 @@ import {
   SxProps,
   Typography,
 } from '@mui/material';
+import Head from 'next/head';
 import Image from 'next/image';
 import {useRouter} from 'next/router';
-import {ReactElement, useMemo, useState, useEffect} from 'react';
+import React, {ReactElement, useMemo, useState, useEffect} from 'react';
 
 import HeaderLayout from '@/components/HeaderLayout/HeaderLayout';
 import ProductList from '@/components/Product/ProductList';
@@ -171,9 +172,14 @@ const MyProducts: NextPageWithLayout = () => {
 
 MyProducts.getLayout = function getLayout(page: ReactElement) {
   return (
-    <HeaderLayout>
-      <SidebarLayout currentTab="products">{page}</SidebarLayout>
-    </HeaderLayout>
+    <>
+      <Head>
+        <title>My products</title>
+      </Head>
+      <HeaderLayout>
+        <SidebarLayout currentTab="products">{page}</SidebarLayout>
+      </HeaderLayout>
+    </>
   );
 };
 

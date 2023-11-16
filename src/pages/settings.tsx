@@ -6,7 +6,8 @@ import usePut from '@/hooks/usePut';
 import {UserRequest, UserResponse} from '@/types/user';
 import {Box, CircularProgress, SxProps, Typography} from '@mui/material';
 import {useSession} from 'next-auth/react';
-import {ReactElement} from 'react';
+import Head from 'next/head';
+import React, {ReactElement} from 'react';
 import {toast} from 'react-toastify';
 import {NextPageWithLayout} from './_app';
 import Loader from '@/components/UpdateProfile/Loader';
@@ -73,9 +74,14 @@ const SettingsPage: NextPageWithLayout = () => {
 
 SettingsPage.getLayout = function (page: ReactElement) {
   return (
-    <HeaderLayout>
-      <SidebarLayout currentTab="settings">{page}</SidebarLayout>
-    </HeaderLayout>
+    <>
+      <Head>
+        <title>Settings</title>
+      </Head>
+      <HeaderLayout>
+        <SidebarLayout currentTab="products">{page}</SidebarLayout>
+      </HeaderLayout>
+    </>
   );
 };
 
