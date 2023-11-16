@@ -99,8 +99,8 @@ const ProductList = ({params = null, fullWidth = false}: Props) => {
           xs={12}
           display="flex"
           justifyContent="center"
-          marginBottom={3}
-          marginTop={-3}
+          marginBottom={4}
+          marginTop={-2}
         >
           <LinearProgress
             color="primary"
