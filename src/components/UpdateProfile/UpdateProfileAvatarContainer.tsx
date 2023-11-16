@@ -41,7 +41,7 @@ const styles: Record<string, SxProps> = {
 };
 
 const UpdateProfileAvatarContainer = ({formProps}: UpdateFormType) => {
-  const {data: session, update} = useSession();
+  const {data: session} = useSession();
   const currentUser = session?.user;
   const token = session?.user.accessToken;
   const avatar = formProps.getValues().avatar;

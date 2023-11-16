@@ -56,10 +56,7 @@ export const authOptions: AuthOptions = {
 
       return session;
     },
-    jwt({token, account, user, session, trigger}) {
-      if (trigger === 'update') {
-        return {...token, ...session.user};
-      }
+    jwt({token, account, user}) {
       if (account) {
         token.accessToken = user.access_token;
         token.id = user.id;
