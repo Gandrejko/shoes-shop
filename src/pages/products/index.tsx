@@ -15,6 +15,7 @@ import {FilterSidebar} from '@/layouts/FilterSidebar/FilterSidebar';
 import {NextPageWithLayout} from '@/pages/_app';
 import theme from '@/styles/theme/commonTheme';
 import {useRouter} from 'next/router';
+import Head from 'next/head';
 
 const styles: Record<string, SxProps> = {
   container: {
@@ -122,7 +123,14 @@ const MyProducts: NextPageWithLayout = () => {
 };
 
 MyProducts.getLayout = function getLayout(page: ReactElement) {
-  return <HeaderLayout>{page}</HeaderLayout>;
+  return (
+    <>
+      <Head>
+        <title>Catalog</title>
+      </Head>
+      <HeaderLayout>{page}</HeaderLayout>
+    </>
+  );
 };
 
 export default MyProducts;
