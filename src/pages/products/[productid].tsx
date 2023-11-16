@@ -35,11 +35,7 @@ const styles: Record<string, SxProps> = {
     fontWeight: 400,
   },
   productPrice: {
-    position: 'absolute',
-    right: '0',
-    bottom: '0',
     fontSize: '18px',
-    fontWeight: 500,
   },
   btnContainer: {
     marginTop: '10px',
@@ -62,10 +58,11 @@ const styles: Record<string, SxProps> = {
     transition: 'background-color 0.3s',
   },
   textContainer: {
-    position: 'relative',
     width: '100%',
     justifyContent: 'space-between',
+    alignItems: 'center',
     display: 'flex',
+    gap: '20px',
   },
   subheader: {
     display: 'flex',
@@ -75,6 +72,7 @@ const styles: Record<string, SxProps> = {
   categories: {
     display: 'flex',
     gap: '10px',
+    flexWrap: 'wrap',
   },
   category: {
     cursor: 'pointer',
@@ -180,9 +178,9 @@ const Product = ({product: data}: ProductProps) => {
         </Box>
         <Box sx={styles.categories}>
           <Typography variant="h4">Categories: </Typography>
-          {categories?.map(({id, attributes: {name}}) => (
+          {categories?.map(({id, attributes: {name}}, index) => (
             <Typography key={id} component="span" sx={styles.category}>
-              {name}
+              {name + (index !== categories.length - 1 ? ',' : '')}
             </Typography>
           ))}
         </Box>
