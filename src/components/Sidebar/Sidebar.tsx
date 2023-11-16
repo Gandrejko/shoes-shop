@@ -1,4 +1,12 @@
-import {Avatar, Box, Divider, List, ListItem, SxProps, Typography} from '@mui/material';
+import {
+  Avatar,
+  Box,
+  Divider,
+  List,
+  ListItem,
+  SxProps,
+  Typography,
+} from '@mui/material';
 import Image from 'next/image';
 import {destroyCookie} from 'nookies';
 import {signOut, useSession} from 'next-auth/react';
@@ -59,7 +67,10 @@ type SidebarProps = {
 const Sidebar = ({currentTab, closeDrawer}: SidebarProps) => {
   const router = useRouter();
   const {data} = useSession();
-  const sessionUser = data?.user;
+  const image = data?.user.image;
+  const firstName = data?.user.firstName;
+  const lastName = data?.user.lastName;
+  const username = data?.user.username;
 
   const logoutFunction = async () => {
     destroyCookie(null, 'rememberMe');
@@ -67,30 +78,24 @@ const Sidebar = ({currentTab, closeDrawer}: SidebarProps) => {
   };
 
   return (
-    <Box >
+    <Box>
       <Box sx={styles.user}>
         <Box sx={styles.avatarContainer}>
-          {sessionUser?.image ? (
-            <Image
-              src={sessionUser.image}
-              alt={`${sessionUser?.username}`}
-              width={64}
-              height={64}
-              fill
-            />
-          ) : (
-            <Avatar
-              sx={styles.avatar}
-              src="/"
-              alt={`${sessionUser?.username}`}
-            />
-          )}
+          <Avatar src={image} sx={styles.avatarContainer}>
+            {(firstName || username || ' ')[0].toUpperCase()}
+          </Avatar>
         </Box>
         <Box>
           <Typography variant="body2" sx={styles.welcome}>
             Welcome
           </Typography>
-          <Typography variant="h5" sx={styles.avatarLetter}>{sessionUser?.username}</Typography>
+          {firstName && lastName && (
+            <Typography>
+              <Typography component="span">{firstName}</Typography>{' '}
+              <Typography component="span">{lastName}</Typography>
+            </Typography>
+          )}
+          {!(firstName && lastName) && <Typography>{username}</Typography>}
         </Box>
       </Box>
       <Divider />
@@ -101,10 +106,11 @@ const Sidebar = ({currentTab, closeDrawer}: SidebarProps) => {
             color: currentTab === 'products' ? '#FE645E' : '#000',
           }}
           onClick={() => {
-            router.push('/my-products')
+            router.push('/my-products');
             if (closeDrawer) {
               closeDrawer();
-          }}}
+            }
+          }}
         >
           <Image
             width={20}
@@ -120,7 +126,7 @@ const Sidebar = ({currentTab, closeDrawer}: SidebarProps) => {
             color: currentTab === 'settings' ? '#FE645E' : '#000',
           }}
           onClick={() => {
-            router.push('/settings')
+            router.push('/settings');
             if (closeDrawer) {
               closeDrawer();
             }
@@ -145,7 +151,7 @@ const Sidebar = ({currentTab, closeDrawer}: SidebarProps) => {
           <Typography>Log out</Typography>
         </ListItem>
       </List>
-    </Box >
+    </Box>
   );
 };
 
