@@ -12,6 +12,8 @@ import {SearchInput} from '@/components/Inputs/SearchInput';
 import {HeaderProps} from '@/components/Header';
 import Image from 'next/image';
 import Link from 'next/link';
+import {useState} from 'react';
+import {ProfilePopup} from './ProfilePopup';
 import {useRouter} from 'next/navigation';
 import {useSession} from 'next-auth/react';
 
@@ -34,11 +36,21 @@ const styles: Record<string, SxProps> = {
     '&:hover': {
       color: 'primary.main',
     },
-  }
+  },
 };
 
 const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   const router = useRouter();
+  //TODO: need to add user image
   const {data} = useSession();
   const sessionUser = data?.user;
 
@@ -67,7 +79,7 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
               onClick={handleModalOpen}
             />
             <Stack direction="row" spacing={0.5}>
-              <IconButton onClick={() =>  router.push('/cart')}>
+              <IconButton onClick={() => router.push('/cart')}>
                 <Image
                   src="/icons/cart.svg"
                   alt="cart"
@@ -75,23 +87,18 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
                   height={24}
                 />
               </IconButton>
-              <IconButton onClick={() =>  router.push('/my-products')}>
-                {sessionUser?.image ? (
-                  <Image
-                    src={sessionUser.image}
-                    alt={`${sessionUser?.username}`}
-                    width={24}
-                    height={24}
-                    fill
-                  />
-                ) : (
-                  <Avatar
-                    sx={styles.avatar}
-                    src="/"
-                    alt={`${sessionUser?.username}`}
-                  />
-                )}
+              <IconButton
+                onClick={handleClick}
+                aria-describedby={'profile-popup'}
+              >
+                <Image
+                  src="icons/avatar.svg"
+                  alt="avatar"
+                  width={24}
+                  height={24}
+                />
               </IconButton>
+              <ProfilePopup anchorEl={anchorEl} handleOnClose={handleClose} />
             </Stack>
           </Stack>
         ) : (
