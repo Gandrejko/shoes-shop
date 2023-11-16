@@ -140,17 +140,17 @@ const FormContainer = () => {
         validationSchema={{
           required: 'Description is required',
           maxLength: {
-            value: 300,
-            message: 'Description must not exceed 300 characters',
+            value: 1000,
+            message: 'Description must not exceed 1000 characters',
           },
           onChange: e => {
-            if (e.target.value.length > 300) trigger('description');
+            if (e.target.value.length > 1000) trigger('description');
             return e.target.value;
           },
         }}
         name="description"
         minRows={8}
-        placeholder="Do not exceed 300 characters."
+        placeholder="Do not exceed 3000 characters."
       />
       <ButtonsList
         header="Categories"
