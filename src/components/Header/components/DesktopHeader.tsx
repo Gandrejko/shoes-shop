@@ -5,18 +5,29 @@ import {
   Toolbar,
   Typography,
   Button,
+  Avatar,
   Link as MuiLink,
 } from '@mui/material';
 import {SearchInput} from '@/components/Inputs/SearchInput';
 import {HeaderProps} from '@/components/Header';
 import Image from 'next/image';
 import Link from 'next/link';
+import {useState} from 'react';
+import {ProfilePopup} from './ProfilePopup';
+import {useRouter} from 'next/navigation';
+import {useSession} from 'next-auth/react';
 
 const styles: Record<string, SxProps> = {
   desktopWrapper: {
     height: '120px',
     display: 'flex',
     justifyContent: 'space-between',
+  },
+  avatar: {
+    bgcolor: 'primary.main',
+    fontSize: {sm: 12, md: 14},
+    height: '24px',
+    width: '24px',
   },
   link: {
     textDecoration: 'none',
@@ -29,6 +40,20 @@ const styles: Record<string, SxProps> = {
 };
 
 const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const router = useRouter();
+  //TODO: need to add user image
+  const {data} = useSession();
+  const sessionUser = data?.user;
+
   return (
     <>
       <Toolbar sx={styles.desktopWrapper}>
@@ -54,7 +79,7 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
               onClick={handleModalOpen}
             />
             <Stack direction="row" spacing={0.5}>
-              <IconButton onClick={() => {}}>
+              <IconButton onClick={() => router.push('/cart')}>
                 <Image
                   src="/icons/cart.svg"
                   alt="cart"
@@ -62,7 +87,10 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
                   height={24}
                 />
               </IconButton>
-              <IconButton onClick={() => {}}>
+              <IconButton
+                onClick={handleClick}
+                aria-describedby={'profile-popup'}
+              >
                 <Image
                   src="icons/avatar.svg"
                   alt="avatar"
@@ -70,6 +98,7 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
                   height={24}
                 />
               </IconButton>
+              <ProfilePopup anchorEl={anchorEl} handleOnClose={handleClose} />
             </Stack>
           </Stack>
         ) : (

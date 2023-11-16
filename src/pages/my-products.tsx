@@ -125,9 +125,10 @@ const MyProducts: NextPageWithLayout = () => {
             <Box sx={styles.avatarContainer}>
               {sessionUser?.image ? (
                 <Image
-                  src={sessionUser.image}
+                  src={sessionUser.image.url}
                   alt={`${sessionUser?.username}`}
                   fill
+                  style={{objectFit: 'cover'}}
                 />
               ) : (
                 <Avatar
