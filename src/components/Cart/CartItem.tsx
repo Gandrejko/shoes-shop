@@ -147,13 +147,17 @@ const ProductItem: React.FC<ProductItemProps> = ({
   const queryClient = useQueryClient();
   const theme = useTheme();
 
+
+  
   const {mutate: deleteProduct} = useMutation({
     mutationKey: ['cart'],
     mutationFn: async () => {
-      const updatedCart = Object.keys(cartIds).filter(
-        productId => productId !== productID.toString(),
+
+
+      const updatedCart = Object.entries(cartIds).filter(
+        ([productId]) => productId !== productID.toString(),
       );
-      localStorage.setItem('cart', JSON.stringify(updatedCart));
+      localStorage.setItem('cart', JSON.stringify(Object.fromEntries(updatedCart)));
     },
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ['cart']});

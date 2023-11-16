@@ -1,18 +1,20 @@
 import React from 'react';
-import {Box, Typography} from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import ProductItem from '@/components/Cart/CartItem';
 import SummarySection from '@/components/Cart/SummarySection';
 import EmptyCartPage from '@/components/Cart/EmptyCartPage';
-import {useQuery, useQueryClient} from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Header from '@/components/Header';
 import theme from '@/styles/theme/commonTheme';
 import useGet from '@/hooks/useGet';
-import {ProductsResponse} from '@/types/product';
+import { ProductsResponse } from '@/types/product';
+import ProductItemSkeleton from '@/components/Cart/ProductItemSkeleton';
+import SummarySectionSkeleton from '@/components/Cart/SummarySectionSkeleton';
 
 const cartPageStyles = {
   container: {
     display: 'flex',
-    gap: '10%',
+    gap: '5%',
     margin: {
       xl: '100px 10% 50px 10%',
       lg: '50px 8% 50px 8%',
@@ -41,7 +43,7 @@ const cartPageStyles = {
       xs: '100%',
     },
   },
-  summerySection: {
+  summarySection: {
     flexShrink: 2,
     width: {
       xl: '38%',
@@ -51,21 +53,22 @@ const cartPageStyles = {
     },
   },
 };
+
 const txtAddFields = (ids: string[]) =>
   ids.map(id => `filters[id]=${id}`).join('&');
 
 const CartPage = () => {
   const queryClient = useQueryClient();
 
-  const {data: cartIds} = useQuery({
+  const { data: cartIds } = useQuery({
     queryKey: ['cart'],
     queryFn: async () => JSON.parse(localStorage.getItem('cart') || '{}'),
   });
   const params = cartIds && txtAddFields(Object.keys(cartIds));
 
-  const isNotEmpty = params !== undefined && params.length != 0;
+  const isNotEmpty = params !== undefined && params.length !== 0;
 
-  const {data: products} = useGet<ProductsResponse>(
+  const { data: products, isLoading } = useGet<ProductsResponse>(
     `/products?${params}`,
     {
       enabled: isNotEmpty,
@@ -77,20 +80,31 @@ const CartPage = () => {
 
   return (
     <>
+
       <Header />
       <Box sx={cartPageStyles.container}>
-        {!isNotEmpty && (
+        {isLoading ? (
+          <Box sx={{ gap: '10%', display: 'flex', width: '100%'}}>
+            <Box sx={{ width: '62%', display: 'flex', flexDirection: "column" }}>
+              {[...Array(3)].map((_, index) => (
+                <ProductItemSkeleton key={index} />
+              ))}
+            </Box>
+            <Box sx={{ width: '38%' }}>
+              <SummarySectionSkeleton />
+            </Box>
+
+          </Box>
+        ) : params !== undefined && params.length === 0 ? (
           <Box sx={cartPageStyles.emptyCartContainer}>
             <EmptyCartPage />
           </Box>
-        )}
-
-        {isNotEmpty && (
+        ) : isNotEmpty ? (
           <>
             <Box sx={cartPageStyles.cartItem}>
               <Typography variant="h1">Cart</Typography>
               {products &&
-                products.data.map(({id, attributes}) => (
+                products.data.map(({ id, attributes }) => (
                   <ProductItem
                     productID={id}
                     cartIds={cartIds}
@@ -99,20 +113,20 @@ const CartPage = () => {
                   />
                 ))}
             </Box>
-            <Box sx={cartPageStyles.summerySection}>
+            <Box sx={cartPageStyles.summarySection}>
               <SummarySection
                 products={Object.entries(cartIds).map(([id, quantity]) => ({
                   id,
                   quantity,
                   price:
                     products?.data.find(
-                      ({id: productID}) => productID.toString() === id,
+                      ({ id: productID }) => productID.toString() === id,
                     )?.attributes.price || 0,
                 }))}
               />
             </Box>
           </>
-        )}
+        ) : null}
       </Box>
     </>
   );
