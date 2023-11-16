@@ -56,7 +56,7 @@ export const authOptions: AuthOptions = {
 
       return session;
     },
-    jwt({token, account, user}) {
+    jwt({token, account, user, trigger, session}) {
       if (account) {
         token.accessToken = user.access_token;
         token.id = user.id;
@@ -65,6 +65,13 @@ export const authOptions: AuthOptions = {
         token.lastName = user.lastName || '';
         token.image = user.image;
       }
+
+      if (trigger === 'update') {
+        token.firstName = session.user.firstName || '';
+        token.lastName = session.user.lastName || '';
+        token.image = session.user.image || null;
+      }
+
       return token;
     },
   },
