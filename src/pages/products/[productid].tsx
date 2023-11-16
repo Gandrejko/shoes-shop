@@ -19,7 +19,6 @@ const styles: Record<string, SxProps> = {
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
     gap: '20px',
   },
   productImage: {
@@ -68,6 +67,16 @@ const styles: Record<string, SxProps> = {
     display: 'flex',
     width: '100%',
     gap: '10px',
+  },
+  categories: {
+    display: 'flex',
+    gap: '10px',
+  },
+  category: {
+    cursor: 'pointer',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
   },
   buttonSize: {
     padding: '12px 16px',
@@ -145,6 +154,7 @@ const Product = () => {
   const gender = product?.gender?.data?.attributes.name;
   const color = product?.color?.data?.attributes.name;
   const sizes = product?.sizes?.data;
+  const categories = product?.categories?.data;
 
   return (
     <HeaderLayout>
@@ -174,6 +184,14 @@ const Product = () => {
                 | {color}
               </Typography>
             )}
+          </Box>
+          <Box sx={styles.categories}>
+            <Typography variant="h4">Categories: </Typography>
+            {categories?.map(({id, attributes: {name}}) => (
+              <Typography key={id} component="span" sx={styles.category}>
+                {name}
+              </Typography>
+            ))}
           </Box>
           {sizes && (
             <Box sx={styles.sizesContainer}>
@@ -217,11 +235,7 @@ const Product = () => {
           <Box sx={styles.description}>
             <Typography variant="h4">Description</Typography>
             <Typography variant="h4" sx={styles.productLabel}>
-              Boasting the first-ever Max Air unit created specifically for Nike
-              Sportswear, the Nike Air Max 270 delivers an Air unit that absorbs
-              and gives back energy with every springy step. Updated for modern
-              comfort, it nods to the original, 1991 Air Max 180 with its
-              exaggerated tongue top and heritage tongue logo.
+              {product?.description}
             </Typography>
           </Box>
         </Box>
