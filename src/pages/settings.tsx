@@ -13,9 +13,11 @@ import {NextPageWithLayout} from './_app';
 
 const styles: Record<string, SxProps> = {
   container: {
-    display: 'flex',
     padding: {xs: 3, sm: 4, md: 6.5},
     margin: {xs: '0 auto', md: 0},
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: {xs: 'column', md: 'row'},
   },
   box: {flex: 5},
   header: {
@@ -39,8 +41,6 @@ const SettingsPage: NextPageWithLayout = () => {
     {enabled: Boolean(sessionUser)},
     {populate: 'avatar'},
   );
-
-  console.log(sessionUser);
 
   const {mutate} = usePut<UserRequest, UserResponse>(
     `/users/${sessionUser?.id}`,
