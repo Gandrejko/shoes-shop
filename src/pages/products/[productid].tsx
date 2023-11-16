@@ -1,12 +1,16 @@
 import HeaderLayout from '@/components/HeaderLayout/HeaderLayout';
-import useGet from '@/hooks/useGet';
+import axios from 'axios';
 import {ProductResponse} from '@/types/product';
-import React, {useEffect, useState} from 'react';
+import {GetServerSidePropsContext} from 'next';
+import {getServerSession} from 'next-auth';
+import React, {ReactElement, useState} from 'react';
 import {Box, Container, Typography, SxProps, Button} from '@mui/material';
 import ImageSlider from '@/components/ImageSlider/ImageSlider';
 import {useRouter} from 'next/router';
 import {useMutation} from '@tanstack/react-query';
 import {toast} from 'react-toastify';
+import {authOptions} from '@/pages/api/auth/[...nextauth]';
+import Head from 'next/head';
 
 const styles: Record<string, SxProps> = {
   container: {
@@ -114,25 +118,15 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-const Product = () => {
+type ProductProps = {
+  product: ProductResponse;
+};
+
+const Product = ({product: data}: ProductProps) => {
   const router = useRouter();
   const productId = router.query.productid as string;
   const [choosedSize, setChoosedSize] = useState<number>(0);
 
-  const {data, error} = useGet<ProductResponse>(
-    `products/${productId}`,
-    {
-      enabled: productId !== undefined,
-    },
-    {
-      populate: '*',
-    },
-  );
-  useEffect(() => {
-    if (error) {
-      router.push('/404');
-    }
-  }, [error]);
   const product = {id: data?.data.id, ...data?.data.attributes};
 
   const {mutate} = useMutation({
@@ -157,91 +151,132 @@ const Product = () => {
   const categories = product?.categories?.data;
 
   return (
-    <HeaderLayout>
-      <Container maxWidth="xl" sx={styles.container}>
-        <Box sx={styles.productContainer}>
-          <ImageSlider
-            images={
-              product?.images?.data?.map(({attributes: {url}}) => url) || []
-            }
-          />
+    <Container maxWidth="xl" sx={styles.container}>
+      <Box sx={styles.productContainer}>
+        <ImageSlider
+          images={
+            product?.images?.data?.map(({attributes: {url}}) => url) || []
+          }
+        />
+      </Box>
+      <Box sx={styles.productContainer}>
+        <Box sx={styles.textContainer}>
+          <Typography variant="h1">{product?.name}</Typography>
+          <Typography variant="h4" sx={styles.productPrice}>
+            ${product?.price}
+          </Typography>
         </Box>
-        <Box sx={styles.productContainer}>
-          <Box sx={styles.textContainer}>
-            <Typography variant="h1">{product?.name}</Typography>
-            <Typography variant="h4" sx={styles.productPrice}>
-              ${product?.price}
+        <Box sx={styles.subheader}>
+          {gender && (
+            <Typography variant="h4" sx={styles.productGender}>
+              {gender}&apos;s Shoes
             </Typography>
-          </Box>
-          <Box sx={styles.subheader}>
-            {gender && (
-              <Typography variant="h4" sx={styles.productGender}>
-                {gender}&apos;s Shoes
-              </Typography>
-            )}
-            {color && (
-              <Typography variant="h4" sx={styles.productGender}>
-                | {color}
-              </Typography>
-            )}
-          </Box>
-          <Box sx={styles.categories}>
-            <Typography variant="h4">Categories: </Typography>
-            {categories?.map(({id, attributes: {name}}) => (
-              <Typography key={id} component="span" sx={styles.category}>
-                {name}
-              </Typography>
-            ))}
-          </Box>
-          {sizes && (
-            <Box sx={styles.sizesContainer}>
-              <Typography variant="h4" sx={styles.productLabel}>
-                Select Size
-              </Typography>
-              <Box sx={styles.buttonsList}>
-                {sizes
-                  .sort((a, b) => a.attributes.value - b.attributes.value)
-                  .map(({id, attributes: {value}}) => {
-                    const isChecked = id === choosedSize;
-                    return (
-                      <Button
-                        key={id}
-                        sx={{
-                          ...styles.button,
-                          color: isChecked ? 'white' : 'text.secondary',
-                        }}
-                        variant={isChecked ? 'contained' : 'outlined'}
-                        onClick={() => setChoosedSize(id)}
-                      >
-                        EU-{value}
-                      </Button>
-                    );
-                  })}
-              </Box>
-            </Box>
           )}
-          <Box sx={styles.btnContainer}>
-            <Button variant="contained" sx={styles.addToCartButton}>
-              Favorite
-            </Button>
-            <Button
-              onClick={() => mutate()}
-              variant="contained"
-              sx={styles.addToCartButton}
-            >
-              Add to Bag
-            </Button>
-          </Box>
-          <Box sx={styles.description}>
-            <Typography variant="h4">Description</Typography>
-            <Typography variant="h4" sx={styles.productLabel}>
-              {product?.description}
+          {color && (
+            <Typography variant="h4" sx={styles.productGender}>
+              | {color}
             </Typography>
-          </Box>
+          )}
         </Box>
-      </Container>
-    </HeaderLayout>
+        <Box sx={styles.categories}>
+          <Typography variant="h4">Categories: </Typography>
+          {categories?.map(({id, attributes: {name}}) => (
+            <Typography key={id} component="span" sx={styles.category}>
+              {name}
+            </Typography>
+          ))}
+        </Box>
+        {sizes && (
+          <Box sx={styles.sizesContainer}>
+            <Typography variant="h4" sx={styles.productLabel}>
+              Select Size
+            </Typography>
+            <Box sx={styles.buttonsList}>
+              {sizes
+                .sort((a, b) => a.attributes.value - b.attributes.value)
+                .map(({id, attributes: {value}}) => {
+                  const isChecked = id === choosedSize;
+                  return (
+                    <Button
+                      key={id}
+                      sx={{
+                        ...styles.button,
+                        color: isChecked ? 'white' : 'text.secondary',
+                      }}
+                      variant={isChecked ? 'contained' : 'outlined'}
+                      onClick={() => setChoosedSize(id)}
+                    >
+                      EU-{value}
+                    </Button>
+                  );
+                })}
+            </Box>
+          </Box>
+        )}
+        <Box sx={styles.btnContainer}>
+          <Button variant="contained" sx={styles.addToCartButton}>
+            Favorite
+          </Button>
+          <Button
+            onClick={() => mutate()}
+            variant="contained"
+            sx={styles.addToCartButton}
+          >
+            Add to Bag
+          </Button>
+        </Box>
+        <Box sx={styles.description}>
+          <Typography variant="h4">Description</Typography>
+          <Typography variant="h4" sx={styles.productLabel}>
+            {product?.description}
+          </Typography>
+        </Box>
+      </Box>
+    </Container>
   );
 };
+
+Product.getLayout = function getLayout(page: ReactElement) {
+  return (
+    <>
+      <Head>
+        <title>{page.props.product.data.attributes.name}</title>
+      </Head>
+      <HeaderLayout>{page}</HeaderLayout>
+    </>
+  );
+};
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  try {
+    const {productid} = context.query;
+    const session = await getServerSession(
+      context.req,
+      context.res,
+      authOptions,
+    );
+    const {data: product} = await axios.get(
+      `${process.env.API_URL}/products/${productid}`,
+      {
+        headers: {
+          Authorization: `Bearer ${session?.user.accessToken}`,
+        },
+        params: {
+          populate: '*',
+        },
+      },
+    );
+
+    return {props: {product}};
+  } catch (e) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/404',
+      },
+      props: {},
+    };
+  }
+}
 
 export default Product;
