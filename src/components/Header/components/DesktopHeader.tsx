@@ -12,6 +12,8 @@ import {SearchInput} from '@/components/Inputs/SearchInput';
 import {HeaderProps} from '@/components/Header';
 import Image from 'next/image';
 import Link from 'next/link';
+import {useState} from 'react';
+import {ProfilePopup} from './ProfilePopup';
 import {useRouter} from 'next/navigation';
 import {useSession} from 'next-auth/react';
 
@@ -28,12 +30,21 @@ const styles: Record<string, SxProps> = {
     '&:hover': {
       color: 'primary.main',
     },
-  }
+  },
 };
 
 const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
-  const {data} = useSession();
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   const router = useRouter();
+  const {data} = useSession();
 
   return (
     <>
@@ -60,7 +71,7 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
               onClick={handleModalOpen}
             />
             <Stack direction="row" spacing={0.5}>
-              <IconButton onClick={() =>  router.push('/cart')}>
+              <IconButton onClick={() => router.push('/cart')}>
                 <Image
                   src="/icons/cart.svg"
                   alt="cart"
@@ -68,7 +79,8 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
                   height={24}
                 />
               </IconButton>
-              <IconButton onClick={() => {}}>
+              <IconButton onClick={handleClick}
+                          aria-describedby={'profile-popup'}>
                 <Avatar
                   src={data?.user?.image}
                   alt="avatar"
@@ -79,6 +91,7 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
                     ' ')[0].toUpperCase()}
                 </Avatar>
               </IconButton>
+              <ProfilePopup anchorEl={anchorEl} handleOnClose={handleClose} />
             </Stack>
           </Stack>
         ) : (

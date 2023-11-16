@@ -1,6 +1,11 @@
-import {UserDataType} from '@/pages/settings';
+import useDelete from '@/hooks/useDelete';
+import usePost from '@/hooks/usePost';
+import {ImageRequest, ImageResponse} from '@/types/image';
+import {UserRequest, UserResponse} from '@/types/user';
 import {Box, SxProps, Typography} from '@mui/material';
+import {createContext} from 'react';
 import {useForm} from 'react-hook-form';
+import {toast} from 'react-toastify';
 import UpdateFormContainer from './UpdateFormContainer';
 import UpdateProfileAvatarContainer from './UpdateProfileAvatarContainer';
 
@@ -14,14 +19,21 @@ const styles: Record<string, SxProps> = {
   },
 };
 
+export const UpdateFormContext = createContext<any>(null);
+
 type UpdateFormProps = {
-  onSubmit: (data: any) => void;
-  userData: Partial<UserDataType>;
+  onSubmit: (data: UserRequest) => void;
+  userData: UserResponse;
+  isUserDataLoading: boolean;
 };
 
-const UpdateForm = ({onSubmit, userData}: UpdateFormProps) => {
+const UpdateForm = ({
+  onSubmit,
+  userData,
+  isUserDataLoading,
+}: UpdateFormProps) => {
   const {register, handleSubmit, control, getValues, setValue, formState} =
-    useForm<Partial<UserDataType>>({
+    useForm<UserRequest>({
       defaultValues: {
         firstName: userData?.firstName ?? '',
         lastName: userData?.lastName ?? '',
@@ -31,27 +43,68 @@ const UpdateForm = ({onSubmit, userData}: UpdateFormProps) => {
       },
     });
 
-  const handleOnSubmit = () => {
-    const data = getValues();
-    onSubmit(data);
+  const handleOnSubmit = (userData: UserRequest) => {
+    onSubmit(userData);
   };
 
+  const {mutate: uploadImage, isPending: isUploadImageLoading} = usePost<
+    ImageRequest,
+    ImageResponse
+  >(
+    '/upload',
+    {
+      onSuccess: (data: any) => {
+        const image = data[0];
+        setValue('avatar', {id: image.id, url: image.url});
+      },
+      onError: error => {
+        toast.error(error.message);
+      },
+    },
+    null,
+  );
+
+  const {mutate: deleteImage, isPending: isDeleteImageLoading} = useDelete<any>(
+    '/upload/files',
+    {
+      onSuccess: () => {
+        setValue('avatar', null);
+      },
+      onError: error => {
+        toast.error(error.message);
+      },
+    },
+    null,
+  );
+
   return (
-    <Box
-      component="form"
-      onSubmit={handleSubmit(handleOnSubmit)}
-      sx={styles.form}
+    <UpdateFormContext.Provider
+      value={{
+        isUserDataLoading,
+        uploadImage,
+        isUploadImageLoading,
+        deleteImage,
+        isDeleteImageLoading,
+        register,
+        handleSubmit,
+        control,
+        getValues,
+        setValue,
+        formState,
+      }}
     >
-      <UpdateProfileAvatarContainer
-        formProps={{register, control, getValues, setValue, formState}}
-      />
-      <Typography sx={styles.paragraph}>
-        Welcome back! Please enter your details to log into your account.
-      </Typography>
-      <UpdateFormContainer
-        formProps={{register, control, getValues, setValue, formState}}
-      />
-    </Box>
+      <Box
+        component="form"
+        onSubmit={handleSubmit(handleOnSubmit)}
+        sx={styles.form}
+      >
+        <UpdateProfileAvatarContainer />
+        <Typography sx={styles.paragraph}>
+          Welcome back! Please enter your details to log into your account.
+        </Typography>
+        <UpdateFormContainer />
+      </Box>
+    </UpdateFormContext.Provider>
   );
 };
 

@@ -1,11 +1,8 @@
-import {UpdateFormType} from '@/pages/settings';
 import {Avatar, Box, Button, InputBase, SxProps} from '@mui/material';
-import {useMutation} from '@tanstack/react-query';
-import axios from 'axios';
 import {useSession} from 'next-auth/react';
 import Image from 'next/image';
-import {ChangeEvent, useRef} from 'react';
-import {toast} from 'react-toastify';
+import {ChangeEvent, useContext, useRef} from 'react';
+import {UpdateFormContext} from './UpdateForm';
 
 const styles: Record<string, SxProps> = {
   headerBox: {
@@ -28,7 +25,8 @@ const styles: Record<string, SxProps> = {
     overflow: 'hidden',
   },
   avatar: {
-    fontSize: 45,
+    fontSize: 40,
+    textTransform: 'uppercase',
     width: {xs: 100, sm: 150},
     height: {xs: 100, sm: 150},
     backgroundColor: 'primary.main',
@@ -40,53 +38,20 @@ const styles: Record<string, SxProps> = {
   inputHidden: {display: 'none'},
 };
 
-const UpdateProfileAvatarContainer = ({formProps}: UpdateFormType) => {
+const UpdateProfileAvatarContainer = () => {
+  const {
+    isUserDataLoading,
+    uploadImage,
+    isUploadImageLoading,
+    deleteImage,
+    isDeleteImageLoading,
+    getValues,
+  } = useContext(UpdateFormContext);
+
   const {data: session} = useSession();
   const currentUser = session?.user;
-  const token = session?.user.accessToken;
-  const avatar = formProps.getValues().avatar;
+  const avatar = getValues().avatar;
   const inputRef = useRef<HTMLInputElement>();
-
-  const {mutate: uploadImage} = useMutation({
-    mutationFn: async (formData: FormData) => {
-      const url = `${process.env.API_URL}/upload`;
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data',
-        },
-      };
-
-      const res = await axios.post(url, formData, config);
-      return res.data[0];
-    },
-    onSuccess: (data: any) => {
-      formProps.setValue('avatar', {id: data.id, url: data.url});
-    },
-    onError: error => {
-      toast.error('Something went wrong. Please, try again!');
-    },
-  });
-
-  const {mutate: deleteImage} = useMutation({
-    mutationFn: async (id: number) => {
-      const url = `${process.env.API_URL}/upload/files/${id}`;
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-
-      const res = await axios.delete(url, config);
-      return res.data;
-    },
-    onSuccess: () => {
-      formProps.setValue('avatar', null);
-    },
-    onError: error => {
-      toast.error(error.message);
-    },
-  });
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -94,7 +59,6 @@ const UpdateProfileAvatarContainer = ({formProps}: UpdateFormType) => {
     if (!files) return;
 
     const formData = new FormData();
-
     formData.append('files', files[0]);
 
     uploadImage(formData);
@@ -105,7 +69,7 @@ const UpdateProfileAvatarContainer = ({formProps}: UpdateFormType) => {
       <Box sx={styles.avatarContainer}>
         {avatar ? (
           <Image
-            src={avatar.url}
+            src={avatar?.url!}
             alt={currentUser?.username}
             fill
             sizes="100%"
@@ -116,7 +80,14 @@ const UpdateProfileAvatarContainer = ({formProps}: UpdateFormType) => {
         )}
       </Box>
       <Box sx={styles.buttonsBox}>
-        <Button variant="outlined" component="label" sx={styles.button}>
+        <Button
+          variant="outlined"
+          component="label"
+          disabled={
+            isDeleteImageLoading || isUploadImageLoading || isUserDataLoading
+          }
+          sx={styles.button}
+        >
           Change photo
           <InputBase
             inputProps={{ref: inputRef, accept: 'image/*'}}
@@ -128,7 +99,10 @@ const UpdateProfileAvatarContainer = ({formProps}: UpdateFormType) => {
         <Button
           variant="contained"
           type="button"
-          onClick={() => deleteImage(avatar.id)}
+          disabled={
+            isDeleteImageLoading || isUploadImageLoading || isUserDataLoading
+          }
+          onClick={() => deleteImage(avatar?.id!)}
           sx={styles.button}
         >
           Delete

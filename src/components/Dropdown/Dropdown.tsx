@@ -3,7 +3,6 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {Box, InputLabel, MenuItem, Select, SxProps} from '@mui/material';
 import {SelectProps} from '@mui/material/Select/Select';
 import React, {useId} from 'react';
-import {UseFormRegister} from 'react-hook-form';
 
 const styles: Record<string, SxProps> = {
   dropdown: {

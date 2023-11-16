@@ -1,5 +1,5 @@
 import theme from '@/styles/theme/commonTheme';
-import {Box, InputBase, InputLabel, Typography} from '@mui/material';
+import {Box, InputBase, InputLabel, SxProps, Typography} from '@mui/material';
 import {InputBaseProps} from '@mui/material/InputBase/InputBase';
 import {useId} from 'react';
 import {UseFormRegister, RegisterOptions} from 'react-hook-form';
@@ -34,7 +34,7 @@ type InputProps = InputBaseProps & {
   validationSchema: RegisterOptions<any>;
   name: string;
   errorMessage?: string;
-  marginBottom?: number;
+  boxSx?: SxProps;
 };
 
 export const Input = ({
@@ -43,12 +43,12 @@ export const Input = ({
   name,
   validationSchema,
   errorMessage,
-  marginBottom,
+  boxSx,
   ...props
 }: InputProps) => {
   const id = useId();
   return (
-    <Box sx={{marginBottom: {marginBottom}}}>
+    <Box sx={boxSx}>
       <InputLabel htmlFor={id}>
         {labelText}
         {validationSchema.required && (
