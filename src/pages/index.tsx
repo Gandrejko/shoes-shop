@@ -28,7 +28,6 @@ const Home = () => {
       }
     }
   }, [session?.user.accessToken, status]);
-
   return <></>;
 };
 

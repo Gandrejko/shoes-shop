@@ -12,6 +12,13 @@ import {
 import Image from 'next/image';
 
 const styles: Record<string, SxProps> = {
+  modal: {
+    '& .MuiBackdrop-root': {
+      backgroundColor: '#F3F3F3',
+      opacity: '0.9 !important',
+      backdropFilter: 'blur(100px)',
+    },
+  },
   modalPaper: {
     m: 0,
     p: 4,
@@ -61,7 +68,11 @@ const DeleteModal = ({
   onDelete,
 }: DeleteModalProps) => {
   return (
-    <Dialog open={isModalOpen} PaperProps={{sx: styles.modalPaper}}>
+    <Dialog
+      open={isModalOpen}
+      sx={styles.modal}
+      PaperProps={{sx: styles.modalPaper}}
+    >
       <DialogTitle variant="h1" sx={styles.title}>
         {header}
       </DialogTitle>
