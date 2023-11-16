@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { Box, Typography, Button, useTheme, SxProps } from '@mui/material';
+import {useState} from 'react';
+import {Box, Typography, Button, useTheme, SxProps} from '@mui/material';
 import Image from 'next/image';
-import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
-import { ProductAttributes } from '@/types/product';
+import {useQuery, useQueryClient, useMutation} from '@tanstack/react-query';
+import {ProductAttributes} from '@/types/product';
 
 const styles: Record<string, SxProps> = {
   container: {
@@ -133,19 +133,21 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-
 type ProductItemProps = {
   product: ProductAttributes;
   cartIds: Record<string, number>;
   productID: number;
 };
 
-
-const ProductItem: React.FC<ProductItemProps> = ({ product, cartIds, productID }) => {
+const ProductItem: React.FC<ProductItemProps> = ({
+  product,
+  cartIds,
+  productID,
+}) => {
   const queryClient = useQueryClient();
   const theme = useTheme();
 
-  const { mutate: deleteProduct } = useMutation({
+  const {mutate: deleteProduct} = useMutation({
     mutationKey: ['cart'],
     mutationFn: async () => {
       const updatedCart = Object.keys(cartIds).filter(
@@ -154,11 +156,11 @@ const ProductItem: React.FC<ProductItemProps> = ({ product, cartIds, productID }
       localStorage.setItem('cart', JSON.stringify(updatedCart));
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['cart'] });
+      queryClient.invalidateQueries({queryKey: ['cart']});
     },
   });
 
-  const { mutate: editProduct } = useMutation({
+  const {mutate: editProduct} = useMutation({
     mutationKey: ['cart'],
     mutationFn: async (type: 'inc' | 'dec') => {
       localStorage.setItem(
@@ -171,48 +173,42 @@ const ProductItem: React.FC<ProductItemProps> = ({ product, cartIds, productID }
       );
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['cart'] });
+      queryClient.invalidateQueries({queryKey: ['cart']});
     },
   });
-
-
 
   return (
     <Box sx={styles.container}>
       <Box sx={styles.productDetails}>
         <Box sx={styles.productImage}>
-
-          {!product.images?.data?.[0].attributes.url
-            &&
+          {!product.images?.data?.[0].attributes.url && (
             <Image
-              style={{ objectFit: 'cover' }}
+              style={{objectFit: 'cover'}}
               fill
               src="/icons/emptyPhoto2.svg"
-              alt={product.name || " "}
+              alt={product.name || ' '}
             />
-          }
+          )}
 
-          {product.images?.data?.[0].attributes.url
-            &&
+          {product.images?.data?.[0].attributes.url && (
             <Image
-              style={{ objectFit: 'cover' }}
+              style={{objectFit: 'cover'}}
               fill
               src={product.images?.data?.[0].attributes.url}
-              alt={product.name || " "}
+              alt={product.name || ' '}
             />
-          }
-
+          )}
         </Box>
         <Box>
           <Typography variant="h2" sx={styles.productName}>
             {product?.name}
           </Typography>
 
-          {product.gender?.data?.attributes.name
-            &&
+          {product.gender?.data?.attributes.name && (
             <Typography sx={styles.productSubtitle}>
               {product.gender?.data?.attributes.name}&apos;s shoes
-            </Typography>}
+            </Typography>
+          )}
 
           <Box sx={styles.priceAndButtons}>
             <Typography sx={styles.productPrice}>${product?.price}</Typography>
