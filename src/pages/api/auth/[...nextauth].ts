@@ -37,7 +37,7 @@ export const authOptions: AuthOptions = {
           return {
             ...response.data.user,
             access_token: response.data.jwt,
-            image: userInfo.data.avatar,
+            image: userInfo.data.avatar.url,
           };
         } catch {
           return null;

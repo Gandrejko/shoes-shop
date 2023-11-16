@@ -82,6 +82,14 @@ const SettingsPage: NextPageWithLayout = () => {
         {...userUpdateData, avatar: userUpdateData.avatar?.id ?? null},
         config,
       );
+
+      update({
+        ...session,
+        user: {
+          ...session?.user,
+          image: userUpdateData.avatar?.id,
+        },
+      });
       return res.data;
     },
     onSuccess: newData => {

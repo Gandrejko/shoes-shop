@@ -61,13 +61,6 @@ const UpdateProfileAvatarContainer = ({formProps}: UpdateFormType) => {
       return res.data[0];
     },
     onSuccess: (data: any) => {
-      update({
-        ...session,
-        user: {
-          ...session?.user,
-          image: data.url,
-        },
-      });
       formProps.setValue('avatar', {id: data.id, url: data.url});
     },
     onError: error => {
