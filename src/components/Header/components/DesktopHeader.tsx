@@ -10,9 +10,10 @@ import {
 } from '@mui/material';
 import {SearchInput} from '@/components/Inputs/SearchInput';
 import {HeaderProps} from '@/components/Header';
-import {useSession} from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
+import {useRouter} from 'next/navigation';
+import {useSession} from 'next-auth/react';
 
 const styles: Record<string, SxProps> = {
   desktopWrapper: {
@@ -27,11 +28,13 @@ const styles: Record<string, SxProps> = {
     '&:hover': {
       color: 'primary.main',
     },
-  },
+  }
 };
 
 const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
   const {data} = useSession();
+  const router = useRouter();
+
   return (
     <>
       <Toolbar sx={styles.desktopWrapper}>
@@ -57,7 +60,7 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
               onClick={handleModalOpen}
             />
             <Stack direction="row" spacing={0.5}>
-              <IconButton onClick={() => {}}>
+              <IconButton onClick={() =>  router.push('/cart')}>
                 <Image
                   src="/icons/cart.svg"
                   alt="cart"
