@@ -44,6 +44,10 @@ const styles: Record<string, SxProps> = {
     listStyle: 'none',
     padding: '0 16px',
     cursor: 'pointer',
+    transition: 'color 0.2s ease-in-out',
+    '&:hover': {
+      color: 'primary.main',
+    },
   },
 };
 
