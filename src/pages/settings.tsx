@@ -42,7 +42,7 @@ const SettingsPage: NextPageWithLayout = () => {
     {populate: 'avatar'},
   );
 
-  const {mutate} = usePut<UserRequest, UserResponse>(
+  const {mutate, isPending} = usePut<UserRequest, UserResponse>(
     `/users/${sessionUser?.id}`,
     {
       onSuccess: newData => {
@@ -68,7 +68,11 @@ const SettingsPage: NextPageWithLayout = () => {
         <Typography variant="h1" sx={styles.header}>
           My Profile
         </Typography>
-        <UpdateForm onSubmit={mutate} userData={userData!} />
+        <UpdateForm
+          onSubmit={mutate}
+          userData={userData!}
+          isUserDataLoading={isPending}
+        />
       </Box>
     </Box>
   );

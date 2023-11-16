@@ -1,6 +1,8 @@
 import {UpdateFormType} from '@/pages/settings';
 import {Box, Button, SxProps} from '@mui/material';
 import {Input} from '../Inputs/Input';
+import {UpdateFormContext} from './UpdateForm';
+import {useContext} from 'react';
 
 const styles: Record<string, SxProps> = {
   inputsBox: {
@@ -14,6 +16,8 @@ const styles: Record<string, SxProps> = {
 };
 
 const UpdateFormContainer = ({formProps}: UpdateFormType) => {
+  const {isUserDataLoading} = useContext(UpdateFormContext);
+
   return (
     <>
       <Box sx={styles.inputsBox}>

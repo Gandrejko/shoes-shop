@@ -3,6 +3,7 @@ import {Box, SxProps, Typography} from '@mui/material';
 import {useForm} from 'react-hook-form';
 import UpdateFormContainer from './UpdateFormContainer';
 import UpdateProfileAvatarContainer from './UpdateProfileAvatarContainer';
+import {createContext} from 'react';
 
 const styles: Record<string, SxProps> = {
   form: {display: 'flex', flexDirection: 'column', maxWidth: '459px'},
@@ -14,12 +15,19 @@ const styles: Record<string, SxProps> = {
   },
 };
 
+export const UpdateFormContext = createContext<any>(null);
+
 type UpdateFormProps = {
   onSubmit: (data: UserRequest) => void;
   userData: UserResponse;
+  isUserDataLoading: boolean;
 };
 
-const UpdateForm = ({onSubmit, userData}: UpdateFormProps) => {
+const UpdateForm = ({
+  onSubmit,
+  userData,
+  isUserDataLoading,
+}: UpdateFormProps) => {
   const {register, handleSubmit, control, getValues, setValue, formState} =
     useForm<UserRequest>({
       defaultValues: {
@@ -36,21 +44,23 @@ const UpdateForm = ({onSubmit, userData}: UpdateFormProps) => {
   };
 
   return (
-    <Box
-      component="form"
-      onSubmit={handleSubmit(handleOnSubmit)}
-      sx={styles.form}
-    >
-      <UpdateProfileAvatarContainer
-        formProps={{register, control, getValues, setValue, formState}}
-      />
-      <Typography sx={styles.paragraph}>
-        Welcome back! Please enter your details to log into your account.
-      </Typography>
-      <UpdateFormContainer
-        formProps={{register, control, getValues, setValue, formState}}
-      />
-    </Box>
+    <UpdateFormContext.Provider value={{isUserDataLoading}}>
+      <Box
+        component="form"
+        onSubmit={handleSubmit(handleOnSubmit)}
+        sx={styles.form}
+      >
+        <UpdateProfileAvatarContainer
+          formProps={{register, control, getValues, setValue, formState}}
+        />
+        <Typography sx={styles.paragraph}>
+          Welcome back! Please enter your details to log into your account.
+        </Typography>
+        <UpdateFormContainer
+          formProps={{register, control, getValues, setValue, formState}}
+        />
+      </Box>
+    </UpdateFormContext.Provider>
   );
 };
 
