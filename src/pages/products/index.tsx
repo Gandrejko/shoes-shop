@@ -16,6 +16,7 @@ import {NextPageWithLayout} from '@/pages/_app';
 import theme from '@/styles/theme/commonTheme';
 import {useRouter} from 'next/router';
 import Head from 'next/head';
+import {SignInLayout} from '@/layouts/SignInLayout/SignInLayout';
 
 const styles: Record<string, SxProps> = {
   container: {
@@ -128,7 +129,9 @@ MyProducts.getLayout = function getLayout(page: ReactElement) {
       <Head>
         <title>Catalog</title>
       </Head>
-      <HeaderLayout>{page}</HeaderLayout>
+      <SignInLayout>
+        <HeaderLayout>{page}</HeaderLayout>
+      </SignInLayout>
     </>
   );
 };

@@ -1,7 +1,13 @@
 import Head from 'next/head';
 import {useRouter, useSearchParams} from 'next/navigation';
 import {SubmitHandler, useForm} from 'react-hook-form';
-import {Box, Button, Typography, useMediaQuery} from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
 import Link from 'next/link';
 import {Input} from '@/components/Inputs/Input';
 import axios from 'axios';
@@ -20,7 +26,7 @@ type ResetPasswordType = {
 
 const ResetPassword = () => {
   const router = useRouter();
-  const {mutate} = useMutation({
+  const {mutate, isPending} = useMutation({
     mutationKey: ['reset-password'],
     mutationFn: (userData: ResetPasswordType) =>
       axios.post(
@@ -45,7 +51,6 @@ const ResetPassword = () => {
     watch,
     formState: {errors},
   } = useForm<Omit<ResetPasswordType, 'code'>>();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const searchParams = useSearchParams();
   const code = searchParams.get('code') || '';
@@ -57,7 +62,8 @@ const ResetPassword = () => {
   };
 
   return (
-    <Box>
+    <Box sx={styles.formBox}>
+      {isPending && <CircularProgress sx={styles.loader} />}
       <Box
         component="form"
         onSubmit={handleSubmit(onSubmit)}
@@ -95,7 +101,7 @@ const ResetPassword = () => {
           />
         </Box>
 
-        <Button type="submit" variant="contained">
+        <Button type="submit" variant="contained" disabled={isPending}>
           Reset password
         </Button>
       </Box>
