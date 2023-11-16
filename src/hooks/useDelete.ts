@@ -1,9 +1,9 @@
+import axios, {AxiosError} from '@/config/axios';
 import {
   UseMutationOptions,
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
-import axios from '@/config/axios';
 
 /**
  * @description useDelete is a custom hook that wraps around react-query's useMutation hook. It is used to make a **DELETE** request to the backend.
@@ -13,7 +13,7 @@ import axios from '@/config/axios';
  */
 function useDelete<Res = any>(
   endpoint: string,
-  options: UseMutationOptions<Res, Error, number> | null = null,
+  options: UseMutationOptions<Res, AxiosError, number> | null = null,
   params: any = null,
 ) {
   const queryClient = useQueryClient();

@@ -4,8 +4,9 @@ import {Input} from '../Inputs/Input';
 import {UpdateFormContext} from './UpdateForm';
 
 const styles: Record<string, SxProps> = {
+  input: {mb: 3},
   inputsBox: {
-    marginBottom: {xs: 4, sm: 7},
+    mb: {xs: 4, sm: 7},
   },
   button: {
     alignSelf: 'flex-end',
@@ -30,7 +31,7 @@ const UpdateFormContainer = () => {
           register={register}
           validationSchema={{}}
           errorMessage={formState.errors.firstName?.message}
-          marginBottom={24}
+          boxSx={styles.input}
         />
         <Input
           placeholder="Last Name"
@@ -41,7 +42,7 @@ const UpdateFormContainer = () => {
           register={register}
           validationSchema={{}}
           errorMessage={formState.errors.lastName?.message}
-          marginBottom={24}
+          boxSx={styles.input}
         />
         <Input
           placeholder="Email address"
@@ -52,7 +53,7 @@ const UpdateFormContainer = () => {
           register={register}
           validationSchema={{}}
           errorMessage={formState.errors.email?.message}
-          marginBottom={24}
+          boxSx={styles.input}
         />
         <Input
           placeholder="Phone number"

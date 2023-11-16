@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import {
-  Box,
+  Box, Divider,
   IconButton,
   List,
   ListItem,
@@ -13,6 +13,8 @@ import {
 import Image from 'next/image';
 import {HeaderProps} from '@/components/Header';
 import Link from 'next/link';
+import Sidebar from '@/components/Sidebar/Sidebar';
+import {useRouter} from 'next/navigation';
 
 const styles: Record<string, SxProps> = {
   mobileWrapper: {
@@ -21,7 +23,7 @@ const styles: Record<string, SxProps> = {
     justifyContent: 'space-between',
   },
   boxWrapper: {
-    width: '260px',
+    width: '280px',
     display: 'flex',
     flexDirection: 'column',
   },
@@ -31,6 +33,9 @@ const styles: Record<string, SxProps> = {
     right: 0,
     marginTop: '10px',
     marginRight: '10px',
+  },
+  sidebar: {
+    paddingTop: '60px',
   },
   tabs: {
     marginTop: '80px',
@@ -48,6 +53,7 @@ const styles: Record<string, SxProps> = {
 
 const MobileHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
   const [openDrawer, setOpenDrawer] = useState(false);
+  const router = useRouter();
 
   const iOS =
     typeof navigator !== 'undefined' &&
@@ -65,7 +71,7 @@ const MobileHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
           />
         </Link>
         <Stack direction="row" alignItems="center" spacing={1}>
-          <IconButton onClick={() => {}}>
+          <IconButton onClick={() => router.push('/cart')}>
             <Image src="/icons/cart.svg" alt="cart" width={20} height={20} />
           </IconButton>
           <IconButton onClick={handleModalOpen}>
@@ -106,38 +112,17 @@ const MobileHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
             </IconButton>
           </Box>
           {userLoggedIn ? (
-            <List sx={styles.tabs}>
-              <ListItem sx={styles.tab}>
-                <Image
-                  width={20}
-                  height={20}
-                  src="/icons/myProducts.svg"
-                  alt="my-products"
-                />
-                <Typography>My products</Typography>
-              </ListItem>
-              <ListItem sx={styles.tab}>
-                <Image
-                  width={20}
-                  height={20}
-                  src="/icons/settings.svg"
-                  alt="settings"
-                />
-                <Typography>Settings</Typography>
-              </ListItem>
-              <ListItem sx={styles.tab}>
-                <Image
-                  width={20}
-                  height={20}
-                  src="/icons/logout.svg"
-                  alt="logout"
-                />
-                <Typography>Log out</Typography>
-              </ListItem>
-            </List>
+            <Box sx={styles.sidebar}>
+            <Divider />
+           <Sidebar closeDrawer={() => setOpenDrawer(false)} />
+              </Box>
           ) : (
             <List sx={styles.tabs}>
-              <ListItem sx={styles.tab}>
+              <ListItem sx={styles.tab}
+                        onClick={() => {
+                          router.push('/auth/sign-in')
+                          setOpenDrawer(false)}}
+              >
                 <Image
                   width={20}
                   height={20}
