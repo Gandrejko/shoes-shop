@@ -1,4 +1,4 @@
-import {createTheme, responsiveFontSizes} from '@mui/material';
+import {createTheme, darkScrollbar, responsiveFontSizes} from '@mui/material';
 import {inter, workSans} from './fonts';
 
 let theme = createTheme({
@@ -54,6 +54,32 @@ let theme = createTheme({
     },
   },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: theme => ({
+        body: {
+          scrollbarWidth: 'thin',
+          scrollbarColor: `${theme.palette.grey[300]} transparent`,
+          '&::-webkit-scrollbar, & *::-webkit-scrollbar': {
+            backgroundColor: 'transparent',
+            width: theme.spacing(),
+          },
+          '&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb': {
+            borderRadius: theme.spacing(),
+            backgroundColor: theme.palette.grey[300],
+            transition: 'background-color 0.3s ease-in-out',
+          },
+          '&::-webkit-scrollbar-thumb:hover, & *::-webkit-scrollbar-thumb:hover':
+            {
+              borderRadius: theme.spacing(),
+              backgroundColor: theme.palette.grey[400],
+            },
+          '&::-webkit-scrollbar-track-piece:start, & *::-webkit-scrollbar-track-piece:start':
+            {
+              marginTop: theme.spacing(5),
+            },
+        },
+      }),
+    },
     MuiInputBase: {
       styleOverrides: {
         root: ({theme}) => ({
