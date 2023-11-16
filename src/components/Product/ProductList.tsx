@@ -1,6 +1,7 @@
-import {Grid, SxProps} from '@mui/material';
+import {Grid, SxProps, CircularProgress, LinearProgress} from '@mui/material';
+import {useEffect, useRef} from 'react';
 
-import useGet from '@/hooks/useGet';
+import useInfiniteGet from '@/hooks/useInfiniteGet';
 import {ProductsResponse} from '@/types/product';
 import ProductCard from './components/ProductCard';
 import ProductCardSkeleton from './components/ProductCardSkeleton';
@@ -18,14 +19,43 @@ type Props = {
 };
 
 const ProductList = ({params = null, fullWidth = false}: Props) => {
-  const {data: products, isLoading} = useGet<ProductsResponse>(
-    '/products',
-    null,
-    {
-      'filters[teamName]': 'team-3',
-      ...params,
-    },
-  );
+  const bottomElementRef = useRef<HTMLDivElement>(null);
+
+  const {
+    data: products,
+    isLoading,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useInfiniteGet<ProductsResponse>('/products', null, {
+    'filters[teamName]': 'team-3',
+    'pagination[pageSize]': 10,
+    ...params,
+  });
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && hasNextPage) {
+            fetchNextPage();
+          }
+        });
+      },
+      {threshold: 1},
+    );
+
+    const bottomElement = bottomElementRef.current;
+    if (bottomElement) {
+      observer.observe(bottomElement);
+    }
+
+    return () => {
+      if (bottomElement) {
+        observer.unobserve(bottomElement);
+      }
+    };
+  }, [bottomElementRef, hasNextPage, fetchNextPage]);
 
   return (
     <Grid
@@ -47,19 +77,37 @@ const ProductList = ({params = null, fullWidth = false}: Props) => {
             <ProductCardSkeleton />
           </Grid>
         ))}
-      {products?.data.map(product => (
+      {products?.map(page => {
+        return page.data.map(product => (
+          <Grid
+            key={product.id}
+            item
+            xs={6}
+            md={fullWidth ? 4 : 6}
+            lg={fullWidth ? 3 : 4}
+            xl={fullWidth ? 2 : 3}
+            sx={styles.gridItem}
+          >
+            <ProductCard product={{...product.attributes, id: product.id}} />
+          </Grid>
+        ));
+      })}
+      <div ref={bottomElementRef} />
+      {isFetchingNextPage && (
         <Grid
-          key={product.id}
           item
-          xs={6}
-          md={fullWidth ? 4 : 6}
-          lg={fullWidth ? 3 : 4}
-          xl={fullWidth ? 2 : 3}
-          sx={styles.gridItem}
+          xs={12}
+          display="flex"
+          justifyContent="center"
+          marginBottom={4}
+          marginTop={-2}
         >
-          <ProductCard product={{...product.attributes, id: product.id}} />
+          <LinearProgress
+            color="primary"
+            sx={{width: 1, height: 10, borderRadius: 10}}
+          />
         </Grid>
-      ))}
+      )}
     </Grid>
   );
 };
