@@ -2,7 +2,12 @@ import {Box, Typography, Button, SxProps} from '@mui/material';
 
 const styles: Record<string, SxProps> = {
   container: {
-    marginTop: '70px',
+    marginTop: {
+      xl: '0px',
+      lg: '0px',
+      sm: '70px',
+      xs: '70px',
+    },
     marginBottom: '70px',
   },
   heading: {

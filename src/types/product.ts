@@ -19,7 +19,6 @@ export type ProductAttributes = Partial<
   Product & {
     categories: RequestData<Data<Category>[]>;
     sizes: RequestData<Data<Size>[]>;
-
     images: RequestData<Data<Image>[] | null>;
     brand: RequestData<Data<Brand>> | null;
     color: RequestData<Data<Color> | null>;
@@ -33,7 +32,6 @@ export type ProductRequest = Partial<
     images: Image[];
     categories: Category[];
     sizes: Size[];
-
     brand: Brand;
     color: Color;
     gender: Gender;
