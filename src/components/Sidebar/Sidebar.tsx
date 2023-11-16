@@ -1,7 +1,7 @@
-import {Box, Divider, List, ListItem, SxProps, Typography} from '@mui/material';
+import {Avatar, Box, Divider, List, ListItem, SxProps, Typography} from '@mui/material';
 import Image from 'next/image';
 import {destroyCookie} from 'nookies';
-import {signOut} from 'next-auth/react';
+import {signOut, useSession} from 'next-auth/react';
 import {useRouter} from 'next/navigation';
 
 const styles: Record<string, SxProps> = {
@@ -20,8 +20,14 @@ const styles: Record<string, SxProps> = {
     alignItems: 'center',
     justifyContent: 'center',
   },
+  avatar: {
+    bgcolor: 'primary.main',
+    fontSize: {sm: 28, md: 36},
+    height: '64px',
+    width: '64px',
+  },
   avatarLetter: {
-    color: '#fff',
+    color: 'text.primary',
   },
   welcome: {
     color: 'grey.A200',
@@ -48,8 +54,8 @@ type SidebarProps = {
 
 const Sidebar = ({currentTab, closeDrawer}: SidebarProps) => {
   const router = useRouter();
-  const image = false;
-  const name = 'Jane Meldrum';
+  const {data} = useSession();
+  const sessionUser = data?.user;
 
   const logoutFunction = async () => {
     destroyCookie(null, 'rememberMe');
@@ -60,18 +66,27 @@ const Sidebar = ({currentTab, closeDrawer}: SidebarProps) => {
     <Box >
       <Box sx={styles.user}>
         <Box sx={styles.avatarContainer}>
-          {image && <Image src={image} width={64} height={64} alt="user" />}
-          {!image && (
-            <Typography variant="h2" sx={styles.avatarLetter}>
-              {name[0].toUpperCase()}
-            </Typography>
+          {sessionUser?.image ? (
+            <Image
+              src={sessionUser.image}
+              alt={`${sessionUser?.username}`}
+              width={64}
+              height={64}
+              fill
+            />
+          ) : (
+            <Avatar
+              sx={styles.avatar}
+              src="/"
+              alt={`${sessionUser?.username}`}
+            />
           )}
         </Box>
         <Box>
           <Typography variant="body2" sx={styles.welcome}>
             Welcome
           </Typography>
-          <Typography>{name}</Typography>
+          <Typography variant="h5" sx={styles.avatarLetter}>{sessionUser?.username}</Typography>
         </Box>
       </Box>
       <Divider />

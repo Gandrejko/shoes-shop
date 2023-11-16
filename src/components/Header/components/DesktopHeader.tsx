@@ -4,13 +4,14 @@ import {
   SxProps,
   Toolbar,
   Typography,
-  Button,
+  Button, Avatar,
 } from '@mui/material';
 import {SearchInput} from '@/components/Inputs/SearchInput';
 import {HeaderProps} from '@/components/Header';
 import Image from 'next/image';
 import Link from 'next/link';
 import {useRouter} from 'next/navigation';
+import {useSession} from 'next-auth/react';
 
 const styles: Record<string, SxProps> = {
   desktopWrapper: {
@@ -18,10 +19,18 @@ const styles: Record<string, SxProps> = {
     display: 'flex',
     justifyContent: 'space-between',
   },
+  avatar: {
+    bgcolor: 'primary.main',
+    fontSize: {sm: 12, md: 14},
+    height: '24px',
+    width: '24px',
+  },
 };
 
 const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
   const router = useRouter();
+  const {data} = useSession();
+  const sessionUser = data?.user;
 
   return (
     <>
@@ -55,12 +64,21 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
                 />
               </IconButton>
               <IconButton onClick={() =>  router.push('/my-products')}>
-                <Image
-                  src="icons/avatar.svg"
-                  alt="avatar"
-                  width={24}
-                  height={24}
-                />
+                {sessionUser?.image ? (
+                  <Image
+                    src={sessionUser.image}
+                    alt={`${sessionUser?.username}`}
+                    width={24}
+                    height={24}
+                    fill
+                  />
+                ) : (
+                  <Avatar
+                    sx={styles.avatar}
+                    src="/"
+                    alt={`${sessionUser?.username}`}
+                  />
+                )}
               </IconButton>
             </Stack>
           </Stack>
