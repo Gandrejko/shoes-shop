@@ -1,7 +1,8 @@
+import DeleteModal from '@/components/DeleteModal/DeleteModal';
 import HeaderLayout from '@/components/HeaderLayout/HeaderLayout';
 import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
 import {useSession} from 'next-auth/react';
-import {ReactElement, useEffect} from 'react';
+import {ReactElement, useEffect, useState} from 'react';
 import {toast} from 'react-toastify';
 
 const Home = () => {
@@ -28,8 +29,19 @@ const Home = () => {
       }
     }
   }, [session?.user.accessToken, status]);
-
-  return <></>;
+  const [state, setState] = useState(false);
+  return (
+    <>
+      <div onClick={() => setState(true)}>open</div>
+      <DeleteModal
+        isModalOpen={state}
+        header="Modal header"
+        description="some description"
+        onClose={() => setState(false)}
+        onDelete={() => {}}
+      />
+    </>
+  );
 };
 
 Home.getLayout = function getLayout(page: ReactElement) {
