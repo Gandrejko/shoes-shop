@@ -35,14 +35,6 @@ const styles: Record<string, SxProps> = {
 
 const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
   const router = useRouter();
   const {data} = useSession();
 
@@ -79,8 +71,10 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
                   height={24}
                 />
               </IconButton>
-              <IconButton onClick={handleClick}
-                          aria-describedby={'profile-popup'}>
+              <IconButton
+                onClick={e => setAnchorEl(e.currentTarget)}
+                aria-describedby={'profile-popup'}
+              >
                 <Avatar
                   src={data?.user?.image}
                   alt="avatar"
@@ -91,7 +85,10 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
                     ' ')[0].toUpperCase()}
                 </Avatar>
               </IconButton>
-              <ProfilePopup anchorEl={anchorEl} handleOnClose={handleClose} />
+              <ProfilePopup
+                anchorEl={anchorEl}
+                handleOnClose={() => setAnchorEl(null)}
+              />
             </Stack>
           </Stack>
         ) : (

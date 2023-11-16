@@ -59,12 +59,12 @@ const Header = () => {
       <AppBar sx={styles.appBar}>
         {isMobileMode ? (
           <MobileHeader
-            userLoggedIn={status === 'authenticated'}
+            userLoggedIn={!(status === 'unauthenticated')}
             handleModalOpen={handleModalOpen}
           />
         ) : (
           <DesktopHeader
-            userLoggedIn={status === 'authenticated'}
+            userLoggedIn={!(status === 'unauthenticated')}
             handleModalOpen={handleModalOpen}
           />
         )}
