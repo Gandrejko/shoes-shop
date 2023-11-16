@@ -5,18 +5,27 @@ import {
   Toolbar,
   Typography,
   Button,
+  Avatar,
   Link as MuiLink,
 } from '@mui/material';
 import {SearchInput} from '@/components/Inputs/SearchInput';
 import {HeaderProps} from '@/components/Header';
 import Image from 'next/image';
 import Link from 'next/link';
+import {useRouter} from 'next/navigation';
+import {useSession} from 'next-auth/react';
 
 const styles: Record<string, SxProps> = {
   desktopWrapper: {
     height: '120px',
     display: 'flex',
     justifyContent: 'space-between',
+  },
+  avatar: {
+    bgcolor: 'primary.main',
+    fontSize: {sm: 12, md: 14},
+    height: '24px',
+    width: '24px',
   },
   link: {
     textDecoration: 'none',
@@ -25,10 +34,14 @@ const styles: Record<string, SxProps> = {
     '&:hover': {
       color: 'primary.main',
     },
-  },
+  }
 };
 
 const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
+  const router = useRouter();
+  const {data} = useSession();
+  const sessionUser = data?.user;
+
   return (
     <>
       <Toolbar sx={styles.desktopWrapper}>
@@ -54,7 +67,7 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
               onClick={handleModalOpen}
             />
             <Stack direction="row" spacing={0.5}>
-              <IconButton onClick={() => {}}>
+              <IconButton onClick={() =>  router.push('/cart')}>
                 <Image
                   src="/icons/cart.svg"
                   alt="cart"
@@ -62,13 +75,22 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
                   height={24}
                 />
               </IconButton>
-              <IconButton onClick={() => {}}>
-                <Image
-                  src="icons/avatar.svg"
-                  alt="avatar"
-                  width={24}
-                  height={24}
-                />
+              <IconButton onClick={() =>  router.push('/my-products')}>
+                {sessionUser?.image ? (
+                  <Image
+                    src={sessionUser.image}
+                    alt={`${sessionUser?.username}`}
+                    width={24}
+                    height={24}
+                    fill
+                  />
+                ) : (
+                  <Avatar
+                    sx={styles.avatar}
+                    src="/"
+                    alt={`${sessionUser?.username}`}
+                  />
+                )}
               </IconButton>
             </Stack>
           </Stack>
