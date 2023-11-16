@@ -39,11 +39,11 @@ const SettingsPage: NextPageWithLayout = () => {
   const {mutate, isPending} = usePut<UserRequest, UserResponse>(
     `/users/${sessionUser?.id}`,
     {
-      onSuccess: newData => {
+      onSuccess: (responseData, requestData) => {
         update({
           user: {
-            ...newData,
-            image: userData?.avatar?.url,
+            ...responseData,
+            image: requestData.avatar?.url,
           },
         });
         toast.success('Your profile was successfully updated!');
@@ -53,6 +53,8 @@ const SettingsPage: NextPageWithLayout = () => {
       },
     },
   );
+
+  console.log(sessionUser);
 
   return isLoading ? (
     <Loader />
