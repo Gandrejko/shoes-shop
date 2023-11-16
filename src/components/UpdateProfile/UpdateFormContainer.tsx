@@ -26,6 +26,7 @@ const UpdateFormContainer = ({formProps}: UpdateFormType) => {
           type="text"
           labelText="Name"
           name="firstName"
+          disabled={isUserDataLoading}
           register={formProps.register}
           validationSchema={{}}
           errorMessage={formProps.formState.errors.firstName?.message}
@@ -36,6 +37,7 @@ const UpdateFormContainer = ({formProps}: UpdateFormType) => {
           type="text"
           labelText="Surname"
           name="lastName"
+          disabled={isUserDataLoading}
           register={formProps.register}
           validationSchema={{}}
           errorMessage={formProps.formState.errors.lastName?.message}
@@ -57,6 +59,7 @@ const UpdateFormContainer = ({formProps}: UpdateFormType) => {
           type="tel"
           labelText="Phone number"
           name="phoneNumber"
+          disabled={isUserDataLoading}
           register={formProps.register}
           validationSchema={{
             pattern: {
@@ -68,7 +71,12 @@ const UpdateFormContainer = ({formProps}: UpdateFormType) => {
           errorMessage={formProps.formState.errors.phoneNumber?.message}
         />
       </Box>
-      <Button variant="contained" type="submit" sx={styles.button}>
+      <Button
+        variant="contained"
+        type="submit"
+        sx={styles.button}
+        disabled={isUserDataLoading}
+      >
         Save changes
       </Button>
     </>
