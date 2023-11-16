@@ -95,6 +95,7 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
                 name="searchString"
                 validationSchema={{}}
                 giantMode
+                enterPressHandler={handleOnSearch}
               />
               <Button
                 variant="outlined"

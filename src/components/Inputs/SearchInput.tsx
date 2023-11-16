@@ -50,6 +50,7 @@ type SearchInputProps = InputBaseProps & {
   name: string;
   giantMode?: boolean;
   errorMessage?: string;
+  enterPressHandler?: () => void;
 };
 
 export const SearchInput = ({
@@ -58,9 +59,16 @@ export const SearchInput = ({
   validationSchema,
   giantMode = false,
   errorMessage,
+  enterPressHandler,
   ...props
 }: SearchInputProps) => {
   const id = useId();
+
+  const onEnterPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      enterPressHandler && enterPressHandler();
+    }
+  };
 
   const registerProps =
     register && name
@@ -76,6 +84,7 @@ export const SearchInput = ({
         {...props}
         {...registerProps}
         error={!!errorMessage}
+        onKeyDown={onEnterPress}
       />
     </Box>
   );
