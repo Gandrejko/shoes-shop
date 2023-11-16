@@ -111,6 +111,9 @@ const Sidebar = ({currentTab, closeDrawer}: SidebarProps) => {
             height={20}
             src="/icons/myProducts.svg"
             alt="my-products"
+            style={{
+              fill: currentTab === 'products' ? '#FE645E' : '#000',
+            }}
           />
           <Typography>My products</Typography>
         </ListItem>
