@@ -26,6 +26,7 @@ const styles: Record<string, SxProps> = {
       height: {md: 'calc(100% - 120px)'},
       marginTop: {md: '120px'},
       border: 'none',
+      overflowX: 'hidden',
     },
     transition: 'width 0.2s ease-in-out',
   },
