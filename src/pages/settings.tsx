@@ -79,7 +79,7 @@ SettingsPage.getLayout = function (page: ReactElement) {
         <title>Settings</title>
       </Head>
       <HeaderLayout>
-        <SidebarLayout currentTab="products">{page}</SidebarLayout>
+        <SidebarLayout currentTab="settings">{page}</SidebarLayout>
       </HeaderLayout>
     </>
   );
