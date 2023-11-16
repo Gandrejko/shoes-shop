@@ -10,6 +10,7 @@ import {SearchInput} from '@/components/Inputs/SearchInput';
 import {HeaderProps} from '@/components/Header';
 import Image from 'next/image';
 import Link from 'next/link';
+import {useRouter} from 'next/navigation';
 
 const styles: Record<string, SxProps> = {
   desktopWrapper: {
@@ -20,6 +21,8 @@ const styles: Record<string, SxProps> = {
 };
 
 const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
+  const router = useRouter();
+
   return (
     <>
       <Toolbar sx={styles.desktopWrapper}>
@@ -43,7 +46,7 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
               onClick={handleModalOpen}
             />
             <Stack direction="row" spacing={0.5}>
-              <IconButton onClick={() => {}}>
+              <IconButton onClick={() =>  router.push('/cart')}>
                 <Image
                   src="/icons/cart.svg"
                   alt="cart"
@@ -51,7 +54,7 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
                   height={24}
                 />
               </IconButton>
-              <IconButton onClick={() => {}}>
+              <IconButton onClick={() =>  router.push('/my-products')}>
                 <Image
                   src="icons/avatar.svg"
                   alt="avatar"

@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import {
-  Box,
+  Box, Divider,
   IconButton,
   List,
   ListItem,
@@ -23,7 +23,7 @@ const styles: Record<string, SxProps> = {
     justifyContent: 'space-between',
   },
   boxWrapper: {
-    width: '260px',
+    width: '280px',
     display: 'flex',
     flexDirection: 'column',
   },
@@ -33,6 +33,9 @@ const styles: Record<string, SxProps> = {
     right: 0,
     marginTop: '10px',
     marginRight: '10px',
+  },
+  sidebar: {
+    paddingTop: '60px',
   },
   tabs: {
     marginTop: '80px',
@@ -68,7 +71,7 @@ const MobileHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
           />
         </Link>
         <Stack direction="row" alignItems="center" spacing={1}>
-          <IconButton onClick={() => {}}>
+          <IconButton onClick={() => router.push('/cart')}>
             <Image src="/icons/cart.svg" alt="cart" width={20} height={20} />
           </IconButton>
           <IconButton onClick={handleModalOpen}>
@@ -109,7 +112,10 @@ const MobileHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
             </IconButton>
           </Box>
           {userLoggedIn ? (
+            <Box sx={styles.sidebar}>
+            <Divider />
            <Sidebar closeDrawer={() => setOpenDrawer(false)} />
+              </Box>
           ) : (
             <List sx={styles.tabs}>
               <ListItem sx={styles.tab}
