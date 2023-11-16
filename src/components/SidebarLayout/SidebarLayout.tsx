@@ -1,9 +1,17 @@
 import {useRouter} from 'next/navigation';
 import {ReactNode} from 'react';
 import Image from 'next/image';
-import {Box, Divider, List, ListItem, SxProps, Typography} from '@mui/material';
+import {
+  Avatar,
+  Box,
+  Divider,
+  List,
+  ListItem,
+  SxProps,
+  Typography,
+} from '@mui/material';
 import {destroyCookie} from 'nookies';
-import {signOut} from 'next-auth/react';
+import {signOut, useSession} from 'next-auth/react';
 import Header from '../Header';
 
 const styles: Record<string, SxProps> = {
@@ -24,16 +32,9 @@ const styles: Record<string, SxProps> = {
     gap: '16px',
   },
   avatarContainer: {
-    width: '64px',
-    height: '64px',
+    width: 64,
+    height: 64,
     backgroundColor: 'primary.main',
-    borderRadius: '50%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  avatarLetter: {
-    color: '#fff',
   },
   welcome: {
     color: 'grey.A200',
@@ -65,8 +66,11 @@ type SidebarLayoutProps = {
 
 export const SidebarLayout = ({children, currentTab}: SidebarLayoutProps) => {
   const router = useRouter();
-  const image = false;
-  const name = 'Jane Meldrum';
+  const {data} = useSession();
+  const image = data?.user.image;
+  const firstName = data?.user.firstName;
+  const lastName = data?.user.lastName;
+  const username = data?.user.username;
 
   const logoutFunction = async () => {
     destroyCookie(null, 'rememberMe');
@@ -77,19 +81,20 @@ export const SidebarLayout = ({children, currentTab}: SidebarLayoutProps) => {
     <Box sx={styles.layout}>
       <Box sx={styles.sidebar}>
         <Box sx={styles.user}>
-          <Box sx={styles.avatarContainer}>
-            {image && <Image src={image} width={64} height={64} alt="user" />}
-            {!image && (
-              <Typography variant="h2" sx={styles.avatarLetter}>
-                {name[0].toUpperCase()}
-              </Typography>
-            )}
-          </Box>
+          <Avatar src={image} sx={styles.avatarContainer}>
+            {(firstName || username || ' ')[0].toUpperCase()}
+          </Avatar>
           <Box>
             <Typography variant="body2" sx={styles.welcome}>
               Welcome
             </Typography>
-            <Typography>{name}</Typography>
+            {firstName && lastName && (
+              <Typography>
+                <Typography component="span">{firstName}</Typography>{' '}
+                <Typography component="span">{lastName}</Typography>
+              </Typography>
+            )}
+            {!(firstName && lastName) && <Typography>{username}</Typography>}
           </Box>
         </Box>
         <Divider />

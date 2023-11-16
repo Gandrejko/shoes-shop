@@ -6,9 +6,11 @@ import {
   Typography,
   Button,
   Link as MuiLink,
+  Avatar,
 } from '@mui/material';
 import {SearchInput} from '@/components/Inputs/SearchInput';
 import {HeaderProps} from '@/components/Header';
+import {useSession} from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -29,6 +31,7 @@ const styles: Record<string, SxProps> = {
 };
 
 const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
+  const {data} = useSession();
   return (
     <>
       <Toolbar sx={styles.desktopWrapper}>
@@ -63,12 +66,15 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
                 />
               </IconButton>
               <IconButton onClick={() => {}}>
-                <Image
-                  src="icons/avatar.svg"
+                <Avatar
+                  src={data?.user?.image}
                   alt="avatar"
-                  width={24}
-                  height={24}
-                />
+                  sx={{width: 24, height: 24}}
+                >
+                  {(data?.user?.firstName ||
+                    data?.user?.username ||
+                    ' ')[0].toUpperCase()}
+                </Avatar>
               </IconButton>
             </Stack>
           </Stack>

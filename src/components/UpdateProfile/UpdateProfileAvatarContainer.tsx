@@ -41,7 +41,7 @@ const styles: Record<string, SxProps> = {
 };
 
 const UpdateProfileAvatarContainer = ({formProps}: UpdateFormType) => {
-  const {data: session} = useSession();
+  const {data: session, update} = useSession();
   const currentUser = session?.user;
   const token = session?.user.accessToken;
   const avatar = formProps.getValues().avatar;
@@ -61,6 +61,13 @@ const UpdateProfileAvatarContainer = ({formProps}: UpdateFormType) => {
       return res.data[0];
     },
     onSuccess: (data: any) => {
+      update({
+        ...session,
+        user: {
+          ...session?.user,
+          image: data.url,
+        },
+      });
       formProps.setValue('avatar', {id: data.id, url: data.url});
     },
     onError: error => {

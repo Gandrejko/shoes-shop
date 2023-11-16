@@ -86,7 +86,14 @@ const SettingsPage: NextPageWithLayout = () => {
     },
     onSuccess: newData => {
       queryClient.invalidateQueries({queryKey: ['users', currentUser?.id]});
-      update(newData);
+      update({
+        ...session,
+        user: {
+          ...session?.user,
+          firstName: newData.firstName,
+          lastName: newData.lastName,
+        },
+      });
       toast.success('Your profile was successfully updated!');
     },
     onError: error => {
