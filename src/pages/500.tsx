@@ -82,7 +82,7 @@ const Error500 = () => {
             </Typography>
           </Box>
           <Box sx={styles.button}>
-            <Link href="/">
+            <Link href="/products">
               <Button variant="contained" sx={{width: '152px', height: '40px'}}>
                 Go Back
               </Button>
@@ -108,7 +108,7 @@ const Error500 = () => {
                   diam nonummy nibh euismod tincidunt ut laoreet dolore magna
                 </Typography>
                 <Stack direction="row" spacing={4}>
-                  <Link href="/">
+                  <Link href="/products">
                     <Button
                       variant="outlined"
                       sx={{width: '152px', height: '40px'}}
@@ -116,7 +116,7 @@ const Error500 = () => {
                       Go Back
                     </Button>
                   </Link>
-                  <Link href="/">
+                  <Link href="/products">
                     <Button
                       variant="contained"
                       sx={{width: '152px', height: '40px'}}

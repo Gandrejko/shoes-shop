@@ -70,7 +70,7 @@ const MobileHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
   return (
     <>
       <Toolbar sx={styles.mobileWrapper}>
-        <Link href="/">
+        <Link href="/products">
           <Image
             src="/icons/logo.svg"
             alt="logo"

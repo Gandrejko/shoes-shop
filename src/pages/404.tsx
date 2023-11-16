@@ -82,7 +82,7 @@ const Error404 = () => {
           </Box>
           <Box sx={styles.buttons}>
             <Stack direction="row" spacing={3}>
-              <Link href="/">
+              <Link href="/products">
                 <Button
                   variant="outlined"
                   sx={{width: '152px', height: '40px'}}
@@ -90,7 +90,7 @@ const Error404 = () => {
                   Go Back
                 </Button>
               </Link>
-              <Link href="/">
+              <Link href="/products">
                 <Button
                   variant="contained"
                   sx={{width: '152px', height: '40px'}}
@@ -112,7 +112,7 @@ const Error404 = () => {
                   diam nonummy nibh euismod tincidunt ut laoreet dolore magna
                 </Typography>
                 <Stack direction="row" spacing={4} flexWrap="wrap">
-                  <Link href="/">
+                  <Link href="/products">
                     <Button
                       variant="outlined"
                       sx={{width: '152px', height: '40px'}}
@@ -120,7 +120,7 @@ const Error404 = () => {
                       Go Back
                     </Button>
                   </Link>
-                  <Link href="/">
+                  <Link href="/products">
                     <Button
                       variant="contained"
                       sx={{width: '152px', height: '40px'}}
