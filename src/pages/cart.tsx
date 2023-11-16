@@ -10,8 +10,9 @@ import useGet from '@/hooks/useGet';
 import { ProductsResponse } from '@/types/product';
 import ProductItemSkeleton from '@/components/Cart/ProductItemSkeleton';
 import SummarySectionSkeleton from '@/components/Cart/SummarySectionSkeleton';
+import { SxProps } from '@mui/system';
 
-const cartPageStyles = {
+const styles: Record<string, SxProps> = {
   container: {
     display: 'flex',
     gap: '5%',
@@ -55,12 +56,34 @@ const cartPageStyles = {
   containerSkeleton: {
     gap: '10%',
     display: 'flex',
+    flexDirection: {
+      [theme.breakpoints.down('lg')]: {
+        flexDirection: 'column',
+      },
+    },
     width: '100%'
+  },
+  containerSkeletonCartItems: {
+    width: {
+      xl: '62%',
+      lg: '100%',
+      sm: '100%',
+      xs: '100%',
+    },
+    display: 'flex',
+    flexDirection: "column"
+  },
+  containerSkeletonSummer: {
+    width: {
+      xl: '38%',
+      lg: '100%',
+      sm: '100%',
+      xs: '100%',
+    },
   }
 };
 
-const txtAddFields = (ids: string[]) =>
-  ids.map(id => `filters[id]=${id}`).join('&');
+const txtAddFields = (ids: string[]) => ids.map(id => `filters[id]=${id}`).join('&');
 
 const CartPage = () => {
   const queryClient = useQueryClient();
@@ -85,28 +108,26 @@ const CartPage = () => {
 
   return (
     <>
-
       <Header />
-      <Box sx={cartPageStyles.container}>
+      <Box sx={styles.container}>
         {isLoading ? (
-          <Box sx={cartPageStyles.containerSkeleton}>
-            <Box sx={{ width: '62%', display: 'flex', flexDirection: "column" }}>
+          <Box sx={styles.containerSkeleton}>
+            <Box sx={styles.containerSkeletonCartItems}>
               {[...Array(3)].map((_, index) => (
                 <ProductItemSkeleton key={index} />
               ))}
             </Box>
-            <Box sx={{ width: '38%' }}>
+            <Box sx={styles.containerSkeletonSummer}>
               <SummarySectionSkeleton />
             </Box>
-
           </Box>
         ) : params !== undefined && params.length === 0 ? (
-          <Box sx={cartPageStyles.emptyCartContainer}>
+          <Box sx={styles.emptyCartContainer}>
             <EmptyCartPage />
           </Box>
         ) : isNotEmpty ? (
           <>
-            <Box sx={cartPageStyles.cartItem}>
+            <Box sx={styles.cartItem}>
               <Typography variant="h1">Cart</Typography>
               {products &&
                 products.data.map(({ id, attributes }) => (
@@ -118,7 +139,7 @@ const CartPage = () => {
                   />
                 ))}
             </Box>
-            <Box sx={cartPageStyles.summarySection}>
+            <Box sx={styles.summarySection}>
               <SummarySection
                 products={Object.entries(cartIds).map(([id, quantity]) => ({
                   id,
