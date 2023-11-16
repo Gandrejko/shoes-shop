@@ -17,6 +17,7 @@ import {GendersResponse} from '@/types/gender';
 import {SizesResponse} from '@/types/size';
 import Image from 'next/image';
 import PriceSlider from './components/PriceSlider';
+import {CategoriesResponse} from '@/types/category';
 
 const styles: Record<string, SxProps> = {
   sidebar: {
@@ -35,13 +36,13 @@ const styles: Record<string, SxProps> = {
 
 type Props = {
   open: boolean;
-  searchText: string;
+  searchingString: string;
   productCount: number;
   onClose: () => void;
 };
 
 export const FilterSidebar = ({
-  searchText,
+  searchingString,
   productCount,
   open,
   onClose,
@@ -51,6 +52,7 @@ export const FilterSidebar = ({
   const {data: genders} = useGet<GendersResponse>('/genders');
   const {data: colors} = useGet<ColorsResponse>('/colors');
   const {data: brands} = useGet<BrandsResponse>('/brands');
+  const {data: categories} = useGet<CategoriesResponse>('/categories');
   const {data: sizes} = useGet<SizesResponse>('/sizes');
 
   return (
@@ -68,10 +70,14 @@ export const FilterSidebar = ({
           </IconButton>
         ) : (
           <>
-            <Typography>Shoes/{searchText}</Typography>
             <Typography>
-              {searchText} ({productCount})
+              Shoes{searchingString ? `/${searchingString}` : ''}
             </Typography>
+            {searchingString && (
+              <Typography>
+                {searchingString} ({productCount})
+              </Typography>
+            )}
           </>
         )}
       </Stack>
@@ -92,6 +98,13 @@ export const FilterSidebar = ({
       <Category
         name="Brand"
         options={brands?.data.map(({id, attributes}) => ({
+          id,
+          value: attributes.name!,
+        }))}
+      />
+      <Category
+        name="Categories"
+        options={categories?.data.map(({id, attributes}) => ({
           id,
           value: attributes.name!,
         }))}

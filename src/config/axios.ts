@@ -1,4 +1,4 @@
-import axiosInstance from 'axios';
+import axiosInstance, {AxiosError} from 'axios';
 
 const axios = axiosInstance.create({
   baseURL: process.env.API_URL,
@@ -14,4 +14,5 @@ axios.interceptors.request.use(config => {
   return config;
 });
 
+export {AxiosError};
 export default axios;
