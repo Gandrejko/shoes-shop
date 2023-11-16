@@ -42,7 +42,7 @@ const SettingsPage: NextPageWithLayout = () => {
         update({
           user: {
             ...newData,
-            image: userData?.avatar,
+            image: userData?.avatar?.url,
           },
         });
         toast.success('Your profile was successfully updated!');
