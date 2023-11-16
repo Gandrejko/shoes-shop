@@ -1,12 +1,8 @@
-import useDelete from '@/hooks/useDelete';
-import usePost from '@/hooks/usePost';
-import {UpdateFormType} from '@/pages/settings';
-import {ImageRequest, ImageResponse} from '@/types/image';
 import {Avatar, Box, Button, InputBase, SxProps} from '@mui/material';
 import {useSession} from 'next-auth/react';
 import Image from 'next/image';
-import {ChangeEvent, useRef} from 'react';
-import {toast} from 'react-toastify';
+import {ChangeEvent, useContext, useRef} from 'react';
+import {UpdateFormContext} from './UpdateForm';
 
 const styles: Record<string, SxProps> = {
   headerBox: {
@@ -42,38 +38,20 @@ const styles: Record<string, SxProps> = {
   inputHidden: {display: 'none'},
 };
 
-const UpdateProfileAvatarContainer = ({formProps}: UpdateFormType) => {
+const UpdateProfileAvatarContainer = () => {
+  const {
+    isUserDataLoading,
+    uploadImage,
+    isUploadImageLoading,
+    deleteImage,
+    isDeleteImageLoading,
+    getValues,
+  } = useContext(UpdateFormContext);
+
   const {data: session} = useSession();
   const currentUser = session?.user;
-  const avatar = formProps.getValues().avatar;
+  const avatar = getValues().avatar;
   const inputRef = useRef<HTMLInputElement>();
-
-  const {mutate: uploadImage} = usePost<ImageRequest, ImageResponse>(
-    '/upload',
-    {
-      onSuccess: (data: any) => {
-        const image = data[0];
-        formProps.setValue('avatar', {id: image.id, url: image.url});
-      },
-      onError: error => {
-        toast.error(error.message);
-      },
-    },
-    null,
-  );
-
-  const {mutate: deleteImage} = useDelete<any>(
-    '/upload/files',
-    {
-      onSuccess: () => {
-        formProps.setValue('avatar', null);
-      },
-      onError: error => {
-        toast.error(error.message);
-      },
-    },
-    null,
-  );
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -102,7 +80,14 @@ const UpdateProfileAvatarContainer = ({formProps}: UpdateFormType) => {
         )}
       </Box>
       <Box sx={styles.buttonsBox}>
-        <Button variant="outlined" component="label" sx={styles.button}>
+        <Button
+          variant="outlined"
+          component="label"
+          disabled={
+            isDeleteImageLoading || isUploadImageLoading || isUserDataLoading
+          }
+          sx={styles.button}
+        >
           Change photo
           <InputBase
             inputProps={{ref: inputRef, accept: 'image/*'}}
@@ -114,6 +99,9 @@ const UpdateProfileAvatarContainer = ({formProps}: UpdateFormType) => {
         <Button
           variant="contained"
           type="button"
+          disabled={
+            isDeleteImageLoading || isUploadImageLoading || isUserDataLoading
+          }
           onClick={() => deleteImage(avatar?.id!)}
           sx={styles.button}
         >

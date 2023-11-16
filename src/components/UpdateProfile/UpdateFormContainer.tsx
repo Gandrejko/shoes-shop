@@ -1,8 +1,7 @@
-import {UpdateFormType} from '@/pages/settings';
 import {Box, Button, SxProps} from '@mui/material';
+import {useContext} from 'react';
 import {Input} from '../Inputs/Input';
 import {UpdateFormContext} from './UpdateForm';
-import {useContext} from 'react';
 
 const styles: Record<string, SxProps> = {
   inputsBox: {
@@ -15,8 +14,9 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-const UpdateFormContainer = ({formProps}: UpdateFormType) => {
-  const {isUserDataLoading} = useContext(UpdateFormContext);
+const UpdateFormContainer = () => {
+  const {isUserDataLoading, isUploadImageLoading, register, formState} =
+    useContext(UpdateFormContext);
 
   return (
     <>
@@ -27,9 +27,9 @@ const UpdateFormContainer = ({formProps}: UpdateFormType) => {
           labelText="Name"
           name="firstName"
           disabled={isUserDataLoading}
-          register={formProps.register}
+          register={register}
           validationSchema={{}}
-          errorMessage={formProps.formState.errors.firstName?.message}
+          errorMessage={formState.errors.firstName?.message}
           marginBottom={24}
         />
         <Input
@@ -38,9 +38,9 @@ const UpdateFormContainer = ({formProps}: UpdateFormType) => {
           labelText="Surname"
           name="lastName"
           disabled={isUserDataLoading}
-          register={formProps.register}
+          register={register}
           validationSchema={{}}
-          errorMessage={formProps.formState.errors.lastName?.message}
+          errorMessage={formState.errors.lastName?.message}
           marginBottom={24}
         />
         <Input
@@ -49,9 +49,9 @@ const UpdateFormContainer = ({formProps}: UpdateFormType) => {
           labelText="Email"
           name="email"
           disabled
-          register={formProps.register}
+          register={register}
           validationSchema={{}}
-          errorMessage={formProps.formState.errors.email?.message}
+          errorMessage={formState.errors.email?.message}
           marginBottom={24}
         />
         <Input
@@ -60,7 +60,7 @@ const UpdateFormContainer = ({formProps}: UpdateFormType) => {
           labelText="Phone number"
           name="phoneNumber"
           disabled={isUserDataLoading}
-          register={formProps.register}
+          register={register}
           validationSchema={{
             pattern: {
               value: /^\(\d{3}\) \d{3}-\d{4}$/,
@@ -68,14 +68,14 @@ const UpdateFormContainer = ({formProps}: UpdateFormType) => {
                 'Please, enter a valid phone number in the format (949) 354-2574',
             },
           }}
-          errorMessage={formProps.formState.errors.phoneNumber?.message}
+          errorMessage={formState.errors.phoneNumber?.message}
         />
       </Box>
       <Button
         variant="contained"
         type="submit"
         sx={styles.button}
-        disabled={isUserDataLoading}
+        disabled={isUserDataLoading || isUploadImageLoading}
       >
         Save changes
       </Button>

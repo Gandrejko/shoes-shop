@@ -4,12 +4,12 @@ import UpdateForm from '@/components/UpdateProfile/UpdateForm';
 import useGet from '@/hooks/useGet';
 import usePut from '@/hooks/usePut';
 import {UserRequest, UserResponse} from '@/types/user';
-import {Box, SxProps, Typography} from '@mui/material';
+import {Box, CircularProgress, SxProps, Typography} from '@mui/material';
 import {useSession} from 'next-auth/react';
 import {ReactElement} from 'react';
-import {UseFormReturn} from 'react-hook-form';
 import {toast} from 'react-toastify';
 import {NextPageWithLayout} from './_app';
+import Loader from '@/components/UpdateProfile/Loader';
 
 const styles: Record<string, SxProps> = {
   container: {
@@ -23,13 +23,6 @@ const styles: Record<string, SxProps> = {
   header: {
     marginBottom: {xs: '12px', sm: 4.5},
   },
-};
-
-export type UpdateFormType = {
-  formProps: Pick<
-    UseFormReturn<UserRequest>,
-    'register' | 'control' | 'getValues' | 'setValue' | 'formState'
-  >;
 };
 
 const SettingsPage: NextPageWithLayout = () => {
@@ -60,9 +53,9 @@ const SettingsPage: NextPageWithLayout = () => {
     },
   );
 
-  if (isLoading) return <div>Loading</div>;
-
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <Box sx={styles.container}>
       <Box sx={styles.box}>
         <Typography variant="h1" sx={styles.header}>
