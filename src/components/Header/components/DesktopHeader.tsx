@@ -5,8 +5,8 @@ import {
   Toolbar,
   Typography,
   Button,
-  Avatar,
   Link as MuiLink,
+  Avatar,
 } from '@mui/material';
 import {SearchInput} from '@/components/Inputs/SearchInput';
 import {HeaderProps} from '@/components/Header';
@@ -23,12 +23,6 @@ const styles: Record<string, SxProps> = {
     display: 'flex',
     justifyContent: 'space-between',
   },
-  avatar: {
-    bgcolor: 'primary.main',
-    fontSize: {sm: 12, md: 14},
-    height: '24px',
-    width: '24px',
-  },
   link: {
     textDecoration: 'none',
     color: 'inherit',
@@ -41,18 +35,8 @@ const styles: Record<string, SxProps> = {
 
 const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
   const router = useRouter();
-  //TODO: need to add user image
   const {data} = useSession();
-  const sessionUser = data?.user;
 
   return (
     <>
@@ -88,17 +72,23 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
                 />
               </IconButton>
               <IconButton
-                onClick={handleClick}
+                onClick={e => setAnchorEl(e.currentTarget)}
                 aria-describedby={'profile-popup'}
               >
-                <Image
-                  src="icons/avatar.svg"
+                <Avatar
+                  src={data?.user?.image}
                   alt="avatar"
-                  width={24}
-                  height={24}
-                />
+                  sx={{width: 24, height: 24}}
+                >
+                  {(data?.user?.firstName ||
+                    data?.user?.username ||
+                    ' ')[0].toUpperCase()}
+                </Avatar>
               </IconButton>
-              <ProfilePopup anchorEl={anchorEl} handleOnClose={handleClose} />
+              <ProfilePopup
+                anchorEl={anchorEl}
+                handleOnClose={() => setAnchorEl(null)}
+              />
             </Stack>
           </Stack>
         ) : (

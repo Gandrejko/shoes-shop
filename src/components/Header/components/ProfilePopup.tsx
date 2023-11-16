@@ -22,10 +22,6 @@ type ProfilePopupProps = {
 export const ProfilePopup = ({anchorEl, handleOnClose}: ProfilePopupProps) => {
   const router = useRouter();
 
-  const handleClose = () => {
-    handleOnClose();
-  };
-
   const logoutFunction = async () => {
     destroyCookie(null, 'rememberMe');
     await signOut();
@@ -36,7 +32,7 @@ export const ProfilePopup = ({anchorEl, handleOnClose}: ProfilePopupProps) => {
       id="profile-popup"
       open={Boolean(anchorEl)}
       anchorEl={anchorEl}
-      onClose={handleClose}
+      onClose={() => handleOnClose()}
       anchorOrigin={{
         vertical: 'bottom',
         horizontal: 'left',
