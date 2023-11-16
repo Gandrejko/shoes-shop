@@ -4,17 +4,12 @@ import Header from '../Header';
 
 const styles: Record<string, SxProps> = {
   layout: {
-    height: '100vh',
-    width: '100vw',
-    overflow: 'hidden',
     display: 'flex',
     flexDirection: 'column',
+    height: '100vh',
   },
   children: {
-    width: '100%',
-    height: '100%',
-    overflow: 'hidden',
-    overflowY: 'visible',
+    overflowY: 'auto',
   },
 };
 
