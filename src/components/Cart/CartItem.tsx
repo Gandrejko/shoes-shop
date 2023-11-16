@@ -7,11 +7,11 @@ import { ProductAttributes } from '@/types/product';
 const styles: Record<string, SxProps> = {
   container: {
     display: 'flex',
-    position: 'relative',
     borderBottom: '1px solid #EAECF0',
     marginTop: '40px',
   },
   productDetails: {
+    minWidth: '100%',
     display: 'flex',
     marginBottom: 4,
   },
@@ -50,6 +50,9 @@ const styles: Record<string, SxProps> = {
     },
   },
   quantityAndDelete: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
     display: 'flex',
     gap: {
       xl: 5,
@@ -59,6 +62,7 @@ const styles: Record<string, SxProps> = {
     },
   },
   productPrice: {
+    padding: "0 0 0 10%",
     lineHeight: 1.2,
     fontWeight: '700',
     fontSize: {
@@ -121,6 +125,16 @@ const styles: Record<string, SxProps> = {
       xs: '26px',
     },
   },
+  nameAndPrice: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  blocklItem:
+  {
+    position: 'relative',
+    flex: 1
+  }
+
 };
 
 type ProductItemProps = {
@@ -193,8 +207,9 @@ const ProductItem: React.FC<ProductItemProps> = ({
             />
           )}
         </Box>
-        <Box>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+
+        <Box sx={styles.blocklItem}>
+          <Box sx={styles.nameAndPrice}>
             <Typography variant="h2" sx={styles.productName}>
               {product?.name}
             </Typography>
