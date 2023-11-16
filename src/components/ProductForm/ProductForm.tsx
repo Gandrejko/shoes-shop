@@ -1,15 +1,22 @@
-import {Brand} from '@/types/brand';
-import {Category} from '@/types/category';
-import {Color} from '@/types/color';
-import {Gender} from '@/types/gender';
 import {Image} from '@/types/image';
-import {Size} from '@/types/size';
 import {useSession} from 'next-auth/react';
+import {
+  UseFormRegister,
+  UseFormSetValue,
+  UseFormTrigger,
+} from 'react-hook-form';
 import FormContainer from './components/FormContainer';
 import ImagesContainer from './components/ImagesContainer';
 import theme from '@/styles/theme/commonTheme';
 import {Box, Button, SxProps, Typography} from '@mui/material';
-import React, {createContext, useEffect, useMemo, useState} from 'react';
+import React, {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import {FieldErrors, useForm} from 'react-hook-form';
 import {toast} from 'react-toastify';
 import {Product, ProductAttributes, ProductRequest} from '@/types/product';
@@ -51,7 +58,29 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-export const ProductFormContext = createContext<any>({});
+type ProductFormContextType = {
+  gender: number;
+  setGender: Dispatch<SetStateAction<number>>;
+  brand: number;
+  setBrand: Dispatch<SetStateAction<number>>;
+  chosenSizes: number[];
+  setChosenSizes: Dispatch<SetStateAction<number[]>>;
+  images: Pick<Image, 'id' | 'url'>[];
+  setImages: Dispatch<SetStateAction<Pick<Image, 'id' | 'url'>[]>>;
+  register: UseFormRegister<ProductFormData>;
+  errors: FieldErrors<ProductFormData>;
+  setValue: UseFormSetValue<ProductFormData>;
+  color: number;
+  setColor: Dispatch<SetStateAction<number>>;
+  chosenCategories: number[];
+  setChosenCategories: Dispatch<SetStateAction<number[]>>;
+  isLoading: boolean;
+  trigger: UseFormTrigger<ProductFormData>;
+};
+
+export const ProductFormContext = createContext<ProductFormContextType>(
+  {} as ProductFormContextType,
+);
 
 export type ProductFormData = Pick<Product, 'name' | 'description' | 'price'>;
 
@@ -66,10 +95,10 @@ const ProductForm = ({onSubmit, product, isLoading}: ProductFormProps) => {
   const [gender, setGender] = useState<number>(product?.gender?.data?.id || 0);
   const [brand, setBrand] = useState<number>(product?.brand?.data?.id || 0);
   const [color, setColor] = useState<number>(product?.color?.data?.id || 0);
-  const [choosedSizes, setChoosedSizes] = useState<number[]>(
+  const [chosenSizes, setChosenSizes] = useState<number[]>(
     product?.sizes?.data.map(({id}) => id) || [],
   );
-  const [choosedCategories, setChoosedCategories] = useState<number[]>(
+  const [chosenCategories, setChosenCategories] = useState<number[]>(
     product?.categories?.data.map(({id}) => id) || [],
   );
   const [images, setImages] = useState<Pick<Image, 'id' | 'url'>[]>(
@@ -96,8 +125,8 @@ const ProductForm = ({onSubmit, product, isLoading}: ProductFormProps) => {
       gender,
       brand,
       color,
-      sizes: choosedSizes,
-      categories: choosedCategories,
+      sizes: chosenSizes,
+      categories: chosenCategories,
       images,
       teamName: 'team-3',
       userID: session.data?.user.id,
@@ -117,8 +146,8 @@ const ProductForm = ({onSubmit, product, isLoading}: ProductFormProps) => {
         setGender,
         brand,
         setBrand,
-        choosedSizes,
-        setChoosedSizes,
+        chosenSizes,
+        setChosenSizes,
         images,
         setImages,
         register,
@@ -126,9 +155,9 @@ const ProductForm = ({onSubmit, product, isLoading}: ProductFormProps) => {
         setValue,
         color,
         setColor,
-        choosedCategories,
-        setChoosedCategories,
-        isLoading,
+        chosenCategories,
+        setChosenCategories,
+        isLoading: isLoading || false,
         trigger,
       }}
     >
