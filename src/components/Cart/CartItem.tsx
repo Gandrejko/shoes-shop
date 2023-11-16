@@ -2,21 +2,7 @@ import {useState} from 'react';
 import {Box, Typography, Button, useTheme, SxProps} from '@mui/material';
 import Image from 'next/image';
 import {useQuery, useQueryClient, useMutation} from '@tanstack/react-query';
-
-type Product = {
-  id: number;
-  name: string;
-  image: string;
-  gender: string;
-  available: string;
-  price: number;
-  quantity: number;
-};
-
-type ProductItemProps = {
-  product: any;
-  cartIds: [id: number];
-};
+import {ProductAttributes} from '@/types/product';
 
 const styles: Record<string, SxProps> = {
   container: {
@@ -47,7 +33,12 @@ const styles: Record<string, SxProps> = {
     marginRight: '20px',
   },
   productName: {
-    fontSize: '15px',
+    fontSize: {
+      xl: 30,
+      lg: 30,
+      sm: 24,
+      xs: 16,
+    },
   },
   productSubtitle: {
     color: '#5C5C5C',
@@ -142,7 +133,17 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-const ProductItem: React.FC<ProductItemProps> = ({product, cartIds}) => {
+type ProductItemProps = {
+  product: ProductAttributes;
+  cartIds: Record<string, number>;
+  productID: number;
+};
+
+const ProductItem: React.FC<ProductItemProps> = ({
+  product,
+  cartIds,
+  productID,
+}) => {
   const queryClient = useQueryClient();
   const theme = useTheme();
 
@@ -150,7 +151,7 @@ const ProductItem: React.FC<ProductItemProps> = ({product, cartIds}) => {
     mutationKey: ['cart'],
     mutationFn: async () => {
       const updatedCart = Object.keys(cartIds).filter(
-        productId => productId !== product.id.toString(),
+        productId => productId !== productID.toString(),
       );
       localStorage.setItem('cart', JSON.stringify(updatedCart));
     },
@@ -166,8 +167,8 @@ const ProductItem: React.FC<ProductItemProps> = ({product, cartIds}) => {
         'cart',
         JSON.stringify({
           ...cartIds,
-          [product.id]:
-            type === 'inc' ? cartIds[product.id] + 1 : cartIds[product.id] - 1,
+          [productID]:
+            type === 'inc' ? cartIds[productID] + 1 : cartIds[productID] - 1,
         }),
       );
     },
@@ -180,20 +181,35 @@ const ProductItem: React.FC<ProductItemProps> = ({product, cartIds}) => {
     <Box sx={styles.container}>
       <Box sx={styles.productDetails}>
         <Box sx={styles.productImage}>
-          <Image
-            style={{objectFit: 'cover'}}
-            fill
-            src={product?.image}
-            alt={product?.name}
-          />
+          {!product.images?.data?.[0].attributes.url && (
+            <Image
+              style={{objectFit: 'cover'}}
+              fill
+              src="/icons/emptyPhoto2.svg"
+              alt={product.name || ' '}
+            />
+          )}
+
+          {product.images?.data?.[0].attributes.url && (
+            <Image
+              style={{objectFit: 'cover'}}
+              fill
+              src={product.images?.data?.[0].attributes.url}
+              alt={product.name || ' '}
+            />
+          )}
         </Box>
         <Box>
           <Typography variant="h2" sx={styles.productName}>
             {product?.name}
           </Typography>
-          <Typography sx={styles.productSubtitle}>
-            {product?.gender}&apos;s shoes
-          </Typography>
+
+          {product.gender?.data?.attributes.name && (
+            <Typography sx={styles.productSubtitle}>
+              {product.gender?.data?.attributes.name}&apos;s shoes
+            </Typography>
+          )}
+
           <Box sx={styles.priceAndButtons}>
             <Typography sx={styles.productPrice}>${product?.price}</Typography>
 
@@ -209,7 +225,7 @@ const ProductItem: React.FC<ProductItemProps> = ({product, cartIds}) => {
                 >
                   -
                 </Box>
-                <Typography>{cartIds[product?.id]}</Typography>
+                <Typography>{cartIds[productID]}</Typography>
                 <Box
                   sx={{
                     ...styles.quantityButton,

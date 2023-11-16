@@ -1,6 +1,7 @@
-import {UpdateFormType} from '@/pages/settings';
 import {Box, Button, SxProps} from '@mui/material';
+import {useContext} from 'react';
 import {Input} from '../Inputs/Input';
+import {UpdateFormContext} from './UpdateForm';
 
 const styles: Record<string, SxProps> = {
   input: {mb: 3},
@@ -14,7 +15,10 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-const UpdateFormContainer = ({formProps}: UpdateFormType) => {
+const UpdateFormContainer = () => {
+  const {isUserDataLoading, isUploadImageLoading, register, formState} =
+    useContext(UpdateFormContext);
+
   return (
     <>
       <Box sx={styles.inputsBox}>
@@ -23,59 +27,57 @@ const UpdateFormContainer = ({formProps}: UpdateFormType) => {
           type="text"
           labelText="Name"
           name="firstName"
+          disabled={isUserDataLoading}
+          register={register}
+          validationSchema={{}}
+          errorMessage={formState.errors.firstName?.message}
           boxSx={styles.input}
-          register={formProps.register}
-          validationSchema={{
-            required: 'Name is required',
-          }}
-          errorMessage={formProps.formState.errors.firstName?.message}
         />
         <Input
           placeholder="Last Name"
           type="text"
           labelText="Surname"
           name="lastName"
+          disabled={isUserDataLoading}
+          register={register}
+          validationSchema={{}}
+          errorMessage={formState.errors.lastName?.message}
           boxSx={styles.input}
-          register={formProps.register}
-          validationSchema={{
-            required: 'Surname is required',
-          }}
-          errorMessage={formProps.formState.errors.lastName?.message}
         />
         <Input
           placeholder="Email address"
           type="mail"
           labelText="Email"
           name="email"
-          boxSx={styles.input}
           disabled
-          register={formProps.register}
-          validationSchema={{
-            required: 'Email is required',
-            pattern: {
-              value: /\S+@\S+\.\S+/,
-              message: 'This email is invalid',
-            },
-          }}
-          errorMessage={formProps.formState.errors.email?.message}
+          register={register}
+          validationSchema={{}}
+          errorMessage={formState.errors.email?.message}
+          boxSx={styles.input}
         />
         <Input
           placeholder="Phone number"
           type="tel"
           labelText="Phone number"
           name="phoneNumber"
-          register={formProps.register}
+          disabled={isUserDataLoading}
+          register={register}
           validationSchema={{
-            required: 'Phone number is required',
             pattern: {
               value: /^\(\d{3}\) \d{3}-\d{4}$/,
-              message: 'This phone is invalid',
+              message:
+                'Please, enter a valid phone number in the format (949) 354-2574',
             },
           }}
-          errorMessage={formProps.formState.errors.phoneNumber?.message}
+          errorMessage={formState.errors.phoneNumber?.message}
         />
       </Box>
-      <Button variant="contained" type="submit" sx={styles.button}>
+      <Button
+        variant="contained"
+        type="submit"
+        sx={styles.button}
+        disabled={isUserDataLoading || isUploadImageLoading}
+      >
         Save changes
       </Button>
     </>

@@ -1,20 +1,23 @@
 import HeaderLayout from '@/components/HeaderLayout/HeaderLayout';
 import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
 import UpdateForm from '@/components/UpdateProfile/UpdateForm';
-import {Box, SxProps, Typography} from '@mui/material';
-import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
-import axios from 'axios';
+import useGet from '@/hooks/useGet';
+import usePut from '@/hooks/usePut';
+import {UserRequest, UserResponse} from '@/types/user';
+import {Box, CircularProgress, SxProps, Typography} from '@mui/material';
 import {useSession} from 'next-auth/react';
 import {ReactElement} from 'react';
-import {UseFormReturn} from 'react-hook-form';
 import {toast} from 'react-toastify';
 import {NextPageWithLayout} from './_app';
+import Loader from '@/components/UpdateProfile/Loader';
 
 const styles: Record<string, SxProps> = {
   container: {
-    display: 'flex',
     padding: {xs: 3, sm: 4, md: 6.5},
     margin: {xs: '0 auto', md: 0},
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: {xs: 'column', md: 'row'},
   },
   box: {flex: 5},
   header: {
@@ -22,87 +25,47 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-export type UserDataType = {
-  id: number;
-  username: string;
-  email: string;
-  provider: string;
-  confirmed: boolean;
-  blocked: boolean;
-  createdAt: string;
-  updatedAt: string;
-  phoneNumber: string;
-  firstName: string;
-  lastName: string;
-  avatar: any;
-};
-
-export type UpdateFormType = {
-  formProps: Pick<
-    UseFormReturn<Partial<UserDataType>>,
-    'register' | 'control' | 'getValues' | 'setValue' | 'formState'
-  >;
-};
-
 const SettingsPage: NextPageWithLayout = () => {
-  const queryClient = useQueryClient();
-  const {data: session, update, status} = useSession();
-  const token = session?.user.accessToken;
-  const currentUser = session?.user;
+  const {data: session, update} = useSession();
+  const sessionUser = session?.user;
 
-  const {data, isLoading} = useQuery({
-    queryKey: ['users', currentUser?.id],
-    queryFn: async () => {
-      if (status === 'loading') return null;
+  const {data: userData, isLoading} = useGet<UserResponse>(
+    `/users/${sessionUser?.id}`,
+    {enabled: Boolean(sessionUser)},
+    {populate: 'avatar'},
+  );
 
-      const url = `${process.env.API_URL}/users/${currentUser?.id}`;
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        params: {
-          populate: 'avatar',
-        },
-      };
-      const res = await axios.get(url, config);
-      return res.data;
+  const {mutate, isPending} = usePut<UserRequest, UserResponse>(
+    `/users/${sessionUser?.id}`,
+    {
+      onSuccess: newData => {
+        update({
+          user: {
+            ...newData,
+            image: userData?.avatar?.url,
+          },
+        });
+        toast.success('Your profile was successfully updated!');
+      },
+      onError: error => {
+        toast.error(error.message);
+      },
     },
-  });
+  );
 
-  const {mutate} = useMutation({
-    mutationFn: async (userUpdateData: Partial<UserDataType>) => {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-
-      const res = await axios.putForm(
-        `${process.env.API_URL}/users/${currentUser?.id}`,
-        {...userUpdateData, avatar: userUpdateData.avatar?.id ?? null},
-        config,
-      );
-      return res.data;
-    },
-    onSuccess: newData => {
-      queryClient.invalidateQueries({queryKey: ['users', currentUser?.id]});
-      update(newData);
-      toast.success('Your profile was successfully updated!');
-    },
-    onError: error => {
-      toast.error('Something went wrong. Please, try again!');
-    },
-  });
-
-  if (isLoading) return <div>Loading</div>;
-
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <Box sx={styles.container}>
       <Box sx={styles.box}>
         <Typography variant="h1" sx={styles.header}>
           My Profile
         </Typography>
-        <UpdateForm onSubmit={mutate} userData={data} />
+        <UpdateForm
+          onSubmit={mutate}
+          userData={userData!}
+          isUserDataLoading={isPending}
+        />
       </Box>
     </Box>
   );

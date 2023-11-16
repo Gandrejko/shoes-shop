@@ -6,7 +6,8 @@ import EmptyCartPage from '@/components/Cart/EmptyCartPage';
 import {useQuery, useQueryClient} from '@tanstack/react-query';
 import Header from '@/components/Header';
 import theme from '@/styles/theme/commonTheme';
-import products from '@/temp/data';
+import useGet from '@/hooks/useGet';
+import {ProductsResponse} from '@/types/product';
 
 const cartPageStyles = {
   container: {
@@ -32,7 +33,26 @@ const cartPageStyles = {
     width: '100%',
     textAlign: 'center',
   },
+  cartItem: {
+    width: {
+      xl: '62%',
+      lg: '100%',
+      sm: '100%',
+      xs: '100%',
+    },
+  },
+  summerySection: {
+    flexShrink: 2,
+    width: {
+      xl: '38%',
+      lg: '100%',
+      sm: '100%',
+      xs: '100%',
+    },
+  },
 };
+const txtAddFields = (ids: string[]) =>
+  ids.map(id => `filters[id]=${id}`).join('&');
 
 const CartPage = () => {
   const queryClient = useQueryClient();
@@ -41,51 +61,53 @@ const CartPage = () => {
     queryKey: ['cart'],
     queryFn: async () => JSON.parse(localStorage.getItem('cart') || '{}'),
   });
+  const params = cartIds && txtAddFields(Object.keys(cartIds));
 
-  const cartProducts = cartIds
-    ? Object.keys(cartIds)
-        .map(id => products.find(product => product.id === +id))
-        .filter(item => item != undefined)
-    : [];
-  const isEmpty = !cartIds || cartIds.length === 0;
+  const isNotEmpty = params !== undefined && params.length != 0;
+
+  const {data: products} = useGet<ProductsResponse>(
+    `/products?${params}`,
+    {
+      enabled: isNotEmpty,
+    },
+    {
+      populate: '*',
+    },
+  );
 
   return (
     <>
       <Header />
       <Box sx={cartPageStyles.container}>
-        {isEmpty && (
+        {!isNotEmpty && (
           <Box sx={cartPageStyles.emptyCartContainer}>
             <EmptyCartPage />
           </Box>
         )}
 
-        {!isEmpty && (
+        {isNotEmpty && (
           <>
-            <Box
-              sx={{width: '62%', '@media (max-width: 1230px)': {width: '100%'}}}
-            >
+            <Box sx={cartPageStyles.cartItem}>
               <Typography variant="h1">Cart</Typography>
-              {cartProducts.map(product => (
-                <ProductItem
-                  cartIds={cartIds}
-                  key={product?.id}
-                  product={product}
-                />
-              ))}
+              {products &&
+                products.data.map(({id, attributes}) => (
+                  <ProductItem
+                    productID={id}
+                    cartIds={cartIds}
+                    key={id}
+                    product={attributes}
+                  />
+                ))}
             </Box>
-            <Box
-              sx={{
-                flexShrink: 2,
-                width: '38%',
-                '@media (max-width: 1230px)': {width: '100%'},
-              }}
-            >
+            <Box sx={cartPageStyles.summerySection}>
               <SummarySection
                 products={Object.entries(cartIds).map(([id, quantity]) => ({
                   id,
                   quantity,
-                  price: products.find(product => product.id.toString() === id)
-                    ?.price,
+                  price:
+                    products?.data.find(
+                      ({id: productID}) => productID.toString() === id,
+                    )?.attributes.price || 0,
                 }))}
               />
             </Box>
