@@ -52,6 +52,11 @@ const cartPageStyles = {
       xs: '100%',
     },
   },
+  containerSkeleton: {
+    gap: '10%',
+    display: 'flex',
+    width: '100%'
+  }
 };
 
 const txtAddFields = (ids: string[]) =>
@@ -84,7 +89,7 @@ const CartPage = () => {
       <Header />
       <Box sx={cartPageStyles.container}>
         {isLoading ? (
-          <Box sx={{ gap: '10%', display: 'flex', width: '100%'}}>
+          <Box sx={cartPageStyles.containerSkeleton}>
             <Box sx={{ width: '62%', display: 'flex', flexDirection: "column" }}>
               {[...Array(3)].map((_, index) => (
                 <ProductItemSkeleton key={index} />

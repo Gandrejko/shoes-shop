@@ -1,8 +1,8 @@
-import {useState} from 'react';
-import {Box, Typography, Button, useTheme, SxProps} from '@mui/material';
+import { useState } from 'react';
+import { Box, Typography, Button, useTheme, SxProps } from '@mui/material';
 import Image from 'next/image';
-import {useQuery, useQueryClient, useMutation} from '@tanstack/react-query';
-import {ProductAttributes} from '@/types/product';
+import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
+import { ProductAttributes } from '@/types/product';
 
 const styles: Record<string, SxProps> = {
   container: {
@@ -58,18 +58,8 @@ const styles: Record<string, SxProps> = {
       xs: 2,
     },
   },
-  priceAndButtons: {
-    display: 'flex',
-    flexDirection: 'column',
-    position: 'absolute',
-    right: 0,
-    top: 0,
-    justifyContent: 'space-between',
-    height: '80%',
-  },
   productPrice: {
     lineHeight: 1.2,
-    textAlign: 'right',
     fontWeight: '700',
     fontSize: {
       xl: 28,
@@ -148,8 +138,8 @@ const ProductItem: React.FC<ProductItemProps> = ({
   const theme = useTheme();
 
 
-  
-  const {mutate: deleteProduct} = useMutation({
+
+  const { mutate: deleteProduct } = useMutation({
     mutationKey: ['cart'],
     mutationFn: async () => {
 
@@ -160,11 +150,11 @@ const ProductItem: React.FC<ProductItemProps> = ({
       localStorage.setItem('cart', JSON.stringify(Object.fromEntries(updatedCart)));
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ['cart']});
+      queryClient.invalidateQueries({ queryKey: ['cart'] });
     },
   });
 
-  const {mutate: editProduct} = useMutation({
+  const { mutate: editProduct } = useMutation({
     mutationKey: ['cart'],
     mutationFn: async (type: 'inc' | 'dec') => {
       localStorage.setItem(
@@ -177,7 +167,7 @@ const ProductItem: React.FC<ProductItemProps> = ({
       );
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ['cart']});
+      queryClient.invalidateQueries({ queryKey: ['cart'] });
     },
   });
 
@@ -187,7 +177,7 @@ const ProductItem: React.FC<ProductItemProps> = ({
         <Box sx={styles.productImage}>
           {!product.images?.data?.[0].attributes.url && (
             <Image
-              style={{objectFit: 'cover'}}
+              style={{ objectFit: 'cover' }}
               fill
               src="/icons/emptyPhoto2.svg"
               alt={product.name || ' '}
@@ -196,7 +186,7 @@ const ProductItem: React.FC<ProductItemProps> = ({
 
           {product.images?.data?.[0].attributes.url && (
             <Image
-              style={{objectFit: 'cover'}}
+              style={{ objectFit: 'cover' }}
               fill
               src={product.images?.data?.[0].attributes.url}
               alt={product.name || ' '}
@@ -204,9 +194,15 @@ const ProductItem: React.FC<ProductItemProps> = ({
           )}
         </Box>
         <Box>
-          <Typography variant="h2" sx={styles.productName}>
-            {product?.name}
-          </Typography>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Typography variant="h2" sx={styles.productName}>
+              {product?.name}
+            </Typography>
+
+            <Typography sx={styles.productPrice}>${product?.price}</Typography>
+
+          </Box>
+
 
           {product.gender?.data?.attributes.name && (
             <Typography sx={styles.productSubtitle}>
@@ -214,41 +210,37 @@ const ProductItem: React.FC<ProductItemProps> = ({
             </Typography>
           )}
 
-          <Box sx={styles.priceAndButtons}>
-            <Typography sx={styles.productPrice}>${product?.price}</Typography>
-
-            <Box sx={styles.quantityAndDelete}>
-              <Box sx={styles.quantityButtons}>
-                <Box
-                  sx={{
-                    ...styles.quantityButton,
-                    backgroundColor: 'grey.A100',
-                    color: 'grey.A200',
-                  }}
-                  onClick={() => editProduct('dec')}
-                >
-                  -
-                </Box>
-                <Typography>{cartIds[productID]}</Typography>
-                <Box
-                  sx={{
-                    ...styles.quantityButton,
-                    backgroundColor: 'primary.main',
-                    color: 'background.default',
-                  }}
-                  onClick={() => editProduct('inc')}
-                >
-                  +
-                </Box>
-              </Box>
-              <Button
-                variant="outlined"
-                onClick={() => deleteProduct()}
-                sx={styles.deleteButton}
+          <Box sx={styles.quantityAndDelete}>
+            <Box sx={styles.quantityButtons}>
+              <Box
+                sx={{
+                  ...styles.quantityButton,
+                  backgroundColor: 'grey.A100',
+                  color: 'grey.A200',
+                }}
+                onClick={() => editProduct('dec')}
               >
-                Delete
-              </Button>
+                -
+              </Box>
+              <Typography>{cartIds[productID]}</Typography>
+              <Box
+                sx={{
+                  ...styles.quantityButton,
+                  backgroundColor: 'primary.main',
+                  color: 'background.default',
+                }}
+                onClick={() => editProduct('inc')}
+              >
+                +
+              </Box>
             </Box>
+            <Button
+              variant="outlined"
+              onClick={() => deleteProduct()}
+              sx={styles.deleteButton}
+            >
+              Delete
+            </Button>
           </Box>
         </Box>
       </Box>
