@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {Box, Typography, Button} from '@mui/material';
+import {Box, Typography, Button, useTheme, SxProps} from '@mui/material';
 import Image from 'next/image';
 import {useQuery, useQueryClient, useMutation} from '@tanstack/react-query';
 
@@ -18,8 +18,133 @@ type ProductItemProps = {
   cartIds: [id: number];
 };
 
+const styles: Record<string, SxProps> = {
+  container: {
+    display: 'flex',
+    position: 'relative',
+    borderBottom: '1px solid #EAECF0',
+    marginTop: '40px',
+  },
+  productDetails: {
+    display: 'flex',
+    marginBottom: 4,
+  },
+  productImage: {
+    maxWidth: 220,
+    position: 'relative',
+    width: {
+      xl: '200px',
+      lg: '200px',
+      sm: '150px',
+      xs: '130px',
+    },
+    height: {
+      xl: '200px',
+      lg: '200px',
+      sm: '150px',
+      xs: '130px',
+    },
+    marginRight: '20px',
+  },
+  productName: {
+    fontSize: '15px',
+  },
+  productSubtitle: {
+    color: '#5C5C5C',
+    fontSize: {
+      xl: 20,
+      lg: 20,
+      sm: 15,
+      xs: 12,
+    },
+  },
+  quantityAndDelete: {
+    display: 'flex',
+    gap: {
+      xl: 5,
+      lg: 5,
+      sm: 4,
+      xs: 2,
+    },
+  },
+  priceAndButtons: {
+    display: 'flex',
+    flexDirection: 'column',
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    justifyContent: 'space-between',
+    height: '80%',
+  },
+  productPrice: {
+    lineHeight: 1.2,
+    textAlign: 'right',
+    fontWeight: '700',
+    fontSize: {
+      xl: 28,
+      lg: 26,
+      sm: 28,
+      xs: 16,
+    },
+  },
+  quantityButtons: {
+    gap: '10px',
+    fontWeight: '700',
+    fontSize: 18,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+  },
+  quantityButton: {
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    opacity: '70%',
+    borderRadius: '50%',
+    border: 'none',
+    fontSize: {
+      xl: '18px',
+      lg: '16px',
+      sm: '18px',
+      xs: '12px',
+    },
+    width: {
+      xl: '32px',
+      lg: '32px',
+      sm: '34px',
+      xs: '24px',
+    },
+    height: {
+      xl: '32px',
+      lg: '32px',
+      sm: '34px',
+      xs: '24px',
+    },
+    '&:hover': {
+      opacity: '100%',
+    },
+  },
+  deleteButton: {
+    width: {
+      xl: '120px',
+      lg: '90px',
+      sm: '120px',
+      xs: '80px',
+    },
+    height: {
+      xl: '40px',
+      lg: '40px',
+      sm: '40px',
+      xs: '26px',
+    },
+  },
+};
+
 const ProductItem: React.FC<ProductItemProps> = ({product, cartIds}) => {
   const queryClient = useQueryClient();
+  const theme = useTheme();
 
   const {mutate: deleteProduct} = useMutation({
     mutationKey: ['cart'],
@@ -42,7 +167,7 @@ const ProductItem: React.FC<ProductItemProps> = ({product, cartIds}) => {
         JSON.stringify({
           ...cartIds,
           [product.id]:
-            type == 'inc' ? cartIds[product.id] + 1 : cartIds[product.id] - 1,
+            type === 'inc' ? cartIds[product.id] + 1 : cartIds[product.id] - 1,
         }),
       );
     },
@@ -52,94 +177,54 @@ const ProductItem: React.FC<ProductItemProps> = ({product, cartIds}) => {
   });
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        position: 'relative',
-        borderBottom: '1px solid #EAECF0',
-        marginTop: '40px',
-      }}
-    >
-      <Box sx={{display: 'flex', marginBottom: 4}}>
-        <Image
-          src={product?.image}
-          alt={product?.name}
-          width={220}
-          height={220}
-        />
+    <Box sx={styles.container}>
+      <Box sx={styles.productDetails}>
+        <Box sx={styles.productImage}>
+          <Image
+            style={{objectFit: 'cover'}}
+            fill
+            src={product?.image}
+            alt={product?.name}
+          />
+        </Box>
         <Box>
-          <Typography sx={{fontWeight: '500', fontSize: 30, marginLeft: 2}}>
+          <Typography variant="h2" sx={styles.productName}>
             {product?.name}
           </Typography>
-          <Typography sx={{color: '#5C5C5C', fontSize: 18, marginLeft: 2}}>
+          <Typography sx={styles.productSubtitle}>
             {product?.gender}&apos;s shoes
           </Typography>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              position: 'absolute',
-              right: '0',
-              top: '0',
-              justifyContent: 'space-between',
-              height: '80%',
-            }}
-          >
-            <Typography
-              sx={{
-                textAlign: 'right',
-                fontWeight: '700',
-                fontSize: 18,
-                marginLeft: 4,
-                marginTop: 1,
-              }}
-            >
-              ${product?.price}
-            </Typography>
-            <Box
-              sx={{
-                fontWeight: '700',
-                fontSize: 18,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <Button
-                sx={{
-                  color: '#CECECE',
-                  backgroundColor: '#E8E8E8',
-                  minWidth: '32px',
-                  height: '32px',
-                  borderRadius: '50%',
-                  border: 'none',
-                }}
-                onClick={() => editProduct('dec')}
-              >
-                -
-              </Button>
-              <Typography sx={{fontWeight: '400', fontSize: 24, marginLeft: 2}}>
-                {cartIds[product?.id]}
-              </Typography>
-              <Button
-                sx={{
-                  color: '#FE645E',
-                  backgroundColor: '#FFD7D6',
-                  minWidth: '32px',
-                  height: '32px',
-                  borderRadius: '50%',
-                  border: 'none',
-                  marginLeft: 2,
-                }}
-                onClick={() => editProduct('inc')}
-              >
-                +
-              </Button>
+          <Box sx={styles.priceAndButtons}>
+            <Typography sx={styles.productPrice}>${product?.price}</Typography>
 
+            <Box sx={styles.quantityAndDelete}>
+              <Box sx={styles.quantityButtons}>
+                <Box
+                  sx={{
+                    ...styles.quantityButton,
+                    backgroundColor: 'grey.A100',
+                    color: 'grey.A200',
+                  }}
+                  onClick={() => editProduct('dec')}
+                >
+                  -
+                </Box>
+                <Typography>{cartIds[product?.id]}</Typography>
+                <Box
+                  sx={{
+                    ...styles.quantityButton,
+                    backgroundColor: 'primary.main',
+                    color: 'background.default',
+                  }}
+                  onClick={() => editProduct('inc')}
+                >
+                  +
+                </Box>
+              </Box>
               <Button
-                onClick={() => deleteProduct()}
                 variant="outlined"
-                sx={{marginLeft: '10px', width: '90px'}}
+                onClick={() => deleteProduct()}
+                sx={styles.deleteButton}
               >
                 Delete
               </Button>

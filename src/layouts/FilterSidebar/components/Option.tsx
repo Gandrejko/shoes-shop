@@ -9,36 +9,36 @@ const styles = {
 };
 
 type OptionProps = {
-  id: number;
-  name: string | number;
+  value: string | number;
   checked: boolean;
-  onAddFilter: (id: number) => void;
-  onRemoveFilter: (id: number) => void;
+  onAddFilter: () => void;
+  onRemoveFilter: () => void;
 };
 
 export const Option = ({
-  id,
-  name,
+  value,
   checked,
   onAddFilter,
   onRemoveFilter,
 }: OptionProps) => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.checked) onAddFilter(id);
-    if (!e.target.checked) onRemoveFilter(id);
+    if (e.target.checked) onAddFilter();
+    if (!e.target.checked) onRemoveFilter();
   };
+
+  const id = useId();
 
   return (
     <Box sx={styles.option}>
       <Checkbox
         size="small"
         color="primary"
-        id={String(id)}
+        id={id}
         sx={{paddingLeft: 0}}
         checked={checked}
         onChange={handleChange}
       />
-      <InputLabel htmlFor={String(id)}>{name}</InputLabel>
+      <InputLabel htmlFor={id}>{value}</InputLabel>
     </Box>
   );
 };
