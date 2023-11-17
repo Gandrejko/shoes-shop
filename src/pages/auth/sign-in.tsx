@@ -7,13 +7,14 @@ import {
   FormControlLabel,
   Typography,
   Button,
+  CircularProgress,
 } from '@mui/material';
 import Link from 'next/link';
 import {Input} from '@/components/Inputs/Input';
 import {useRouter} from 'next/router';
 import {toast} from 'react-toastify';
 import {styles} from '../../components/AuthLayout/authPagesStyles';
-import {ReactElement} from 'react';
+import {ReactElement, useState} from 'react';
 import {AuthLayout} from '@/components/AuthLayout/AuthLayout';
 
 interface SignInType {
@@ -22,6 +23,7 @@ interface SignInType {
   rememberMe: boolean;
 }
 const SignIn = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -32,23 +34,29 @@ const SignIn = () => {
   const router = useRouter();
 
   const onSubmit: SubmitHandler<SignInType> = async data => {
+    setIsLoading(true);
     signIn('credentials', {
       identifier: data.email,
       password: data.password,
       rememberMe: data.rememberMe,
       redirect: false,
-    }).then((value: SignInResponse | undefined) => {
-      if (value?.ok) {
-        localStorage.setItem('signInJustNow', JSON.stringify(true));
-        router.push('/');
-      } else {
-        toast.error('Wrong credentials!');
-      }
-    });
+    })
+      .then((value: SignInResponse | undefined) => {
+        if (value?.ok) {
+          localStorage.setItem('signInJustNow', JSON.stringify(true));
+          router.push('/products');
+        } else {
+          toast.error('Wrong credentials!');
+        }
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   return (
-    <Box>
+    <Box sx={styles.formBox}>
+      {isLoading && <CircularProgress sx={styles.loader} />}
       <Box
         component="form"
         onSubmit={handleSubmit(onSubmit)}
@@ -97,7 +105,7 @@ const SignIn = () => {
             </Link>
           </Box>
         </Box>
-        <Button type="submit" variant="contained">
+        <Button type="submit" variant="contained" disabled={isLoading}>
           Sign in
         </Button>
       </Box>

@@ -25,7 +25,7 @@ export const authOptions: AuthOptions = {
           );
 
           const userInfo = await axios.get(
-            `https://shoes-shop-strapi.herokuapp.com/api/users/${response.data.user.id}?populate=*`,
+            `https://shoes-shop-strapi.herokuapp.com/api/users/${response.data.user.id}?populate=avatar`,
             {
               headers: {
                 'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ export const authOptions: AuthOptions = {
           return {
             ...response.data.user,
             access_token: response.data.jwt,
-            image: userInfo.data.avatar.url,
+            image: userInfo.data.avatar?.url,
           };
         } catch {
           return null;

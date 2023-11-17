@@ -1,5 +1,5 @@
 import {Input} from '@/components/Inputs/Input';
-import {Box, Typography, Button} from '@mui/material';
+import {Box, Typography, Button, CircularProgress} from '@mui/material';
 import Link from 'next/link';
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {useMutation} from '@tanstack/react-query';
@@ -19,7 +19,7 @@ type SignUpType = {
 };
 
 const SignUp = () => {
-  const {mutateAsync} = useMutation({
+  const {mutate, isPending} = useMutation({
     mutationFn: (userData: Partial<SignUpType>) =>
       axios.post(
         'https://shoes-shop-strapi.herokuapp.com/api/auth/local/register',
@@ -44,11 +44,12 @@ const SignUp = () => {
 
   const onSubmit: SubmitHandler<SignUpType> = async data => {
     const {confirmPassword, ...restData} = data;
-    mutateAsync(restData);
+    mutate(restData);
   };
 
   return (
-    <Box>
+    <Box sx={styles.formBox}>
+      {isPending && <CircularProgress sx={styles.loader} />}
       <Box
         component="form"
         onSubmit={handleSubmit(onSubmit)}
@@ -108,7 +109,7 @@ const SignUp = () => {
           />
         </Box>
 
-        <Button type="submit" variant="contained">
+        <Button type="submit" variant="contained" disabled={isPending}>
           Sign up
         </Button>
       </Box>

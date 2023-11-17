@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import {SubmitHandler, useForm} from 'react-hook-form';
-import {Box, Button, Typography} from '@mui/material';
+import {Box, Button, CircularProgress, Typography} from '@mui/material';
 import Link from 'next/link';
 import {Input} from '@/components/Inputs/Input';
 import axios from 'axios';
@@ -17,7 +17,7 @@ type ForgotPasswordType = {
 
 const ForgotPassword = () => {
   const router = useRouter();
-  const {mutate} = useMutation({
+  const {mutate, isPending} = useMutation({
     mutationKey: ['forgot-password'],
     mutationFn: (userData: ForgotPasswordType) =>
       axios.post(
@@ -43,7 +43,8 @@ const ForgotPassword = () => {
   };
 
   return (
-    <Box>
+    <Box sx={styles.formBox}>
+      {isPending && <CircularProgress sx={styles.loader} />}
       <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={styles.form}>
         <Box sx={{marginBottom: '24px'}}>
           <Input
@@ -61,7 +62,7 @@ const ForgotPassword = () => {
           />
         </Box>
 
-        <Button type="submit" variant="contained">
+        <Button type="submit" variant="contained" disabled={isPending}>
           Reset password
         </Button>
       </Box>

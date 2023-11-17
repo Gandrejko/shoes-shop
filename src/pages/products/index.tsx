@@ -15,9 +15,8 @@ import ProductList from '@/components/Product/ProductList';
 import {FilterSidebar} from '@/layouts/FilterSidebar/FilterSidebar';
 import {NextPageWithLayout} from '@/pages/_app';
 import theme from '@/styles/theme/commonTheme';
-import {ProductsResponse} from '@/types/product';
-import axios from 'axios';
 import Head from 'next/head';
+import {SignInLayout} from '@/layouts/SignInLayout/SignInLayout';
 import {useRouter} from 'next/router';
 
 const styles: Record<string, SxProps> = {
@@ -160,7 +159,9 @@ MyProducts.getLayout = function getLayout(page: ReactElement) {
       <Head>
         <title>Catalog</title>
       </Head>
-      <HeaderLayout>{page}</HeaderLayout>
+      <SignInLayout>
+        <HeaderLayout>{page}</HeaderLayout>
+      </SignInLayout>
     </>
   );
 };

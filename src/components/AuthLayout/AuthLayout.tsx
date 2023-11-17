@@ -34,7 +34,7 @@ export const AuthLayout = ({children, title, subtTitle}: AuthLayoutProps) => {
   return (
     <Box sx={styles.tab}>
       <Box sx={styles.header}>
-        <Link href="/" style={styles.headerImage}>
+        <Link href="/products" style={styles.headerImage}>
           <Image src={logoIcon} alt="" />
         </Link>
       </Box>

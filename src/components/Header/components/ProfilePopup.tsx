@@ -27,6 +27,11 @@ export const ProfilePopup = ({anchorEl, handleOnClose}: ProfilePopupProps) => {
     await signOut();
   };
 
+  const onRedirectHandler = (url: string) => {
+    handleOnClose();
+    router.push(url);
+  };
+
   return (
     <Popover
       id="profile-popup"
@@ -39,11 +44,11 @@ export const ProfilePopup = ({anchorEl, handleOnClose}: ProfilePopupProps) => {
       }}
     >
       <List sx={styles.list}>
-        <ListItem onClick={() => router.push('/my-products')}>
+        <ListItem onClick={() => onRedirectHandler('/my-products')}>
           <Typography variant="body1">My products</Typography>
         </ListItem>
         <Divider />
-        <ListItem onClick={() => router.push('/settings')}>
+        <ListItem onClick={() => onRedirectHandler('/settings')}>
           <Typography variant="body1">My Settings</Typography>
         </ListItem>
         <Divider />

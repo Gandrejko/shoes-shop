@@ -42,7 +42,7 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
     <>
       <Toolbar sx={styles.desktopWrapper}>
         <Stack direction="row" alignItems="center" spacing={4}>
-          <Link href="/">
+          <Link href="/products">
             <Image src="/icons/logo.svg" alt="logo" width={40} height={30} />
           </Link>
           <MuiLink component={Link} href="/products" sx={styles.link}>

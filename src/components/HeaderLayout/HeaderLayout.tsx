@@ -10,6 +10,7 @@ const styles: Record<string, SxProps> = {
   },
   children: {
     overflowY: 'auto',
+    height: '100%',
   },
 };
 

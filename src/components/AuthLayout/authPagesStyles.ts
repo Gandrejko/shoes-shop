@@ -28,14 +28,14 @@ export const styles = {
   wrapper: {
     flex: '1',
     margin: {
-      xl: '155px 305px 20px 196px',
+      xl: '155px 250px 20px 196px',
       lg: '155px 13% 20px 10%',
       sm: '180px 9% 20px 6%',
       xs: '125px 20px 0',
     },
     width: '50%',
     maxWidth: {
-      xl: 'calc(50% - 305px - 196px)',
+      xl: 'calc(50% - 250px - 196px)',
       lg: 'calc(50% - 13% - 10%)',
     },
   },
@@ -92,5 +92,17 @@ export const styles = {
     alignItems: 'center',
     marginTop: '24px',
     gap: '15px',
+  },
+  formBox: {
+    position: 'relative',
+  },
+  loader: {
+    position: 'absolute',
+    left: '50%',
+    top: {
+      xl: '-250px',
+      lg: '-220px',
+      xs: '-200px',
+    },
   },
 };

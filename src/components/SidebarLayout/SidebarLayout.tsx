@@ -15,6 +15,7 @@ const styles: Record<string, SxProps> = {
   },
   children: {
     flex: 1,
+    height: '100%',
   },
 };
 
