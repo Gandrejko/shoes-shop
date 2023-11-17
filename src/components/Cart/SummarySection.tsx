@@ -95,7 +95,7 @@ const SummarySection = ({products}: {products: any[]}) => {
         </Typography>
       </Box>
 
-      <Link href={isCheckoutClicked ? '/thank-you' : '/catalog'}>
+      <Link href={isCheckoutClicked ? '/thank-you' : '/products'}>
         <Button
           variant="contained"
           sx={styles.checkoutButton}
