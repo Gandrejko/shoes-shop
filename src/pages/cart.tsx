@@ -8,11 +8,14 @@ import Header from '@/components/Header';
 import theme from '@/styles/theme/commonTheme';
 import useGet from '@/hooks/useGet';
 import {ProductsResponse} from '@/types/product';
+import ProductItemSkeleton from '@/components/Cart/ProductItemSkeleton';
+import SummarySectionSkeleton from '@/components/Cart/SummarySectionSkeleton';
+import {SxProps} from '@mui/system';
 
-const cartPageStyles = {
+const styles: Record<string, SxProps> = {
   container: {
     display: 'flex',
-    gap: '10%',
+    gap: '5%',
     margin: {
       xl: '100px 10% 50px 10%',
       lg: '50px 8% 50px 8%',
@@ -41,7 +44,7 @@ const cartPageStyles = {
       xs: '100%',
     },
   },
-  summerySection: {
+  summarySection: {
     flexShrink: 2,
     width: {
       xl: '38%',
@@ -50,7 +53,36 @@ const cartPageStyles = {
       xs: '100%',
     },
   },
+  containerSkeleton: {
+    gap: '10%',
+    display: 'flex',
+    flexDirection: {
+      [theme.breakpoints.down('lg')]: {
+        flexDirection: 'column',
+      },
+    },
+    width: '100%',
+  },
+  containerSkeletonCartItems: {
+    width: {
+      xl: '62%',
+      lg: '100%',
+      sm: '100%',
+      xs: '100%',
+    },
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  containerSkeletonSummer: {
+    width: {
+      xl: '38%',
+      lg: '100%',
+      sm: '100%',
+      xs: '100%',
+    },
+  },
 };
+
 const txtAddFields = (ids: string[]) =>
   ids.map(id => `filters[id]=${id}`).join('&');
 
@@ -63,9 +95,9 @@ const CartPage = () => {
   });
   const params = cartIds && txtAddFields(Object.keys(cartIds));
 
-  const isNotEmpty = params !== undefined && params.length != 0;
+  const isNotEmpty = params !== undefined && params.length !== 0;
 
-  const {data: products} = useGet<ProductsResponse>(
+  const {data: products, isLoading} = useGet<ProductsResponse>(
     `/products?${params}`,
     {
       enabled: isNotEmpty,
@@ -78,16 +110,25 @@ const CartPage = () => {
   return (
     <>
       <Header />
-      <Box sx={cartPageStyles.container}>
-        {!isNotEmpty && (
-          <Box sx={cartPageStyles.emptyCartContainer}>
+      <Box sx={styles.container}>
+        {isLoading ? (
+          <Box sx={styles.containerSkeleton}>
+            <Box sx={styles.containerSkeletonCartItems}>
+              {[...Array(3)].map((_, index) => (
+                <ProductItemSkeleton key={index} />
+              ))}
+            </Box>
+            <Box sx={styles.containerSkeletonSummer}>
+              <SummarySectionSkeleton />
+            </Box>
+          </Box>
+        ) : params !== undefined && params.length === 0 ? (
+          <Box sx={styles.emptyCartContainer}>
             <EmptyCartPage />
           </Box>
-        )}
-
-        {isNotEmpty && (
+        ) : isNotEmpty ? (
           <>
-            <Box sx={cartPageStyles.cartItem}>
+            <Box sx={styles.cartItem}>
               <Typography variant="h1">Cart</Typography>
               {products &&
                 products.data.map(({id, attributes}) => (
@@ -99,7 +140,7 @@ const CartPage = () => {
                   />
                 ))}
             </Box>
-            <Box sx={cartPageStyles.summerySection}>
+            <Box sx={styles.summarySection}>
               <SummarySection
                 products={Object.entries(cartIds).map(([id, quantity]) => ({
                   id,
@@ -112,7 +153,7 @@ const CartPage = () => {
               />
             </Box>
           </>
-        )}
+        ) : null}
       </Box>
     </>
   );
