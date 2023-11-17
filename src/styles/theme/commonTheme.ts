@@ -61,16 +61,17 @@ let theme = createTheme({
           scrollbarColor: `${theme.palette.grey[300]} transparent`,
           '&::-webkit-scrollbar, & *::-webkit-scrollbar': {
             backgroundColor: 'transparent',
-            width: theme.spacing(),
+            width: '18px',
           },
           '&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb': {
-            borderRadius: theme.spacing(),
+            borderRadius: '10px',
             backgroundColor: theme.palette.grey[300],
             transition: 'background-color 0.3s ease-in-out',
+            border: '5px transparent solid',
+            backgroundClip: 'padding-box',
           },
           '&::-webkit-scrollbar-thumb:hover, & *::-webkit-scrollbar-thumb:hover':
             {
-              borderRadius: theme.spacing(),
               backgroundColor: theme.palette.grey[400],
             },
           '&::-webkit-scrollbar-track-piece:start, & *::-webkit-scrollbar-track-piece:start':
