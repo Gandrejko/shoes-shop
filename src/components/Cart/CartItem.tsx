@@ -1,10 +1,9 @@
-import { useState } from 'react';
-import { Box, Typography, Button, useTheme, SxProps } from '@mui/material';
+import {useState} from 'react';
+import {Box, Typography, Button, useTheme, SxProps} from '@mui/material';
 import Image from 'next/image';
-import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
-import { ProductAttributes } from '@/types/product';
+import {useQuery, useQueryClient, useMutation} from '@tanstack/react-query';
+import {ProductAttributes} from '@/types/product';
 import {toast} from 'react-toastify';
-
 
 const styles: Record<string, SxProps> = {
   container: {
@@ -64,7 +63,7 @@ const styles: Record<string, SxProps> = {
     },
   },
   productPrice: {
-    padding: "0 0 0 10%",
+    padding: '0 0 0 10%',
     lineHeight: 1.2,
     fontWeight: '700',
     fontSize: {
@@ -131,12 +130,10 @@ const styles: Record<string, SxProps> = {
     display: 'flex',
     justifyContent: 'space-between',
   },
-  blocklItem:
-  {
+  blocklItem: {
     position: 'relative',
-    flex: 1
-  }
-
+    flex: 1,
+  },
 };
 
 type ProductItemProps = {
@@ -153,24 +150,23 @@ const ProductItem: React.FC<ProductItemProps> = ({
   const queryClient = useQueryClient();
   const theme = useTheme();
 
-
-
-  const { mutate: deleteProduct } = useMutation({
+  const {mutate: deleteProduct} = useMutation({
     mutationKey: ['cart'],
     mutationFn: async () => {
-
-
       const updatedCart = Object.entries(cartIds).filter(
         ([productId]) => productId !== productID.toString(),
       );
-      localStorage.setItem('cart', JSON.stringify(Object.fromEntries(updatedCart)));
+      localStorage.setItem(
+        'cart',
+        JSON.stringify(Object.fromEntries(updatedCart)),
+      );
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['cart'] });
+      queryClient.invalidateQueries({queryKey: ['cart']});
     },
   });
 
-  const { mutate: editProduct } = useMutation({
+  const {mutate: editProduct} = useMutation({
     mutationKey: ['cart'],
     mutationFn: async (type: 'inc' | 'dec') => {
       const cartIds = JSON.parse(localStorage.getItem('cart') || '{}');
@@ -180,7 +176,7 @@ const ProductItem: React.FC<ProductItemProps> = ({
       }
 
       if (type === 'dec' && cartIds[productID] === 1) {
-        toast.error("quantity cannot be less than 1");
+        toast.error('quantity cannot be less than 1');
         return;
       }
 
@@ -193,10 +189,9 @@ const ProductItem: React.FC<ProductItemProps> = ({
       localStorage.setItem('cart', JSON.stringify(cartIds));
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['cart'] });
+      queryClient.invalidateQueries({queryKey: ['cart']});
     },
   });
-
 
   return (
     <Box sx={styles.container}>
@@ -204,7 +199,7 @@ const ProductItem: React.FC<ProductItemProps> = ({
         <Box sx={styles.productImage}>
           {!product.images?.data?.[0].attributes.url && (
             <Image
-              style={{ objectFit: 'cover' }}
+              style={{objectFit: 'cover'}}
               fill
               src="/icons/emptyPhoto2.svg"
               alt={product.name || ' '}
@@ -213,7 +208,7 @@ const ProductItem: React.FC<ProductItemProps> = ({
 
           {product.images?.data?.[0].attributes.url && (
             <Image
-              style={{ objectFit: 'cover' }}
+              style={{objectFit: 'cover'}}
               fill
               src={product.images?.data?.[0].attributes.url}
               alt={product.name || ' '}
@@ -228,9 +223,7 @@ const ProductItem: React.FC<ProductItemProps> = ({
             </Typography>
 
             <Typography sx={styles.productPrice}>${product?.price}</Typography>
-
           </Box>
-
 
           {product.gender?.data?.attributes.name && (
             <Typography sx={styles.productSubtitle}>

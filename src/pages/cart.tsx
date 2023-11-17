@@ -1,16 +1,16 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import {Box, Typography} from '@mui/material';
 import ProductItem from '@/components/Cart/CartItem';
 import SummarySection from '@/components/Cart/SummarySection';
 import EmptyCartPage from '@/components/Cart/EmptyCartPage';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import {useQuery, useQueryClient} from '@tanstack/react-query';
 import Header from '@/components/Header';
 import theme from '@/styles/theme/commonTheme';
 import useGet from '@/hooks/useGet';
-import { ProductsResponse } from '@/types/product';
+import {ProductsResponse} from '@/types/product';
 import ProductItemSkeleton from '@/components/Cart/ProductItemSkeleton';
 import SummarySectionSkeleton from '@/components/Cart/SummarySectionSkeleton';
-import { SxProps } from '@mui/system';
+import {SxProps} from '@mui/system';
 
 const styles: Record<string, SxProps> = {
   container: {
@@ -61,7 +61,7 @@ const styles: Record<string, SxProps> = {
         flexDirection: 'column',
       },
     },
-    width: '100%'
+    width: '100%',
   },
   containerSkeletonCartItems: {
     width: {
@@ -71,7 +71,7 @@ const styles: Record<string, SxProps> = {
       xs: '100%',
     },
     display: 'flex',
-    flexDirection: "column"
+    flexDirection: 'column',
   },
   containerSkeletonSummer: {
     width: {
@@ -80,15 +80,16 @@ const styles: Record<string, SxProps> = {
       sm: '100%',
       xs: '100%',
     },
-  }
+  },
 };
 
-const txtAddFields = (ids: string[]) => ids.map(id => `filters[id]=${id}`).join('&');
+const txtAddFields = (ids: string[]) =>
+  ids.map(id => `filters[id]=${id}`).join('&');
 
 const CartPage = () => {
   const queryClient = useQueryClient();
 
-  const { data: cartIds } = useQuery({
+  const {data: cartIds} = useQuery({
     queryKey: ['cart'],
     queryFn: async () => JSON.parse(localStorage.getItem('cart') || '{}'),
   });
@@ -96,7 +97,7 @@ const CartPage = () => {
 
   const isNotEmpty = params !== undefined && params.length !== 0;
 
-  const { data: products, isLoading } = useGet<ProductsResponse>(
+  const {data: products, isLoading} = useGet<ProductsResponse>(
     `/products?${params}`,
     {
       enabled: isNotEmpty,
@@ -130,7 +131,7 @@ const CartPage = () => {
             <Box sx={styles.cartItem}>
               <Typography variant="h1">Cart</Typography>
               {products &&
-                products.data.map(({ id, attributes }) => (
+                products.data.map(({id, attributes}) => (
                   <ProductItem
                     productID={id}
                     cartIds={cartIds}
@@ -146,7 +147,7 @@ const CartPage = () => {
                   quantity,
                   price:
                     products?.data.find(
-                      ({ id: productID }) => productID.toString() === id,
+                      ({id: productID}) => productID.toString() === id,
                     )?.attributes.price || 0,
                 }))}
               />
