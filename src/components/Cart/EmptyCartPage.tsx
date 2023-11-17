@@ -54,7 +54,7 @@ const EmptyCartPage = () => {
         style={styles.imageWrapper}
       />
       <Typography component="p" sx={styles.title}>
-        You don`&apos;`t post have any products yet.
+        You don&apos;t post have any products yet.
       </Typography>
       <Typography component="p" sx={styles.description}>
         Post can contain video, images and text.
