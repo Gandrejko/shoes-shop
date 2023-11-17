@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import {useRouter} from 'next/router';
 
 const styles: Record<string, SxProps> = {
   page: {
@@ -85,7 +85,11 @@ const Error500 = () => {
           </Box>
           <Box sx={styles.button}>
             <Link href="#" passHref>
-              <Button variant="contained" sx={{width: '152px', height: '40px'}} onClick={() => router.back()}>
+              <Button
+                variant="contained"
+                sx={{width: '152px', height: '40px'}}
+                onClick={() => router.back()}
+              >
                 Go Back
               </Button>
             </Link>
