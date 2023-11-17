@@ -36,11 +36,7 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-type Props = {
-  initialProducts: ProductsResponse;
-};
-
-const MyProducts: NextPageWithLayout<Props> = ({initialProducts}: Props) => {
+const MyProducts: NextPageWithLayout = () => {
   const router = useRouter();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -127,7 +123,6 @@ const MyProducts: NextPageWithLayout<Props> = ({initialProducts}: Props) => {
             params={params}
             fullWidth={!showFilters}
             setProductsCount={count => setProductsCount(count)}
-            initialProducts={initialProducts}
           >
             <Stack gap={1} marginY={2}>
               <Avatar
@@ -157,27 +152,6 @@ const MyProducts: NextPageWithLayout<Props> = ({initialProducts}: Props) => {
       </Box>
     </Stack>
   );
-};
-
-export const getStaticProps = async () => {
-  const initialProducts = await axios.get<ProductsResponse>(
-    `${process.env.API_URL}/products`,
-    {
-      params: {
-        populate: '*',
-        'pagination[page]': 1,
-        'pagination[pageSize]': 10,
-        'filters[price][$gte]': 0,
-        'filters[price][$lte]': 1000,
-        'filters[teamName]': 'team-3',
-      },
-    },
-  );
-
-  return {
-    props: {initialProducts: initialProducts.data},
-    revalidate: 24 * 60 * 60, // 24 hours
-  };
 };
 
 MyProducts.getLayout = function getLayout(page: ReactElement) {

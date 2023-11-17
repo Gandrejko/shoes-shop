@@ -39,7 +39,6 @@ const ProductList = ({
   } = useInfiniteGet<ProductsResponse>(
     '/products',
     {
-      staleTime: 1000,
       initialData: initialProducts
         ? {pages: [initialProducts], pageParams: [1]}
         : undefined,
