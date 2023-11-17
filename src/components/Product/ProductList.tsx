@@ -50,7 +50,6 @@ const ProductList = ({
       ...params,
     },
   );
-  console.log(products);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
