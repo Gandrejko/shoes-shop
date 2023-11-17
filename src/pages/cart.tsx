@@ -1,16 +1,18 @@
-import React from 'react';
+import React, {ReactElement} from 'react';
 import {Box, Typography} from '@mui/material';
 import ProductItem from '@/components/Cart/CartItem';
 import SummarySection from '@/components/Cart/SummarySection';
 import EmptyCartPage from '@/components/Cart/EmptyCartPage';
 import {useQuery, useQueryClient} from '@tanstack/react-query';
-import Header from '@/components/Header';
 import theme from '@/styles/theme/commonTheme';
 import useGet from '@/hooks/useGet';
 import {ProductsResponse} from '@/types/product';
 import ProductItemSkeleton from '@/components/Cart/ProductItemSkeleton';
 import SummarySectionSkeleton from '@/components/Cart/SummarySectionSkeleton';
 import {SxProps} from '@mui/system';
+import Head from 'next/head';
+import HeaderLayout from '@/components/HeaderLayout/HeaderLayout';
+import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
 
 const styles: Record<string, SxProps> = {
   container: {
@@ -109,52 +111,56 @@ const CartPage = () => {
 
   return (
     <>
-      <Header />
-      <Box sx={styles.container}>
-        {isLoading ? (
-          <Box sx={styles.containerSkeleton}>
-            <Box sx={styles.containerSkeletonCartItems}>
-              {[...Array(3)].map((_, index) => (
-                <ProductItemSkeleton key={index} />
-              ))}
-            </Box>
-            <Box sx={styles.containerSkeletonSummer}>
-              <SummarySectionSkeleton />
-            </Box>
-          </Box>
-        ) : params !== undefined && params.length === 0 ? (
-          <Box sx={styles.emptyCartContainer}>
-            <EmptyCartPage />
-          </Box>
-        ) : isNotEmpty ? (
-          <>
-            <Box sx={styles.cartItem}>
-              <Typography variant="h1">Cart</Typography>
-              {products &&
-                products.data.map(({id, attributes}) => (
-                  <ProductItem
-                    productID={id}
-                    cartIds={cartIds}
-                    key={id}
-                    product={attributes}
-                  />
+      <Head>
+        <title>Cart</title>
+      </Head>
+      <HeaderLayout>
+        <Box sx={styles.container}>
+          {isLoading ? (
+            <Box sx={styles.containerSkeleton}>
+              <Box sx={styles.containerSkeletonCartItems}>
+                {[...Array(3)].map((_, index) => (
+                  <ProductItemSkeleton key={index} />
                 ))}
+              </Box>
+              <Box sx={styles.containerSkeletonSummer}>
+                <SummarySectionSkeleton />
+              </Box>
             </Box>
-            <Box sx={styles.summarySection}>
-              <SummarySection
-                products={Object.entries(cartIds).map(([id, quantity]) => ({
-                  id,
-                  quantity,
-                  price:
-                    products?.data.find(
-                      ({id: productID}) => productID.toString() === id,
-                    )?.attributes.price || 0,
-                }))}
-              />
+          ) : params !== undefined && params.length === 0 ? (
+            <Box sx={styles.emptyCartContainer}>
+              <EmptyCartPage />
             </Box>
-          </>
-        ) : null}
-      </Box>
+          ) : isNotEmpty ? (
+            <>
+              <Box sx={styles.cartItem}>
+                <Typography variant="h1">Cart</Typography>
+                {products &&
+                  products.data.map(({id, attributes}) => (
+                    <ProductItem
+                      productID={id}
+                      cartIds={cartIds}
+                      key={id}
+                      product={attributes}
+                    />
+                  ))}
+              </Box>
+              <Box sx={styles.summarySection}>
+                <SummarySection
+                  products={Object.entries(cartIds).map(([id, quantity]) => ({
+                    id,
+                    quantity,
+                    price:
+                      products?.data.find(
+                        ({id: productID}) => productID.toString() === id,
+                      )?.attributes.price || 0,
+                  }))}
+                />
+              </Box>
+            </>
+          ) : null}
+        </Box>
+      </HeaderLayout>
     </>
   );
 };

@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import Image from 'next/image';
 import Link from 'next/link';
+import {useRouter} from 'next/router';
 
 const styles: Record<string, SxProps> = {
   page: {
@@ -61,6 +62,7 @@ const styles: Record<string, SxProps> = {
 
 const Error500 = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const router = useRouter();
 
   return (
     <Stack sx={styles.page}>
@@ -83,7 +85,11 @@ const Error500 = () => {
           </Box>
           <Box sx={styles.button}>
             <Link href="#" passHref>
-              <Button variant="contained" sx={{width: '152px', height: '40px'}} onClick={() => window.history.back()}>
+              <Button
+                variant="contained"
+                sx={{width: '152px', height: '40px'}}
+                onClick={() => router.back()}
+              >
                 Go Back
               </Button>
             </Link>
@@ -112,7 +118,7 @@ const Error500 = () => {
                     <Button
                       variant="outlined"
                       sx={{width: '152px', height: '40px'}}
-                      onClick={() => window.history.back()}
+                      onClick={() => router.back()}
                     >
                       Go Back
                     </Button>
