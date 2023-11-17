@@ -6,7 +6,7 @@ import {UpdateFormContext} from './UpdateForm';
 
 const styles: Record<string, SxProps> = {
   headerBox: {
-    marginBottom: {xs: 2, sm: 6},
+    marginBottom: 2,
     display: 'flex',
     justifyContent: 'space-beetwen',
     alignItems: 'center',

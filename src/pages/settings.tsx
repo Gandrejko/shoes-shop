@@ -14,7 +14,7 @@ import Loader from '@/components/UpdateProfile/Loader';
 
 const styles: Record<string, SxProps> = {
   container: {
-    padding: {xs: 3, sm: 4, md: 6.5},
+    padding: 3,
     margin: {xs: '0 auto', md: 0},
     display: 'flex',
     alignItems: 'center',
@@ -22,7 +22,7 @@ const styles: Record<string, SxProps> = {
   },
   box: {flex: 5},
   header: {
-    marginBottom: {xs: '12px', sm: 4.5},
+    marginBottom: {xs: '12px', sm: 2},
   },
 };
 

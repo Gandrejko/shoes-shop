@@ -14,7 +14,7 @@ const styles: Record<string, SxProps> = {
   paragraph: {
     fontSize: {xs: 12, sm: 15},
     fontWeight: 300,
-    marginBottom: {xs: 3, sm: 6},
+    marginBottom: 2,
     color: 'text.secondary',
   },
 };
