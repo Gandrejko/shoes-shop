@@ -3,6 +3,8 @@ import { Box, Typography, Button, useTheme, SxProps } from '@mui/material';
 import Image from 'next/image';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import { ProductAttributes } from '@/types/product';
+import {toast} from 'react-toastify';
+
 
 const styles: Record<string, SxProps> = {
   container: {
@@ -171,19 +173,30 @@ const ProductItem: React.FC<ProductItemProps> = ({
   const { mutate: editProduct } = useMutation({
     mutationKey: ['cart'],
     mutationFn: async (type: 'inc' | 'dec') => {
-      localStorage.setItem(
-        'cart',
-        JSON.stringify({
-          ...cartIds,
-          [productID]:
-            type === 'inc' ? cartIds[productID] + 1 : cartIds[productID] - 1,
-        }),
-      );
+      const cartIds = JSON.parse(localStorage.getItem('cart') || '{}');
+
+      if (!(productID in cartIds)) {
+        return;
+      }
+
+      if (type === 'dec' && cartIds[productID] === 0) {
+        toast.error("quantity cannot be less than 0");
+        return;
+      }
+
+      if (type === 'dec' && cartIds[productID] > 0) {
+        cartIds[productID]--;
+      } else if (type === 'inc') {
+        cartIds[productID]++;
+      }
+
+      localStorage.setItem('cart', JSON.stringify(cartIds));
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['cart'] });
     },
   });
+
 
   return (
     <Box sx={styles.container}>
