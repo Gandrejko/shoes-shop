@@ -82,8 +82,8 @@ const Error500 = () => {
             </Typography>
           </Box>
           <Box sx={styles.button}>
-            <Link href="/products">
-              <Button variant="contained" sx={{width: '152px', height: '40px'}}>
+            <Link href="#" passHref>
+              <Button variant="contained" sx={{width: '152px', height: '40px'}} onClick={() => window.history.back()}>
                 Go Back
               </Button>
             </Link>
@@ -108,10 +108,11 @@ const Error500 = () => {
                   diam nonummy nibh euismod tincidunt ut laoreet dolore magna
                 </Typography>
                 <Stack direction="row" spacing={4}>
-                  <Link href="/products">
+                  <Link href="#" passHref>
                     <Button
                       variant="outlined"
                       sx={{width: '152px', height: '40px'}}
+                      onClick={() => window.history.back()}
                     >
                       Go Back
                     </Button>
