@@ -108,6 +108,7 @@ const MobileHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
         onOpen={() => setOpenDrawer(true)}
         anchor="right"
         sx={styles.modal}
+        swipeAreaWidth={0}
       >
         <Box sx={styles.boxWrapper}>
           <Box sx={styles.closeBtnWrapper}>

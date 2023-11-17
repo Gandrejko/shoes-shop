@@ -26,6 +26,7 @@ const styles: Record<string, SxProps> = {
       height: {md: 'calc(100% - 120px)'},
       marginTop: {md: '120px'},
       border: 'none',
+      overflowX: 'hidden',
     },
     transition: 'width 0.2s ease-in-out',
   },
@@ -37,13 +38,13 @@ const styles: Record<string, SxProps> = {
 type Props = {
   open: boolean;
   searchingString: string;
-  productCount: number;
+  productsCount: number;
   onClose: () => void;
 };
 
 export const FilterSidebar = ({
   searchingString,
-  productCount,
+  productsCount,
   open,
   onClose,
 }: Props) => {
@@ -72,10 +73,11 @@ export const FilterSidebar = ({
           <>
             <Typography>
               Shoes{searchingString ? `/${searchingString}` : ''}
+              {searchingString ? '' : ` (${productsCount})`}
             </Typography>
             {searchingString && (
               <Typography>
-                {searchingString} ({productCount})
+                {searchingString} ({productsCount})
               </Typography>
             )}
           </>

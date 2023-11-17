@@ -5,19 +5,16 @@ import Sidebar from '@/components/Sidebar/Sidebar';
 const styles: Record<string, SxProps> = {
   layout: {
     display: 'flex',
-    height: '100%',
   },
   sidebar: {
     width: 320,
+    position: 'sticky',
+    top: 0,
     height: '100%',
-    flexShrink: 0,
     display: {md: 'block', xs: 'none'},
   },
   children: {
-    width: '100%',
-    height: '100%',
-    overflow: 'hidden',
-    overflowY: 'visible',
+    flex: 1,
   },
 };
 

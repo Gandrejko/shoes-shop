@@ -82,9 +82,11 @@ const styles: Record<string, SxProps> = {
 };
 
 const MyProducts: NextPageWithLayout = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [productsCount, setProductsCount] = useState(0);
+
   const router = useRouter();
   const {data} = useSession();
-  const [isLoading, setIsLoading] = useState(true);
   const sessionUser = data?.user;
 
   const productId = router.query.productId as string;
@@ -126,7 +128,7 @@ const MyProducts: NextPageWithLayout = () => {
             <Box sx={styles.avatarContainer}>
               {sessionUser?.image ? (
                 <Image
-                  src={sessionUser.image.url}
+                  src={sessionUser.image}
                   alt={`${sessionUser?.username}`}
                   fill
                   style={{objectFit: 'cover'}}
@@ -155,16 +157,60 @@ const MyProducts: NextPageWithLayout = () => {
       <Box sx={styles.productsContainer}>
         <Stack direction="row" sx={styles.productsHeader}>
           <Typography variant="h1">My Products</Typography>
-          <Button
-            LinkComponent={Link}
-            href="/add-product"
-            variant="contained"
-            sx={{textTransform: 'none', padding: '8px 24px'}}
-          >
-            Add product
-          </Button>
+          {productsCount > 0 && (
+            <Button
+              LinkComponent={Link}
+              href="/add-product"
+              variant="contained"
+              sx={{textTransform: 'none', padding: '8px 24px'}}
+            >
+              Add product
+            </Button>
+          )}
         </Stack>
-        <ProductList params={productParams} />
+        <ProductList
+          params={productParams}
+          setProductsCount={count => setProductsCount(count)}
+        >
+          <Stack gap={4}>
+            <Stack gap={1}>
+              <Avatar
+                sx={{
+                  width: 72,
+                  height: 72,
+                  marginX: 'auto',
+                  bgcolor: 'grey.A100',
+                }}
+              >
+                <Image
+                  src="/icons/emptyCart.svg"
+                  alt="Empty cart"
+                  width={20}
+                  height={20}
+                />
+              </Avatar>
+              <Typography variant="h4">
+                {"You don't have any products yet"}
+              </Typography>
+              <Typography fontWeight={300}>
+                {'Post can contain video, images and text'}
+              </Typography>
+            </Stack>
+            <Button
+              LinkComponent={Link}
+              href="/add-product"
+              variant="contained"
+              sx={{
+                textTransform: 'none',
+                width: 150,
+                marginX: 'auto',
+                padding: '8px 24px',
+              }}
+            >
+              Add product
+            </Button>
+          </Stack>
+        </ProductList>
       </Box>
     </Container>
   );
