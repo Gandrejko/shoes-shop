@@ -100,7 +100,7 @@ const UpdateForm = ({
       >
         <UpdateProfileAvatarContainer />
         <Typography sx={styles.paragraph}>
-          Welcome back! Please enter your details to log into your account.
+          Welcome back! Please, save changes in order to update your profile.
         </Typography>
         <UpdateFormContainer />
       </Box>
