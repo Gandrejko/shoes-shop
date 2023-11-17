@@ -15,8 +15,10 @@ import ProductList from '@/components/Product/ProductList';
 import {FilterSidebar} from '@/layouts/FilterSidebar/FilterSidebar';
 import {NextPageWithLayout} from '@/pages/_app';
 import theme from '@/styles/theme/commonTheme';
-import {useRouter} from 'next/router';
+import {ProductsResponse} from '@/types/product';
+import axios from 'axios';
 import Head from 'next/head';
+import {useRouter} from 'next/router';
 
 const styles: Record<string, SxProps> = {
   container: {
@@ -34,7 +36,11 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-const MyProducts: NextPageWithLayout = () => {
+type Props = {
+  initialProducts: ProductsResponse;
+};
+
+const MyProducts: NextPageWithLayout<Props> = ({initialProducts}: Props) => {
   const router = useRouter();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -150,6 +156,24 @@ const MyProducts: NextPageWithLayout = () => {
       </Box>
     </Stack>
   );
+};
+
+export const getStaticProps = async () => {
+  const initialProducts = await axios.get<ProductsResponse>(
+    `${process.env.API_URL}/products`,
+    {
+      params: {
+        populate: '*',
+        'pagination[page]': 1,
+        'pagination[pageSize]': 20,
+      },
+    },
+  );
+
+  return {
+    props: {initialProducts: initialProducts.data},
+    revalidate: 24 * 60 * 60, // 24 hours
+  };
 };
 
 MyProducts.getLayout = function getLayout(page: ReactElement) {
