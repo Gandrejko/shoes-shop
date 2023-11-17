@@ -4,9 +4,9 @@ import {Input} from '../Inputs/Input';
 import {UpdateFormContext} from './UpdateForm';
 
 const styles: Record<string, SxProps> = {
-  input: {mb: 3},
+  input: {mb: 2},
   inputsBox: {
-    mb: {xs: 4, sm: 7},
+    mb: 2,
   },
   button: {
     alignSelf: 'flex-end',
