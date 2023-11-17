@@ -82,10 +82,11 @@ const Error404 = () => {
           </Box>
           <Box sx={styles.buttons}>
             <Stack direction="row" spacing={3}>
-              <Link href="/products">
+              <Link href="#" passHref>
                 <Button
                   variant="outlined"
                   sx={{width: '152px', height: '40px'}}
+                  onClick={() => window.history.back()}
                 >
                   Go Back
                 </Button>
@@ -112,10 +113,11 @@ const Error404 = () => {
                   diam nonummy nibh euismod tincidunt ut laoreet dolore magna
                 </Typography>
                 <Stack direction="row" spacing={4} flexWrap="wrap">
-                  <Link href="/products">
+                  <Link href="#" passHref>
                     <Button
                       variant="outlined"
                       sx={{width: '152px', height: '40px'}}
+                      onClick={() => window.history.back()}
                     >
                       Go Back
                     </Button>

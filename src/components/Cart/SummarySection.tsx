@@ -1,6 +1,7 @@
 import {Box, Typography, Button, SxProps, Link} from '@mui/material';
 import {useState} from 'react';
 import {toast} from 'react-toastify';
+import {useRouter} from 'next/navigation';
 
 const styles: Record<string, SxProps> = {
   container: {
@@ -50,6 +51,7 @@ const styles: Record<string, SxProps> = {
 
 const SummarySection = ({products}: {products: any[]}) => {
   const [isCheckoutClicked, setIsCheckoutClicked] = useState(false);
+  const router = useRouter();
 
   const total = products.reduce((accumulator, product) => {
     return accumulator + product.price * product.quantity;
@@ -61,6 +63,7 @@ const SummarySection = ({products}: {products: any[]}) => {
         setIsCheckoutClicked(true);
       },
     });
+    router.push('/products');
   };
 
   return (
