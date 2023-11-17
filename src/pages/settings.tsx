@@ -54,8 +54,6 @@ const SettingsPage: NextPageWithLayout = () => {
     },
   );
 
-  console.log(sessionUser);
-
   return isLoading ? (
     <Loader />
   ) : (

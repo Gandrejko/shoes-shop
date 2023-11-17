@@ -1,4 +1,4 @@
-import {Grid, SxProps, CircularProgress, LinearProgress} from '@mui/material';
+import {Grid, LinearProgress, SxProps} from '@mui/material';
 import {useEffect, useRef} from 'react';
 
 import useInfiniteGet from '@/hooks/useInfiniteGet';
