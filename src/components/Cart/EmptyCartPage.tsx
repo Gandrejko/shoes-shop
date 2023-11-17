@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, Button } from '@mui/material';
+import {Box, Typography, Button} from '@mui/material';
 import Image from 'next/image';
 
 const styles = {
