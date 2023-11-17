@@ -179,8 +179,8 @@ const ProductItem: React.FC<ProductItemProps> = ({
         return;
       }
 
-      if (type === 'dec' && cartIds[productID] === 0) {
-        toast.error("quantity cannot be less than 0");
+      if (type === 'dec' && cartIds[productID] === 1) {
+        toast.error("quantity cannot be less than 1");
         return;
       }
 
