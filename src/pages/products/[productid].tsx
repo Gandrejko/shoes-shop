@@ -248,17 +248,9 @@ Product.getLayout = function getLayout(page: ReactElement) {
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   try {
     const {productid} = context.query;
-    const session = await getServerSession(
-      context.req,
-      context.res,
-      authOptions,
-    );
     const {data: product} = await axios.get(
       `${process.env.API_URL}/products/${productid}`,
       {
-        headers: {
-          Authorization: `Bearer ${session?.user.accessToken}`,
-        },
         params: {
           populate: '*',
         },
