@@ -1,4 +1,4 @@
-import {Grid, SxProps, CircularProgress, LinearProgress} from '@mui/material';
+import {Grid, LinearProgress, SxProps} from '@mui/material';
 import {useEffect, useRef} from 'react';
 
 import useInfiniteGet from '@/hooks/useInfiniteGet';
@@ -16,9 +16,18 @@ const styles: Record<string, SxProps> = {
 type Props = {
   params?: Record<string, number | string> | null;
   fullWidth?: boolean;
+  children?: React.ReactNode;
+  initialProducts?: ProductsResponse;
+  setProductsCount?: (count: number) => void;
 };
 
-const ProductList = ({params = null, fullWidth = false}: Props) => {
+const ProductList = ({
+  params = null,
+  fullWidth = false,
+  children: emptyMessage,
+  initialProducts,
+  setProductsCount,
+}: Props) => {
   const bottomElementRef = useRef<HTMLDivElement>(null);
 
   const {
@@ -27,11 +36,19 @@ const ProductList = ({params = null, fullWidth = false}: Props) => {
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
-  } = useInfiniteGet<ProductsResponse>('/products', null, {
-    'filters[teamName]': 'team-3',
-    'pagination[pageSize]': 10,
-    ...params,
-  });
+  } = useInfiniteGet<ProductsResponse>(
+    '/products',
+    {
+      initialData: initialProducts
+        ? {pages: [initialProducts], pageParams: [1]}
+        : undefined,
+    },
+    {
+      'filters[teamName]': 'team-3',
+      'pagination[pageSize]': 10,
+      ...params,
+    },
+  );
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -56,6 +73,12 @@ const ProductList = ({params = null, fullWidth = false}: Props) => {
       }
     };
   }, [bottomElementRef, hasNextPage, fetchNextPage]);
+
+  useEffect(() => {
+    if (products?.[0]?.meta?.pagination?.total != null) {
+      setProductsCount?.(products[0].meta.pagination.total);
+    }
+  }, [products, setProductsCount]);
 
   return (
     <Grid
@@ -106,6 +129,11 @@ const ProductList = ({params = null, fullWidth = false}: Props) => {
             color="primary"
             sx={{width: 1, height: 10, borderRadius: 10}}
           />
+        </Grid>
+      )}
+      {!isLoading && products?.[0].meta.pagination?.total === 0 && (
+        <Grid item xs={12} display="flex" justifyContent="center" marginY={5}>
+          {emptyMessage}
         </Grid>
       )}
     </Grid>

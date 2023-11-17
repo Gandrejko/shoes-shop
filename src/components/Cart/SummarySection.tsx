@@ -1,4 +1,6 @@
-import {Box, Typography, Button, SxProps} from '@mui/material';
+import {Box, Typography, Button, SxProps, Link} from '@mui/material';
+import {useState} from 'react';
+import {toast} from 'react-toastify';
 
 const styles: Record<string, SxProps> = {
   container: {
@@ -47,9 +49,19 @@ const styles: Record<string, SxProps> = {
 };
 
 const SummarySection = ({products}: {products: any[]}) => {
+  const [isCheckoutClicked, setIsCheckoutClicked] = useState(false);
+
   const total = products.reduce((accumulator, product) => {
     return accumulator + product.price * product.quantity;
   }, 0);
+
+  const handleCheckout = () => {
+    toast.success('Thank you for your purchase!', {
+      onClose: () => {
+        setIsCheckoutClicked(true);
+      },
+    });
+  };
 
   return (
     <Box sx={styles.container}>
@@ -82,9 +94,16 @@ const SummarySection = ({products}: {products: any[]}) => {
           ${total.toFixed(2)}
         </Typography>
       </Box>
-      <Button variant="contained" sx={styles.checkoutButton}>
-        Checkout
-      </Button>
+
+      <Link href={isCheckoutClicked ? '/thank-you' : '/catalog'}>
+        <Button
+          variant="contained"
+          sx={styles.checkoutButton}
+          onClick={handleCheckout}
+        >
+          Checkout
+        </Button>
+      </Link>
     </Box>
   );
 };

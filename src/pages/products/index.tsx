@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Button,
   Stack,
@@ -14,9 +15,9 @@ import ProductList from '@/components/Product/ProductList';
 import {FilterSidebar} from '@/layouts/FilterSidebar/FilterSidebar';
 import {NextPageWithLayout} from '@/pages/_app';
 import theme from '@/styles/theme/commonTheme';
-import {useRouter} from 'next/router';
 import Head from 'next/head';
 import {SignInLayout} from '@/layouts/SignInLayout/SignInLayout';
+import {useRouter} from 'next/router';
 
 const styles: Record<string, SxProps> = {
   container: {
@@ -39,6 +40,7 @@ const MyProducts: NextPageWithLayout = () => {
 
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [showFilters, setShowFilters] = useState(!isMobile);
+  const [productsCount, setProductsCount] = useState(0);
 
   const params = useMemo(() => {
     const query = router.query;
@@ -93,7 +95,7 @@ const MyProducts: NextPageWithLayout = () => {
       <FilterSidebar
         open={showFilters}
         searchingString={params['filters[name][$containsi]'] as string}
-        productCount={100}
+        productsCount={productsCount}
         onClose={() => setShowFilters(false)}
       />
       <Box sx={styles.container} marginLeft={showFilters && !isMobile ? 2 : 0}>
@@ -116,7 +118,35 @@ const MyProducts: NextPageWithLayout = () => {
               {showFilters && 'Hide'} Filters
             </Button>
           </Stack>
-          <ProductList params={params} fullWidth={!showFilters} />
+          <ProductList
+            params={params}
+            fullWidth={!showFilters}
+            setProductsCount={count => setProductsCount(count)}
+          >
+            <Stack gap={1} marginY={2}>
+              <Avatar
+                sx={{
+                  width: 72,
+                  height: 72,
+                  marginX: 'auto',
+                  bgcolor: 'grey.A100',
+                }}
+              >
+                <Image
+                  src="/icons/emptyCart.svg"
+                  alt="Empty cart"
+                  width={20}
+                  height={20}
+                />
+              </Avatar>
+              <Typography variant="h4" textAlign="center">
+                {"We couldn't find any products"}
+              </Typography>
+              <Typography fontWeight={300} textAlign="center">
+                {'Try adjusting your search or filter to find what you want'}
+              </Typography>
+            </Stack>
+          </ProductList>
         </Box>
       </Box>
     </Stack>

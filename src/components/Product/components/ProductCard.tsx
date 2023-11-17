@@ -2,6 +2,7 @@ import {MoreHoriz} from '@mui/icons-material';
 import {
   Box,
   Card,
+  CardActionArea,
   CardContent,
   IconButton,
   Paper,
@@ -15,12 +16,19 @@ import {useState} from 'react';
 import {ProductAttributes} from '@/types/product';
 import ButtonMenu from './ButtonMenu';
 import {useRouter} from 'next/router';
+import Link from 'next/link';
+import useDelete from '@/hooks/useDelete';
 
 const styles: Record<string, SxProps> = {
   card: {
     width: 1,
     borderRadius: 0,
     boxShadow: 'none',
+  },
+  cardActionArea: {
+    '&:hover .MuiCardActionArea-focusHighlight': {
+      opacity: 0,
+    },
   },
   cardContent: {
     paddingLeft: 0,
@@ -52,6 +60,8 @@ const ProductCard = ({product}: Props) => {
   const router = useRouter();
   const showControls = router.pathname === '/my-products';
 
+  const {mutate: deleteProduct} = useDelete('/products');
+
   return (
     <Card sx={styles.card}>
       <Box sx={styles.imageContainer}>
@@ -77,38 +87,45 @@ const ProductCard = ({product}: Props) => {
               <MoreHoriz />
             </IconButton>
             <ButtonMenu
-              productId={product.id!}
+              productid={product.id!}
               open={Boolean(anchorEl)}
-              onClose={() => setAnchorEl(null)}
               anchorEl={anchorEl}
               anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
               transformOrigin={{vertical: 'top', horizontal: 'right'}}
+              onClose={() => setAnchorEl(null)}
+              onDeleteProduct={() => deleteProduct(product.id!)}
             />
           </>
         )}
       </Box>
-      <CardContent sx={styles.cardContent}>
-        <Stack direction="row" sx={styles.productDescription}>
-          <Box>
-            <Typography variant="h3" fontSize={14}>
-              {product.name}
-            </Typography>
-            {product.gender?.data && (
-              <Typography
-                variant="h5"
-                fontSize={14}
-                textTransform="capitalize"
-                color={theme => theme.palette.text.secondary}
-              >
-                {`${product.gender.data.attributes.name}'s Shoes`}
+      <CardActionArea
+        LinkComponent={Link}
+        href={`/products/${product.id}`}
+        sx={styles.cardActionArea}
+      >
+        <CardContent sx={styles.cardContent}>
+          <Stack direction="row" sx={styles.productDescription}>
+            <Box>
+              <Typography variant="h3" fontSize={14}>
+                {product.name}
               </Typography>
-            )}
-          </Box>
-          <Typography variant="h3" fontSize={14}>
-            ${product.price}
-          </Typography>
-        </Stack>
-      </CardContent>
+              {product.gender?.data && (
+                <Typography
+                  variant="h5"
+                  fontSize={14}
+                  textTransform="capitalize"
+                  color={theme => theme.palette.text.secondary}
+                >
+                  {`${product.gender.data.attributes.name}'s Shoes`}
+                </Typography>
+              )}
+            </Box>
+            <Typography variant="h3" fontSize={14}>
+              ${product.price}
+            </Typography>
+          </Stack>
+        </CardContent>
+      </CardActionArea>
     </Card>
   );
 };

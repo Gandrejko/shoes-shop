@@ -39,11 +39,11 @@ const SettingsPage: NextPageWithLayout = () => {
   const {mutate, isPending} = usePut<UserRequest, UserResponse>(
     `/users/${sessionUser?.id}`,
     {
-      onSuccess: newData => {
+      onSuccess: (responseData, requestData) => {
         update({
           user: {
-            ...newData,
-            image: userData?.avatar?.url,
+            ...responseData,
+            image: requestData.avatar?.url,
           },
         });
         toast.success('Your profile was successfully updated!');
@@ -79,7 +79,7 @@ SettingsPage.getLayout = function (page: ReactElement) {
         <title>Settings</title>
       </Head>
       <HeaderLayout>
-        <SidebarLayout currentTab="products">{page}</SidebarLayout>
+        <SidebarLayout currentTab="settings">{page}</SidebarLayout>
       </HeaderLayout>
     </>
   );
