@@ -74,10 +74,6 @@ let theme = createTheme({
             {
               backgroundColor: theme.palette.grey[400],
             },
-          '&::-webkit-scrollbar-track-piece:start, & *::-webkit-scrollbar-track-piece:start':
-            {
-              marginTop: theme.spacing(5),
-            },
         },
       }),
     },
