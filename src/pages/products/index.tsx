@@ -127,6 +127,7 @@ const MyProducts: NextPageWithLayout<Props> = ({initialProducts}: Props) => {
             params={params}
             fullWidth={!showFilters}
             setProductsCount={count => setProductsCount(count)}
+            initialProducts={initialProducts}
           >
             <Stack gap={1} marginY={2}>
               <Avatar
@@ -165,7 +166,10 @@ export const getStaticProps = async () => {
       params: {
         populate: '*',
         'pagination[page]': 1,
-        'pagination[pageSize]': 20,
+        'pagination[pageSize]': 10,
+        'filters[price][$gte]': 0,
+        'filters[price][$lte]': 1000,
+        'filters[teamName]': 'team-3',
       },
     },
   );

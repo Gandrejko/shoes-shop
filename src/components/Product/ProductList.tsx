@@ -17,6 +17,7 @@ type Props = {
   params?: Record<string, number | string> | null;
   fullWidth?: boolean;
   children?: React.ReactNode;
+  initialProducts?: ProductsResponse;
   setProductsCount?: (count: number) => void;
 };
 
@@ -24,6 +25,7 @@ const ProductList = ({
   params = null,
   fullWidth = false,
   children: emptyMessage,
+  initialProducts,
   setProductsCount,
 }: Props) => {
   const bottomElementRef = useRef<HTMLDivElement>(null);
@@ -34,11 +36,21 @@ const ProductList = ({
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
-  } = useInfiniteGet<ProductsResponse>('/products', null, {
-    'filters[teamName]': 'team-3',
-    'pagination[pageSize]': 10,
-    ...params,
-  });
+  } = useInfiniteGet<ProductsResponse>(
+    '/products',
+    {
+      staleTime: 1000,
+      initialData: initialProducts
+        ? {pages: [initialProducts], pageParams: [1]}
+        : undefined,
+    },
+    {
+      'filters[teamName]': 'team-3',
+      'pagination[pageSize]': 10,
+      ...params,
+    },
+  );
+  console.log(products);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
