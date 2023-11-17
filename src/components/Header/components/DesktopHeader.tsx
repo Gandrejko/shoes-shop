@@ -109,7 +109,7 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
               validationSchema={false}
               onClick={handleModalOpen}
             />
-            <IconButton onClick={() => {}}>
+            <IconButton onClick={() => router.push('/cart')}>
               <Image src="/icons/cart.svg" alt="cart" width={24} height={24} />
             </IconButton>
           </Stack>

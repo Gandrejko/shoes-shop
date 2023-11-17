@@ -14,7 +14,7 @@ const styles: Record<string, SxProps> = {
   paragraph: {
     fontSize: {xs: 12, sm: 15},
     fontWeight: 300,
-    marginBottom: {xs: 3, sm: 6},
+    marginBottom: 2,
     color: 'text.secondary',
   },
 };
@@ -100,7 +100,7 @@ const UpdateForm = ({
       >
         <UpdateProfileAvatarContainer />
         <Typography sx={styles.paragraph}>
-          Welcome back! Please enter your details to log into your account.
+          Welcome back! Please, save changes in order to update your profile.
         </Typography>
         <UpdateFormContainer />
       </Box>
