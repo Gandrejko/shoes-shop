@@ -43,13 +43,10 @@ const Header = () => {
 
   const handleSearchClick = (value: string) => {
     setOpen(false);
-    const newQuery = {
-      ...router.query,
-      searchingString: value,
-    };
-    router.push({
-      pathname: router.pathname,
-      query: newQuery,
+    router.push('/products', {
+      query: {
+        searchingString: value,
+      },
     });
   };
 
