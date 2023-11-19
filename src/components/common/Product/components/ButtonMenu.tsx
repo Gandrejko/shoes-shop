@@ -45,7 +45,7 @@ const ButtonMenu = ({
           <MenuItem
             divider
             sx={styles.menuItem}
-            onClick={() => router.push(`/my-products/?productId=${productid}`)}
+            onClick={() => router.push(`/products/me?productId=${productid}`)}
           >
             <Typography fontWeight={300}>Edit</Typography>
           </MenuItem>

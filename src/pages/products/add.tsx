@@ -29,7 +29,7 @@ const Add = () => {
     },
     onSuccess: () => {
       toast.success('Product added successfully');
-      router.push('/my-products');
+      router.push('/products/me');
     },
     onError: () => {
       toast.error('Something went wrong');

@@ -106,7 +106,7 @@ const Sidebar = ({currentTab, closeDrawer}: SidebarProps) => {
             color: currentTab === 'products' ? '#FE645E' : '#000',
           }}
           onClick={() => {
-            router.push('/my-products');
+            router.push('/products/me');
             if (closeDrawer) {
               closeDrawer();
             }

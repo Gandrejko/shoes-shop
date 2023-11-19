@@ -58,7 +58,7 @@ const ProductCard = ({product}: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const router = useRouter();
-  const showControls = router.pathname === '/my-products';
+  const showControls = router.pathname === '/products/me';
 
   const {mutate: deleteProduct} = useDelete('/products');
 

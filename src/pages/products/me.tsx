@@ -160,7 +160,7 @@ const Me: NextPageWithLayout = () => {
           {productsCount > 0 && (
             <Button
               LinkComponent={Link}
-              href="/add-product"
+              href="/products/add"
               variant="contained"
               sx={{textTransform: 'none', padding: '8px 24px'}}
             >
@@ -198,7 +198,7 @@ const Me: NextPageWithLayout = () => {
             </Stack>
             <Button
               LinkComponent={Link}
-              href="/add-product"
+              href="/products/add"
               variant="contained"
               sx={{
                 textTransform: 'none',

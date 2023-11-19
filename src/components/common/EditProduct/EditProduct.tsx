@@ -58,7 +58,7 @@ const EditProduct = ({productId}: EditProductProps) => {
 
   useEffect(() => {
     if (error) {
-      router.push('/my-products');
+      router.push('/products/me');
       toast.error(error.message);
     }
   }, [error]);
@@ -82,7 +82,7 @@ const EditProduct = ({productId}: EditProductProps) => {
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ['products']});
       toast.success('Product updated successfully');
-      router.push('/my-products');
+      router.push('/products/me');
     },
   });
 
@@ -92,7 +92,7 @@ const EditProduct = ({productId}: EditProductProps) => {
     <Modal
       sx={styles.modal}
       open={true}
-      onClose={() => router.push('/my-products')}
+      onClose={() => router.push('/products/me')}
     >
       <Box sx={styles.modalContent}>
         {product && (

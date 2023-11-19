@@ -44,7 +44,7 @@ export const ProfilePopup = ({anchorEl, handleOnClose}: ProfilePopupProps) => {
       }}
     >
       <List sx={styles.list}>
-        <ListItem onClick={() => onRedirectHandler('/my-products')}>
+        <ListItem onClick={() => onRedirectHandler('/products/me')}>
           <Typography variant="body1">My products</Typography>
         </ListItem>
         <Divider />
