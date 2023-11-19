@@ -2,13 +2,13 @@ import Head from 'next/head';
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {Box, Button, CircularProgress, Typography} from '@mui/material';
 import Link from 'next/link';
-import {Input} from '@/components/Inputs/Input';
+import Input from '@/components/ui/Input/Input';
 import axios from 'axios';
 import {useMutation} from '@tanstack/react-query';
 import {useRouter} from 'next/router';
 import {toast} from 'react-toastify';
-import {styles} from '@/components/AuthLayout/authPagesStyles';
-import {AuthLayout} from '@/components/AuthLayout/AuthLayout';
+import {styles} from '@/components/layouts/AuthLayout/authPagesStyles';
+import {AuthLayout} from '@/components/layouts/AuthLayout/AuthLayout';
 import {ReactElement} from 'react';
 
 type ForgotPasswordType = {

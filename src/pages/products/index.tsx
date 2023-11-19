@@ -10,13 +10,13 @@ import {
 import Image from 'next/image';
 import {ReactElement, useEffect, useMemo, useState} from 'react';
 
-import HeaderLayout from '@/components/HeaderLayout/HeaderLayout';
-import ProductList from '@/components/Product/ProductList';
-import {FilterSidebar} from '@/layouts/FilterSidebar/FilterSidebar';
+import HeaderLayout from '@/components/layouts/HeaderLayout/HeaderLayout';
+import ProductList from '@/components/common/Product/ProductList';
+import {FilterSidebar} from '@/components/layouts/FilterSidebar/FilterSidebar';
 import {NextPageWithLayout} from '@/pages/_app';
-import theme from '@/styles/theme/commonTheme';
+import theme from '@/config/theme';
 import Head from 'next/head';
-import {SignInLayout} from '@/layouts/SignInLayout/SignInLayout';
+import {SignInLayout} from '@/components/layouts/SignInLayout/SignInLayout';
 import {useRouter} from 'next/router';
 
 const styles: Record<string, SxProps> = {

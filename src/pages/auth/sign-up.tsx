@@ -1,4 +1,4 @@
-import {Input} from '@/components/Inputs/Input';
+import Input from '@/components/ui/Input/Input';
 import {Box, Typography, Button, CircularProgress} from '@mui/material';
 import Link from 'next/link';
 import {SubmitHandler, useForm} from 'react-hook-form';
@@ -6,9 +6,9 @@ import {useMutation} from '@tanstack/react-query';
 import axios from 'axios';
 import {useRouter} from 'next/router';
 import {toast} from 'react-toastify';
-import {styles} from '@/components/AuthLayout/authPagesStyles';
+import {styles} from '@/components/layouts/AuthLayout/authPagesStyles';
 import {ReactElement} from 'react';
-import {AuthLayout} from '@/components/AuthLayout/AuthLayout';
+import {AuthLayout} from '@/components/layouts/AuthLayout/AuthLayout';
 import Head from 'next/head';
 
 type SignUpType = {

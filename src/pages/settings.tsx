@@ -1,16 +1,16 @@
-import HeaderLayout from '@/components/HeaderLayout/HeaderLayout';
-import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
-import UpdateForm from '@/components/UpdateProfile/UpdateForm';
+import HeaderLayout from '@/components/layouts/HeaderLayout/HeaderLayout';
+import {SidebarLayout} from '@/components/layouts/SidebarLayout/SidebarLayout';
+import UpdateForm from '@/components/common/UpdateProfile/UpdateForm';
 import useGet from '@/hooks/useGet';
 import usePut from '@/hooks/usePut';
-import {UserRequest, UserResponse} from '@/types/user';
-import {Box, CircularProgress, SxProps, Typography} from '@mui/material';
+import {UserRequest, UserResponse} from '@/types';
+import {Box, SxProps, Typography} from '@mui/material';
 import {useSession} from 'next-auth/react';
 import Head from 'next/head';
 import React, {ReactElement} from 'react';
 import {toast} from 'react-toastify';
 import {NextPageWithLayout} from './_app';
-import Loader from '@/components/UpdateProfile/Loader';
+import Loader from '@/components/common/UpdateProfile/Loader';
 
 const styles: Record<string, SxProps> = {
   container: {

@@ -1,5 +1,5 @@
 import axios, {AxiosError} from '@/config/axios';
-import {ResponseData} from '@/types/data';
+import {ResponseData} from '@/types';
 import {UseInfiniteQueryOptions, useInfiniteQuery} from '@tanstack/react-query';
 
 /**

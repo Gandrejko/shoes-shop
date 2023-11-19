@@ -7,7 +7,7 @@ import {SessionProvider} from 'next-auth/react';
 import {CssBaseline, ThemeProvider} from '@mui/material';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 
-import theme from '@/styles/theme/commonTheme';
+import theme from '@/config/theme';
 import 'react-toastify/dist/ReactToastify.css';
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {

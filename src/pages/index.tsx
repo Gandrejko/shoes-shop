@@ -1,5 +1,5 @@
-import HeaderLayout from '@/components/HeaderLayout/HeaderLayout';
-import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
+import HeaderLayout from '@/components/layouts/HeaderLayout/HeaderLayout';
+import {SidebarLayout} from '@/components/layouts/SidebarLayout/SidebarLayout';
 import {ReactElement} from 'react';
 
 const Home = () => {
