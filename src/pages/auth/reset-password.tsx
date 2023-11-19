@@ -22,14 +22,11 @@ const ResetPassword = () => {
   const {mutate, isPending} = useMutation({
     mutationKey: ['reset-password'],
     mutationFn: (userData: ResetPasswordType) =>
-      axios.post(
-        'https://shoes-shop-strapi.herokuapp.com/api/auth/reset-password',
-        {
-          password: userData.password,
-          passwordConfirmation: userData.confirmPassword,
-          code: userData.code,
-        },
-      ),
+      axios.post(`${process.env.API_URL}/auth/reset-password`, {
+        password: userData.password,
+        passwordConfirmation: userData.confirmPassword,
+        code: userData.code,
+      }),
     onSuccess: value => {
       toast.success('Password was changed!');
       router.push('/auth/sign-in');

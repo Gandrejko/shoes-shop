@@ -20,10 +20,7 @@ const ForgotPassword = () => {
   const {mutate, isPending} = useMutation({
     mutationKey: ['forgot-password'],
     mutationFn: (userData: ForgotPasswordType) =>
-      axios.post(
-        'https://shoes-shop-strapi.herokuapp.com/api/auth/forgot-password',
-        userData,
-      ),
+      axios.post(`${process.env.API_URL}/auth/forgot-password`, userData),
     onSuccess: () => {
       toast.info('On your email was sent information about recovery');
       router.push('/auth/reset-password');

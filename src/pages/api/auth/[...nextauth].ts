@@ -17,7 +17,7 @@ export const authOptions: AuthOptions = {
       async authorize(credentials, req) {
         try {
           const response = await axios.post(
-            'https://shoes-shop-strapi.herokuapp.com/api/auth/local',
+            `${process.env.API_URL}/auth/local`,
             {
               identifier: credentials?.identifier,
               password: credentials?.password,
@@ -25,7 +25,7 @@ export const authOptions: AuthOptions = {
           );
 
           const userInfo = await axios.get(
-            `https://shoes-shop-strapi.herokuapp.com/api/users/${response.data.user.id}?populate=avatar`,
+            `${process.env.API_URL}/users/${response.data.user.id}?populate=avatar`,
             {
               headers: {
                 'Content-Type': 'application/json',

@@ -21,10 +21,7 @@ type SignUpType = {
 const SignUp = () => {
   const {mutate, isPending} = useMutation({
     mutationFn: (userData: Partial<SignUpType>) =>
-      axios.post(
-        'https://shoes-shop-strapi.herokuapp.com/api/auth/local/register',
-        userData,
-      ),
+      axios.post(`${process.env.API_URL}/api/auth/local/register`, userData),
     onSuccess: () => {
       toast.success('You are successfully sign up!');
       toast.info('The last step is to confirm your email');
