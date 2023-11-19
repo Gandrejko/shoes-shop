@@ -1,5 +1,4 @@
-import useDelete from '@/hooks/useDelete';
-import usePost from '@/hooks/usePost';
+import {useDelete, usePost} from '@/hooks';
 import {ImageRequest, ImageResponse, UserRequest, UserResponse} from '@/types';
 import {Box, SxProps, Typography} from '@mui/material';
 import {createContext} from 'react';

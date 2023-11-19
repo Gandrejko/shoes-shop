@@ -2,7 +2,7 @@ import Dropdown from '@/components/ui/Dropdown/Dropdown';
 import Input from '@/components/ui/Input/Input';
 import ButtonsList from './ButtonsList';
 import Textarea from '@/components/ui/Textarea/Textarea';
-import useGet from '@/hooks/useGet';
+import {useGet} from '@/hooks';
 import theme from '@/config/theme';
 import {CategoriesResponse} from '@/types';
 import {ProductFormContext} from '../ProductForm';

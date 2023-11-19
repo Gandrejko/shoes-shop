@@ -7,7 +7,7 @@ import {
   useMediaQuery,
 } from '@mui/material';
 
-import useGet from '@/hooks/useGet';
+import {useGet} from '@/hooks';
 import theme from '@/config/theme';
 import {Category} from './components/Category';
 

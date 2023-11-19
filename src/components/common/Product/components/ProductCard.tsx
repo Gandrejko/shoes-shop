@@ -17,7 +17,7 @@ import {ProductAttributes} from '@/types';
 import ButtonMenu from './ButtonMenu';
 import {useRouter} from 'next/router';
 import Link from 'next/link';
-import useDelete from '@/hooks/useDelete';
+import {useDelete} from '@/hooks';
 
 const styles: Record<string, SxProps> = {
   card: {

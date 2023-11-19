@@ -5,7 +5,7 @@ import SummarySection from '@/components/common/Cart/SummarySection';
 import EmptyCartPage from '@/components/common/Cart/EmptyCartPage';
 import {useQuery, useQueryClient} from '@tanstack/react-query';
 import theme from '@/config/theme';
-import useGet from '@/hooks/useGet';
+import {useGet} from '@/hooks';
 import {ProductsResponse} from '@/types';
 import ProductItemSkeleton from '@/components/common/Cart/ProductItemSkeleton';
 import SummarySectionSkeleton from '@/components/common/Cart/SummarySectionSkeleton';

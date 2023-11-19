@@ -1,8 +1,7 @@
 import HeaderLayout from '@/components/layouts/HeaderLayout/HeaderLayout';
 import {SidebarLayout} from '@/components/layouts/SidebarLayout/SidebarLayout';
 import UpdateForm from '@/components/common/UpdateProfile/UpdateForm';
-import useGet from '@/hooks/useGet';
-import usePut from '@/hooks/usePut';
+import {useGet, usePut} from '@/hooks';
 import {UserRequest, UserResponse} from '@/types';
 import {Box, SxProps, Typography} from '@mui/material';
 import {useSession} from 'next-auth/react';
