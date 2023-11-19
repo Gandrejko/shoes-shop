@@ -1,22 +1,15 @@
 import Head from 'next/head';
 import {useRouter, useSearchParams} from 'next/navigation';
 import {SubmitHandler, useForm} from 'react-hook-form';
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Typography,
-  useMediaQuery,
-} from '@mui/material';
+import {Box, Button, CircularProgress, Typography} from '@mui/material';
 import Link from 'next/link';
-import {Input} from '@/components/Inputs/Input';
+import Input from '@/components/ui/Input/Input';
 import axios from 'axios';
 import {useMutation} from '@tanstack/react-query';
 import {toast} from 'react-toastify';
-import theme from '@/styles/theme/commonTheme';
-import {styles} from '@/components/AuthLayout/authPagesStyles';
+import {styles} from '@/components/layouts/AuthLayout/authPagesStyles';
 import {ReactElement} from 'react';
-import {AuthLayout} from '@/components/AuthLayout/AuthLayout';
+import {AuthLayout} from '@/components/layouts/AuthLayout/AuthLayout';
 
 type ResetPasswordType = {
   password: string;
@@ -29,14 +22,11 @@ const ResetPassword = () => {
   const {mutate, isPending} = useMutation({
     mutationKey: ['reset-password'],
     mutationFn: (userData: ResetPasswordType) =>
-      axios.post(
-        'https://shoes-shop-strapi.herokuapp.com/api/auth/reset-password',
-        {
-          password: userData.password,
-          passwordConfirmation: userData.confirmPassword,
-          code: userData.code,
-        },
-      ),
+      axios.post(`${process.env.API_URL}/auth/reset-password`, {
+        password: userData.password,
+        passwordConfirmation: userData.confirmPassword,
+        code: userData.code,
+      }),
     onSuccess: value => {
       toast.success('Password was changed!');
       router.push('/auth/sign-in');

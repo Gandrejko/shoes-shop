@@ -1,18 +1,17 @@
-import React, {ReactElement} from 'react';
+import React from 'react';
 import {Box, Typography} from '@mui/material';
-import ProductItem from '@/components/Cart/CartItem';
-import SummarySection from '@/components/Cart/SummarySection';
-import EmptyCartPage from '@/components/Cart/EmptyCartPage';
+import ProductItem from '@/components/common/Cart/CartItem';
+import SummarySection from '@/components/common/Cart/SummarySection';
+import EmptyCartPage from '@/components/common/Cart/EmptyCartPage';
 import {useQuery, useQueryClient} from '@tanstack/react-query';
-import theme from '@/styles/theme/commonTheme';
-import useGet from '@/hooks/useGet';
-import {ProductsResponse} from '@/types/product';
-import ProductItemSkeleton from '@/components/Cart/ProductItemSkeleton';
-import SummarySectionSkeleton from '@/components/Cart/SummarySectionSkeleton';
+import theme from '@/config/theme';
+import {useGet} from '@/hooks';
+import {ProductsResponse} from '@/types';
+import ProductItemSkeleton from '@/components/common/Cart/ProductItemSkeleton';
+import SummarySectionSkeleton from '@/components/common/Cart/SummarySectionSkeleton';
 import {SxProps} from '@mui/system';
 import Head from 'next/head';
-import HeaderLayout from '@/components/HeaderLayout/HeaderLayout';
-import {SidebarLayout} from '@/components/SidebarLayout/SidebarLayout';
+import HeaderLayout from '@/components/layouts/HeaderLayout/HeaderLayout';
 
 const styles: Record<string, SxProps> = {
   container: {

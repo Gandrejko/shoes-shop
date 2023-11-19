@@ -10,12 +10,12 @@ import {
   CircularProgress,
 } from '@mui/material';
 import Link from 'next/link';
-import {Input} from '@/components/Inputs/Input';
+import Input from '@/components/ui/Input/Input';
 import {useRouter} from 'next/router';
 import {toast} from 'react-toastify';
-import {styles} from '../../components/AuthLayout/authPagesStyles';
+import {styles} from '@/components/layouts/AuthLayout/authPagesStyles';
 import {ReactElement, useState} from 'react';
-import {AuthLayout} from '@/components/AuthLayout/AuthLayout';
+import {AuthLayout} from '@/components/layouts/AuthLayout/AuthLayout';
 
 interface SignInType {
   email: string;

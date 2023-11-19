@@ -1,15 +1,13 @@
-import HeaderLayout from '@/components/HeaderLayout/HeaderLayout';
+import HeaderLayout from '@/components/layouts/HeaderLayout/HeaderLayout';
 import axios from 'axios';
-import {ProductResponse} from '@/types/product';
+import {ProductResponse} from '@/types';
 import {GetServerSidePropsContext} from 'next';
-import {getServerSession} from 'next-auth';
 import React, {ReactElement, useState} from 'react';
 import {Box, Container, Typography, SxProps, Button} from '@mui/material';
-import ImageSlider from '@/components/ImageSlider/ImageSlider';
+import ImageSlider from '@/components/common/ImageSlider/ImageSlider';
 import {useRouter} from 'next/router';
 import {useMutation} from '@tanstack/react-query';
 import {toast} from 'react-toastify';
-import {authOptions} from '@/pages/api/auth/[...nextauth]';
 import Head from 'next/head';
 
 const styles: Record<string, SxProps> = {

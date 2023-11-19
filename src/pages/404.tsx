@@ -1,5 +1,5 @@
-import HeaderLayout from '@/components/HeaderLayout/HeaderLayout';
-import theme from '@/styles/theme/commonTheme';
+import HeaderLayout from '@/components/layouts/HeaderLayout/HeaderLayout';
+import theme from '@/config/theme';
 import {
   Box,
   Button,
