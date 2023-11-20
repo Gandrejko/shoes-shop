@@ -139,12 +139,12 @@ export const getServerSideProps = async (
     populate: '*',
   });
 
-  const products = await axios.get<ProductsResponse>(
+  const response = await axios.get<ProductsResponse>(
     `${process.env.API_URL}/products`,
     {params},
   );
 
-  if (!products) {
+  if (!response.data) {
     return {
       redirect: {
         destination: '/products',
@@ -155,7 +155,7 @@ export const getServerSideProps = async (
 
   return {
     props: {
-      initialProducts: products.data,
+      initialProducts: response.data,
       initialPages: [1],
     },
   };
