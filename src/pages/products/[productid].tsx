@@ -236,7 +236,7 @@ Product.getLayout = function getLayout(page: ReactElement) {
   return (
     <>
       <Head>
-        <title>{page.props.product.data.attributes.name}</title>
+        <title>{page.props.product?.data?.attributes.name}</title>
       </Head>
       <HeaderLayout>{page}</HeaderLayout>
     </>
@@ -262,7 +262,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps(context: GetStaticPropsContext) {
   try {
-    const productId = context.params?.productid || 900;
+    const productId = context.params?.productid;
 
     const {data: product} = await axios.get<ProductResponse>(
       `${process.env.API_URL}/products/${productId}`,
