@@ -73,22 +73,23 @@ const UpdateProfileAvatarContainer = () => {
 
     uploadImage(formData);
   };
+  console.log(isUploadImageLoading);
 
   return (
     <Box sx={styles.headerBox}>
       <Box sx={styles.avatarContainer}>
-        {(isDeleteImageLoading || isUploadImageLoading) && <CircularProgress />}
-        {avatar && (
-          <Image
+        {isDeleteImageLoading || isUploadImageLoading ? (
+          <CircularProgress />
+        ) : (
+          <Avatar
+            sx={styles.avatar}
             src={avatar?.url!}
             alt={currentUser?.username}
-            fill
-            sizes="100%"
-            style={{objectFit: 'cover'}}
-          />
-        )}
-        {!avatar && !isDeleteImageLoading && !isUploadImageLoading && (
-          <Avatar sx={styles.avatar} src="/" alt={currentUser?.username} />
+          >
+            {(currentUser?.firstName ||
+              currentUser?.username ||
+              ' ')[0].toUpperCase()}
+          </Avatar>
         )}
       </Box>
       <Box sx={styles.buttonsBox}>
