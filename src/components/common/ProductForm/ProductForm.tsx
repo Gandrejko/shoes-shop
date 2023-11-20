@@ -18,9 +18,8 @@ import React, {
   useState,
 } from 'react';
 import {FieldErrors, useForm} from 'react-hook-form';
-import {toast} from 'react-toastify';
 import {Product, ProductAttributes, ProductRequest} from '@/types';
-import {ProductsResponse} from '@/types';
+import {BorderLinearProgress} from '../BorderLinearProgress/BorderLinearProgress';
 
 const styles: Record<string, SxProps> = {
   mainContainer: {
@@ -57,6 +56,14 @@ const styles: Record<string, SxProps> = {
       flexDirection: 'column',
     },
   },
+};
+
+const oneCategoryPercentage = 11.1111111111; // one of nine
+type ProgresStatusType = 'secondary' | 'error' | 'success';
+const statusColors = {
+  secondary: '#9c27b0',
+  error: '#fe645e',
+  success: '#2e7d32',
 };
 
 type ProductFormContextType = {
@@ -105,6 +112,9 @@ const ProductForm = ({onSubmit, product, isLoading}: ProductFormProps) => {
   const [images, setImages] = useState<Pick<Image, 'id' | 'url'>[]>(
     product?.images?.data?.map(({id, attributes: {url}}) => ({id, url})) || [],
   );
+  const [createProductProgress, setCreateProductProgress] = useState(0);
+  const [progressStatus, setProgressStatus] =
+    useState<ProgresStatusType>('error');
 
   const {
     register,
@@ -112,6 +122,7 @@ const ProductForm = ({onSubmit, product, isLoading}: ProductFormProps) => {
     setValue,
     formState: {errors},
     trigger,
+    watch,
   } = useForm<ProductFormData>({
     defaultValues: {
       name: product?.name || '',
@@ -119,6 +130,64 @@ const ProductForm = ({onSubmit, product, isLoading}: ProductFormProps) => {
       description: product?.description || '',
     },
   });
+
+  const formValueName = watch('name');
+  const formValuePrice = watch('price');
+  const formValueDescription = watch('description');
+
+  useEffect(() => {
+    let counter = 0;
+    if (formValueName) {
+      counter++;
+    }
+    if (formValuePrice) {
+      counter++;
+    }
+    if (formValueDescription) {
+      counter++;
+    }
+    if (gender) {
+      counter++;
+    }
+    if (brand) {
+      counter++;
+    }
+    if (color) {
+      counter++;
+    }
+    if (chosenSizes.length) {
+      counter++;
+    }
+    if (chosenCategories.length) {
+      counter++;
+    }
+    if (images.length) {
+      counter++;
+    }
+    if (counter !== createProductProgress) {
+      setCreateProductProgress(counter);
+    }
+    if (counter === 9) {
+      setProgressStatus('success');
+    } else {
+      if (formValueName && formValuePrice && formValueDescription) {
+        setProgressStatus('secondary');
+      } else {
+        setProgressStatus('error');
+      }
+    }
+  }, [
+    formValueName,
+    formValuePrice,
+    formValueDescription,
+    gender,
+    brand,
+    color,
+    chosenSizes,
+    chosenCategories,
+    images,
+    createProductProgress,
+  ]);
 
   const handleOnSubmit = (data: ProductRequest) => {
     const values = {
@@ -176,12 +245,26 @@ const ProductForm = ({onSubmit, product, isLoading}: ProductFormProps) => {
           </Button>
         </Box>
         <Typography sx={styles.description}>
-          Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in
-          laying out print, graphic or web designs. The passage is attributed to
-          an unknown typesetter in the 15th century who is thought to have
-          scrambled parts of Cicero&apos;s De Finibus Bonorum et Malorum for use
-          in a type specimen book. It usually begins with:
+          Please complete the fields below and select the relevant information
+          so that other people can familiarize themselves with your product
         </Typography>
+        <Typography
+          sx={{...styles.description, color: statusColors[progressStatus]}}
+        >
+          Item filling level:{' '}
+          <b>
+            {progressStatus === 'error'
+              ? ' Please, provide required fileds'
+              : progressStatus === 'secondary'
+              ? ' Add more descriptions to your product'
+              : ' Great! You have filled in all fields'}
+          </b>
+        </Typography>
+        <BorderLinearProgress
+          variant="determinate"
+          color={progressStatus}
+          value={createProductProgress * oneCategoryPercentage}
+        />
         <Box sx={styles.form}>
           <FormContainer />
           <ImagesContainer />
