@@ -111,17 +111,17 @@ let theme = createTheme({
     },
     MuiButton: {
       styleOverrides: {
-        root: ({theme}) => ({
+        root: {
           textTransform: 'none',
           whiteSpace: 'nowrap',
           boxShadow: 'none',
-          border: `1px solid ${theme.palette.primary.main}`,
           '&:hover': {
             boxShadow: 'none',
           },
-        }),
+        },
         contained: ({theme}) => ({
           color: theme.palette.common.white,
+          border: `1px solid ${theme.palette.primary.main}`,
           '&:hover': {
             color: theme.palette.primary.main,
             backgroundColor: theme.palette.common.white,
@@ -129,6 +129,7 @@ let theme = createTheme({
         }),
         outlined: ({theme}) => ({
           borderRadius: theme.spacing(),
+          border: `1px solid ${theme.palette.primary.main}`,
           '&:hover': {
             color: theme.palette.common.white,
             backgroundColor: theme.palette.primary.main,
