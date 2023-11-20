@@ -10,13 +10,17 @@ import {
 import Image from 'next/image';
 import {ReactElement, useEffect, useMemo, useState} from 'react';
 
-import HeaderLayout from '@/components/layouts/HeaderLayout/HeaderLayout';
 import ProductList from '@/components/common/Product/ProductList';
 import {FilterSidebar} from '@/components/layouts/FilterSidebar/FilterSidebar';
-import {NextPageWithLayout} from '@/pages/_app';
-import theme from '@/config/theme';
-import Head from 'next/head';
+import HeaderLayout from '@/components/layouts/HeaderLayout/HeaderLayout';
 import {SignInLayout} from '@/components/layouts/SignInLayout/SignInLayout';
+import theme from '@/config/theme';
+import {NextPageWithLayout} from '@/pages/_app';
+import {ProductsResponse} from '@/types';
+import buildParams from '@/utils/buildParams';
+import axios from 'axios';
+import {GetServerSidePropsContext} from 'next';
+import Head from 'next/head';
 import {useRouter} from 'next/router';
 
 const styles: Record<string, SxProps> = {
@@ -35,7 +39,15 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-const MyProducts: NextPageWithLayout = () => {
+type Props = {
+  initialProducts: ProductsResponse;
+  initialPages: number[];
+};
+
+const MyProducts: NextPageWithLayout<Props> = ({
+  initialPages,
+  initialProducts,
+}) => {
   const router = useRouter();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -43,47 +55,9 @@ const MyProducts: NextPageWithLayout = () => {
   const [productsCount, setProductsCount] = useState(0);
 
   const params = useMemo(() => {
-    const query = router.query;
-    const newParams: Record<string, string | number> = {};
-
-    const genders = query.gender ? (query.gender as string).split(',') : [];
-    const brands = query.brand ? (query.brand as string).split(',') : [];
-    const colors = query.color ? (query.color as string).split(',') : [];
-    const sizes = query.sizes ? (query.sizes as string).split(',') : [];
-    const categories = query.categories
-      ? (query.categories as string).split(',')
-      : [];
-
-    const searchString = query.searchingString || '';
-    const minPrice = query.minPrice || 0;
-    const maxPrice = query.maxPrice || 1000;
-
-    genders.forEach((value, index) => {
-      newParams[`filters[gender][name][${index}]`] = value;
+    return buildParams(router.query, {
+      populate: '*',
     });
-
-    brands.forEach((value, index) => {
-      newParams[`filters[brand][name][${index}]`] = value;
-    });
-
-    colors.forEach((value, index) => {
-      newParams[`filters[color][name][${index}]`] = value;
-    });
-
-    categories.forEach((value, index) => {
-      newParams[`filters[categories][name][${index}]`] = value;
-    });
-
-    sizes.forEach((value, index) => {
-      newParams[`filters[sizes][value][${index}]`] = value;
-    });
-
-    newParams['filters[name][$containsi]'] = searchString as string;
-    newParams['filters[price][$gte]'] = minPrice as string;
-    newParams['filters[price][$lte]'] = maxPrice as string;
-    newParams['populate'] = '*';
-
-    return newParams;
   }, [router.query]);
 
   useEffect(() => {
@@ -121,6 +95,8 @@ const MyProducts: NextPageWithLayout = () => {
           <ProductList
             params={params}
             fullWidth={!showFilters}
+            initialPages={initialPages}
+            initialProducts={initialProducts}
             setProductsCount={count => setProductsCount(count)}
           >
             <Stack gap={1} marginY={2}>
@@ -151,6 +127,38 @@ const MyProducts: NextPageWithLayout = () => {
       </Box>
     </Stack>
   );
+};
+
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext,
+) => {
+  const params = buildParams(context.query, {
+    'pagination[page]': 1,
+    'pagination[pageSize]': 15,
+    'filters[teamName]': 'team-3',
+    populate: '*',
+  });
+
+  const products = await axios.get<ProductsResponse>(
+    `${process.env.API_URL}/products`,
+    {params},
+  );
+
+  if (!products) {
+    return {
+      redirect: {
+        destination: '/products',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      initialProducts: products.data,
+      initialPages: [1],
+    },
+  };
 };
 
 MyProducts.getLayout = function getLayout(page: ReactElement) {
