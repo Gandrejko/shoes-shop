@@ -14,7 +14,6 @@ import React, {
   Dispatch,
   SetStateAction,
   useEffect,
-  useMemo,
   useState,
 } from 'react';
 import {FieldErrors, useForm} from 'react-hook-form';
@@ -58,12 +57,38 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-const oneCategoryPercentage = 11.1111111111; // one of nine
+const oneCategoryPercentage = 11.1111111111; // one of nine attributes
 type ProgresStatusType = 'secondary' | 'error' | 'success';
 const statusColors = {
   secondary: '#9c27b0',
   error: '#fe645e',
   success: '#2e7d32',
+};
+type AttributesType = [
+  formValueName: string,
+  formValuePrice: number,
+  formValueDescription: string,
+  gender: number,
+  brand: number,
+  color: number,
+  chosenSizes: number[],
+  chosenCategories: number[],
+  images: Pick<Image, 'id' | 'url'>[],
+];
+
+const countProgressStatus = (attributes: AttributesType) => {
+  return attributes.reduce((accumulator: number, currentValue) => {
+    if (typeof currentValue === 'string' && currentValue.trim() !== '') {
+      return accumulator + 1;
+    }
+    if (typeof currentValue === 'number' && currentValue > 0) {
+      return accumulator + 1;
+    }
+    if (Array.isArray(currentValue) && currentValue.length > 0) {
+      return accumulator + 1;
+    }
+    return accumulator;
+  }, 0);
 };
 
 type ProductFormContextType = {
@@ -136,45 +161,27 @@ const ProductForm = ({onSubmit, product, isLoading}: ProductFormProps) => {
   const formValueDescription = watch('description');
 
   useEffect(() => {
-    let counter = 0;
-    if (formValueName) {
-      counter++;
-    }
-    if (formValuePrice) {
-      counter++;
-    }
-    if (formValueDescription) {
-      counter++;
-    }
-    if (gender) {
-      counter++;
-    }
-    if (brand) {
-      counter++;
-    }
-    if (color) {
-      counter++;
-    }
-    if (chosenSizes.length) {
-      counter++;
-    }
-    if (chosenCategories.length) {
-      counter++;
-    }
-    if (images.length) {
-      counter++;
-    }
-    if (counter !== createProductProgress) {
-      setCreateProductProgress(counter);
+    const counter = countProgressStatus([
+      formValueName,
+      formValuePrice,
+      formValueDescription,
+      gender,
+      brand,
+      color,
+      chosenSizes,
+      chosenCategories,
+      images,
+    ]);
+
+    setCreateProductProgress(counter);
+
+    if (formValueName.trim() && formValuePrice && formValueDescription) {
+      setProgressStatus('secondary');
+    } else {
+      setProgressStatus('error');
     }
     if (counter === 9) {
       setProgressStatus('success');
-    } else {
-      if (formValueName && formValuePrice && formValueDescription) {
-        setProgressStatus('secondary');
-      } else {
-        setProgressStatus('error');
-      }
     }
   }, [
     formValueName,
