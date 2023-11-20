@@ -1,4 +1,4 @@
-import {AddProductProps} from '@/pages/products/add';
+import {FiltersData} from '@/pages/products/add';
 import {Image} from '@/types';
 import {useSession} from 'next-auth/react';
 import {
@@ -60,7 +60,7 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-type ProductFormContextType = AddProductProps & {
+type ProductFormContextType = FiltersData & {
   gender: number;
   setGender: Dispatch<SetStateAction<number>>;
   brand: number;
@@ -90,14 +90,14 @@ type ProductFormProps = {
   onSubmit: (data: any) => void;
   product?: ProductAttributes;
   isLoading?: boolean;
-  pageData: AddProductProps;
+  filtersData: FiltersData;
 };
 
 const ProductForm = ({
   onSubmit,
   product,
   isLoading,
-  pageData,
+  filtersData,
 }: ProductFormProps) => {
   const session = useSession();
   const [gender, setGender] = useState<number>(product?.gender?.data?.id || 0);
@@ -167,7 +167,7 @@ const ProductForm = ({
         setChosenCategories,
         isLoading: isLoading || false,
         trigger,
-        ...pageData,
+        ...filtersData,
       }}
     >
       <Box

@@ -17,7 +17,7 @@ import {useRouter} from 'next/navigation';
 import React from 'react';
 import {toast} from 'react-toastify';
 
-export type AddProductProps = {
+export type FiltersData = {
   genders: GendersResponse;
   colors: ColorsResponse;
   categories: CategoriesResponse;
@@ -25,7 +25,7 @@ export type AddProductProps = {
   sizes: SizesResponse;
 };
 
-const AddProduct = (props: AddProductProps) => {
+const AddProduct = (filtersData: FiltersData) => {
   const router = useRouter();
   const session = useSession();
   const token = session.data?.user.accessToken;
@@ -59,7 +59,7 @@ const AddProduct = (props: AddProductProps) => {
       <HeaderLayout>
         <SidebarLayout>
           <ProductForm
-            pageData={props}
+            filtersData={filtersData}
             onSubmit={mutate}
             isLoading={isPending}
           />
