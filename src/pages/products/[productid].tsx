@@ -1,7 +1,7 @@
 import HeaderLayout from '@/components/layouts/HeaderLayout/HeaderLayout';
 import axios from 'axios';
-import {ProductResponse} from '@/types';
-import {GetServerSidePropsContext} from 'next';
+import {ProductResponse, ProductsResponse} from '@/types';
+import {GetServerSidePropsContext, GetStaticPropsContext} from 'next';
 import React, {ReactElement, useState} from 'react';
 import {Box, Container, Typography, SxProps, Button} from '@mui/material';
 import ImageSlider from '@/components/common/ImageSlider/ImageSlider';
@@ -243,11 +243,29 @@ Product.getLayout = function getLayout(page: ReactElement) {
   );
 };
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+export async function getStaticPaths() {
   try {
-    const {productid} = context.query;
-    const {data: product} = await axios.get(
-      `${process.env.API_URL}/products/${productid}`,
+    const {data: products} = await axios.get<ProductsResponse>(
+      `${process.env.API_URL}/products`,
+    );
+
+    const paths = products.data.map(({id}) => ({
+      params: {productid: id.toString()},
+    }));
+
+    return {paths, fallback: true};
+  } catch (error) {
+    console.error('Error fetching product data:', error);
+    return {paths: [], fallback: true};
+  }
+}
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  try {
+    const productId = context.params?.productid || 900;
+
+    const {data: product} = await axios.get<ProductResponse>(
+      `${process.env.API_URL}/products/${productId}`,
       {
         params: {
           populate: '*',

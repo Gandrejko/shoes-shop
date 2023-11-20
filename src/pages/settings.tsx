@@ -88,7 +88,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       context.res,
       authOptions,
     );
-    const {data: user} = await axios.get(
+    const {data: user} = await axios.get<UserResponse>(
       `${process.env.API_URL}/users/${session?.user.id}`,
       {
         params: {
