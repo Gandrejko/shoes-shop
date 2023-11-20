@@ -1,12 +1,19 @@
 import ImageCard from './ImageCard';
 import {ProductFormContext} from '../ProductForm';
 import theme from '@/config/theme';
-import {Box, Grid, InputBase, SxProps, Typography} from '@mui/material';
+import {
+  Box,
+  Grid,
+  InputBase,
+  Skeleton,
+  SxProps,
+  Typography,
+} from '@mui/material';
 import {useMutation} from '@tanstack/react-query';
 import axios from 'axios';
 import {useSession} from 'next-auth/react';
 import Image from 'next/image';
-import React, {useContext, useRef} from 'react';
+import React, {useContext, useId, useRef, useState} from 'react';
 
 const styles: Record<string, SxProps> = {
   imagesContainer: {
@@ -29,6 +36,9 @@ const styles: Record<string, SxProps> = {
     cursor: 'pointer',
     textDecoration: 'underline',
   },
+  skeletonBox: {
+    aspectRatio: '320 / 380',
+  },
 };
 
 const ImagesContainer = () => {
@@ -41,11 +51,14 @@ const ImagesContainer = () => {
   const token = session.data?.user.accessToken;
   const inputRef = useRef<HTMLInputElement>();
 
+  const [uploadingImages, setUploadingImages] = useState<any>([]);
+
   const {mutate, isPending: isUploadLoading} = useMutation({
     mutationFn: (file: FormData) =>
       axios.post(`${process.env.API_URL}/upload`, file),
     onSuccess: (data: any) => {
       setImages((prevImages: any) => [...prevImages, ...data.data]);
+      setUploadingImages([]);
     },
   });
 
@@ -69,8 +82,10 @@ const ImagesContainer = () => {
 
     for (let i = 0; i < e.target.files.length; i++) {
       formData.append('files', e.target.files[i]);
+      uploadingImages.push(e.target.files[i]);
     }
 
+    setUploadingImages(uploadingImages);
     e.target.value = '';
 
     mutate(formData);
@@ -81,6 +96,8 @@ const ImagesContainer = () => {
       prevImages.filter((image: any) => image.id !== id),
     );
   };
+
+  console.log(uploadingImages);
 
   return (
     <Box sx={styles.imagesContainer}>
@@ -95,6 +112,20 @@ const ImagesContainer = () => {
             />
           </Grid>
         ))}
+        {isUploadLoading &&
+          uploadingImages.map((image: any, index: number) => (
+            //Know that to take index isn't good idea. But while uploading image we don't have an id for it.
+            <Grid item key={image.name} xs={12} sm={6} md={6} lg={8} xl={5}>
+              <Box sx={styles.skeletonBox}>
+                <Skeleton
+                  variant="rectangular"
+                  width="100%"
+                  height="100%"
+                  animation="wave"
+                />
+              </Box>
+            </Grid>
+          ))}
         <Grid item xs={12} sm={6} md={6} lg={8} xl={5}>
           <Box sx={styles.uploadImageCard}>
             <Image
