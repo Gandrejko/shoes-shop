@@ -4,7 +4,6 @@ import {
   Box,
   Button,
   Container,
-  Skeleton,
   Stack,
   SxProps,
   Typography,
@@ -12,15 +11,18 @@ import {
 import Head from 'next/head';
 import Image from 'next/image';
 import {useRouter} from 'next/router';
-import React, {ReactElement, useMemo, useState, useEffect} from 'react';
+import {ReactElement, useMemo, useState} from 'react';
 
-import HeaderLayout from '@/components/layouts/HeaderLayout/HeaderLayout';
 import ProductList from '@/components/common/Product/ProductList';
+import HeaderLayout from '@/components/layouts/HeaderLayout/HeaderLayout';
 import {SidebarLayout} from '@/components/layouts/SidebarLayout/SidebarLayout';
 import {NextPageWithLayout} from '@/pages/_app';
-import {useSession} from 'next-auth/react';
+import {ProductsResponse} from '@/types';
+import axios from 'axios';
+import {GetServerSidePropsContext} from 'next';
+import {getServerSession} from 'next-auth';
 import Link from 'next/link';
-import {ProfileSkeleton} from '@/components/common/ProfileSkeleton/ProfileSkeleton';
+import {authOptions} from '../api/auth/[...nextauth]';
 
 const styles: Record<string, SxProps> = {
   container: {
@@ -81,15 +83,22 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-const Me: NextPageWithLayout = () => {
-  const [isLoading, setIsLoading] = useState(true);
+type Props = {
+  sessionUser: any;
+  initialProducts: ProductsResponse;
+  initialPages: number[];
+};
+
+const Me: NextPageWithLayout<Props> = ({
+  sessionUser,
+  initialProducts,
+  initialPages,
+}) => {
   const [productsCount, setProductsCount] = useState(0);
 
   const router = useRouter();
-  const {data} = useSession();
-  const sessionUser = data?.user;
-
   const productId = router.query.productId as string;
+
   const productParams = useMemo(() => {
     return {
       populate: 'images,gender',
@@ -97,62 +106,46 @@ const Me: NextPageWithLayout = () => {
     };
   }, [sessionUser?.id]);
 
-  useEffect(() => {
-    if (data) {
-      setIsLoading(false);
-    }
-  }, [data]);
-
   return (
     <Container maxWidth="xl" sx={styles.container}>
       {productId && <EditProduct productId={productId} />}
       <Box sx={styles.pageHeader}>
         <Box sx={styles.bannerContainer}>
-          {isLoading ? (
-            <Skeleton variant="rectangular" sx={{height: 1}} />
-          ) : (
-            <Image
-              src="/images/myProductsBanner.png"
-              alt="My products"
-              fill
-              style={{objectFit: 'cover'}}
-            />
-          )}
+          <Image
+            src="/images/myProductsBanner.png"
+            alt="My products"
+            fill
+            style={{objectFit: 'cover'}}
+          />
         </Box>
-        {isLoading ? (
-          <Box sx={styles.profileContainer}>
-            <ProfileSkeleton />
+        <Stack sx={styles.profileContainer} direction="row">
+          <Box sx={styles.avatarContainer}>
+            {sessionUser?.image ? (
+              <Image
+                src={sessionUser.image}
+                alt={`${sessionUser.username}`}
+                fill
+                style={{objectFit: 'cover'}}
+              />
+            ) : (
+              <Avatar
+                sx={styles.avatar}
+                src="/"
+                alt={`${sessionUser.username}`}
+              />
+            )}
           </Box>
-        ) : (
-          <Stack sx={styles.profileContainer} direction="row">
-            <Box sx={styles.avatarContainer}>
-              {sessionUser?.image ? (
-                <Image
-                  src={sessionUser.image}
-                  alt={`${sessionUser?.username}`}
-                  fill
-                  style={{objectFit: 'cover'}}
-                />
-              ) : (
-                <Avatar
-                  sx={styles.avatar}
-                  src="/"
-                  alt={`${sessionUser?.username}`}
-                />
-              )}
-            </Box>
-            <Stack sx={styles.profileInfo}>
-              <Typography variant="h4" fontSize={14}>
-                {sessionUser?.firstName && sessionUser?.lastName
-                  ? `${sessionUser?.firstName} ${sessionUser?.lastName}`
-                  : `${sessionUser?.username}`}
-              </Typography>
-              <Typography fontWeight={300} fontSize={14}>
-                1374 bonus points
-              </Typography>
-            </Stack>
+          <Stack sx={styles.profileInfo}>
+            <Typography variant="h4" fontSize={14}>
+              {sessionUser?.firstName && sessionUser?.lastName
+                ? `${sessionUser?.firstName} ${sessionUser?.lastName}`
+                : `${sessionUser?.username}`}
+            </Typography>
+            <Typography fontWeight={300} fontSize={14}>
+              1374 bonus points
+            </Typography>
           </Stack>
-        )}
+        </Stack>
       </Box>
       <Box sx={styles.productsContainer}>
         <Stack direction="row" sx={styles.productsHeader}>
@@ -170,6 +163,8 @@ const Me: NextPageWithLayout = () => {
         </Stack>
         <ProductList
           params={productParams}
+          initialProducts={initialProducts}
+          initialPages={initialPages}
           setProductsCount={count => setProductsCount(count)}
         >
           <Stack gap={4}>
@@ -214,6 +209,45 @@ const Me: NextPageWithLayout = () => {
       </Box>
     </Container>
   );
+};
+
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext,
+) => {
+  const session = await getServerSession(context.req, context.res, authOptions);
+  const user = session?.user;
+
+  const response = await axios.get<ProductsResponse>(
+    `${process.env.API_URL}/products`,
+    {
+      params: {
+        'pagination[page]': 1,
+        'pagination[pageSize]': 15,
+        'filters[userID]': user?.id,
+        populate: 'images,gender',
+      },
+      headers: {
+        Authorization: `Bearer ${user?.accessToken}`,
+      },
+    },
+  );
+
+  if (!response.data) {
+    return {
+      redirect: {
+        destination: '/404',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      sessionUser: user,
+      initialProducts: response.data,
+      initialPages: [1],
+    },
+  };
 };
 
 Me.getLayout = function getLayout(page: ReactElement) {
