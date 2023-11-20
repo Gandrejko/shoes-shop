@@ -18,6 +18,7 @@ type Props = {
   fullWidth?: boolean;
   children?: React.ReactNode;
   initialProducts?: ProductsResponse;
+  initialPages?: number[];
   setProductsCount?: (count: number) => void;
 };
 
@@ -26,6 +27,7 @@ const ProductList = ({
   fullWidth = false,
   children: emptyMessage,
   initialProducts,
+  initialPages,
   setProductsCount,
 }: Props) => {
   const bottomElementRef = useRef<HTMLDivElement>(null);
@@ -39,13 +41,19 @@ const ProductList = ({
   } = useInfiniteGet<ProductsResponse>(
     '/products',
     {
-      initialData: initialProducts
-        ? {pages: [initialProducts], pageParams: [1]}
-        : undefined,
+      staleTime: 24 * 60 * 60 * 1000,
+      placeholderData: (_, prevQuery) => {
+        if (prevQuery || !(initialProducts && initialPages)) return;
+
+        return {
+          pages: [initialProducts],
+          pageParams: initialPages,
+        };
+      },
     },
     {
       'filters[teamName]': 'team-3',
-      'pagination[pageSize]': 10,
+      'pagination[pageSize]': 15,
       ...params,
     },
   );
