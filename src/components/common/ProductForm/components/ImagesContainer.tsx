@@ -40,6 +40,10 @@ const styles: Record<string, SxProps> = {
     cursor: 'pointer',
     textDecoration: 'underline',
   },
+  uploadImageDisabled: {
+    color: 'text.secondary',
+    textDecoration: 'underline',
+  },
   skeletonBox: {
     aspectRatio: '320 / 380',
   },
@@ -143,7 +147,7 @@ const ImagesContainer = () => {
               <Typography
                 component="span"
                 onClick={() => !isLoading && inputRef.current?.click()}
-                sx={styles.uploadImage}
+                sx={isLoading ? styles.uploadImageDisabled : styles.uploadImage}
               >
                 click to browse
               </Typography>
