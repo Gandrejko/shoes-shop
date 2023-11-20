@@ -20,6 +20,10 @@ const styles: Record<string, SxProps> = {
     flexShrink: 2.5,
     width: '100%',
   },
+  conatinerHeader: {
+    marginBottom: 1,
+    color: 'grey.A700',
+  },
   uploadImageCard: {
     border: `2px dashed ${theme.palette.grey['A400']}`,
     borderRadius: '8px',
@@ -101,7 +105,7 @@ const ImagesContainer = () => {
 
   return (
     <Box sx={styles.imagesContainer}>
-      <Typography>Product images</Typography>
+      <Typography sx={styles.conatinerHeader}>Product images</Typography>
       <Grid container spacing={{sm: 2, md: 2, xs: 1}}>
         {images.map((image: {url: string; id: number}) => (
           <Grid item key={image.id} xs={12} sm={6} md={6} lg={8} xl={5}>
