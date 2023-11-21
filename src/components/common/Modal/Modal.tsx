@@ -60,7 +60,8 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
   const theme = useTheme();
   const greaterThanMid = useMediaQuery(theme.breakpoints.up('md'));
   const lessThanSmall = useMediaQuery(theme.breakpoints.down('sm'));
-  const [suggestions, setSuggestions] = useState<string[] >([]);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+
   const fetchSuggestions = async () => {
      const searchValue = getValues('searchString');
      const params = buildParams({ searchingString: searchValue });
@@ -135,11 +136,11 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
               onClick={handleOnClose}
             />
           </Box>
-          <Box>
-            {suggestions.slice(0, 3).map((suggestion, index) => (
-              <div key={index}>{suggestion}</div>
-            ))}
-          </Box>
+        </Box>
+        <Box>
+          {suggestions.slice(0, 3).map((suggestion, index) => (
+            <div key={index}>{suggestion}</div>
+          ))}
         </Box>
       </MuiModal>
     </>
