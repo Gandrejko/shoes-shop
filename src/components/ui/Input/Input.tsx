@@ -1,12 +1,12 @@
-import theme from '@/config/theme';
 import {Box, InputBase, InputLabel, SxProps, Typography} from '@mui/material';
 import {InputBaseProps} from '@mui/material/InputBase/InputBase';
-import {useId, useState} from 'react';
+import {useContext, useId, useState} from 'react';
 import {UseFormRegister, RegisterOptions} from 'react-hook-form';
 import Image from 'next/image';
 import warningIcon from 'public/icons/warning.svg';
 import eyeIcon from 'public/icons/eye.svg';
 import eyeSlashIcon from 'public/icons/eyeSlash.svg';
+import ColorModeContext from '@/config/theme/ColorModeContext';
 
 const styles: Record<string, SxProps> = {
   inputContainer: {
@@ -65,7 +65,9 @@ const Input = ({
   ...props
 }: InputProps) => {
   const [showPassword, setShowPassword] = useState(false);
+  const {theme} = useContext(ColorModeContext);
   const id = useId();
+
   return (
     <Box sx={boxSx}>
       <InputLabel htmlFor={id} sx={{color: 'text.secondary'}}>
@@ -81,6 +83,7 @@ const Input = ({
           id={id}
           sx={{
             ...styles.input,
+            paddingRight: props.type === 'password' ? '45px' : '15px',
             border: !!errorMessage
               ? `2px solid ${theme.palette.error.main}`
               : `1px solid ${theme.palette.grey['A700']}`,
@@ -94,7 +97,13 @@ const Input = ({
           <Box sx={styles.togglePassword}>
             <Image
               onClick={() => setShowPassword(!showPassword)}
-              style={{cursor: 'pointer'}}
+              style={{
+                cursor: 'pointer',
+                filter:
+                  theme.palette.mode === 'dark'
+                    ? 'brightness(1)'
+                    : 'brightness(0)',
+              }}
               src={showPassword ? eyeSlashIcon : eyeIcon}
               alt="eye"
               width={20}

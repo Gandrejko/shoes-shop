@@ -11,7 +11,7 @@ type ContextProps = {
 const ColorModeContext = createContext({} as ContextProps);
 
 const useColorMode = () => {
-  const [mode, setMode] = useState<'light' | 'dark'>('light');
+  const [mode, setMode] = useState<'light' | 'dark'>('dark');
 
   const theme = useMemo(() => {
     return createTheme(commonTheme, getPalette(mode));
