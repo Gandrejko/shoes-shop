@@ -1,4 +1,11 @@
-import {Avatar, Box, Button, InputBase, SxProps} from '@mui/material';
+import {
+  Avatar,
+  Box,
+  Button,
+  CircularProgress,
+  InputBase,
+  SxProps,
+} from '@mui/material';
 import {useSession} from 'next-auth/react';
 import Image from 'next/image';
 import {ChangeEvent, useContext, useRef} from 'react';
@@ -17,6 +24,9 @@ const styles: Record<string, SxProps> = {
     gap: {xs: 2, sm: 3},
   },
   avatarContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     position: 'relative',
     width: {xs: 100, sm: 150},
     height: {xs: 100, sm: 150},
@@ -67,16 +77,18 @@ const UpdateProfileAvatarContainer = () => {
   return (
     <Box sx={styles.headerBox}>
       <Box sx={styles.avatarContainer}>
-        {avatar ? (
-          <Image
+        {isDeleteImageLoading || isUploadImageLoading ? (
+          <CircularProgress />
+        ) : (
+          <Avatar
+            sx={styles.avatar}
             src={avatar?.url!}
             alt={currentUser?.username}
-            fill
-            sizes="100%"
-            style={{objectFit: 'cover'}}
-          />
-        ) : (
-          <Avatar sx={styles.avatar} src="/" alt={currentUser?.username} />
+          >
+            {(currentUser?.firstName ||
+              currentUser?.username ||
+              ' ')[0].toUpperCase()}
+          </Avatar>
         )}
       </Box>
       <Box sx={styles.buttonsBox}>
