@@ -136,11 +136,11 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
               onClick={handleOnClose}
             />
           </Box>
-        </Box>
-        <Box>
-          {suggestions.slice(0, 3).map((suggestion, index) => (
-            <div key={index}>{suggestion}</div>
-          ))}
+          <Box>
+            {suggestions.slice(0, 3).map((suggestion, index) => (
+              <div key={index}>{suggestion}</div>
+            ))}
+          </Box>
         </Box>
       </MuiModal>
     </>
