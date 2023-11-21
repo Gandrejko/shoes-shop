@@ -3,7 +3,7 @@ import {
   Box,
   useTheme,
   useMediaQuery,
-  Button,
+  Button, Typography,
 } from '@mui/material';
 import {useForm} from 'react-hook-form';
 import SearchInput from '@/components/common/SearchInput/SearchInput';
