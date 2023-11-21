@@ -91,15 +91,17 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
     handleSearchClick(searchValue);
   };
 
-  const handleSuggestionClick = (suggestion: string) => {
-    setValue('searchString', suggestion);
-    handleSearchClick(suggestion);
+  const handleSuggestionClick = (suggestion: string | undefined) => {
+    if (suggestion) {
+      setValue('searchString', suggestion);
+      handleSearchClick(suggestion);
+    }
   };
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      const trimmedSearchString = searchString?.trim();
-      if (trimmedSearchString !== undefined && trimmedSearchString !== '') {
+      const trimmedSearchString = searchString?.trim() ?? '';
+      if (trimmedSearchString) {
         fetchSuggestions();
       } else {
         setSuggestions([]);
