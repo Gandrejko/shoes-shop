@@ -1,3 +1,11 @@
+import {
+  BrandsResponse,
+  CategoriesResponse,
+  ColorsResponse,
+  GendersResponse,
+  SizesResponse,
+} from '@/types';
+
 export type RequestData<T> = {
   data: T;
 };
@@ -26,4 +34,12 @@ type Pagination = {
   pageSize: number;
   pageCount: number;
   total: number;
+};
+
+export type FiltersData = {
+  genders: GendersResponse;
+  colors: ColorsResponse;
+  categories: CategoriesResponse;
+  brands: BrandsResponse;
+  sizes: SizesResponse;
 };

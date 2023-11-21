@@ -58,17 +58,12 @@ const FormContainer = () => {
     chosenCategories,
     setChosenCategories,
     isLoading,
+    genders,
+    colors,
+    brands,
+    sizes,
+    categories,
   } = useContext(ProductFormContext);
-  const {data: genders, isLoading: isGendersLoading} =
-    useGet<GendersResponse>('/genders');
-  const {data: colors, isLoading: isColorsLoading} =
-    useGet<ColorsResponse>('/colors');
-  const {data: brands, isLoading: isBrandsLoading} =
-    useGet<BrandsResponse>('/brands');
-  const {data: sizes, isLoading: isSizesLoading} =
-    useGet<SizesResponse>('/sizes');
-  const {data: categories, isLoading: isCategoriesLoading} =
-    useGet<CategoriesResponse>('/categories');
 
   return (
     <Grid sx={styles.formContainer}>
@@ -107,7 +102,7 @@ const FormContainer = () => {
           onChange={e => {
             setGender(e.target.value as number);
           }}
-          disabled={isLoading || isGendersLoading}
+          disabled={isLoading}
         />
         <Dropdown
           labelText="Brand"
@@ -119,7 +114,7 @@ const FormContainer = () => {
           onChange={e => {
             setBrand(e.target.value as number);
           }}
-          disabled={isLoading || isBrandsLoading}
+          disabled={isLoading}
         />
       </Box>
       <Dropdown
@@ -132,7 +127,7 @@ const FormContainer = () => {
         onChange={e => {
           setColor(e.target.value as number);
         }}
-        disabled={isLoading || isColorsLoading}
+        disabled={isLoading}
       />
       <Textarea
         labelText="Description"
@@ -164,7 +159,7 @@ const FormContainer = () => {
         }
         choosedData={chosenCategories}
         setChoosedData={setChosenCategories}
-        disabled={isLoading || isCategoriesLoading}
+        disabled={isLoading}
       />
       <ButtonsList
         header="Sizes"
@@ -176,7 +171,7 @@ const FormContainer = () => {
         }
         choosedData={chosenSizes}
         setChoosedData={setChosenSizes}
-        disabled={isLoading || isSizesLoading}
+        disabled={isLoading}
         namePrefix="EU-"
       />
     </Grid>
