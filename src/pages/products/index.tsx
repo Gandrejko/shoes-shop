@@ -22,6 +22,7 @@ import axios from 'axios';
 import {GetServerSidePropsContext} from 'next';
 import Head from 'next/head';
 import {useRouter} from 'next/router';
+import Dropdown from '@/components/ui/Dropdown/Dropdown';
 
 const styles: Record<string, SxProps> = {
   container: {
@@ -37,12 +38,28 @@ const styles: Record<string, SxProps> = {
     justifyContent: 'space-between',
     marginBottom: 3,
   },
+  filterButtons: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '10px',
+  },
+  buttonStyles: {
+    color: 'text.secondary',
+    minWidth: {sm: '100px', md: '160px', lg: '200px'},
+  },
 };
 
 type Props = {
   initialProducts: ProductsResponse;
   initialPages: number[];
 };
+
+const options = [
+  {value: 'createdAt:desc', name: 'new first'},
+  {value: 'createdAt:asc', name: 'old first'},
+  {value: 'price:desc', name: 'high to low'},
+  {value: 'price:asc', name: 'low to high'},
+];
 
 const MyProducts: NextPageWithLayout<Props> = ({
   initialPages,
@@ -53,6 +70,14 @@ const MyProducts: NextPageWithLayout<Props> = ({
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [showFilters, setShowFilters] = useState(!isMobile);
   const [productsCount, setProductsCount] = useState(0);
+  const [sortType, setSortType] = useState(options[0].value);
+
+  useEffect(() => {
+    const {sort} = router.query;
+    if (sort) {
+      setSortType(typeof sort === 'string' ? sort : sort[0]);
+    }
+  }, []);
 
   const params = useMemo(() => {
     return buildParams(router.query, {
@@ -63,6 +88,29 @@ const MyProducts: NextPageWithLayout<Props> = ({
   useEffect(() => {
     setShowFilters(!isMobile);
   }, [isMobile]);
+
+  const handleChooseSort = (value: string) => {
+    let updatedQuery: {sort?: string} = {
+      ...router.query,
+      sort: value,
+    };
+    if (value === options[0].value) {
+      delete updatedQuery['sort'];
+    }
+    let updatedQueryString = '';
+    for (const [key, value] of Object.entries(updatedQuery)) {
+      updatedQueryString += `&${key}=${value}`;
+    }
+    router.push(
+      {
+        pathname: router.pathname,
+        query: updatedQueryString.replace('&', ''),
+      },
+      undefined,
+      {shallow: true},
+    );
+    setSortType(value);
+  };
 
   return (
     <Stack direction="row" justifyContent="center">
@@ -76,21 +124,29 @@ const MyProducts: NextPageWithLayout<Props> = ({
         <Box sx={styles.productsContainer}>
           <Stack direction="row" sx={styles.productsHeader}>
             <Typography variant="h1">Search Results</Typography>
-            <Button
-              variant="text"
-              sx={{color: 'text.secondary'}}
-              onClick={() => setShowFilters(!showFilters)}
-              endIcon={
-                <Image
-                  src={`/icons/filters${showFilters ? 'Hide' : 'Show'}.svg`}
-                  alt=""
-                  width={24}
-                  height={24}
-                />
-              }
-            >
-              {showFilters && 'Hide'} Filters
-            </Button>
+            <Box sx={styles.filterButtons}>
+              <Dropdown
+                value={sortType}
+                options={options}
+                onChange={e => handleChooseSort(e.target.value as string)}
+                withoutNone
+              />
+              <Button
+                variant="text"
+                sx={styles.buttonStyles}
+                onClick={() => setShowFilters(!showFilters)}
+                endIcon={
+                  <Image
+                    src={`/icons/filters${showFilters ? 'Hide' : 'Show'}.svg`}
+                    alt=""
+                    width={24}
+                    height={24}
+                  />
+                }
+              >
+                {showFilters && 'Hide'} Filters
+              </Button>
+            </Box>
           </Stack>
           <ProductList
             params={params}
