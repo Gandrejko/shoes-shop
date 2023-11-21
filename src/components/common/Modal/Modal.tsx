@@ -78,14 +78,6 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
     setSuggestions(productNames);
   };
 
-  useEffect(() => {
-    const timeoutId = setTimeout(fetchSuggestions, 500);
-    return () => {
-      clearTimeout(timeoutId);
-      setSuggestions([]);
-    }
-  }, [getValues('searchString')]);
-
   const handleOnClose = () => {
     handleClose();
   };
@@ -93,6 +85,14 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
   const handleOnSearch = () => {
     handleSearchClick(getValues('searchString'));
   };
+
+  useEffect(() => {
+    const timeoutId = setTimeout(fetchSuggestions, 500);
+    return () => {
+      clearTimeout(timeoutId);
+      setSuggestions([]);
+    }
+  }, [getValues('searchString')]);
 
   return (
     <>
@@ -108,15 +108,17 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
             {greaterThanMid && (
               <Image src={logoIcon} alt="" style={style.logoImageStyles} />
             )}
-            <Box>
+            <Box sx={{
+              width: '100%',
+              maxWidth: '1071px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '25px',
+            }}>
               <Box
                 sx={{
-                  width: '100%',
-                  maxWidth: '1071px',
                   display: 'flex',
-                  flexDirection: `${lessThanSmall ? 'column' : 'row'}`,
-                  alignItems: 'center',
-                  gap: '25px',
                 }}
               >
                 <SearchInput
