@@ -69,6 +69,7 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
      const data = response.data;
 
     const productNames = data.data.map((product) => product.attributes.name);
+    // @ts-ignore
     setSuggestions(productNames);
   };
 
