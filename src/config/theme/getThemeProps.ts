@@ -48,5 +48,52 @@ export const getPalette = (mode: PaletteMode): ThemeOptions => ({
         }),
       },
     },
+    MuiCssBaseline: {
+      styleOverrides: theme => ({
+        body: {
+          scrollbarWidth: 'thin',
+          scrollbarColor: theme.palette.grey.A400,
+          '&::-webkit-scrollbar, & *::-webkit-scrollbar': {
+            backgroundColor: 'transparent',
+            width: 15,
+          },
+          '&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb': {
+            backgroundColor: theme.palette.grey.A400,
+            border: '2px solid transparent',
+            backgroundClip: 'padding-box',
+            borderRadius: 10,
+            transition: 'background-color 0.3s ease-in-out',
+          },
+          '&::-webkit-scrollbar-thumb:hover, & *::-webkit-scrollbar-thumb:hover':
+            {
+              backgroundColor: theme.palette.grey.A700,
+            },
+        },
+      }),
+    },
   },
 });
+
+// MuiCssBaseline: {
+//   styleOverrides: theme => ({
+//     body: {
+//       scrollbarWidth: 'thin',
+//       scrollbarColor: `${theme.palette.grey[300]} transparent`,
+//       '&::-webkit-scrollbar, & *::-webkit-scrollbar': {
+//         backgroundColor: 'transparent',
+//         width: '18px',
+//       },
+//       '&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb': {
+//         borderRadius: '10px',
+//         backgroundColor: theme.palette.grey[300],
+//         transition: 'background-color 0.3s ease-in-out',
+//         border: '5px transparent solid',
+//         backgroundClip: 'padding-box',
+//       },
+//       '&::-webkit-scrollbar-thumb:hover, & *::-webkit-scrollbar-thumb:hover':
+//         {
+//           backgroundColor: theme.palette.grey[400],
+//         },
+//     },
+//   }),
+// },
