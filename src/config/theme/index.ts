@@ -99,12 +99,26 @@ let theme = createTheme({
         root: {
           textTransform: 'none',
           whiteSpace: 'nowrap',
+          boxShadow: 'none',
+          '&:hover': {
+            boxShadow: 'none',
+          },
         },
         contained: ({theme}) => ({
           color: theme.palette.common.white,
+          border: `1px solid ${theme.palette.primary.main}`,
+          '&:hover': {
+            color: theme.palette.primary.main,
+            backgroundColor: 'transparent',
+          },
         }),
         outlined: ({theme}) => ({
           borderRadius: theme.spacing(),
+          border: `1px solid ${theme.palette.primary.main}`,
+          '&:hover': {
+            color: theme.palette.common.white,
+            backgroundColor: theme.palette.primary.main,
+          },
         }),
       },
     },

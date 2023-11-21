@@ -1,4 +1,5 @@
 import EditProduct from '@/components/common/EditProduct/EditProduct';
+import {FiltersData} from '@/types';
 import {
   Avatar,
   Box,
@@ -87,12 +88,14 @@ type Props = {
   sessionUser: any;
   initialProducts: ProductsResponse;
   initialPages: number[];
+  filtersData: FiltersData;
 };
 
 const Me: NextPageWithLayout<Props> = ({
   sessionUser,
   initialProducts,
   initialPages,
+  filtersData,
 }) => {
   const [productsCount, setProductsCount] = useState(0);
 
@@ -108,7 +111,9 @@ const Me: NextPageWithLayout<Props> = ({
 
   return (
     <Container maxWidth="xl" sx={styles.container}>
-      {productId && <EditProduct productId={productId} />}
+      {productId && (
+        <EditProduct filtersData={filtersData} productId={productId} />
+      )}
       <Box sx={styles.pageHeader}>
         <Box sx={styles.bannerContainer}>
           <Image
@@ -241,11 +246,26 @@ export const getServerSideProps = async (
     };
   }
 
+  const {data: genders} = await axios.get(`${process.env.API_URL}/genders`);
+  const {data: colors} = await axios.get(`${process.env.API_URL}/colors`);
+  const {data: categories} = await axios.get(
+    `${process.env.API_URL}/categories`,
+  );
+  const {data: brands} = await axios.get(`${process.env.API_URL}/brands`);
+  const {data: sizes} = await axios.get(`${process.env.API_URL}/sizes`);
+
   return {
     props: {
       sessionUser: {...user, name: null},
       initialProducts: response.data,
       initialPages: [1],
+      filtersData: {
+        genders,
+        colors,
+        categories,
+        brands,
+        sizes,
+      },
     },
   };
 };

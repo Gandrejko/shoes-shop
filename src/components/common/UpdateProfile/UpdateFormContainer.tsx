@@ -1,4 +1,4 @@
-import {Box, Button, SxProps} from '@mui/material';
+import {Box, Button, CircularProgress, SxProps} from '@mui/material';
 import {useContext} from 'react';
 import Input from '@/components/ui/Input/Input';
 import {UpdateFormContext} from './UpdateForm';
@@ -77,8 +77,9 @@ const UpdateFormContainer = () => {
         type="submit"
         sx={styles.button}
         disabled={isUserDataLoading || isUploadImageLoading}
+        endIcon={isUserDataLoading && <CircularProgress size={15} />}
       >
-        Save changes
+        {isUserDataLoading ? 'Saving...' : 'Save changes'}
       </Button>
     </>
   );

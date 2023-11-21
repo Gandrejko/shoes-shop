@@ -1,5 +1,6 @@
 import ProductForm from '@/components/common/ProductForm/ProductForm';
 import theme from '@/config/theme';
+import {FiltersData} from '@/types';
 import {Box, SxProps, Modal} from '@mui/material';
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import axios, {AxiosError} from 'axios';
@@ -42,9 +43,10 @@ const styles: Record<string, SxProps> = {
 
 type EditProductProps = {
   productId: string;
+  filtersData: FiltersData;
 };
 
-const EditProduct = ({productId}: EditProductProps) => {
+const EditProduct = ({productId, filtersData}: EditProductProps) => {
   const router = useRouter();
   const session = useSession();
   const token = session.data?.user.accessToken;
@@ -101,6 +103,7 @@ const EditProduct = ({productId}: EditProductProps) => {
       <Box sx={styles.modalContent}>
         {product && (
           <ProductForm
+            filtersData={filtersData}
             isLoading={isPending || isLoading}
             onSubmit={mutate}
             product={product}

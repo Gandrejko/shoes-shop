@@ -1,4 +1,6 @@
+import {ProductAttributes} from '@/types';
 import {Slider, SxProps} from '@mui/material';
+import axios from 'axios';
 import {useRouter} from 'next/router';
 import {useEffect, useState} from 'react';
 
@@ -48,6 +50,19 @@ const styles: Record<string, SxProps> = {
 const PriceSlider = () => {
   const router = useRouter();
   const [priceRange, setPriceRange] = useState([0, 1000]);
+  const [productMaxPrice, setProductMaxPrice] = useState(1000);
+
+  useEffect(() => {
+    const getBiggestPrice = async () => {
+      const response = await axios.get(
+        'https://shoes-shop-strapi.herokuapp.com/api/products?sort=price:desc&pagination[page]=1&pagination[pageSize]=1',
+      );
+      setPriceRange([0, response.data.data[0].attributes.price || 1000]);
+      setProductMaxPrice(response.data.data[0].attributes.price || 1000);
+    };
+
+    getBiggestPrice();
+  }, []);
 
   useEffect(() => {
     const minPrice = router.query.minPrice;
@@ -70,7 +85,7 @@ const PriceSlider = () => {
 
   return (
     <Slider
-      max={1000}
+      max={productMaxPrice}
       value={priceRange}
       onChange={(_, value) => setPriceRange(value as number[])}
       onChangeCommitted={handlePriceSelected}
