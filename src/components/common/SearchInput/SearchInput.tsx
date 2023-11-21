@@ -1,11 +1,11 @@
-import {Box, InputBase} from '@mui/material';
+import {Box, InputBase, SxProps} from '@mui/material';
 import {InputBaseProps} from '@mui/material/InputBase/InputBase';
 import Image from 'next/image';
+import searchIcon from 'public/icons/search.svg';
 import {useId} from 'react';
 import {RegisterOptions, UseFormRegister} from 'react-hook-form';
-import searchIcon from 'public/icons/search.svg';
 
-const styles = {
+const styles: Record<string, SxProps> = {
   search: {
     display: 'flex',
     alignItems: 'center',
@@ -15,27 +15,27 @@ const styles = {
     border: '1px solid #494949',
     paddingLeft: '15px',
   },
-  searchHuge: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '12px',
-    width: '100%',
-    maxWidth: '1071px',
-    paddingLeft: '32px',
-    border: '1px solid #494949',
-    borderRadius: '50px',
-  },
   input: {
     width: '100%',
     padding: '8px 15px',
     border: 'none',
     outline: 'none',
   },
+  searchHuge: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 1,
+    width: 1,
+    paddingLeft: 4,
+    border: '1px solid #494949',
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
   inputHuge: {
-    width: '100%',
-    padding: '19px 15px 17px',
-    border: 'none',
+    flex: 1,
+    padding: {xs: '10px 15px 10px', sm: '17px 15px 17px'},
     outline: 'none',
+    border: 'none',
 
     '& .MuiInputBase-input': {
       fontSize: '24px',
@@ -78,13 +78,13 @@ const SearchInput = ({
     <Box sx={giantMode ? styles.searchHuge : styles.search}>
       <Image width={20} height={20} src={searchIcon} alt="search" />
       <InputBase
-        placeholder="Search"
-        id={id}
-        sx={giantMode ? styles.inputHuge : styles.input}
         {...props}
         {...registerProps}
+        id={id}
+        sx={giantMode ? styles.inputHuge : styles.input}
+        placeholder="Search"
         error={!!errorMessage}
-        onKeyDown={onEnterPress}
+        onKeyUp={onEnterPress}
       />
     </Box>
   );

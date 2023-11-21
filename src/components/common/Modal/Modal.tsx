@@ -1,17 +1,13 @@
-import {
-  Modal as MuiModal,
-  Box,
-  useTheme,
-  useMediaQuery,
-  Button,
-} from '@mui/material';
-import {useForm} from 'react-hook-form';
 import SearchInput from '@/components/common/SearchInput/SearchInput';
+import {Box, Button, Drawer, Link as MuiLink, SxProps} from '@mui/material';
 import Image from 'next/image';
+import Link from 'next/link';
 import logoIcon from 'public/icons/logo.svg';
 import modalCloseIcon from 'public/icons/modalClose.svg';
+import {useEffect} from 'react';
+import {useForm} from 'react-hook-form';
 
-const style = {
+const styles: Record<string, SxProps> = {
   modal: {
     '& .MuiModal-backdrop': {
       backgroundColor: '#F3F3F3',
@@ -23,82 +19,80 @@ const style = {
     },
   },
   container: {
-    position: 'absolute' as 'absolute',
-    width: '100%',
-    backgroundColor: '#FFF',
-    padding: {md: '45px 61px 83px 40px', xs: '27px 20px 36px 20px'},
     display: 'flex',
-    justifyContent: 'center',
+    backgroundColor: '#FFF',
+    padding: {md: '45px 60px 90px', xs: '25px 30px 60px'},
   },
   wrapper: {
-    maxWidth: '1920px',
-    width: '100%',
+    flexGrow: 1,
     display: 'flex',
     justifyContent: 'space-between',
+    alignItems: {xs: 'center', sm: 'flex-start'},
+    gap: {xs: 5, md: 7, lg: 15},
   },
-  logoImageStyles: {
-    marginRight: '25px',
+  searchbox: {
+    flexGrow: 1,
+    display: 'flex',
+    flexDirection: {xs: 'column', md: 'row'},
+    alignItems: 'center',
+    gap: 3,
   },
-  closeImageStyles: {
-    marginLeft: '25px',
-    cursor: 'pointer',
+  searchBtn: {
+    width: '150px',
+    height: '60px',
+    display: {xs: 'none', md: 'block'},
   },
 };
 
-type PropsType = {
-  handleSearchClick: (value: string) => void;
-  handleClose: () => void;
+type Props = {
+  onSearch: (value: string) => void;
+  onClose: () => void;
   isOpen: boolean;
 };
 
-export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
-  const {register, getValues} = useForm<{searchString: string}>();
-  const theme = useTheme();
-  const greaterThanMid = useMediaQuery(theme.breakpoints.up('md'));
-  const lessThanSmall = useMediaQuery(theme.breakpoints.down('sm'));
-
-  const handleOnClose = () => {
-    handleClose();
-  };
+export const Modal = ({onSearch, onClose, isOpen}: Props) => {
+  const {register, getValues, setFocus} = useForm<{searchingString: string}>();
 
   const handleOnSearch = () => {
-    handleSearchClick(getValues('searchString'));
+    onSearch(getValues('searchingString'));
   };
+
+  useEffect(() => {
+    if (isOpen) {
+      setTimeout(() => setFocus('searchingString'), 0);
+    }
+  }, [isOpen, setFocus]);
 
   return (
     <>
-      <MuiModal
+      <Drawer
         open={isOpen}
-        onClose={handleOnClose}
+        onClose={onClose}
+        anchor="top"
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-        sx={style.modal}
+        sx={styles.modal}
       >
-        <Box sx={style.container}>
-          <Box sx={style.wrapper}>
-            {greaterThanMid && (
-              <Image src={logoIcon} alt="" style={style.logoImageStyles} />
-            )}
-            <Box
-              sx={{
-                width: '100%',
-                maxWidth: '1071px',
-                display: 'flex',
-                flexDirection: `${lessThanSmall ? 'column' : 'row'}`,
-                alignItems: 'center',
-                gap: '25px',
-              }}
+        <Box sx={styles.container}>
+          <Box sx={styles.wrapper}>
+            <MuiLink
+              component={Link}
+              href="/products"
+              sx={{display: {xs: 'none', sm: 'block'}}}
             >
+              <Image src={logoIcon} alt="logo" />
+            </MuiLink>
+            <Box sx={styles.searchbox}>
               <SearchInput
                 register={register}
-                name="searchString"
+                name="searchingString"
                 validationSchema={{}}
                 giantMode
                 enterPressHandler={handleOnSearch}
               />
               <Button
-                variant="outlined"
-                sx={{width: '148px', height: '80px'}}
+                variant="contained"
+                sx={styles.searchBtn}
                 onClick={handleOnSearch}
               >
                 Search
@@ -108,12 +102,12 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
             <Image
               src={modalCloseIcon}
               alt=""
-              style={style.closeImageStyles}
-              onClick={handleOnClose}
+              style={{cursor: 'pointer'}}
+              onClick={onClose}
             />
           </Box>
         </Box>
-      </MuiModal>
+      </Drawer>
     </>
   );
 };
