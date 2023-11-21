@@ -1,7 +1,13 @@
 import ImageCard from './ImageCard';
 import {ProductFormContext} from '../ProductForm';
-import theme from '@/config/theme';
-import {Box, Grid, InputBase, SxProps, Typography} from '@mui/material';
+import {
+  Box,
+  Grid,
+  InputBase,
+  SxProps,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import {useMutation} from '@tanstack/react-query';
 import axios from 'axios';
 import {useSession} from 'next-auth/react';
@@ -14,7 +20,8 @@ const styles: Record<string, SxProps> = {
     width: '100%',
   },
   uploadImageCard: {
-    border: `2px dashed ${theme.palette.grey['A400']}`,
+    border: '2px dashed',
+    borderColor: 'grey.A400',
     borderRadius: '8px',
     display: 'flex',
     flexDirection: 'column',
@@ -37,6 +44,7 @@ const ImagesContainer = () => {
     setImages,
     isLoading: isSendLoading,
   } = useContext(ProductFormContext);
+  const theme = useTheme();
   const session = useSession();
   const token = session.data?.user.accessToken;
   const inputRef = useRef<HTMLInputElement>();
@@ -102,6 +110,12 @@ const ImagesContainer = () => {
               height={30}
               src="/icons/imageUpload.svg"
               alt="image upload"
+              style={{
+                filter:
+                  theme.palette.mode === 'dark'
+                    ? 'brightness(10)'
+                    : 'brightness(1)',
+              }}
             />
             <Typography>
               Drop your image here, <br /> or select{' '}

@@ -24,11 +24,15 @@ const styles: Record<string, SxProps> = {
     width: 1,
     borderRadius: 0,
     boxShadow: 'none',
+    display: 'flex',
+    flexDirection: 'column',
   },
   cardActionArea: {
     '&:hover .MuiCardActionArea-focusHighlight': {
       opacity: 0,
     },
+    backgroundColor: 'background.paper',
+    flex: 1,
   },
   cardContent: {
     paddingLeft: 0,
@@ -114,7 +118,7 @@ const ProductCard = ({product}: Props) => {
                   variant="h5"
                   fontSize={14}
                   textTransform="capitalize"
-                  color={theme => theme.palette.text.secondary}
+                  color="text.secondary"
                 >
                   {`${product.gender.data.attributes.name}'s Shoes`}
                 </Typography>

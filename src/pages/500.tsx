@@ -34,6 +34,7 @@ const styles: Record<string, SxProps> = {
   },
   text: {
     zIndex: 1,
+    color: '#000',
   },
   title: {
     flex: 1,

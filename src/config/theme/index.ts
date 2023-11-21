@@ -3,24 +3,9 @@ import {inter, workSans} from './fonts';
 
 let theme = createTheme({
   palette: {
-    mode: 'light',
     primary: {main: '#fe645e'},
     error: {main: '#fe645e'},
-    text: {
-      primary: '#000',
-      secondary: '#5c5c5c',
-    },
-    background: {
-      default: '#fff',
-    },
-    grey: {
-      A100: '#eaecf0',
-      A200: '#98a2b3',
-      A400: '#797979',
-      A700: '#494949',
-    },
   },
-
   typography: {
     fontFamily: workSans.style.fontFamily,
     fontWeightLight: 300,
@@ -145,7 +130,7 @@ let theme = createTheme({
         root: ({theme}) => ({
           padding: 0,
           '&.Mui-focused': {
-            border: 'none', // Встановіть бажаний стиль для рамки, наприклад, 'none' для видалення рамки
+            border: 'none', // Set the desired style for the border, for example 'none' to remove the border
           },
         }),
       },

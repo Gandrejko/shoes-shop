@@ -6,21 +6,27 @@ import {UseFormRegister, RegisterOptions} from 'react-hook-form';
 import Image from 'next/image';
 import warningIcon from 'public/icons/warning.svg';
 
-const styles = {
+const styles: Record<string, SxProps> = {
   requiredMark: {
-    color: '#FE645E',
+    color: 'primary.main',
     marginLeft: '5px',
   },
   input: {
     width: '100%',
     borderRadius: '8px',
-    border: `1px solid ${theme.palette.grey['A700']}`,
     padding: '8px 15px',
     outline: 'none',
     underline: 'none',
+    '& .MuiInputBase-input': {
+      color: 'text.primary',
+    },
+    '& .Mui-disabled': {
+      color: 'grey.A200',
+      WebkitTextFillColor: 'unset',
+    },
   },
   errorWrapper: {
-    color: '#FE645E',
+    color: 'error.main',
     display: 'flex',
     alignItems: 'center',
     gap: '4px',
@@ -49,7 +55,7 @@ const Input = ({
   const id = useId();
   return (
     <Box sx={boxSx}>
-      <InputLabel htmlFor={id}>
+      <InputLabel htmlFor={id} sx={{color: 'text.secondary'}}>
         {labelText}
         {validationSchema.required && (
           <Typography component="span" sx={styles.requiredMark}>

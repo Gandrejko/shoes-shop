@@ -1,31 +1,34 @@
+import SearchInput from '@/components/common/SearchInput/SearchInput';
+import ColorModeContext from '@/config/theme/ColorModeContext';
+import {DarkMode, LightMode} from '@mui/icons-material';
 import {
+  Avatar,
+  Button,
   IconButton,
+  Link as MuiLink,
   Stack,
   SxProps,
   Toolbar,
   Typography,
-  Button,
-  Link as MuiLink,
-  Avatar,
 } from '@mui/material';
-import SearchInput from '@/components/common/SearchInput/SearchInput';
-import {HeaderProps} from '../Header';
+import {useSession} from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
-import {useState} from 'react';
-import {ProfilePopup} from './ProfilePopup';
 import {useRouter} from 'next/navigation';
-import {useSession} from 'next-auth/react';
+import {useContext, useState} from 'react';
+import {HeaderProps} from '../Header';
+import {ProfilePopup} from './ProfilePopup';
 
 const styles: Record<string, SxProps> = {
   desktopWrapper: {
     height: '120px',
     display: 'flex',
     justifyContent: 'space-between',
+    backgroundColor: 'background.paper',
   },
   link: {
     textDecoration: 'none',
-    color: 'inherit',
+    color: 'text.primary',
     transition: 'color 0.2s ease-in-out',
     '&:hover': {
       color: 'primary.main',
@@ -37,13 +40,25 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const router = useRouter();
   const {data} = useSession();
+  const {theme, toggleTheme} = useContext(ColorModeContext);
 
   return (
     <>
       <Toolbar sx={styles.desktopWrapper}>
         <Stack direction="row" alignItems="center" spacing={4}>
           <Link href="/products">
-            <Image src="/icons/logo.svg" alt="logo" width={40} height={30} />
+            <Image
+              src="/icons/logo.svg"
+              alt="logo"
+              width={40}
+              height={30}
+              style={{
+                filter:
+                  theme.palette.mode === 'dark'
+                    ? 'brightness(1)'
+                    : 'brightness(0)',
+              }}
+            />
           </Link>
           <MuiLink component={Link} href="/products" sx={styles.link}>
             <Typography variant="body1">Products</Typography>
@@ -63,22 +78,44 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
               onClick={handleModalOpen}
             />
             <Stack direction="row" spacing={0.5}>
+              <IconButton aria-label="Toggle theme" onClick={toggleTheme}>
+                {theme.palette.mode === 'light' ? (
+                  <DarkMode sx={{color: '#000', fontSize: 30}} />
+                ) : (
+                  <LightMode sx={{color: '#fff', fontSize: 30}} />
+                )}
+              </IconButton>
               <IconButton onClick={() => router.push('/cart')}>
                 <Image
                   src="/icons/cart.svg"
                   alt="cart"
-                  width={24}
+                  width={30}
                   height={24}
+                  style={{
+                    filter:
+                      theme.palette.mode === 'dark'
+                        ? 'brightness(10)'
+                        : 'brightness(1)',
+                  }}
                 />
               </IconButton>
               <IconButton
                 onClick={e => setAnchorEl(e.currentTarget)}
                 aria-describedby={'profile-popup'}
+                sx={{
+                  width: 43,
+                  height: 43,
+                }}
               >
                 <Avatar
                   src={data?.user?.image}
                   alt="avatar"
-                  sx={{width: 24, height: 24}}
+                  sx={{
+                    width: 24,
+                    height: 24,
+                    border: '1px solid',
+                    borderColor: 'text.primary',
+                  }}
                 >
                   {(data?.user?.firstName ||
                     data?.user?.username ||
@@ -109,8 +146,26 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
               validationSchema={false}
               onClick={handleModalOpen}
             />
+            <IconButton aria-label="Toggle theme" onClick={toggleTheme}>
+              {theme.palette.mode === 'light' ? (
+                <DarkMode sx={{color: '#000', fontSize: 30}} />
+              ) : (
+                <LightMode sx={{color: '#fff', fontSize: 30}} />
+              )}
+            </IconButton>
             <IconButton onClick={() => router.push('/cart')}>
-              <Image src="/icons/cart.svg" alt="cart" width={24} height={24} />
+              <Image
+                src="/icons/cart.svg"
+                alt="cart"
+                width={26}
+                height={26}
+                style={{
+                  filter:
+                    theme.palette.mode === 'dark'
+                      ? 'brightness(10)'
+                      : 'brightness(1)',
+                }}
+              />
             </IconButton>
           </Stack>
         )}

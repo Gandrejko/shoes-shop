@@ -1,26 +1,17 @@
-import {Image} from '@/types';
+import theme from '@/config/theme';
+import {Image, Product, ProductAttributes, ProductRequest} from '@/types';
+import {Box, Button, SxProps, Typography} from '@mui/material';
 import {useSession} from 'next-auth/react';
+import {Dispatch, SetStateAction, createContext, useState} from 'react';
 import {
+  FieldErrors,
   UseFormRegister,
   UseFormSetValue,
   UseFormTrigger,
+  useForm,
 } from 'react-hook-form';
 import FormContainer from './components/FormContainer';
 import ImagesContainer from './components/ImagesContainer';
-import theme from '@/config/theme';
-import {Box, Button, SxProps, Typography} from '@mui/material';
-import React, {
-  createContext,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
-import {FieldErrors, useForm} from 'react-hook-form';
-import {toast} from 'react-toastify';
-import {Product, ProductAttributes, ProductRequest} from '@/types';
-import {ProductsResponse} from '@/types';
 
 const styles: Record<string, SxProps> = {
   mainContainer: {

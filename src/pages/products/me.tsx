@@ -243,7 +243,7 @@ export const getServerSideProps = async (
 
   return {
     props: {
-      sessionUser: user,
+      sessionUser: {...user, name: null},
       initialProducts: response.data,
       initialPages: [1],
     },

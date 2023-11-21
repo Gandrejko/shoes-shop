@@ -1,10 +1,20 @@
-import {Box, Checkbox, InputLabel} from '@mui/material';
+import {Box, Checkbox, InputLabel, SxProps} from '@mui/material';
 import {ChangeEvent, useId} from 'react';
 
-const styles = {
+const styles: Record<string, SxProps> = {
   option: {
     display: 'flex',
     alignItems: 'center',
+    color: 'text.primary',
+    '& .MuiCheckbox-root, & .MuiInputLabel-root': {
+      color: 'inherit',
+    },
+  },
+  checkbox: {
+    marginLeft: -1,
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
   },
 };
 
@@ -34,7 +44,7 @@ export const Option = ({
         size="small"
         color="primary"
         id={id}
-        sx={{paddingLeft: 0}}
+        sx={styles.checkbox}
         checked={checked}
         onChange={handleChange}
       />

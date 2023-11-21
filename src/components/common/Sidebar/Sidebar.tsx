@@ -6,6 +6,7 @@ import {
   ListItem,
   SxProps,
   Typography,
+  useTheme,
 } from '@mui/material';
 import Image from 'next/image';
 import {destroyCookie} from 'nookies';
@@ -27,15 +28,6 @@ const styles: Record<string, SxProps> = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  avatar: {
-    bgcolor: 'primary.main',
-    fontSize: {sm: 28, md: 36},
-    height: '64px',
-    width: '64px',
-  },
-  avatarLetter: {
-    color: 'text.primary',
   },
   welcome: {
     color: 'grey.A200',
@@ -65,6 +57,7 @@ type SidebarProps = {
 };
 
 const Sidebar = ({currentTab, closeDrawer}: SidebarProps) => {
+  const theme = useTheme();
   const router = useRouter();
   const {data} = useSession();
   const image = data?.user.image;
@@ -103,7 +96,7 @@ const Sidebar = ({currentTab, closeDrawer}: SidebarProps) => {
         <ListItem
           sx={{
             ...styles.tab,
-            color: currentTab === 'products' ? '#FE645E' : '#000',
+            color: currentTab === 'products' ? 'primary.main' : 'text.primary',
           }}
           onClick={() => {
             router.push('/products/me');
@@ -117,13 +110,19 @@ const Sidebar = ({currentTab, closeDrawer}: SidebarProps) => {
             height={20}
             src="/icons/myProducts.svg"
             alt="my-products"
+            style={{
+              filter:
+                theme.palette.mode === 'dark'
+                  ? 'brightness(10)'
+                  : 'brightness(1)',
+            }}
           />
           <Typography>My products</Typography>
         </ListItem>
         <ListItem
           sx={{
             ...styles.tab,
-            color: currentTab === 'settings' ? '#FE645E' : '#000',
+            color: currentTab === 'settings' ? 'primary.main' : 'text.primary',
           }}
           onClick={() => {
             router.push('/settings');
@@ -137,17 +136,34 @@ const Sidebar = ({currentTab, closeDrawer}: SidebarProps) => {
             height={20}
             src="/icons/settings.svg"
             alt="settings"
+            style={{
+              filter:
+                theme.palette.mode === 'dark'
+                  ? 'brightness(10)'
+                  : 'brightness(1)',
+            }}
           />
           <Typography>Settings</Typography>
         </ListItem>
         <ListItem
           sx={{
             ...styles.tab,
-            color: currentTab === 'logout' ? '#FE645E' : '#000',
+            color: currentTab === 'logout' ? 'primary.main' : 'text.primary',
           }}
           onClick={logoutFunction}
         >
-          <Image width={20} height={20} src="/icons/logout.svg" alt="logout" />
+          <Image
+            width={20}
+            height={20}
+            src="/icons/logout.svg"
+            alt="logout"
+            style={{
+              filter:
+                theme.palette.mode === 'dark'
+                  ? 'brightness(10)'
+                  : 'brightness(1)',
+            }}
+          />
           <Typography>Log out</Typography>
         </ListItem>
       </List>

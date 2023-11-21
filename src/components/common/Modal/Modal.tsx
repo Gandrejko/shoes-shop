@@ -1,25 +1,29 @@
-import {
-  Modal as MuiModal,
-  Box,
-  useTheme,
-  useMediaQuery,
-  Button,
-} from '@mui/material';
-import {useForm} from 'react-hook-form';
 import SearchInput from '@/components/common/SearchInput/SearchInput';
+import {
+  Box,
+  Button,
+  IconButton,
+  Modal as MuiModal,
+  SxProps,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import Image from 'next/image';
 import logoIcon from 'public/icons/logo.svg';
 import modalCloseIcon from 'public/icons/modalClose.svg';
+import {CSSProperties} from 'react';
+import {useForm} from 'react-hook-form';
 
-const style = {
+const styles: Record<string, SxProps> = {
   modal: {
     '& .MuiModal-backdrop': {
-      backgroundColor: '#F3F3F3',
+      backgroundColor: 'grey.A400',
       opacity: '0.9 !important',
       backdropFilter: 'blur(100px)',
     },
     '& .MuiBox-root': {
       outline: 'none',
+      backgroundColor: 'background.paper',
     },
   },
   container: {
@@ -42,6 +46,8 @@ const style = {
   closeImageStyles: {
     marginLeft: '25px',
     cursor: 'pointer',
+    width: 45,
+    height: 45,
   },
 };
 
@@ -72,12 +78,22 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
         onClose={handleOnClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-        sx={style.modal}
+        sx={styles.modal}
       >
-        <Box sx={style.container}>
-          <Box sx={style.wrapper}>
+        <Box sx={styles.container}>
+          <Box sx={styles.wrapper}>
             {greaterThanMid && (
-              <Image src={logoIcon} alt="" style={style.logoImageStyles} />
+              <Image
+                src={logoIcon}
+                alt=""
+                style={{
+                  ...(styles.logoImageStyles as CSSProperties),
+                  filter:
+                    theme.palette.mode === 'dark'
+                      ? 'brightness(1)'
+                      : 'brightness(0)',
+                }}
+              />
             )}
             <Box
               sx={{
@@ -105,12 +121,18 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
               </Button>
             </Box>
 
-            <Image
-              src={modalCloseIcon}
-              alt=""
-              style={style.closeImageStyles}
-              onClick={handleOnClose}
-            />
+            <IconButton sx={styles.closeImageStyles} onClick={handleOnClose}>
+              <Image
+                src={modalCloseIcon}
+                alt=""
+                style={{
+                  filter:
+                    theme.palette.mode === 'dark'
+                      ? 'brightness(10)'
+                      : 'brightness(1)',
+                }}
+              />
+            </IconButton>
           </Box>
         </Box>
       </MuiModal>
