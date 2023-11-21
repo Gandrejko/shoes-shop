@@ -174,15 +174,17 @@ const Product = ({product: data}: ProductProps) => {
             </Typography>
           )}
         </Box>
-        <Box sx={styles.categories}>
-          <Typography variant="h4">Categories: </Typography>
-          {categories?.map(({id, attributes: {name}}, index) => (
-            <Typography key={id} component="span" sx={styles.category}>
-              {name + (index !== categories.length - 1 ? ',' : '')}
-            </Typography>
-          ))}
-        </Box>
-        {sizes && (
+        {categories && categories.length !== 0 && (
+          <Box sx={styles.categories}>
+            <Typography variant="h4">Categories: </Typography>
+            {categories?.map(({id, attributes: {name}}, index) => (
+              <Typography key={id} component="span" sx={styles.category}>
+                {name + (index !== categories.length - 1 ? ',' : '')}
+              </Typography>
+            ))}
+          </Box>
+        )}
+        {sizes && sizes.length !== 0 && (
           <Box sx={styles.sizesContainer}>
             <Typography variant="h4" sx={styles.productLabel}>
               Select Size

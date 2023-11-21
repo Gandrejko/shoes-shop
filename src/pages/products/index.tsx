@@ -16,7 +16,7 @@ import {FilterSidebar} from '@/components/layouts/FilterSidebar/FilterSidebar';
 import HeaderLayout from '@/components/layouts/HeaderLayout/HeaderLayout';
 import {SignInLayout} from '@/components/layouts/SignInLayout/SignInLayout';
 import {NextPageWithLayout} from '@/pages/_app';
-import {ProductsResponse} from '@/types';
+import {FiltersData, ProductsResponse} from '@/types';
 import buildParams from '@/utils/buildParams';
 import axios from 'axios';
 import {GetServerSidePropsContext} from 'next';
@@ -42,11 +42,13 @@ const styles: Record<string, SxProps> = {
 type Props = {
   initialProducts: ProductsResponse;
   initialPages: number[];
+  filtersData: FiltersData;
 };
 
 const MyProducts: NextPageWithLayout<Props> = ({
   initialPages,
   initialProducts,
+  filtersData,
 }) => {
   const theme = useTheme();
   const router = useRouter();
@@ -72,6 +74,7 @@ const MyProducts: NextPageWithLayout<Props> = ({
         searchingString={params['filters[name][$containsi]'] as string}
         productsCount={productsCount}
         onClose={() => setShowFilters(false)}
+        filtersData={filtersData}
       />
       <Box sx={styles.container} marginLeft={showFilters && !isMobile ? 2 : 0}>
         <Box sx={styles.productsContainer}>
@@ -160,10 +163,25 @@ export const getServerSideProps = async (
     };
   }
 
+  const {data: genders} = await axios.get(`${process.env.API_URL}/genders`);
+  const {data: colors} = await axios.get(`${process.env.API_URL}/colors`);
+  const {data: categories} = await axios.get(
+    `${process.env.API_URL}/categories`,
+  );
+  const {data: brands} = await axios.get(`${process.env.API_URL}/brands`);
+  const {data: sizes} = await axios.get(`${process.env.API_URL}/sizes`);
+
   return {
     props: {
       initialProducts: response.data,
       initialPages: [1],
+      filtersData: {
+        genders,
+        colors,
+        categories,
+        brands,
+        sizes,
+      },
     },
   };
 };

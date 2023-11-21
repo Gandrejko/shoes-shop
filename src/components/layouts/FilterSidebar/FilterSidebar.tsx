@@ -8,17 +8,9 @@ import {
   useTheme,
 } from '@mui/material';
 
-import {useGet} from '@/hooks';
-import {Category} from './components/Category';
-
-import {
-  BrandsResponse,
-  ColorsResponse,
-  GendersResponse,
-  SizesResponse,
-  CategoriesResponse,
-} from '@/types';
+import {FiltersData} from '@/types';
 import Image from 'next/image';
+import {Category} from './components/Category';
 import PriceSlider from './components/PriceSlider';
 
 const styles: Record<string, SxProps> = {
@@ -49,6 +41,7 @@ type Props = {
   searchingString: string;
   productsCount: number;
   onClose: () => void;
+  filtersData: FiltersData;
 };
 
 export const FilterSidebar = ({
@@ -56,15 +49,12 @@ export const FilterSidebar = ({
   productsCount,
   open,
   onClose,
+  filtersData,
 }: Props) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-  const {data: genders} = useGet<GendersResponse>('/genders');
-  const {data: colors} = useGet<ColorsResponse>('/colors');
-  const {data: brands} = useGet<BrandsResponse>('/brands');
-  const {data: categories} = useGet<CategoriesResponse>('/categories');
-  const {data: sizes} = useGet<SizesResponse>('/sizes');
+  const {genders, colors, brands, categories, sizes} = filtersData;
 
   return (
     <Drawer

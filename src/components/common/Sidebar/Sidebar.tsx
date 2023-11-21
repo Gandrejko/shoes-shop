@@ -12,6 +12,7 @@ import Image from 'next/image';
 import {destroyCookie} from 'nookies';
 import {signOut, useSession} from 'next-auth/react';
 import {useRouter} from 'next/navigation';
+import {relative} from 'path';
 
 const styles: Record<string, SxProps> = {
   user: {
@@ -23,11 +24,19 @@ const styles: Record<string, SxProps> = {
   avatarContainer: {
     width: '64px',
     height: '64px',
-    backgroundColor: 'primary.main',
+    border: '1px solid #fff',
     borderRadius: '50%',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    position: 'relative',
+    overflow: 'hidden',
+  },
+  avatar: {
+    width: 1,
+    height: 1,
+    bgcolor: 'primary.main',
+    color: '#fff',
   },
   welcome: {
     color: 'grey.A200',
@@ -74,9 +83,20 @@ const Sidebar = ({currentTab, closeDrawer}: SidebarProps) => {
     <Box>
       <Box sx={styles.user}>
         <Box sx={styles.avatarContainer}>
-          <Avatar src={image} sx={styles.avatarContainer}>
-            {(firstName || username || ' ')[0].toUpperCase()}
-          </Avatar>
+          {image ? (
+            <Image
+              src={image}
+              alt={(firstName || username || ' ')[0].toUpperCase()}
+              fill
+              style={{objectFit: 'cover'}}
+            />
+          ) : (
+            <Avatar
+              src="/"
+              alt={(firstName || username || ' ')[0].toUpperCase()}
+              sx={styles.avatar}
+            />
+          )}
         </Box>
         <Box>
           <Typography variant="body2" sx={styles.welcome}>

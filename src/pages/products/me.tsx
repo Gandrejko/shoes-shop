@@ -66,6 +66,7 @@ const styles: Record<string, SxProps> = {
   },
   avatar: {
     bgcolor: 'primary.main',
+    color: '#fff',
     fontSize: {xs: 20, sm: 35, md: 45},
     width: 1,
     height: 1,
