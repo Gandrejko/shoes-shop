@@ -12,6 +12,7 @@ import {useState} from 'react';
 
 const styles: Record<string, SxProps> = {
   menuList: {
+    p: 0,
     width: '7rem',
   },
   menuItem: {
