@@ -87,7 +87,8 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
   };
 
   const handleOnSearch = () => {
-    handleSearchClick(getValues('searchString'));
+    const searchTerm = getValues('searchString')
+    handleSearchClick(searchTerm);
   };
 
   useEffect(() => {
