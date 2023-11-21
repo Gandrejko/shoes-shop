@@ -56,10 +56,11 @@ type PropsType = {
 };
 
 export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
-  const {register, getValues, setValue} = useForm<{searchString: string}>();
+  const {register, getValues, setValue, watch} = useForm<{searchString: string}>();
   const theme = useTheme();
   const greaterThanMid = useMediaQuery(theme.breakpoints.up('md'));
   const lessThanSmall = useMediaQuery(theme.breakpoints.down('sm'));
+  const searchString = watch('searchString');
   const [suggestions, setSuggestions] = useState<(string | undefined)[]>([]);
 
   const fetchSuggestions = async () => {
@@ -95,7 +96,7 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
       clearTimeout(timeoutId);
       setSuggestions([]);
     };
-  }, [getValues('searchString')]);
+  }, [searchString]);
 
   return (
     <>
