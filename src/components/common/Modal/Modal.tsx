@@ -92,7 +92,7 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
       clearTimeout(timeoutId);
       setSuggestions([]);
     }
-  }, [getValues('searchString')]);
+  }, [getValues]);
 
   return (
     <>
@@ -109,6 +109,7 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
               <Image src={logoIcon} alt="" style={style.logoImageStyles} />
             )}
             <Box sx={{
+              maxWidth: '1071px',
               display: 'flex',
               flexDirection: 'column',
               gap: '25px',
@@ -116,7 +117,6 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
               <Box
                 sx={{
                   width: '100%',
-                  maxWidth: '1071px',
                   display: 'flex',
                   gap: '25px',
                 }}
