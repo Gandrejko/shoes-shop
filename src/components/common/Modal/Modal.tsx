@@ -10,6 +10,10 @@ import SearchInput from '@/components/common/SearchInput/SearchInput';
 import Image from 'next/image';
 import logoIcon from 'public/icons/logo.svg';
 import modalCloseIcon from 'public/icons/modalClose.svg';
+import {useEffect, useState} from 'react';
+import buildParams from '@/utils/buildParams';
+import {ProductsResponse} from '@/types';
+import axios from 'axios';
 
 const style = {
   modal: {
@@ -52,10 +56,24 @@ type PropsType = {
 };
 
 export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
-  const {register, getValues} = useForm<{searchString: string}>();
+  const {register, getValues, setValue} = useForm<{searchString: string}>();
   const theme = useTheme();
   const greaterThanMid = useMediaQuery(theme.breakpoints.up('md'));
   const lessThanSmall = useMediaQuery(theme.breakpoints.down('sm'));
+  const [suggestions, setSuggestions] = useState<(string | undefined)[]>([]);
+
+  const fetchSuggestions = async () => {
+    const searchValue = getValues('searchString');
+    const params = buildParams({ searchingString: searchValue }, {
+      fields: 'name',
+      'pagination[page]': 1,
+      'pagination[pageSize]': 3
+    });
+    const response = await axios.get<ProductsResponse>(`${process.env.API_URL}/products`, { params });
+    const data = response.data;
+    const productNames = data.data.map((product) => product.attributes.name);
+    setSuggestions(productNames);
+  }
 
   const handleOnClose = () => {
     handleClose();
@@ -64,6 +82,14 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
   const handleOnSearch = () => {
     handleSearchClick(getValues('searchString'));
   };
+
+  useEffect(() => {
+    const timeoutId = setTimeout(fetchSuggestions, 500);
+    return () => {
+      clearTimeout(timeoutId);
+      setSuggestions([]);
+    }
+  }, [getValues('searchString')]);
 
   return (
     <>
@@ -89,20 +115,30 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
                 gap: '25px',
               }}
             >
-              <SearchInput
-                register={register}
-                name="searchString"
-                validationSchema={{}}
-                giantMode
-                enterPressHandler={handleOnSearch}
-              />
-              <Button
-                variant="outlined"
-                sx={{width: '148px', height: '80px'}}
-                onClick={handleOnSearch}
-              >
-                Search
-              </Button>
+              <Box>
+                <SearchInput
+                  register={register}
+                  name="searchString"
+                  validationSchema={{}}
+                  giantMode
+                  enterPressHandler={handleOnSearch}
+                  onInputChange={(value) => {
+                    setValue('searchString', value);
+                  }}
+                />
+                <Button
+                  variant="outlined"
+                  sx={{width: '148px', height: '80px'}}
+                  onClick={handleOnSearch}
+                >
+                  Search
+                </Button>
+              </Box>
+              <Box>
+                {suggestions.map((suggestion, index) => (
+                  <li key={index}>{suggestion}</li>
+                ))}
+              </Box>
             </Box>
 
             <Image
