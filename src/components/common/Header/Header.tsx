@@ -1,11 +1,10 @@
-import {AppBar, Divider, SxProps, useTheme, useMediaQuery} from '@mui/material';
-import MobileHeader from './components/MobileHeader';
-import DesktopHeader from './components/DesktopHeader';
-import {Modal} from '../Modal/Modal';
-import {useState} from 'react';
+import {AppBar, Divider, SxProps, useMediaQuery, useTheme} from '@mui/material';
 import {useSession} from 'next-auth/react';
 import {useRouter} from 'next/router';
-import theme from '@/config/theme';
+import {useState} from 'react';
+import {Modal} from '../Modal/Modal';
+import DesktopHeader from './components/DesktopHeader';
+import MobileHeader from './components/MobileHeader';
 
 const styles: Record<string, SxProps> = {
   appBar: {
@@ -14,10 +13,6 @@ const styles: Record<string, SxProps> = {
     backgroundColor: '#FFFFFF',
     border: 'none',
     boxShadow: 'none',
-    zIndex: theme.zIndex.drawer + 1,
-    [theme.breakpoints.down('md')]: {
-      zIndex: theme.zIndex.drawer - 1,
-    },
   },
 };
 
@@ -41,13 +36,18 @@ const Header = () => {
     setOpen(true);
   };
 
-  const handleSearchClick = (value: string) => {
+  const handleSearch = (value: string) => {
     setOpen(false);
-    router.push('/products', {
-      query: {
-        searchingString: value,
+    router.push(
+      {
+        pathname: '/products',
+        query: {
+          searchingString: value,
+        },
       },
-    });
+      undefined,
+      {shallow: true},
+    );
   };
 
   return (
@@ -66,11 +66,7 @@ const Header = () => {
         )}
         <Divider />
       </AppBar>
-      <Modal
-        isOpen={open}
-        handleClose={handleModalClose}
-        handleSearchClick={handleSearchClick}
-      />
+      <Modal isOpen={open} onClose={handleModalClose} onSearch={handleSearch} />
     </>
   );
 };
