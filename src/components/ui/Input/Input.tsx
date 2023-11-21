@@ -1,12 +1,17 @@
 import theme from '@/config/theme';
 import {Box, InputBase, InputLabel, SxProps, Typography} from '@mui/material';
 import {InputBaseProps} from '@mui/material/InputBase/InputBase';
-import {useId} from 'react';
+import {useId, useState} from 'react';
 import {UseFormRegister, RegisterOptions} from 'react-hook-form';
 import Image from 'next/image';
 import warningIcon from 'public/icons/warning.svg';
+import eyeIcon from 'public/icons/eye.svg';
+import eyeSlashIcon from 'public/icons/eyeSlash.svg';
 
 const styles: Record<string, SxProps> = {
+  inputContainer: {
+    position: 'relative',
+  },
   requiredMark: {
     color: 'primary.main',
     marginLeft: '5px',
@@ -32,6 +37,13 @@ const styles: Record<string, SxProps> = {
     gap: '4px',
     marginTop: '8px',
   },
+  togglePassword: {
+    position: 'absolute',
+    bottom: 15,
+    right: 15,
+    display: 'flex',
+    alignItems: 'center',
+  },
 };
 
 type InputProps = InputBaseProps & {
@@ -52,6 +64,7 @@ const Input = ({
   boxSx,
   ...props
 }: InputProps) => {
+  const [showPassword, setShowPassword] = useState(false);
   const id = useId();
   return (
     <Box sx={boxSx}>
@@ -63,18 +76,33 @@ const Input = ({
           </Typography>
         )}
       </InputLabel>
-      <InputBase
-        id={id}
-        sx={{
-          ...styles.input,
-          border: !!errorMessage
-            ? `2px solid ${theme.palette.error.main}`
-            : `1px solid ${theme.palette.grey['A700']}`,
-        }}
-        {...props}
-        {...register(name, validationSchema)}
-        error={!!errorMessage}
-      />
+      <Box sx={styles.inputContainer}>
+        <InputBase
+          id={id}
+          sx={{
+            ...styles.input,
+            border: !!errorMessage
+              ? `2px solid ${theme.palette.error.main}`
+              : `1px solid ${theme.palette.grey['A700']}`,
+          }}
+          {...props}
+          {...register(name, validationSchema)}
+          error={!!errorMessage}
+          type={props.type === 'password' && showPassword ? 'text' : props.type}
+        />
+        {props.type === 'password' && (
+          <Box sx={styles.togglePassword}>
+            <Image
+              onClick={() => setShowPassword(!showPassword)}
+              style={{cursor: 'pointer'}}
+              src={showPassword ? eyeSlashIcon : eyeIcon}
+              alt="eye"
+              width={20}
+              height={20}
+            />
+          </Box>
+        )}
+      </Box>
       {errorMessage && (
         <Box sx={styles.errorWrapper}>
           <Image src={warningIcon} alt="" />
