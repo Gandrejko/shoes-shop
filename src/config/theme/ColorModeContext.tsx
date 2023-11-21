@@ -1,6 +1,6 @@
 import {getPalette} from '@/config/theme/getThemeProps';
-import {Theme, createTheme} from '@mui/material';
-import {createContext, useMemo, useState} from 'react';
+import {Theme, createTheme, useMediaQuery} from '@mui/material';
+import {createContext, useEffect, useMemo, useState} from 'react';
 import commonTheme from '.';
 
 type ContextProps = {
@@ -11,7 +11,12 @@ type ContextProps = {
 const ColorModeContext = createContext({} as ContextProps);
 
 const useColorMode = () => {
-  const [mode, setMode] = useState<'light' | 'dark'>('dark');
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const [mode, setMode] = useState<'light' | 'dark'>('light');
+
+  useEffect(() => {
+    setMode(prefersDarkMode ? 'dark' : 'light');
+  }, [prefersDarkMode]);
 
   const theme = useMemo(() => {
     return createTheme(commonTheme, getPalette(mode));

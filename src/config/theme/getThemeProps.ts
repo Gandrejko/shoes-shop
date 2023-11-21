@@ -1,5 +1,5 @@
 import {PaletteMode, ThemeOptions} from '@mui/material';
-import {grey} from '@mui/material/colors';
+import {blue, blueGrey, grey, indigo, purple} from '@mui/material/colors';
 
 export const getPalette = (mode: PaletteMode): ThemeOptions => ({
   palette: {
@@ -27,8 +27,8 @@ export const getPalette = (mode: PaletteMode): ThemeOptions => ({
             secondary: grey[400],
           },
           background: {
-            default: grey[900],
-            paper: grey[900],
+            default: '#141a1f',
+            paper: '#141a1f',
           },
           grey: {
             A100: grey[600],
