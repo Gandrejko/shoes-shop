@@ -58,7 +58,7 @@ const MyProducts: NextPageWithLayout<Props> = ({
 
   const params = useMemo(() => {
     return buildParams(router.query, {
-      populate: '*',
+      populate: 'images,gender',
     });
   }, [router.query]);
 

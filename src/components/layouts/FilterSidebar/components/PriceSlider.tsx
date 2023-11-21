@@ -1,4 +1,4 @@
-import {ProductAttributes} from '@/types';
+import {ProductAttributes, ProductsResponse} from '@/types';
 import {Slider, SxProps} from '@mui/material';
 import axios from 'axios';
 import {useRouter} from 'next/router';
@@ -54,15 +54,18 @@ const PriceSlider = () => {
 
   useEffect(() => {
     const getBiggestPrice = async () => {
-      const response = await axios.get(`${process.env.API_URL}/products`, {
-        params: {
-          'pagination[page]': 1,
-          'pagination[pageSize]': 1,
-          'filters[teamName]': 'team-3',
-          fields: 'price',
-          sort: 'price:desc',
+      const response = await axios.get<ProductsResponse>(
+        `${process.env.API_URL}/products`,
+        {
+          params: {
+            'pagination[page]': 1,
+            'pagination[pageSize]': 1,
+            'filters[teamName]': 'team-3',
+            fields: 'price',
+            sort: 'price:desc',
+          },
         },
-      });
+      );
 
       setProductMaxPrice(response.data.data[0].attributes.price || 1000);
       setPriceRange(prevPriceRange => {
@@ -87,14 +90,18 @@ const PriceSlider = () => {
   }, [router.query.maxPrice, router.query.minPrice, productMaxPrice]);
 
   const handlePriceSelected = () => {
-    router.push({
-      pathname: router.pathname,
-      query: {
-        ...router.query,
-        minPrice: priceRange[0],
-        maxPrice: priceRange[1],
+    router.push(
+      {
+        pathname: router.pathname,
+        query: {
+          ...router.query,
+          minPrice: priceRange[0],
+          maxPrice: priceRange[1],
+        },
       },
-    });
+      undefined,
+      {shallow: true},
+    );
   };
 
   return (
