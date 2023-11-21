@@ -73,7 +73,8 @@ const SearchInput = ({
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      onInputChange && onInputChange(e.target.value);
+    const value = e.target.value;
+    onInputChange && onInputChange(value);
   };
 
   const registerProps =

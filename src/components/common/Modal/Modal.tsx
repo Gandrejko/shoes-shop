@@ -80,7 +80,7 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
       clearTimeout(timeoutId);
       setSuggestions([]);
     }
-  }, [getValues]);
+  }, [getValues('searchString')]);
 
   const handleOnClose = () => {
     handleClose();
