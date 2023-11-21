@@ -64,7 +64,11 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
 
   const fetchSuggestions = async () => {
      const searchValue = getValues('searchString');
-     const params = buildParams({ searchingString: searchValue });
+    const params = buildParams({ searchingString: searchValue }, {
+      fields: 'name',
+      'pagination[page]': 1,
+      'pagination[pageSize]': 3
+    });
 
      const response = await axios.get<ProductsResponse>(`${process.env.API_URL}/products`, { params });
      const data = response.data;
@@ -137,8 +141,8 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
             />
           </Box>
           <Box>
-            {suggestions.slice(0, 3).map((suggestion, index) => (
-              <div key={index}>{suggestion}</div>
+            {suggestions.map((suggestion, index) => (
+              <li key={index}>{suggestion}</li>
             ))}
           </Box>
         </Box>
