@@ -108,30 +108,32 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
             {greaterThanMid && (
               <Image src={logoIcon} alt="" style={style.logoImageStyles} />
             )}
-            <Box
-              sx={{
-                width: '100%',
-                maxWidth: '1071px',
-                display: 'flex',
-                flexDirection: `${lessThanSmall ? 'column' : 'row'}`,
-                alignItems: 'center',
-                gap: '25px',
-              }}
-            >
-              <SearchInput
-                register={register}
-                name="searchString"
-                validationSchema={{}}
-                giantMode
-                enterPressHandler={handleOnSearch}
-              />
-              <Button
-                variant="outlined"
-                sx={{width: '148px', height: '80px'}}
-                onClick={handleOnSearch}
+            <Box>
+              <Box
+                sx={{
+                  width: '100%',
+                  maxWidth: '1071px',
+                  display: 'flex',
+                  flexDirection: `${lessThanSmall ? 'column' : 'row'}`,
+                  alignItems: 'center',
+                  gap: '25px',
+                }}
               >
-                Search
-              </Button>
+                <SearchInput
+                  register={register}
+                  name="searchString"
+                  validationSchema={{}}
+                  giantMode
+                  enterPressHandler={handleOnSearch}
+                />
+                <Button
+                  variant="outlined"
+                  sx={{width: '148px', height: '80px'}}
+                  onClick={handleOnSearch}
+                >
+                  Search
+                </Button>
+              </Box>
               <Box>
                 {suggestions.map((suggestion, index) => (
                   <li key={index}>{suggestion}</li>
