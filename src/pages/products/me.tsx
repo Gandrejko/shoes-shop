@@ -121,6 +121,7 @@ const Me: NextPageWithLayout<Props> = ({
             alt="My products"
             fill
             style={{objectFit: 'cover'}}
+            priority
           />
         </Box>
         <Stack sx={styles.profileContainer} direction="row">
