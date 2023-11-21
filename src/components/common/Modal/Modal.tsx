@@ -113,11 +113,11 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
               maxWidth: '1071px',
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'center',
               gap: '25px',
             }}>
               <Box
                 sx={{
+                  width: '100%',
                   display: 'flex',
                 }}
               >
