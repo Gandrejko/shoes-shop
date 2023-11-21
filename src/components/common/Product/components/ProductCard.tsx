@@ -52,9 +52,10 @@ const styles: Record<string, SxProps> = {
 
 type Props = {
   product: ProductAttributes;
+  imagePriority: boolean;
 };
 
-const ProductCard = ({product}: Props) => {
+const ProductCard = ({product, imagePriority}: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const router = useRouter();
@@ -71,6 +72,7 @@ const ProductCard = ({product}: Props) => {
             alt={product.name!}
             fill
             style={{objectFit: 'cover'}}
+            priority={imagePriority}
           />
         ) : (
           <Paper
