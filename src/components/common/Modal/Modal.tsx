@@ -64,16 +64,22 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
 
   const fetchSuggestions = async () => {
     const searchValue = getValues('searchString');
-    const params = buildParams({ searchingString: searchValue }, {
-      fields: 'name',
-      'pagination[page]': 1,
-      'pagination[pageSize]': 3
-    });
-    const response = await axios.get<ProductsResponse>(`${process.env.API_URL}/products`, { params });
+    const params = buildParams(
+      {searchingString: searchValue},
+      {
+        fields: 'name',
+        'pagination[page]': 1,
+        'pagination[pageSize]': 3,
+      },
+    );
+    const response = await axios.get<ProductsResponse>(
+      `${process.env.API_URL}/products`,
+      {params},
+    );
     const data = response.data;
-    const productNames = data.data.map((product) => product.attributes.name);
+    const productNames = data.data.map(product => product.attributes.name);
     setSuggestions(productNames);
-  }
+  };
 
   const handleOnClose = () => {
     handleClose();
@@ -88,7 +94,7 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
     return () => {
       clearTimeout(timeoutId);
       setSuggestions([]);
-    }
+    };
   }, [getValues('searchString')]);
 
   return (
@@ -105,24 +111,24 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
             {greaterThanMid && (
               <Image src={logoIcon} alt="" style={style.logoImageStyles} />
             )}
-            <Box
-              sx={{
-                width: '100%',
-                maxWidth: '1071px',
-                display: 'flex',
-                flexDirection: `${lessThanSmall ? 'column' : 'row'}`,
-                alignItems: 'center',
-                gap: '25px',
-              }}
-            >
-              <Box>
+            <Box>
+              <Box
+                sx={{
+                  width: '100%',
+                  maxWidth: '1071px',
+                  display: 'flex',
+                  flexDirection: `${lessThanSmall ? 'column' : 'row'}`,
+                  alignItems: 'center',
+                  gap: '25px',
+                }}
+              >
                 <SearchInput
                   register={register}
                   name="searchString"
                   validationSchema={{}}
                   giantMode
                   enterPressHandler={handleOnSearch}
-                  onInputChange={(value) => {
+                  onInputChange={value => {
                     setValue('searchString', value);
                   }}
                 />
