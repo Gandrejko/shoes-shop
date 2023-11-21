@@ -7,17 +7,10 @@ import {
   useMediaQuery,
 } from '@mui/material';
 
-import {useGet} from '@/hooks';
 import theme from '@/config/theme';
 import {Category} from './components/Category';
 
-import {
-  BrandsResponse,
-  ColorsResponse,
-  GendersResponse,
-  SizesResponse,
-  CategoriesResponse,
-} from '@/types';
+import {FiltersData} from '@/types';
 import Image from 'next/image';
 import PriceSlider from './components/PriceSlider';
 
@@ -42,6 +35,7 @@ type Props = {
   searchingString: string;
   productsCount: number;
   onClose: () => void;
+  filtersData: FiltersData;
 };
 
 export const FilterSidebar = ({
@@ -49,14 +43,11 @@ export const FilterSidebar = ({
   productsCount,
   open,
   onClose,
+  filtersData,
 }: Props) => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-  const {data: genders} = useGet<GendersResponse>('/genders');
-  const {data: colors} = useGet<ColorsResponse>('/colors');
-  const {data: brands} = useGet<BrandsResponse>('/brands');
-  const {data: categories} = useGet<CategoriesResponse>('/categories');
-  const {data: sizes} = useGet<SizesResponse>('/sizes');
+  const {genders, colors, brands, categories, sizes} = filtersData;
 
   return (
     <Drawer
