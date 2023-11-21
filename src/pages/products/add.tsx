@@ -1,29 +1,15 @@
 import HeaderLayout from '@/components/layouts/HeaderLayout/HeaderLayout';
 import ProductForm from '@/components/common/ProductForm/ProductForm';
 import {SidebarLayout} from '@/components/layouts/SidebarLayout/SidebarLayout';
-import {
-  BrandsResponse,
-  CategoriesResponse,
-  ColorsResponse,
-  GendersResponse,
-  SizesResponse,
-} from '@/types';
+import {FiltersData} from '@/types';
 import {useMutation} from '@tanstack/react-query';
 import axios from 'axios';
-import {GetServerSidePropsContext} from 'next';
+import {GetStaticPropsContext} from 'next';
 import {useSession} from 'next-auth/react';
 import Head from 'next/head';
 import {useRouter} from 'next/navigation';
 import React from 'react';
 import {toast} from 'react-toastify';
-
-export type FiltersData = {
-  genders: GendersResponse;
-  colors: ColorsResponse;
-  categories: CategoriesResponse;
-  brands: BrandsResponse;
-  sizes: SizesResponse;
-};
 
 const AddProduct = (filtersData: FiltersData) => {
   const router = useRouter();
@@ -69,7 +55,7 @@ const AddProduct = (filtersData: FiltersData) => {
   );
 };
 
-export async function getStaticProps(context: GetServerSidePropsContext) {
+export async function getStaticProps(context: GetStaticPropsContext) {
   const {data: genders} = await axios.get(`${process.env.API_URL}/genders`);
   const {data: colors} = await axios.get(`${process.env.API_URL}/colors`);
   const {data: categories} = await axios.get(

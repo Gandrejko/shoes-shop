@@ -1,5 +1,5 @@
 import EditProduct from '@/components/common/EditProduct/EditProduct';
-import {FiltersData} from '@/pages/products/add';
+import {FiltersData} from '@/types';
 import {
   Avatar,
   Box,

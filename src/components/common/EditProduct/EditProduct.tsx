@@ -1,6 +1,6 @@
 import ProductForm from '@/components/common/ProductForm/ProductForm';
 import theme from '@/config/theme';
-import {FiltersData} from '@/pages/products/add';
+import {FiltersData} from '@/types';
 import {Box, SxProps, Modal} from '@mui/material';
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import axios, {AxiosError} from 'axios';

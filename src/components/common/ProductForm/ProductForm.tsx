@@ -1,4 +1,4 @@
-import {FiltersData} from '@/pages/products/add';
+import {FiltersData} from '@/types';
 import {Image} from '@/types';
 import {useSession} from 'next-auth/react';
 import {
