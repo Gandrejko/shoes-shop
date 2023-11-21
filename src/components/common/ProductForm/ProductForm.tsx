@@ -55,6 +55,13 @@ const styles: Record<string, SxProps> = {
       flexDirection: 'column',
     },
   },
+  progresBarContainer: {
+    position: 'sticky',
+    top: '0',
+    backgroundColor: '#fff',
+    padding: '20px 0',
+    zIndex: '1',
+  },
 };
 
 const oneCategoryPercentage = 11.1111111111; // one of nine attributes
@@ -255,23 +262,30 @@ const ProductForm = ({onSubmit, product, isLoading}: ProductFormProps) => {
           Please complete the fields below and select the relevant information
           so that other people can familiarize themselves with your product
         </Typography>
-        <Typography
-          sx={{...styles.description, color: statusColors[progressStatus]}}
-        >
-          Item filling level:{' '}
-          <b>
-            {progressStatus === 'error'
-              ? ' Please, provide required fileds'
-              : progressStatus === 'secondary'
-              ? ' Add more descriptions to your product'
-              : ' Great! You have filled in all fields'}
-          </b>
-        </Typography>
-        <BorderLinearProgress
-          variant="determinate"
-          color={progressStatus}
-          value={createProductProgress * oneCategoryPercentage}
-        />
+        <Box sx={styles.progresBarContainer}>
+          <Typography
+            sx={{
+              ...styles.description,
+              color: statusColors[progressStatus],
+              fontWeight: '400',
+            }}
+          >
+            Item filling level:{' '}
+            <b>
+              {progressStatus === 'error'
+                ? ' Please, provide required fileds'
+                : progressStatus === 'secondary'
+                ? ' Add more descriptions to your product'
+                : ' Great! You have filled in all fields'}
+            </b>
+          </Typography>
+          <BorderLinearProgress
+            variant="determinate"
+            color={progressStatus}
+            value={createProductProgress * oneCategoryPercentage}
+            sx={{marginTop: '20px'}}
+          />
+        </Box>
         <Box sx={styles.form}>
           <FormContainer />
           <ImagesContainer />
