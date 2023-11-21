@@ -132,6 +132,11 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
               >
                 Search
               </Button>
+              <Box>
+                {suggestions.map((suggestion, index) => (
+                  <li key={index}>{suggestion}</li>
+                ))}
+              </Box>
             </Box>
             <Image
               src={modalCloseIcon}
@@ -139,11 +144,6 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
               style={style.closeImageStyles}
               onClick={handleOnClose}
             />
-          </Box>
-          <Box>
-            {suggestions.map((suggestion, index) => (
-              <li key={index}>{suggestion}</li>
-            ))}
           </Box>
         </Box>
       </MuiModal>
