@@ -91,11 +91,22 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
     handleSearchClick(searchValue);
   };
 
+  const handleSuggestionClick = (suggestion: string) => {
+    setValue('searchString', suggestion);
+    handleSearchClick(suggestion);
+  };
+
   useEffect(() => {
-    const timeoutId = setTimeout(fetchSuggestions, 500);
+    const timeoutId = setTimeout(() => {
+      const trimmedSearchString = searchString?.trim();
+      if (trimmedSearchString !== undefined && trimmedSearchString !== '') {
+        fetchSuggestions();
+      } else {
+        setSuggestions([]);
+      }
+    }, 300);
     return () => {
       clearTimeout(timeoutId);
-      setSuggestions([]);
     };
   }, [searchString]);
 
@@ -113,7 +124,11 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
             {greaterThanMid && (
               <Image src={logoIcon} alt="" style={style.logoImageStyles} />
             )}
-            <Box>
+            <Box  sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '25px',
+            }}>
               <Box
                 sx={{
                   width: '100%',
@@ -143,12 +158,15 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
                 </Button>
               </Box>
               <Box>
-                {suggestions.map((suggestion, index) => (
-                  <li key={index}>{suggestion}</li>
-                ))}
+                <ul style={{ listStyleType: 'none', padding: 0, margin: 0, paddingLeft: '25px'}}>
+                  {suggestions.map((suggestion, index) => (
+                    <li key={index}
+                        style={{ marginBottom: '8px', cursor: 'pointer' }}
+                        onClick={() => handleSuggestionClick(suggestion)}>{suggestion}</li>
+                  ))}
+                </ul>
               </Box>
             </Box>
-
             <Image
               src={modalCloseIcon}
               alt=""
