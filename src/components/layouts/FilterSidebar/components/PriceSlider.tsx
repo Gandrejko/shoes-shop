@@ -57,8 +57,8 @@ const PriceSlider = () => {
       const response = await axios.get(
         'https://shoes-shop-strapi.herokuapp.com/api/products?sort=price:desc&pagination[page]=1&pagination[pageSize]=1',
       );
-      setPriceRange([0, response.data.data[0].attributes.price!]);
-      setProductMaxPrice(response.data.data[0].attributes.price!);
+      setPriceRange([0, response.data.data[0].attributes.price || 1000]);
+      setProductMaxPrice(response.data.data[0].attributes.price || 1000);
     };
 
     getBiggestPrice();
