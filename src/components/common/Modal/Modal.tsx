@@ -10,6 +10,10 @@ import SearchInput from '@/components/common/SearchInput/SearchInput';
 import Image from 'next/image';
 import logoIcon from 'public/icons/logo.svg';
 import modalCloseIcon from 'public/icons/modalClose.svg';
+import {useEffect, useState} from 'react';
+import buildParams from '@/utils/buildParams';
+import axios from 'axios';
+import {ProductsResponse} from '@/types';
 
 const style = {
   modal: {
@@ -56,6 +60,25 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
   const theme = useTheme();
   const greaterThanMid = useMediaQuery(theme.breakpoints.up('md'));
   const lessThanSmall = useMediaQuery(theme.breakpoints.down('sm'));
+  const [suggestions, setSuggestions] = useState<string[] >([]);
+  const fetchSuggestions = async () => {
+     const searchValue = getValues('searchString');
+     const params = buildParams({ searchingString: searchValue });
+
+     const response = await axios.get<ProductsResponse>(`${process.env.API_URL}/products`, { params });
+     const data = response.data;
+
+    const productNames = data.data.map((product) => product.attributes.name);
+    setSuggestions(productNames);
+  };
+
+  useEffect(() => {
+    const timeoutId = setTimeout(fetchSuggestions, 500);
+    return () => {
+      clearTimeout(timeoutId);
+      setSuggestions([]);
+    }
+  }, [getValues]);
 
   const handleOnClose = () => {
     handleClose();
@@ -104,13 +127,17 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
                 Search
               </Button>
             </Box>
-
             <Image
               src={modalCloseIcon}
               alt=""
               style={style.closeImageStyles}
               onClick={handleOnClose}
             />
+          </Box>
+          <Box>
+            {suggestions.slice(0, 3).map((suggestion, index) => (
+              <div key={index}>{suggestion}</div>
+            ))}
           </Box>
         </Box>
       </MuiModal>
