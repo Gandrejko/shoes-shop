@@ -105,8 +105,6 @@ const ImagesContainer = () => {
     );
   };
 
-  console.log(uploadingImages);
-
   return (
     <Box sx={styles.imagesContainer}>
       <Typography sx={styles.conatinerHeader}>Product images</Typography>
