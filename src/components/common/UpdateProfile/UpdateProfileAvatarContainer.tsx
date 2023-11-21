@@ -73,7 +73,6 @@ const UpdateProfileAvatarContainer = () => {
 
     uploadImage(formData);
   };
-  console.log(isUploadImageLoading);
 
   return (
     <Box sx={styles.headerBox}>
