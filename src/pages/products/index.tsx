@@ -34,12 +34,14 @@ const styles: Record<string, SxProps> = {
     padding: {xs: '0 24px', md: 0},
   },
   productsHeader: {
-    alignItems: 'start',
+    alignItems: {xs: 'start', md: 'center'},
+    justifyContent: {md: 'space-between'},
     marginBottom: 3,
   },
   filterButtons: {
     marginTop: '15px',
     display: 'flex',
+    flexDirection: {xs: 'row', md: 'column'},
     gap: '10px',
   },
   buttonStyles: {
@@ -88,7 +90,10 @@ const MyProducts: NextPageWithLayout<Props> = ({
       />
       <Box sx={styles.container} marginLeft={showFilters && !isMobile ? 2 : 0}>
         <Box sx={styles.productsContainer}>
-          <Stack direction="column" sx={styles.productsHeader}>
+          <Stack
+            direction={isMobile ? 'column' : 'row'}
+            sx={styles.productsHeader}
+          >
             <Typography variant="h1">Search Results</Typography>
             <Box sx={styles.filterButtons}>
               <Button
