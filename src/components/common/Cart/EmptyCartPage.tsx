@@ -8,7 +8,13 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    height: '60vh',
+    height: {
+      xl: '60vh',
+      lg: '65vh',
+      md: '70vh',
+      sm: '80vh',
+      xs: '80vh',
+    },
   },
   imageWrapper: {
     padding: '20px',
