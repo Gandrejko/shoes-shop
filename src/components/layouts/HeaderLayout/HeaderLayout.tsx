@@ -1,6 +1,7 @@
-import {Box, SxProps} from '@mui/material';
-import {ReactNode} from 'react';
+import { Box, SxProps } from '@mui/material';
+import { ReactNode, useRef } from 'react';
 import Header from '@/components/common/Header/Header';
+import ScrollToTop from '@/components/common/UpToTop/ScrollToTop';
 
 const styles: Record<string, SxProps> = {
   layout: {
@@ -11,18 +12,25 @@ const styles: Record<string, SxProps> = {
   children: {
     overflowY: 'auto',
     height: '100%',
-  },
+  }
 };
 
 type HeaderLayoutProps = {
   children: ReactNode;
 };
 
-const HeaderLayout = ({children}: HeaderLayoutProps) => {
+const HeaderLayout = ({ children }: HeaderLayoutProps) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+
+
   return (
     <Box sx={styles.layout}>
       <Header />
-      <Box sx={styles.children}>{children}</Box>
+      <Box ref={containerRef} sx={styles.children}>
+        {children}
+      </Box>
+      <ScrollToTop containerRef={containerRef}/>
     </Box>
   );
 };
