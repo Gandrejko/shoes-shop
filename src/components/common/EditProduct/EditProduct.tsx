@@ -11,10 +11,14 @@ import {toast} from 'react-toastify';
 
 const styles: Record<string, SxProps> = {
   modal: {
-    backgroundColor: 'rgba(255,255,255,0.5)',
+    '& .MuiModal-backdrop': {
+      backgroundColor: 'grey.A400',
+      opacity: '0.9 !important',
+      backdropFilter: 'blur(100px)',
+    },
   },
   modalContent: {
-    backgroundColor: 'white',
+    backgroundColor: 'background.paper',
     position: 'absolute',
     top: 120,
     left: 180,
@@ -63,7 +67,7 @@ const EditProduct = ({productId, filtersData}: EditProductProps) => {
       router.push('/products/me');
       toast.error(error.message);
     }
-  }, [error]);
+  }, [error, router]);
 
   const {mutate, isPending} = useMutation({
     mutationFn: (data: any) => {

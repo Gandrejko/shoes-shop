@@ -1,72 +1,93 @@
-import {
-  Modal as MuiModal,
-  Box,
-  useTheme,
-  useMediaQuery,
-  Button,
-} from '@mui/material';
-import {useForm} from 'react-hook-form';
 import SearchInput from '@/components/common/SearchInput/SearchInput';
+import {ProductsResponse} from '@/types';
+import buildParams from '@/utils/buildParams';
+import {
+  Box,
+  Button,
+  Drawer,
+  IconButton,
+  Link as MuiLink,
+  Stack,
+  SxProps,
+  useTheme,
+} from '@mui/material';
+import axios from 'axios';
 import Image from 'next/image';
+import Link from 'next/link';
 import logoIcon from 'public/icons/logo.svg';
 import modalCloseIcon from 'public/icons/modalClose.svg';
-import {useEffect, useState} from 'react';
-import buildParams from '@/utils/buildParams';
-import {ProductsResponse} from '@/types';
-import axios from 'axios';
+import {CSSProperties, useCallback, useEffect, useState} from 'react';
+import {useForm} from 'react-hook-form';
 
-const style = {
+const styles: Record<string, SxProps> = {
   modal: {
     '& .MuiModal-backdrop': {
-      backgroundColor: '#F3F3F3',
+      backgroundColor: 'grey.A400',
       opacity: '0.9 !important',
       backdropFilter: 'blur(100px)',
     },
     '& .MuiBox-root': {
       outline: 'none',
+      backgroundColor: 'background.paper',
     },
   },
   container: {
-    position: 'absolute' as 'absolute',
-    width: '100%',
-    backgroundColor: '#FFF',
-    padding: {md: '45px 61px 83px 40px', xs: '27px 20px 36px 20px'},
-    display: 'flex',
-    justifyContent: 'center',
+    gap: 3,
+    backgroundColor: 'background.paper',
+    padding: {md: '45px 60px 80px', xs: '25px 30px 50px'},
   },
-  wrapper: {
-    maxWidth: '1920px',
-    width: '100%',
+  searchContainer: {
+    flexGrow: 1,
     display: 'flex',
     justifyContent: 'space-between',
+    alignItems: {xs: 'center', sm: 'flex-start'},
+    gap: {xs: 2, sm: 5, md: 7, lg: 15},
   },
-  logoImageStyles: {
-    marginRight: '25px',
+  searchbox: {
+    flexGrow: 1,
+    display: 'flex',
+    flexDirection: {xs: 'column', md: 'row'},
+    alignItems: 'center',
+    gap: 3,
+  },
+  searchBtn: {
+    width: '150px',
+    height: '60px',
+    display: {xs: 'none', md: 'block'},
+  },
+  suggestionsList: {
+    listStyleType: 'none',
+    margin: 0,
+    paddingLeft: {xs: 0, sm: 10, md: 12, lg: 20},
+    paddingRight: {xs: 1, sm: 7, md: 16, lg: 24},
   },
   closeImageStyles: {
-    marginLeft: '25px',
-    cursor: 'pointer',
+    width: 45,
+    height: 45,
   },
 };
 
-type PropsType = {
-  handleSearchClick: (value: string) => void;
-  handleClose: () => void;
+type Props = {
+  onSearch: (value: string) => void;
+  onClose: () => void;
   isOpen: boolean;
 };
 
-export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
-  const {register, getValues, setValue, watch} = useForm<{searchString: string}>();
+export const Modal = ({onSearch, onClose, isOpen}: Props) => {
+  const {register, getValues, setValue, watch, setFocus} = useForm<{
+    searchingString: string;
+  }>();
   const theme = useTheme();
-  const greaterThanMid = useMediaQuery(theme.breakpoints.up('md'));
-  const lessThanSmall = useMediaQuery(theme.breakpoints.down('sm'));
-  const searchString = watch('searchString');
+  const searchingString = watch('searchingString');
   const [suggestions, setSuggestions] = useState<(string | undefined)[]>([]);
 
-  const fetchSuggestions = async () => {
-    const searchValue = getValues('searchString');
+  const fetchSuggestions = useCallback(async () => {
+    const searchingString = getValues('searchingString');
+    const trimmedSearchingString = searchingString?.trim() ?? '';
+    if (!trimmedSearchingString) return setSuggestions([]);
+
     const params = buildParams(
-      {searchingString: searchValue},
+      {searchingString},
       {
         fields: 'name',
         'pagination[page]': 1,
@@ -77,107 +98,112 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
       `${process.env.API_URL}/products`,
       {params},
     );
-    const data = response.data;
-    const productNames = data.data.map(product => product.attributes.name);
+    const products = response.data;
+    const productNames = products.data.map(product => product.attributes.name);
     setSuggestions(productNames);
-  };
-
-  const handleOnClose = () => {
-    handleClose();
-  };
+  }, [getValues]);
 
   const handleOnSearch = () => {
-    const searchValue = getValues('searchString');
-    handleSearchClick(searchValue);
+    onSearch(getValues('searchingString'));
   };
 
   const handleSuggestionClick = (suggestion: string | undefined) => {
     if (suggestion) {
-      setValue('searchString', suggestion);
-      handleSearchClick(suggestion);
+      setValue('searchingString', suggestion);
+      onSearch(suggestion);
     }
   };
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      const trimmedSearchString = searchString?.trim() ?? '';
-      if (trimmedSearchString) {
-        fetchSuggestions();
-      } else {
-        setSuggestions([]);
-      }
-    }, 300);
+    if (isOpen) {
+      setTimeout(() => setFocus('searchingString'), 0);
+    }
+  }, [isOpen, setFocus]);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(fetchSuggestions, 300);
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [searchString]);
+  }, [searchingString, fetchSuggestions]);
 
   return (
     <>
-      <MuiModal
+      <Drawer
         open={isOpen}
-        onClose={handleOnClose}
+        onClose={onClose}
+        anchor="top"
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-        sx={style.modal}
+        sx={styles.modal}
       >
-        <Box sx={style.container}>
-          <Box sx={style.wrapper}>
-            {greaterThanMid && (
-              <Image src={logoIcon} alt="" style={style.logoImageStyles} />
-            )}
-            <Box  sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '25px',
-            }}>
-              <Box
-                sx={{
-                  width: '100%',
-                  maxWidth: '1071px',
-                  display: 'flex',
-                  flexDirection: `${lessThanSmall ? 'column' : 'row'}`,
-                  alignItems: 'center',
-                  gap: '25px',
+        <Stack sx={styles.container}>
+          <Box sx={styles.searchContainer}>
+            <MuiLink
+              component={Link}
+              href="/products"
+              onClick={onClose}
+              sx={{display: {xs: 'none', sm: 'block'}}}
+            >
+              <Image
+                src={logoIcon}
+                alt="logo"
+                style={{
+                  ...(styles.logoImageStyles as CSSProperties),
+                  filter:
+                    theme.palette.mode === 'dark'
+                      ? 'brightness(1)'
+                      : 'brightness(0)',
                 }}
+              />
+            </MuiLink>
+            <Box sx={styles.searchbox}>
+              <SearchInput
+                register={register}
+                name="searchingString"
+                validationSchema={{}}
+                giantMode
+                enterPressHandler={handleOnSearch}
+                onChange={e => {
+                  setValue('searchingString', e.target.value);
+                }}
+              />
+              <Button
+                variant="contained"
+                sx={styles.searchBtn}
+                onClick={handleOnSearch}
               >
-                <SearchInput
-                  register={register}
-                  name="searchString"
-                  validationSchema={{}}
-                  giantMode
-                  enterPressHandler={handleOnSearch}
-                  onInputChange={value => {
-                    setValue('searchString', value);
-                  }}
-                />
-                <Button
-                  variant="outlined"
-                  sx={{width: '148px', height: '80px'}}
-                  onClick={handleOnSearch}
-                >
-                  Search
-                </Button>
-              </Box>
-              <Box>
-                <ul style={{ listStyleType: 'none', padding: 0, margin: 0, paddingLeft: '25px'}}>
-                  {suggestions.map((suggestion, index) => (
-                    <li key={index}
-                        style={{ marginBottom: '8px', cursor: 'pointer' }}
-                        onClick={() => handleSuggestionClick(suggestion)}>{suggestion}</li>
-                  ))}
-                </ul>
-              </Box>
+                Search
+              </Button>
             </Box>
-            <Image
-              src={modalCloseIcon}
-              alt=""
-              style={style.closeImageStyles}
-              onClick={handleOnClose}
-            />
+
+            <IconButton sx={styles.closeImageStyles} onClick={onClose}>
+              <Image
+                src={modalCloseIcon}
+                alt=""
+                style={{
+                  filter:
+                    theme.palette.mode === 'dark'
+                      ? 'brightness(10)'
+                      : 'brightness(1)',
+                }}
+              />
+            </IconButton>
           </Box>
-        </Box>
-      </MuiModal>
+          <Box component="ul" sx={styles.suggestionsList}>
+            {suggestions.map((suggestion, index) => (
+              <Box
+                key={index}
+                component="li"
+                style={{marginBottom: '8px', cursor: 'pointer'}}
+                onClick={() => handleSuggestionClick(suggestion)}
+              >
+                {suggestion}
+              </Box>
+            ))}
+          </Box>
+        </Stack>
+      </Drawer>
     </>
   );
 };

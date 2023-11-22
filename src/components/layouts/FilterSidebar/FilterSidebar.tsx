@@ -7,12 +7,11 @@ import {
   SxProps,
   Typography,
   useMediaQuery,
+  useTheme,
 } from '@mui/material';
-
-import theme from '@/config/theme';
-import {Category} from './components/Category';
 import {FiltersData} from '@/types';
 import Image from 'next/image';
+import {Category} from './components/Category';
 import PriceSlider from './components/PriceSlider';
 import {useRouter} from 'next/router';
 
@@ -22,13 +21,20 @@ const styles: Record<string, SxProps> = {
       width: 320,
       height: {md: 'calc(100% - 120px)'},
       marginTop: {md: '120px'},
+      backgroundImage: 'none',
       border: 'none',
       overflowX: 'hidden',
+    },
+    '& .MuiModal-backdrop': {
+      backgroundColor: 'grey.A400',
+      opacity: '0.9 !important',
+      backdropFilter: 'blur(100px)',
     },
     transition: 'width 0.2s ease-in-out',
   },
   header: {
     padding: {xs: '26px 20px', md: '44px 40px 16px'},
+    backgroundColor: 'background.paper',
   },
   mobileButtonContainer: {
     display: 'flex',
@@ -51,6 +57,7 @@ export const FilterSidebar = ({
   onClose,
   filtersData,
 }: Props) => {
+  const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const router = useRouter();
 
@@ -81,13 +88,21 @@ export const FilterSidebar = ({
       <Stack sx={styles.header}>
         {isMobile ? (
           <Box sx={styles.mobileButtonContainer}>
-            <Button onClick={handleClearFilters}>Clear filters</Button>
+            <Button onClick={handleClearFilters} variant="outlined">
+              Clear filters
+            </Button>
             <IconButton onClick={onClose} sx={{marginLeft: 'auto'}}>
               <Image
                 src="/icons/burgerClose.svg"
                 alt=""
                 width={20}
                 height={20}
+                style={{
+                  filter:
+                    theme.palette.mode === 'dark'
+                      ? 'brightness(10)'
+                      : 'brightness(1)',
+                }}
               />
             </IconButton>
           </Box>

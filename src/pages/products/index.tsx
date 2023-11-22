@@ -6,6 +6,7 @@ import {
   SxProps,
   Typography,
   useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import Image from 'next/image';
 import {ReactElement, useEffect, useMemo, useState} from 'react';
@@ -14,7 +15,6 @@ import ProductList from '@/components/common/Product/ProductList';
 import {FilterSidebar} from '@/components/layouts/FilterSidebar/FilterSidebar';
 import HeaderLayout from '@/components/layouts/HeaderLayout/HeaderLayout';
 import {SignInLayout} from '@/components/layouts/SignInLayout/SignInLayout';
-import theme from '@/config/theme';
 import {NextPageWithLayout} from '@/pages/_app';
 import {FiltersData, ProductsResponse} from '@/types';
 import buildParams from '@/utils/buildParams';
@@ -50,6 +50,7 @@ const MyProducts: NextPageWithLayout<Props> = ({
   initialProducts,
   filtersData,
 }) => {
+  const theme = useTheme();
   const router = useRouter();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -58,7 +59,7 @@ const MyProducts: NextPageWithLayout<Props> = ({
 
   const params = useMemo(() => {
     return buildParams(router.query, {
-      populate: '*',
+      populate: 'images,gender',
     });
   }, [router.query]);
 
@@ -89,6 +90,12 @@ const MyProducts: NextPageWithLayout<Props> = ({
                   alt=""
                   width={24}
                   height={24}
+                  style={{
+                    filter:
+                      theme.palette.mode === 'dark'
+                        ? 'brightness(2)'
+                        : 'brightness(1)',
+                  }}
                 />
               }
             >
@@ -108,7 +115,7 @@ const MyProducts: NextPageWithLayout<Props> = ({
                   width: 72,
                   height: 72,
                   marginX: 'auto',
-                  bgcolor: 'grey.A100',
+                  bgcolor: 'grey.300',
                 }}
               >
                 <Image

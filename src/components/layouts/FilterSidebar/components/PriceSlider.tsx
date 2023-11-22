@@ -1,4 +1,4 @@
-import {ProductAttributes} from '@/types';
+import {ProductAttributes, ProductsResponse} from '@/types';
 import {Slider, SxProps} from '@mui/material';
 import axios from 'axios';
 import {useRouter} from 'next/router';
@@ -49,16 +49,31 @@ const styles: Record<string, SxProps> = {
 
 const PriceSlider = () => {
   const router = useRouter();
-  const [priceRange, setPriceRange] = useState([0, 1000]);
+  const [priceRange, setPriceRange] = useState([-1, -1]);
   const [productMaxPrice, setProductMaxPrice] = useState(1000);
 
   useEffect(() => {
     const getBiggestPrice = async () => {
-      const response = await axios.get(
-        'https://shoes-shop-strapi.herokuapp.com/api/products?sort=price:desc&pagination[page]=1&pagination[pageSize]=1',
+      const response = await axios.get<ProductsResponse>(
+        `${process.env.API_URL}/products`,
+        {
+          params: {
+            'pagination[page]': 1,
+            'pagination[pageSize]': 1,
+            'filters[teamName]': 'team-3',
+            fields: 'price',
+            sort: 'price:desc',
+          },
+        },
       );
-      setPriceRange([0, response.data.data[0].attributes.price || 1000]);
+
       setProductMaxPrice(response.data.data[0].attributes.price || 1000);
+      setPriceRange(prevPriceRange => {
+        if (prevPriceRange[1] === -1) {
+          return [0, response.data.data[0].attributes.price || 1000];
+        }
+        return prevPriceRange;
+      });
     };
 
     getBiggestPrice();
@@ -69,18 +84,24 @@ const PriceSlider = () => {
     const maxPrice = router.query.maxPrice;
     if (minPrice && maxPrice) {
       setPriceRange([Number(minPrice), Number(maxPrice)]);
+    } else {
+      setPriceRange([0, productMaxPrice]);
     }
-  }, [router.query.maxPrice, router.query.minPrice]);
+  }, [router.query.maxPrice, router.query.minPrice, productMaxPrice]);
 
   const handlePriceSelected = () => {
-    router.push({
-      pathname: router.pathname,
-      query: {
-        ...router.query,
-        minPrice: priceRange[0],
-        maxPrice: priceRange[1],
+    router.push(
+      {
+        pathname: router.pathname,
+        query: {
+          ...router.query,
+          minPrice: priceRange[0],
+          maxPrice: priceRange[1],
+        },
       },
-    });
+      undefined,
+      {shallow: true},
+    );
   };
 
   return (

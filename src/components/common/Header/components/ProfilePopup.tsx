@@ -6,9 +6,9 @@ import {destroyCookie} from 'nookies';
 const styles = {
   list: {
     li: {
+      cursor: 'pointer',
       '&:hover': {
-        cursor: 'pointer',
-        color: '#FE645E',
+        color: 'primary.main',
       },
     },
   },
