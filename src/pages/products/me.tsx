@@ -66,6 +66,7 @@ const styles: Record<string, SxProps> = {
   },
   avatar: {
     bgcolor: 'primary.main',
+    color: '#fff',
     fontSize: {xs: 20, sm: 35, md: 45},
     textTransform: 'uppercase',
     width: 1,
@@ -174,7 +175,7 @@ const Me: NextPageWithLayout<Props> = ({
                   width: 72,
                   height: 72,
                   marginX: 'auto',
-                  bgcolor: 'grey.A100',
+                  bgcolor: 'grey.300',
                 }}
               >
                 <Image
@@ -251,7 +252,7 @@ export const getServerSideProps = async (
 
   return {
     props: {
-      sessionUser: user,
+      sessionUser: {...user, name: null},
       initialProducts: response.data,
       initialPages: [1],
       filtersData: {

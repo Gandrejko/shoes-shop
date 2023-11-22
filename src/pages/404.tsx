@@ -49,6 +49,7 @@ const styles: Record<string, SxProps> = {
     maxWidth: '305px',
     position: 'relative',
     textAlign: 'center',
+    color: '#000',
   },
   buttons: {
     display: 'flex',

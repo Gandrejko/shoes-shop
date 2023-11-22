@@ -18,7 +18,7 @@ const styles = {
   },
   imageWrapper: {
     padding: '24px',
-    background: '#F9FAFB',
+    backgroundColor: '#F9FAFB',
     borderRadius: '50%',
   },
   title: {
@@ -27,7 +27,7 @@ const styles = {
     marginBottom: 2,
   },
   description: {
-    color: '#5C5C5C',
+    color: 'text.secondary',
     fontWeight: 300,
     fontSize: 15,
     marginBottom: 6,
