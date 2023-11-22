@@ -8,16 +8,10 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    height: '100%',
-    marginTop: {
-      xl: '200px',
-      lg: '200px',
-      sm: '250px',
-      xs: '200px',
-    },
+    height: '60vh',
   },
   imageWrapper: {
-    padding: '24px',
+    padding: '20px',
     background: '#F9FAFB',
     borderRadius: '50%',
   },
@@ -27,7 +21,7 @@ const styles = {
     marginBottom: 2,
   },
   description: {
-    color: '#5C5C5C',
+    color: '#text.secondary',
     fontWeight: 300,
     fontSize: 15,
     marginBottom: 6,
@@ -46,13 +40,14 @@ const styles = {
 const EmptyCartPage = () => {
   return (
     <Box sx={styles.container}>
-      <Image
-        src="/icons/cart.svg"
-        alt="cart"
-        width={32}
-        height={32}
-        style={styles.imageWrapper}
-      />
+      <Box sx={styles.imageWrapper}>
+        <Image
+          src="/icons/emptyCart.svg"
+          alt="cart"
+          width={32}
+          height={32}
+        />
+      </Box>
       <Typography component="p" sx={styles.title}>
         You don&apos;t post have any products yet.
       </Typography>

@@ -5,6 +5,7 @@ const styles = {
   option: {
     display: 'flex',
     alignItems: 'center',
+    marginLeft: '-10px',
   },
 };
 
@@ -34,7 +35,6 @@ export const Option = ({
         size="small"
         color="primary"
         id={id}
-        sx={{paddingLeft: 0}}
         checked={checked}
         onChange={handleChange}
       />
