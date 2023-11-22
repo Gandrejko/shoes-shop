@@ -1,31 +1,37 @@
-import theme from '@/config/theme';
 import {Box, InputBase, InputLabel, SxProps, Typography} from '@mui/material';
 import {InputBaseProps} from '@mui/material/InputBase/InputBase';
-import {useId, useState} from 'react';
+import {useContext, useId, useState} from 'react';
 import {UseFormRegister, RegisterOptions} from 'react-hook-form';
 import Image from 'next/image';
 import warningIcon from 'public/icons/warning.svg';
 import eyeIcon from 'public/icons/eye.svg';
 import eyeSlashIcon from 'public/icons/eyeSlash.svg';
+import ColorModeContext from '@/config/theme/ColorModeContext';
 
-const styles = {
+const styles: Record<string, SxProps> = {
   inputContainer: {
     position: 'relative',
   },
   requiredMark: {
-    color: '#FE645E',
+    color: 'primary.main',
     marginLeft: '5px',
   },
   input: {
     width: '100%',
     borderRadius: '8px',
-    border: `1px solid ${theme.palette.grey['A700']}`,
     padding: '8px 15px',
     outline: 'none',
     underline: 'none',
+    '& .MuiInputBase-input': {
+      color: 'text.primary',
+    },
+    '& .Mui-disabled': {
+      color: 'grey.A200',
+      WebkitTextFillColor: 'unset',
+    },
   },
   errorWrapper: {
-    color: '#FE645E',
+    color: 'error.main',
     display: 'flex',
     alignItems: 'center',
     gap: '4px',
@@ -59,10 +65,12 @@ const Input = ({
   ...props
 }: InputProps) => {
   const [showPassword, setShowPassword] = useState(false);
+  const {theme} = useContext(ColorModeContext);
   const id = useId();
+
   return (
     <Box sx={boxSx}>
-      <InputLabel htmlFor={id}>
+      <InputLabel htmlFor={id} sx={{color: 'text.secondary'}}>
         {labelText}
         {validationSchema.required && (
           <Typography component="span" sx={styles.requiredMark}>
@@ -75,6 +83,7 @@ const Input = ({
           id={id}
           sx={{
             ...styles.input,
+            paddingRight: props.type === 'password' ? '45px' : '15px',
             border: !!errorMessage
               ? `2px solid ${theme.palette.error.main}`
               : `1px solid ${theme.palette.grey['A700']}`,
@@ -88,7 +97,13 @@ const Input = ({
           <Box sx={styles.togglePassword}>
             <Image
               onClick={() => setShowPassword(!showPassword)}
-              style={{cursor: 'pointer'}}
+              style={{
+                cursor: 'pointer',
+                filter:
+                  theme.palette.mode === 'dark'
+                    ? 'brightness(1)'
+                    : 'brightness(0)',
+              }}
               src={showPassword ? eyeSlashIcon : eyeIcon}
               alt="eye"
               width={20}

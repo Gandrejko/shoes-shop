@@ -1,25 +1,30 @@
-import {FiltersData} from '@/types';
-import {Image} from '@/types';
+import theme from '@/config/theme';
+import {
+  FiltersData,
+  Image,
+  Product,
+  ProductAttributes,
+  ProductRequest,
+} from '@/types';
+import {Box, Button, SxProps, Typography} from '@mui/material';
 import {useSession} from 'next-auth/react';
 import {
-  UseFormRegister,
-  UseFormSetValue,
-  UseFormTrigger,
-} from 'react-hook-form';
-import FormContainer from './components/FormContainer';
-import ImagesContainer from './components/ImagesContainer';
-import theme from '@/config/theme';
-import {Box, Button, SxProps, Typography} from '@mui/material';
-import React, {
-  createContext,
   Dispatch,
   SetStateAction,
+  createContext,
   useEffect,
   useState,
 } from 'react';
-import {FieldErrors, useForm} from 'react-hook-form';
-import {Product, ProductAttributes, ProductRequest} from '@/types';
+import {
+  FieldErrors,
+  UseFormRegister,
+  UseFormSetValue,
+  UseFormTrigger,
+  useForm,
+} from 'react-hook-form';
 import {BorderLinearProgress} from '../BorderLinearProgress/BorderLinearProgress';
+import FormContainer from './components/FormContainer';
+import ImagesContainer from './components/ImagesContainer';
 
 const styles: Record<string, SxProps> = {
   mainContainer: {
@@ -59,7 +64,7 @@ const styles: Record<string, SxProps> = {
   progresBarContainer: {
     position: 'sticky',
     top: '0',
-    backgroundColor: '#fff',
+    backgroundColor: 'background.paper',
     padding: '20px 0',
     zIndex: '1',
   },

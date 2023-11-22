@@ -9,8 +9,6 @@ import MobileHeader from './components/MobileHeader';
 const styles: Record<string, SxProps> = {
   appBar: {
     position: 'sticky',
-    color: '#000000',
-    backgroundColor: '#FFFFFF',
     border: 'none',
     boxShadow: 'none',
   },

@@ -1,3 +1,4 @@
+import ColorModeContext from '@/config/theme/ColorModeContext';
 import {
   Button,
   Dialog,
@@ -10,11 +11,12 @@ import {
   Typography,
 } from '@mui/material';
 import Image from 'next/image';
+import {useContext} from 'react';
 
 const styles: Record<string, SxProps> = {
   modal: {
     '& .MuiBackdrop-root': {
-      backgroundColor: '#F3F3F3',
+      backgroundColor: 'grey.A400',
       opacity: '0.9 !important',
       backdropFilter: 'blur(100px)',
     },
@@ -25,13 +27,12 @@ const styles: Record<string, SxProps> = {
     gap: {xs: 3, sm: 7},
     borderRadius: 2,
     boxShadow: 'none',
-    backgroundColor: 'common.white',
+    backgroundColor: 'background.paper',
     maxWidth: 600,
     margin: 4,
   },
   title: {p: 0},
   content: {
-    // fontSize: 15,
     p: 0,
   },
   descr: {fontWeight: 'fontWeightLight', color: 'text.secondary'},
@@ -46,9 +47,9 @@ const styles: Record<string, SxProps> = {
     position: 'absolute',
     right: '4%',
     top: '8%',
-    width: 16,
-    height: 16,
-    borderRadius: 0,
+    width: 45,
+    height: 45,
+    borderRadius: '50%',
   },
 };
 
@@ -67,6 +68,8 @@ const DeleteModal = ({
   onClose,
   onDelete,
 }: DeleteModalProps) => {
+  const {theme} = useContext(ColorModeContext);
+
   return (
     <Dialog
       open={isModalOpen}
@@ -81,7 +84,18 @@ const DeleteModal = ({
         sx={styles.closeButton}
         onClick={onClose}
       >
-        <Image src="icons/modalClose.svg" alt="close modal" fill sizes="100%" />
+        <Image
+          src="/icons/modalClose.svg"
+          alt="close modal"
+          width={20}
+          height={20}
+          style={{
+            filter:
+              theme.palette.mode === 'dark'
+                ? 'brightness(10)'
+                : 'brightness(1)',
+          }}
+        />
       </IconButton>
       <DialogContent sx={styles.content}>
         <Typography variant="body1" sx={styles.descr}>
