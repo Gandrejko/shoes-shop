@@ -34,19 +34,18 @@ const styles: Record<string, SxProps> = {
     padding: {xs: '0 24px', md: 0},
   },
   productsHeader: {
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    alignItems: 'start',
     marginBottom: 3,
   },
   filterButtons: {
+    marginTop: '15px',
     display: 'flex',
-    flexDirection: 'column',
     gap: '10px',
   },
   buttonStyles: {
     color: 'text.secondary',
     outline: '2px solid #bdbdbd',
-    minWidth: {sm: '100px', md: '160px', lg: '200px'},
+    minWidth: {xs: '140px', lg: '200px'},
   },
 };
 
@@ -89,7 +88,7 @@ const MyProducts: NextPageWithLayout<Props> = ({
       />
       <Box sx={styles.container} marginLeft={showFilters && !isMobile ? 2 : 0}>
         <Box sx={styles.productsContainer}>
-          <Stack direction="row" sx={styles.productsHeader}>
+          <Stack direction="column" sx={styles.productsHeader}>
             <Typography variant="h1">Search Results</Typography>
             <Box sx={styles.filterButtons}>
               <Button
