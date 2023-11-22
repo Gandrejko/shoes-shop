@@ -1,5 +1,4 @@
-import {Box, InputBase, SxProps, useTheme} from '@mui/material';
-import {InputBaseProps} from '@mui/material/InputBase/InputBase';
+import {Box, InputBase, InputBaseProps, SxProps, useTheme} from '@mui/material';
 import Image from 'next/image';
 import searchIcon from 'public/icons/search.svg';
 import {useId} from 'react';
@@ -71,7 +70,7 @@ const SearchInput = ({
 
   const onEnterPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      enterPressHandler && enterPressHandler();
+      enterPressHandler?.();
     }
   };
 

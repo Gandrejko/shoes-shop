@@ -7,8 +7,8 @@ import {
   Drawer,
   IconButton,
   Link as MuiLink,
+  Stack,
   SxProps,
-  useMediaQuery,
   useTheme,
 } from '@mui/material';
 import axios from 'axios';
@@ -16,7 +16,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import logoIcon from 'public/icons/logo.svg';
 import modalCloseIcon from 'public/icons/modalClose.svg';
-import {CSSProperties, useEffect, useState} from 'react';
+import {CSSProperties, useCallback, useEffect, useState} from 'react';
 import {useForm} from 'react-hook-form';
 
 const styles: Record<string, SxProps> = {
@@ -32,16 +32,16 @@ const styles: Record<string, SxProps> = {
     },
   },
   container: {
-    display: 'flex',
-    backgroundColor: '#FFF',
-    padding: {md: '45px 60px 90px', xs: '25px 30px 60px'},
+    gap: 3,
+    backgroundColor: 'background.paper',
+    padding: {md: '45px 60px 80px', xs: '25px 30px 50px'},
   },
-  wrapper: {
+  searchContainer: {
     flexGrow: 1,
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: {xs: 'center', sm: 'flex-start'},
-    gap: {xs: 5, md: 7, lg: 15},
+    gap: {xs: 2, sm: 5, md: 7, lg: 15},
   },
   searchbox: {
     flexGrow: 1,
@@ -55,9 +55,13 @@ const styles: Record<string, SxProps> = {
     height: '60px',
     display: {xs: 'none', md: 'block'},
   },
+  suggestionsList: {
+    listStyleType: 'none',
+    margin: 0,
+    paddingLeft: {xs: 0, sm: 10, md: 12, lg: 20},
+    paddingRight: {xs: 1, sm: 7, md: 16, lg: 24},
+  },
   closeImageStyles: {
-    marginLeft: '25px',
-    cursor: 'pointer',
     width: 45,
     height: 45,
   },
@@ -74,15 +78,16 @@ export const Modal = ({onSearch, onClose, isOpen}: Props) => {
     searchingString: string;
   }>();
   const theme = useTheme();
-  const greaterThanMid = useMediaQuery(theme.breakpoints.up('md'));
-  const lessThanSmall = useMediaQuery(theme.breakpoints.down('sm'));
   const searchingString = watch('searchingString');
   const [suggestions, setSuggestions] = useState<(string | undefined)[]>([]);
 
-  const fetchSuggestions = async () => {
-    const searchValue = getValues('searchingString');
+  const fetchSuggestions = useCallback(async () => {
+    const searchingString = getValues('searchingString');
+    const trimmedSearchingString = searchingString?.trim() ?? '';
+    if (!trimmedSearchingString) return setSuggestions([]);
+
     const params = buildParams(
-      {searchingString: searchValue},
+      {searchingString},
       {
         fields: 'name',
         'pagination[page]': 1,
@@ -93,10 +98,10 @@ export const Modal = ({onSearch, onClose, isOpen}: Props) => {
       `${process.env.API_URL}/products`,
       {params},
     );
-    const data = response.data;
-    const productNames = data.data.map(product => product.attributes.name);
+    const products = response.data;
+    const productNames = products.data.map(product => product.attributes.name);
     setSuggestions(productNames);
-  };
+  }, [getValues]);
 
   const handleOnSearch = () => {
     onSearch(getValues('searchingString'));
@@ -116,18 +121,11 @@ export const Modal = ({onSearch, onClose, isOpen}: Props) => {
   }, [isOpen, setFocus]);
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      const trimmedSearchingString = searchingString?.trim() ?? '';
-      if (trimmedSearchingString) {
-        fetchSuggestions();
-      } else {
-        setSuggestions([]);
-      }
-    }, 300);
+    const timeoutId = setTimeout(fetchSuggestions, 300);
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [searchingString]);
+  }, [searchingString, fetchSuggestions]);
 
   return (
     <>
@@ -139,11 +137,12 @@ export const Modal = ({onSearch, onClose, isOpen}: Props) => {
         aria-describedby="modal-modal-description"
         sx={styles.modal}
       >
-        <Box sx={styles.container}>
-          <Box sx={styles.wrapper}>
+        <Stack sx={styles.container}>
+          <Box sx={styles.searchContainer}>
             <MuiLink
               component={Link}
               href="/products"
+              onClick={onClose}
               sx={{display: {xs: 'none', sm: 'block'}}}
             >
               <Image
@@ -158,46 +157,24 @@ export const Modal = ({onSearch, onClose, isOpen}: Props) => {
                 }}
               />
             </MuiLink>
-            <Box>
-              <Box sx={styles.searchbox}>
-                <SearchInput
-                  register={register}
-                  name="searchingString"
-                  validationSchema={{}}
-                  giantMode
-                  enterPressHandler={handleOnSearch}
-                  onInputChange={value => {
-                    setValue('searchingString', value);
-                  }}
-                />
-                <Button
-                  variant="contained"
-                  sx={styles.searchBtn}
-                  onClick={handleOnSearch}
-                >
-                  Search
-                </Button>
-              </Box>
-              <Box>
-                <ul
-                  style={{
-                    listStyleType: 'none',
-                    padding: 0,
-                    margin: 0,
-                    paddingLeft: '25px',
-                  }}
-                >
-                  {suggestions.map((suggestion, index) => (
-                    <li
-                      key={index}
-                      style={{marginBottom: '8px', cursor: 'pointer'}}
-                      onClick={() => handleSuggestionClick(suggestion)}
-                    >
-                      {suggestion}
-                    </li>
-                  ))}
-                </ul>
-              </Box>
+            <Box sx={styles.searchbox}>
+              <SearchInput
+                register={register}
+                name="searchingString"
+                validationSchema={{}}
+                giantMode
+                enterPressHandler={handleOnSearch}
+                onChange={e => {
+                  setValue('searchingString', e.target.value);
+                }}
+              />
+              <Button
+                variant="contained"
+                sx={styles.searchBtn}
+                onClick={handleOnSearch}
+              >
+                Search
+              </Button>
             </Box>
 
             <IconButton sx={styles.closeImageStyles} onClick={onClose}>
@@ -213,7 +190,19 @@ export const Modal = ({onSearch, onClose, isOpen}: Props) => {
               />
             </IconButton>
           </Box>
-        </Box>
+          <Box component="ul" sx={styles.suggestionsList}>
+            {suggestions.map((suggestion, index) => (
+              <Box
+                key={index}
+                component="li"
+                style={{marginBottom: '8px', cursor: 'pointer'}}
+                onClick={() => handleSuggestionClick(suggestion)}
+              >
+                {suggestion}
+              </Box>
+            ))}
+          </Box>
+        </Stack>
       </Drawer>
     </>
   );
