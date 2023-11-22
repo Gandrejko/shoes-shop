@@ -14,9 +14,13 @@ const styles: Record<string, SxProps> = {
   menuList: {
     p: 0,
     width: '7rem',
+    padding: 0,
   },
   menuItem: {
     padding: '0.5rem 1rem',
+    '&:hover': {
+      backgroundColor: 'grey.A100',
+    },
   },
 };
 
