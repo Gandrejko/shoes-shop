@@ -31,6 +31,11 @@ const styles: Record<string, SxProps> = {
       color: 'primary.main',
     },
   },
+  avatar: {
+    backgroundColor: 'primary.main',
+    width: 24,
+    height: 24,
+  },
 };
 
 const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
@@ -75,11 +80,7 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
                 onClick={e => setAnchorEl(e.currentTarget)}
                 aria-describedby={'profile-popup'}
               >
-                <Avatar
-                  src={data?.user?.image}
-                  alt="avatar"
-                  sx={{width: 24, height: 24}}
-                >
+                <Avatar src={data?.user?.image} alt="avatar" sx={styles.avatar}>
                   {(data?.user?.firstName ||
                     data?.user?.username ||
                     ' ')[0].toUpperCase()}
