@@ -57,6 +57,7 @@ type SearchInputProps = InputBaseProps & {
   giantMode?: boolean;
   errorMessage?: string;
   enterPressHandler?: () => void;
+  onInputChange?: (value: string) => void;
 };
 
 const SearchInput = ({
@@ -66,6 +67,7 @@ const SearchInput = ({
   giantMode = false,
   errorMessage,
   enterPressHandler,
+  onInputChange,
   ...props
 }: SearchInputProps) => {
   const id = useId();
@@ -75,6 +77,11 @@ const SearchInput = ({
     if (e.key === 'Enter') {
       enterPressHandler && enterPressHandler();
     }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    onInputChange?.(value);
   };
 
   const registerProps =
@@ -102,6 +109,7 @@ const SearchInput = ({
         {...registerProps}
         error={!!errorMessage}
         onKeyDown={onEnterPress}
+        onInput={handleInputChange}
       />
     </Box>
   );
