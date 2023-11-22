@@ -8,6 +8,7 @@ import {
   Typography,
   useMediaQuery,
 } from '@mui/material';
+import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
@@ -67,6 +68,9 @@ const Error404 = () => {
     <Stack sx={styles.page}>
       {isMobile ? (
         <>
+          <Head>
+            <title>Not found</title>
+          </Head>
           <Box sx={styles.mobile}>
             <Image
               src="/images/404PageBanner.png"
@@ -107,6 +111,9 @@ const Error404 = () => {
         </>
       ) : (
         <>
+          <Head>
+            <title>Not found</title>
+          </Head>
           <HeaderLayout>
             <Box sx={styles.main}>
               <Box sx={styles.info}>
