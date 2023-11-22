@@ -137,7 +137,7 @@ const Me: NextPageWithLayout<Props> = ({
               <Avatar
                 sx={styles.avatar}
                 src="/"
-                alt={`${sessionUser.firstName}` || `${sessionUser.username}`}
+                alt={`${sessionUser.firstName || sessionUser.username}`}
               />
             )}
           </Box>

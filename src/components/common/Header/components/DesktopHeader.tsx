@@ -120,6 +120,7 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
                     height: 24,
                     border: '1px solid',
                     borderColor: '#fff',
+                    backgroundColor: 'primary.main',
                   }}
                 >
                   {(data?.user?.firstName ||
