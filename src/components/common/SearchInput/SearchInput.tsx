@@ -1,9 +1,8 @@
-import {Box, InputBase, SxProps, useTheme} from '@mui/material';
-import {InputBaseProps} from '@mui/material/InputBase/InputBase';
+import {Box, InputBase, InputBaseProps, SxProps, useTheme} from '@mui/material';
 import Image from 'next/image';
+import searchIcon from 'public/icons/search.svg';
 import {useId} from 'react';
 import {RegisterOptions, UseFormRegister} from 'react-hook-form';
-import searchIcon from 'public/icons/search.svg';
 
 const styles: Record<string, SxProps> = {
   search: {
@@ -17,18 +16,6 @@ const styles: Record<string, SxProps> = {
     paddingLeft: '15px',
     backgroundColor: 'background.paper',
   },
-  searchHuge: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '12px',
-    width: '100%',
-    maxWidth: '1071px',
-    paddingLeft: '32px',
-    border: '1px solid',
-    borderColor: 'grey.A700',
-    borderRadius: '50px',
-    backgroundColor: 'background.paper',
-  },
   input: {
     width: '100%',
     padding: '8px 15px',
@@ -36,11 +23,21 @@ const styles: Record<string, SxProps> = {
     outline: 'none',
     color: 'text.primary',
   },
+  searchHuge: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 1,
+    width: 1,
+    paddingLeft: 4,
+    border: '1px solid #494949',
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
   inputHuge: {
-    width: '100%',
-    padding: '19px 15px 17px',
-    border: 'none',
+    flex: 1,
+    padding: {xs: '10px 15px 10px', sm: '17px 15px 17px'},
     outline: 'none',
+    border: 'none',
 
     '& .MuiInputBase-input': {
       fontSize: '24px',
@@ -57,7 +54,6 @@ type SearchInputProps = InputBaseProps & {
   giantMode?: boolean;
   errorMessage?: string;
   enterPressHandler?: () => void;
-  onInputChange?: (value: string) => void;
 };
 
 const SearchInput = ({
@@ -67,7 +63,6 @@ const SearchInput = ({
   giantMode = false,
   errorMessage,
   enterPressHandler,
-  onInputChange,
   ...props
 }: SearchInputProps) => {
   const id = useId();
@@ -75,13 +70,8 @@ const SearchInput = ({
 
   const onEnterPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      enterPressHandler && enterPressHandler();
+      enterPressHandler?.();
     }
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    onInputChange?.(value);
   };
 
   const registerProps =
@@ -102,14 +92,13 @@ const SearchInput = ({
         }}
       />
       <InputBase
-        placeholder="Search"
-        id={id}
-        sx={giantMode ? styles.inputHuge : styles.input}
         {...props}
         {...registerProps}
+        id={id}
+        sx={giantMode ? styles.inputHuge : styles.input}
+        placeholder="Search"
         error={!!errorMessage}
-        onKeyDown={onEnterPress}
-        onInput={handleInputChange}
+        onKeyUp={onEnterPress}
       />
     </Box>
   );
