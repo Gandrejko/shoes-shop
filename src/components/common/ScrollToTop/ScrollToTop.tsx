@@ -13,14 +13,12 @@ const styles = {
     borderRadius: '50%',
     backgroundColor: `${theme.palette.primary.main}`,
     height: {
-      xl: '42px',
-      sm: '36px',
-      xs: '32px',
+      xl: '50px',
+      xs: '44px',
     },
     width: {
-      xl: '42px',
-      sm: '36px',
-      xs: '32px',
+      xl: '50px',
+      xs: '44px',
       color: 'primary',
     },
   },
