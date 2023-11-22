@@ -11,12 +11,12 @@ const styles: Record<string, SxProps> = {
   select: {
     width: '100%',
     borderRadius: '8px',
-    border: `1px solid ${theme.palette.grey['A400']}`,
+    outline: `1px solid ${theme.palette.grey['A400']}`,
     '& .MuiSelect-icon': {
       color: 'text.primary',
     },
   },
-  '.MuiOutlinedInput-root': {
+  '& .MuiOutlinedInput-root': {
     border: 'none',
   },
 };

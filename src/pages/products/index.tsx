@@ -45,7 +45,7 @@ const styles: Record<string, SxProps> = {
   },
   buttonStyles: {
     color: 'text.secondary',
-    border: '2px solid #bdbdbd',
+    outline: '2px solid #bdbdbd',
     minWidth: {sm: '100px', md: '160px', lg: '200px'},
   },
 };
@@ -93,7 +93,7 @@ const MyProducts: NextPageWithLayout<Props> = ({
             <Typography variant="h1">Search Results</Typography>
             <Box sx={styles.filterButtons}>
               <Button
-                variant="outlined"
+                variant="text"
                 sx={styles.buttonStyles}
                 onClick={() => setShowFilters(!showFilters)}
                 endIcon={

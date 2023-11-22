@@ -50,7 +50,6 @@ export const SortDropdown = ({value, handleChooseSort}: PropsType) => {
       undefined,
       {shallow: true},
     );
-    console.log(updatedQuery);
     setSortType(value);
   };
 
