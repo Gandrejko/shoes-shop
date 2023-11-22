@@ -1,4 +1,6 @@
-import {useState} from 'react';
+import Sidebar from '@/components/common/Sidebar/Sidebar';
+import ColorModeContext from '@/config/theme/ColorModeContext';
+import {DarkMode, LightMode} from '@mui/icons-material';
 import {
   Box,
   Divider,
@@ -12,15 +14,15 @@ import {
   Typography,
 } from '@mui/material';
 import Image from 'next/image';
-import {HeaderProps} from '../Header';
 import Link from 'next/link';
-import Sidebar from '@/components/common/Sidebar/Sidebar';
 import {useRouter} from 'next/navigation';
+import {useContext, useState} from 'react';
+import {HeaderProps} from '../Header';
 
 const styles: Record<string, SxProps> = {
   modal: {
     '& .MuiModal-backdrop': {
-      backgroundColor: '#F3F3F3',
+      backgroundColor: 'grey.A400',
       opacity: '0.9 !important',
       backdropFilter: 'blur(100px)',
     },
@@ -29,11 +31,14 @@ const styles: Record<string, SxProps> = {
     height: '60px',
     display: 'flex',
     justifyContent: 'space-between',
+    backgroundColor: 'background.paper',
   },
   boxWrapper: {
-    width: '280px',
+    width: 280,
+    height: 1,
     display: 'flex',
     flexDirection: 'column',
+    backgroundColor: 'background.paper',
   },
   closeBtnWrapper: {
     position: 'absolute',
@@ -56,11 +61,17 @@ const styles: Record<string, SxProps> = {
     display: 'flex',
     gap: '15px',
     listStyle: 'none',
+    cursor: 'pointer',
+    transition: 'color 0.2s ease-in-out',
+    '&:hover': {
+      color: 'primary.main',
+    },
   },
 };
 
 const MobileHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
   const [openDrawer, setOpenDrawer] = useState(false);
+  const {theme, toggleTheme} = useContext(ColorModeContext);
   const router = useRouter();
 
   const iOS =
@@ -76,11 +87,35 @@ const MobileHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
             alt="logo"
             width={35.31}
             height={26.52}
+            style={{
+              filter:
+                theme.palette.mode === 'dark'
+                  ? 'brightness(1)'
+                  : 'brightness(0)',
+            }}
           />
         </Link>
         <Stack direction="row" alignItems="center" spacing={1}>
+          <IconButton aria-label="Toggle theme" onClick={toggleTheme}>
+            {theme.palette.mode === 'light' ? (
+              <DarkMode sx={{color: '#000', fontSize: 23}} />
+            ) : (
+              <LightMode sx={{color: '#fff', fontSize: 23}} />
+            )}
+          </IconButton>
           <IconButton onClick={() => router.push('/cart')}>
-            <Image src="/icons/cart.svg" alt="cart" width={20} height={20} />
+            <Image
+              src="/icons/cart.svg"
+              alt="cart"
+              width={20}
+              height={20}
+              style={{
+                filter:
+                  theme.palette.mode === 'dark'
+                    ? 'brightness(10)'
+                    : 'brightness(1)',
+              }}
+            />
           </IconButton>
           <IconButton onClick={handleModalOpen}>
             <Image
@@ -88,6 +123,12 @@ const MobileHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
               alt="search"
               width={20}
               height={20}
+              style={{
+                filter:
+                  theme.palette.mode === 'dark'
+                    ? 'brightness(10)'
+                    : 'brightness(1)',
+              }}
             />
           </IconButton>
           <IconButton onClick={() => setOpenDrawer(!openDrawer)}>
@@ -96,6 +137,12 @@ const MobileHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
               alt="menu"
               width={20}
               height={20}
+              style={{
+                filter:
+                  theme.palette.mode === 'dark'
+                    ? 'brightness(10)'
+                    : 'brightness(1)',
+              }}
             />
           </IconButton>
         </Stack>
@@ -118,6 +165,12 @@ const MobileHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
                 alt="close"
                 width={20}
                 height={20}
+                style={{
+                  filter:
+                    theme.palette.mode === 'dark'
+                      ? 'brightness(10)'
+                      : 'brightness(1)',
+                }}
               />
             </IconButton>
           </Box>
@@ -140,6 +193,12 @@ const MobileHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
                   height={20}
                   src="/icons/login.svg"
                   alt="login"
+                  style={{
+                    filter:
+                      theme.palette.mode === 'dark'
+                        ? 'brightness(10)'
+                        : 'brightness(1)',
+                  }}
                 />
                 <Typography>Log in</Typography>
               </ListItem>

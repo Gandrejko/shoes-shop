@@ -20,6 +20,9 @@ const styles: Record<string, SxProps> = {
       backgroundColor: 'grey.A100',
     },
   },
+  header: {
+    color: 'grey.A700',
+  },
 };
 
 type ButtonsListProps = {
@@ -51,7 +54,7 @@ const ButtonsList = ({
   };
   return (
     <Box>
-      <Typography>{header}</Typography>
+      <Typography sx={styles.header}>{header}</Typography>
       <Box sx={styles.buttonsList}>
         {data.map(({id, name}) => {
           const isChecked = Boolean(

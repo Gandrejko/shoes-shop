@@ -6,6 +6,7 @@ import {
   SxProps,
   Typography,
   useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import Image from 'next/image';
 import {ReactElement, useEffect, useMemo, useState} from 'react';
@@ -14,9 +15,8 @@ import ProductList from '@/components/common/Product/ProductList';
 import {FilterSidebar} from '@/components/layouts/FilterSidebar/FilterSidebar';
 import HeaderLayout from '@/components/layouts/HeaderLayout/HeaderLayout';
 import {SignInLayout} from '@/components/layouts/SignInLayout/SignInLayout';
-import theme from '@/config/theme';
 import {NextPageWithLayout} from '@/pages/_app';
-import {ProductsResponse} from '@/types';
+import {FiltersData, ProductsResponse} from '@/types';
 import buildParams from '@/utils/buildParams';
 import axios from 'axios';
 import {GetServerSidePropsContext} from 'next';
@@ -45,6 +45,7 @@ const styles: Record<string, SxProps> = {
   },
   buttonStyles: {
     color: 'text.secondary',
+    border: '2px solid #bdbdbd',
     minWidth: {sm: '100px', md: '160px', lg: '200px'},
   },
 };
@@ -52,12 +53,15 @@ const styles: Record<string, SxProps> = {
 type Props = {
   initialProducts: ProductsResponse;
   initialPages: number[];
+  filtersData: FiltersData;
 };
 
 const MyProducts: NextPageWithLayout<Props> = ({
   initialPages,
   initialProducts,
+  filtersData,
 }) => {
+  const theme = useTheme();
   const router = useRouter();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -66,7 +70,7 @@ const MyProducts: NextPageWithLayout<Props> = ({
 
   const params = useMemo(() => {
     return buildParams(router.query, {
-      populate: '*',
+      populate: 'images,gender',
     });
   }, [router.query]);
 
@@ -81,15 +85,15 @@ const MyProducts: NextPageWithLayout<Props> = ({
         searchingString={params['filters[name][$containsi]'] as string}
         productsCount={productsCount}
         onClose={() => setShowFilters(false)}
+        filtersData={filtersData}
       />
       <Box sx={styles.container} marginLeft={showFilters && !isMobile ? 2 : 0}>
         <Box sx={styles.productsContainer}>
           <Stack direction="row" sx={styles.productsHeader}>
             <Typography variant="h1">Search Results</Typography>
             <Box sx={styles.filterButtons}>
-              <SortDropdown />
               <Button
-                variant="text"
+                variant="outlined"
                 sx={styles.buttonStyles}
                 onClick={() => setShowFilters(!showFilters)}
                 endIcon={
@@ -98,11 +102,18 @@ const MyProducts: NextPageWithLayout<Props> = ({
                     alt=""
                     width={24}
                     height={24}
+                    style={{
+                      filter:
+                        theme.palette.mode === 'dark'
+                          ? 'brightness(2)'
+                          : 'brightness(1)',
+                    }}
                   />
                 }
               >
                 {showFilters && 'Hide'} Filters
               </Button>
+              <SortDropdown />
             </Box>
           </Stack>
           <ProductList
@@ -118,7 +129,7 @@ const MyProducts: NextPageWithLayout<Props> = ({
                   width: 72,
                   height: 72,
                   marginX: 'auto',
-                  bgcolor: 'grey.A100',
+                  bgcolor: 'grey.300',
                 }}
               >
                 <Image
@@ -166,10 +177,25 @@ export const getServerSideProps = async (
     };
   }
 
+  const {data: genders} = await axios.get(`${process.env.API_URL}/genders`);
+  const {data: colors} = await axios.get(`${process.env.API_URL}/colors`);
+  const {data: categories} = await axios.get(
+    `${process.env.API_URL}/categories`,
+  );
+  const {data: brands} = await axios.get(`${process.env.API_URL}/brands`);
+  const {data: sizes} = await axios.get(`${process.env.API_URL}/sizes`);
+
   return {
     props: {
       initialProducts: response.data,
       initialPages: [1],
+      filtersData: {
+        genders,
+        colors,
+        categories,
+        brands,
+        sizes,
+      },
     },
   };
 };

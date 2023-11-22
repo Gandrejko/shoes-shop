@@ -1,27 +1,30 @@
-import {FiltersData} from '@/types';
-import {Image} from '@/types';
+import theme from '@/config/theme';
+import {
+  FiltersData,
+  Image,
+  Product,
+  ProductAttributes,
+  ProductRequest,
+} from '@/types';
+import {Box, Button, SxProps, Typography} from '@mui/material';
 import {useSession} from 'next-auth/react';
 import {
+  Dispatch,
+  SetStateAction,
+  createContext,
+  useEffect,
+  useState,
+} from 'react';
+import {
+  FieldErrors,
   UseFormRegister,
   UseFormSetValue,
   UseFormTrigger,
+  useForm,
 } from 'react-hook-form';
+import {BorderLinearProgress} from '../BorderLinearProgress/BorderLinearProgress';
 import FormContainer from './components/FormContainer';
 import ImagesContainer from './components/ImagesContainer';
-import theme from '@/config/theme';
-import {Box, Button, SxProps, Typography} from '@mui/material';
-import React, {
-  createContext,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
-import {FieldErrors, useForm} from 'react-hook-form';
-import {toast} from 'react-toastify';
-import {Product, ProductAttributes, ProductRequest} from '@/types';
-import {ProductsResponse} from '@/types';
 
 const styles: Record<string, SxProps> = {
   mainContainer: {
@@ -58,6 +61,47 @@ const styles: Record<string, SxProps> = {
       flexDirection: 'column',
     },
   },
+  progresBarContainer: {
+    position: 'sticky',
+    top: '0',
+    backgroundColor: 'background.paper',
+    padding: '20px 0',
+    zIndex: '1',
+  },
+};
+
+const oneCategoryPercentage = 11.1111111111; // one of nine attributes
+type ProgresStatusType = 'secondary' | 'error' | 'success';
+const statusColors = {
+  secondary: '#9c27b0',
+  error: '#fe645e',
+  success: '#2e7d32',
+};
+type AttributesType = [
+  formValueName: string,
+  formValuePrice: number,
+  formValueDescription: string,
+  gender: number,
+  brand: number,
+  color: number,
+  chosenSizes: number[],
+  chosenCategories: number[],
+  images: Pick<Image, 'id' | 'url'>[],
+];
+
+const countProgressStatus = (attributes: AttributesType) => {
+  return attributes.reduce((accumulator: number, currentValue) => {
+    if (typeof currentValue === 'string' && currentValue.trim() !== '') {
+      return accumulator + 1;
+    }
+    if (typeof currentValue === 'number' && currentValue > 0) {
+      return accumulator + 1;
+    }
+    if (Array.isArray(currentValue) && currentValue.length > 0) {
+      return accumulator + 1;
+    }
+    return accumulator;
+  }, 0);
 };
 
 type ProductFormContextType = FiltersData & {
@@ -112,6 +156,9 @@ const ProductForm = ({
   const [images, setImages] = useState<Pick<Image, 'id' | 'url'>[]>(
     product?.images?.data?.map(({id, attributes: {url}}) => ({id, url})) || [],
   );
+  const [createProductProgress, setCreateProductProgress] = useState(0);
+  const [progressStatus, setProgressStatus] =
+    useState<ProgresStatusType>('error');
 
   const {
     register,
@@ -119,6 +166,7 @@ const ProductForm = ({
     setValue,
     formState: {errors},
     trigger,
+    watch,
   } = useForm<ProductFormData>({
     defaultValues: {
       name: product?.name || '',
@@ -126,6 +174,46 @@ const ProductForm = ({
       description: product?.description || '',
     },
   });
+
+  const formValueName = watch('name');
+  const formValuePrice = watch('price');
+  const formValueDescription = watch('description');
+
+  useEffect(() => {
+    const counter = countProgressStatus([
+      formValueName,
+      formValuePrice,
+      formValueDescription,
+      gender,
+      brand,
+      color,
+      chosenSizes,
+      chosenCategories,
+      images,
+    ]);
+
+    setCreateProductProgress(counter);
+
+    if (formValueName.trim() && formValuePrice && formValueDescription) {
+      setProgressStatus('secondary');
+    } else {
+      setProgressStatus('error');
+    }
+    if (counter === 9) {
+      setProgressStatus('success');
+    }
+  }, [
+    formValueName,
+    formValuePrice,
+    formValueDescription,
+    gender,
+    brand,
+    color,
+    chosenSizes,
+    chosenCategories,
+    images,
+    createProductProgress,
+  ]);
 
   const handleOnSubmit = (data: ProductRequest) => {
     const values = {
@@ -184,12 +272,33 @@ const ProductForm = ({
           </Button>
         </Box>
         <Typography sx={styles.description}>
-          Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in
-          laying out print, graphic or web designs. The passage is attributed to
-          an unknown typesetter in the 15th century who is thought to have
-          scrambled parts of Cicero&apos;s De Finibus Bonorum et Malorum for use
-          in a type specimen book. It usually begins with:
+          Please complete the fields below and select the relevant information
+          so that other people can familiarize themselves with your product
         </Typography>
+        <Box sx={styles.progresBarContainer}>
+          <Typography
+            sx={{
+              ...styles.description,
+              color: statusColors[progressStatus],
+              fontWeight: '400',
+            }}
+          >
+            Item filling level:{' '}
+            <b>
+              {progressStatus === 'error'
+                ? ' Please, provide required fileds'
+                : progressStatus === 'secondary'
+                ? ' Add more descriptions to your product'
+                : ' Great! You have filled in all fields'}
+            </b>
+          </Typography>
+          <BorderLinearProgress
+            variant="determinate"
+            color={progressStatus}
+            value={createProductProgress * oneCategoryPercentage}
+            sx={{marginTop: '20px'}}
+          />
+        </Box>
         <Box sx={styles.form}>
           <FormContainer />
           <ImagesContainer />

@@ -11,7 +11,10 @@ const styles: Record<string, SxProps> = {
   select: {
     width: '100%',
     borderRadius: '8px',
-    border: `1px solid ${theme.palette.grey['A700']}`,
+    border: `1px solid ${theme.palette.grey['A400']}`,
+    '& .MuiSelect-icon': {
+      color: 'text.primary',
+    },
   },
   '.MuiOutlinedInput-root': {
     border: 'none',
