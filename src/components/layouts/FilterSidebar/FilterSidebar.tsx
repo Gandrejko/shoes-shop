@@ -102,7 +102,11 @@ export const FilterSidebar = ({
                 {searchingString} ({productsCount})
               </Typography>
             )}
-            <Button onClick={handleClearFilters} sx={{marginTop: '15px'}}>
+            <Button
+              onClick={handleClearFilters}
+              sx={{marginTop: '15px'}}
+              variant="outlined"
+            >
               Clear filters
             </Button>
           </>
