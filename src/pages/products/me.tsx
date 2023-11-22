@@ -180,7 +180,7 @@ const Me: NextPageWithLayout<Props> = ({
                   width: 72,
                   height: 72,
                   marginX: 'auto',
-                  bgcolor: 'grey.A100',
+                  bgcolor: 'grey.300',
                 }}
               >
                 <Image
