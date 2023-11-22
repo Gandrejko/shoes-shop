@@ -64,7 +64,7 @@ const styles: Record<string, SxProps> = {
   progresBarContainer: {
     position: 'sticky',
     top: '0',
-    backgroundColor: '#fff',
+    backgroundColor: 'background.paper',
     padding: '20px 0',
     zIndex: '1',
   },
