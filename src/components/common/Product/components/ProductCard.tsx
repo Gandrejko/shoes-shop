@@ -43,6 +43,8 @@ const styles: Record<string, SxProps> = {
   },
   moreButton: {
     position: 'absolute',
+    zIndex: '1',
+    padding: '10px',
     top: 5,
     right: 5,
   },
@@ -66,71 +68,71 @@ const ProductCard = ({product}: Props) => {
   const {mutate: deleteProduct} = useDelete('/products');
 
   return (
-    <Link
-      href={`/products/${product.id}`}
-      style={{textDecoration: 'none', width: '100%'}}
-    >
-      <Card sx={styles.card}>
-        <Box sx={styles.imageContainer}>
-          {product.images?.data ? (
-            <Image
-              src={product.images.data[0].attributes.url}
-              alt={product.name!}
-              fill
-              style={{objectFit: 'cover'}}
-            />
-          ) : (
-            <Paper
-              sx={{height: 1, backgroundColor: 'grey.A200', borderRadius: 0}}
-            />
-          )}
-          {showControls && (
-            <>
-              <IconButton
-                aria-label="settings"
-                sx={styles.moreButton}
-                onClick={e => setAnchorEl(e.currentTarget)}
-              >
-                <MoreHoriz />
-              </IconButton>
-              <ButtonMenu
-                productid={product.id!}
-                open={Boolean(anchorEl)}
-                anchorEl={anchorEl}
-                anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
-                transformOrigin={{vertical: 'top', horizontal: 'right'}}
-                onClose={() => setAnchorEl(null)}
-                onDeleteProduct={() => deleteProduct(product.id!)}
+    <Box sx={{position: 'relative', width: '100%'}}>
+      <Link href={`/products/${product.id}`} style={{textDecoration: 'none'}}>
+        <Card sx={styles.card}>
+          <Box sx={styles.imageContainer}>
+            {product.images?.data ? (
+              <Image
+                src={product.images.data[0].attributes.url}
+                alt={product.name!}
+                fill
+                style={{objectFit: 'cover'}}
               />
-            </>
-          )}
-        </Box>
-        <CardActionArea LinkComponent={Link} sx={styles.cardActionArea}>
-          <CardContent sx={styles.cardContent}>
-            <Stack direction="row" sx={styles.productDescription}>
-              <Box>
-                <Typography variant="h3" fontSize={14}>
-                  {product.name}
-                </Typography>
-                {product.gender?.data && (
-                  <Typography
-                    variant="h5"
-                    fontSize={14}
-                    textTransform="capitalize"
-                    color="text.secondary"
-                  >
-                    {`${product.gender.data.attributes.name}'s Shoes`}
+            ) : (
+              <Paper
+                sx={{height: 1, backgroundColor: 'grey.A200', borderRadius: 0}}
+              />
+            )}
+          </Box>
+          <CardActionArea LinkComponent={Link} sx={styles.cardActionArea}>
+            <CardContent sx={styles.cardContent}>
+              <Stack direction="row" sx={styles.productDescription}>
+                <Box>
+                  <Typography variant="h3" fontSize={14}>
+                    {product.name}
                   </Typography>
-                )}
-              </Box>
-              <Typography variant="h3" fontSize={14}>
-                ${product.price}
-              </Typography>
-            </Stack>
-          </CardContent>
-        </CardActionArea>
-      </Card>
-    </Link>
+                  {product.gender?.data && (
+                    <Typography
+                      variant="h5"
+                      fontSize={14}
+                      textTransform="capitalize"
+                      color="text.secondary"
+                    >
+                      {`${product.gender.data.attributes.name}'s Shoes`}
+                    </Typography>
+                  )}
+                </Box>
+                <Typography variant="h3" fontSize={14}>
+                  ${product.price}
+                </Typography>
+              </Stack>
+            </CardContent>
+          </CardActionArea>
+        </Card>
+      </Link>
+
+      {showControls && (
+        <Box>
+          <IconButton
+            aria-label="settings"
+            sx={styles.moreButton}
+            onClick={e => setAnchorEl(e.currentTarget)}
+          >
+            <MoreHoriz />
+          </IconButton>
+          <ButtonMenu
+            productid={product.id!}
+            open={Boolean(anchorEl)}
+            anchorEl={anchorEl}
+            anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
+            transformOrigin={{vertical: 'top', horizontal: 'right'}}
+            onClose={() => setAnchorEl(null)}
+            onDeleteProduct={() => deleteProduct(product.id!)}
+          />
+        </Box>
+      )}
+    </Box>
   );
 };
 export default ProductCard;
