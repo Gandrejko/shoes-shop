@@ -6,11 +6,13 @@ import {
   ListItem,
   SxProps,
   Typography,
+  useTheme,
 } from '@mui/material';
 import Image from 'next/image';
 import {destroyCookie} from 'nookies';
 import {signOut, useSession} from 'next-auth/react';
 import {useRouter} from 'next/navigation';
+import {relative} from 'path';
 
 const styles: Record<string, SxProps> = {
   user: {
@@ -22,20 +24,19 @@ const styles: Record<string, SxProps> = {
   avatarContainer: {
     width: '64px',
     height: '64px',
-    backgroundColor: 'primary.main',
+    border: '1px solid #fff',
     borderRadius: '50%',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    position: 'relative',
+    overflow: 'hidden',
   },
   avatar: {
+    width: 1,
+    height: 1,
     bgcolor: 'primary.main',
-    fontSize: {sm: 28, md: 36},
-    height: '64px',
-    width: '64px',
-  },
-  avatarLetter: {
-    color: 'text.primary',
+    color: '#fff',
   },
   welcome: {
     color: 'grey.A200',
@@ -65,6 +66,7 @@ type SidebarProps = {
 };
 
 const Sidebar = ({currentTab, closeDrawer}: SidebarProps) => {
+  const theme = useTheme();
   const router = useRouter();
   const {data} = useSession();
   const image = data?.user.image;
@@ -81,9 +83,20 @@ const Sidebar = ({currentTab, closeDrawer}: SidebarProps) => {
     <Box>
       <Box sx={styles.user}>
         <Box sx={styles.avatarContainer}>
-          <Avatar src={image} sx={styles.avatarContainer}>
-            {(firstName || username || ' ')[0].toUpperCase()}
-          </Avatar>
+          {image ? (
+            <Image
+              src={image}
+              alt={(firstName || username || ' ')[0].toUpperCase()}
+              fill
+              style={{objectFit: 'cover'}}
+            />
+          ) : (
+            <Avatar
+              src="/"
+              alt={(firstName || username || ' ')[0].toUpperCase()}
+              sx={styles.avatar}
+            />
+          )}
         </Box>
         <Box>
           <Typography variant="body2" sx={styles.welcome}>
@@ -103,7 +116,7 @@ const Sidebar = ({currentTab, closeDrawer}: SidebarProps) => {
         <ListItem
           sx={{
             ...styles.tab,
-            color: currentTab === 'products' ? '#FE645E' : '#000',
+            color: currentTab === 'products' ? 'primary.main' : 'text.primary',
           }}
           onClick={() => {
             router.push('/products/me');
@@ -117,13 +130,19 @@ const Sidebar = ({currentTab, closeDrawer}: SidebarProps) => {
             height={20}
             src="/icons/myProducts.svg"
             alt="my-products"
+            style={{
+              filter:
+                theme.palette.mode === 'dark'
+                  ? 'brightness(10)'
+                  : 'brightness(1)',
+            }}
           />
           <Typography>My products</Typography>
         </ListItem>
         <ListItem
           sx={{
             ...styles.tab,
-            color: currentTab === 'settings' ? '#FE645E' : '#000',
+            color: currentTab === 'settings' ? 'primary.main' : 'text.primary',
           }}
           onClick={() => {
             router.push('/settings');
@@ -137,17 +156,34 @@ const Sidebar = ({currentTab, closeDrawer}: SidebarProps) => {
             height={20}
             src="/icons/settings.svg"
             alt="settings"
+            style={{
+              filter:
+                theme.palette.mode === 'dark'
+                  ? 'brightness(10)'
+                  : 'brightness(1)',
+            }}
           />
           <Typography>Settings</Typography>
         </ListItem>
         <ListItem
           sx={{
             ...styles.tab,
-            color: currentTab === 'logout' ? '#FE645E' : '#000',
+            color: currentTab === 'logout' ? 'primary.main' : 'text.primary',
           }}
           onClick={logoutFunction}
         >
-          <Image width={20} height={20} src="/icons/logout.svg" alt="logout" />
+          <Image
+            width={20}
+            height={20}
+            src="/icons/logout.svg"
+            alt="logout"
+            style={{
+              filter:
+                theme.palette.mode === 'dark'
+                  ? 'brightness(10)'
+                  : 'brightness(1)',
+            }}
+          />
           <Typography>Log out</Typography>
         </ListItem>
       </List>

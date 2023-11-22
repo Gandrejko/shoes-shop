@@ -10,8 +10,6 @@ import theme from '@/config/theme';
 const styles: Record<string, SxProps> = {
   appBar: {
     position: 'sticky',
-    color: '#000000',
-    backgroundColor: '#FFFFFF',
     border: 'none',
     boxShadow: 'none',
     zIndex: theme.zIndex.drawer + 1,
