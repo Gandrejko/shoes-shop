@@ -35,9 +35,12 @@ const styles: Record<string, SxProps> = {
     },
   },
   avatar: {
-    backgroundColor: 'primary.main',
     width: 24,
     height: 24,
+    border: '1px solid',
+    borderColor: '#fff',
+    backgroundColor: 'primary.main',
+    color: 'common.white',
   },
 };
 
@@ -112,17 +115,7 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
                   height: 43,
                 }}
               >
-                <Avatar
-                  src={data?.user?.image}
-                  alt="avatar"
-                  sx={{
-                    width: 24,
-                    height: 24,
-                    border: '1px solid',
-                    borderColor: '#fff',
-                    backgroundColor: 'primary.main',
-                  }}
-                >
+                <Avatar src={data?.user?.image} alt="avatar" sx={styles.avatar}>
                   {(data?.user?.firstName ||
                     data?.user?.username ||
                     ' ')[0].toUpperCase()}
