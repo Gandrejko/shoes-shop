@@ -56,7 +56,9 @@ type PropsType = {
 };
 
 export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
-  const {register, getValues, setValue, watch} = useForm<{searchString: string}>();
+  const {register, getValues, setValue, watch} = useForm<{
+    searchString: string;
+  }>();
   const theme = useTheme();
   const greaterThanMid = useMediaQuery(theme.breakpoints.up('md'));
   const lessThanSmall = useMediaQuery(theme.breakpoints.down('sm'));
@@ -126,11 +128,13 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
             {greaterThanMid && (
               <Image src={logoIcon} alt="" style={style.logoImageStyles} />
             )}
-            <Box  sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '25px',
-            }}>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '25px',
+              }}
+            >
               <Box
                 sx={{
                   width: '100%',
@@ -160,11 +164,22 @@ export const Modal = ({handleSearchClick, handleClose, isOpen}: PropsType) => {
                 </Button>
               </Box>
               <Box>
-                <ul style={{ listStyleType: 'none', padding: 0, margin: 0, paddingLeft: '25px'}}>
+                <ul
+                  style={{
+                    listStyleType: 'none',
+                    padding: 0,
+                    margin: 0,
+                    paddingLeft: '25px',
+                  }}
+                >
                   {suggestions.map((suggestion, index) => (
-                    <li key={index}
-                        style={{ marginBottom: '8px', cursor: 'pointer' }}
-                        onClick={() => handleSuggestionClick(suggestion)}>{suggestion}</li>
+                    <li
+                      key={index}
+                      style={{marginBottom: '8px', cursor: 'pointer'}}
+                      onClick={() => handleSuggestionClick(suggestion)}
+                    >
+                      {suggestion}
+                    </li>
                   ))}
                 </ul>
               </Box>

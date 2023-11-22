@@ -1,5 +1,5 @@
-import { RefObject, useEffect, useState, useCallback } from 'react';
-import { Box, IconButton } from '@mui/material';
+import {RefObject, useEffect, useState, useCallback} from 'react';
+import {Box, IconButton} from '@mui/material';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import theme from '@/config/theme';
 
@@ -36,7 +36,7 @@ const styles = {
   },
 };
 
-const ScrollToTop = ({ containerRef }: ScrollToTopProps) => {
+const ScrollToTop = ({containerRef}: ScrollToTopProps) => {
   const [isVisible, setIsVisible] = useState(false);
 
   const handleScroll = useCallback(() => {
@@ -68,7 +68,9 @@ const ScrollToTop = ({ containerRef }: ScrollToTopProps) => {
   };
 
   return (
-    <Box sx={{ ...styles.scrollContainer, display: isVisible ? 'block' : 'none' }}>
+    <Box
+      sx={{...styles.scrollContainer, display: isVisible ? 'block' : 'none'}}
+    >
       <IconButton onClick={scrollToTop}>
         <ArrowUpwardIcon sx={styles.arrow} />
       </IconButton>
