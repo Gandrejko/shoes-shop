@@ -22,7 +22,7 @@ import axios from 'axios';
 import {GetServerSidePropsContext} from 'next';
 import Head from 'next/head';
 import {useRouter} from 'next/router';
-import Dropdown from '@/components/ui/Dropdown/Dropdown';
+import {SortDropdown} from '@/components/ui/SortDropdown/SortDropdown';
 
 const styles: Record<string, SxProps> = {
   container: {
@@ -54,13 +54,6 @@ type Props = {
   initialPages: number[];
 };
 
-const options = [
-  {value: 'createdAt:desc', name: 'new first'},
-  {value: 'createdAt:asc', name: 'old first'},
-  {value: 'price:desc', name: 'high to low'},
-  {value: 'price:asc', name: 'low to high'},
-];
-
 const MyProducts: NextPageWithLayout<Props> = ({
   initialPages,
   initialProducts,
@@ -70,14 +63,6 @@ const MyProducts: NextPageWithLayout<Props> = ({
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [showFilters, setShowFilters] = useState(!isMobile);
   const [productsCount, setProductsCount] = useState(0);
-  const [sortType, setSortType] = useState(options[0].value);
-
-  useEffect(() => {
-    const {sort} = router.query;
-    if (sort) {
-      setSortType(typeof sort === 'string' ? sort : sort[0]);
-    }
-  }, []);
 
   const params = useMemo(() => {
     return buildParams(router.query, {
@@ -88,29 +73,6 @@ const MyProducts: NextPageWithLayout<Props> = ({
   useEffect(() => {
     setShowFilters(!isMobile);
   }, [isMobile]);
-
-  const handleChooseSort = (value: string) => {
-    let updatedQuery: {sort?: string} = {
-      ...router.query,
-      sort: value,
-    };
-    if (value === options[0].value) {
-      delete updatedQuery['sort'];
-    }
-    let updatedQueryString = '';
-    for (const [key, value] of Object.entries(updatedQuery)) {
-      updatedQueryString += `&${key}=${value}`;
-    }
-    router.push(
-      {
-        pathname: router.pathname,
-        query: updatedQueryString.replace('&', ''),
-      },
-      undefined,
-      {shallow: true},
-    );
-    setSortType(value);
-  };
 
   return (
     <Stack direction="row" justifyContent="center">
@@ -125,12 +87,7 @@ const MyProducts: NextPageWithLayout<Props> = ({
           <Stack direction="row" sx={styles.productsHeader}>
             <Typography variant="h1">Search Results</Typography>
             <Box sx={styles.filterButtons}>
-              <Dropdown
-                value={sortType}
-                options={options}
-                onChange={e => handleChooseSort(e.target.value as string)}
-                withoutNone
-              />
+              <SortDropdown />
               <Button
                 variant="text"
                 sx={styles.buttonStyles}

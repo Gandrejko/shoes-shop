@@ -15,6 +15,7 @@ export default function buildParams(
   const searchString = query.searchingString || '';
   const minPrice = query.minPrice || 0;
   const maxPrice = query.maxPrice || Infinity;
+  const sort = query.sort || 'createdAt:desc';
 
   genders.forEach((value, index) => {
     params[`filters[gender][name][${index}]`] = value;
@@ -39,10 +40,7 @@ export default function buildParams(
   params['filters[name][$containsi]'] = searchString as string;
   params['filters[price][$gte]'] = minPrice as string;
   params['filters[price][$lte]'] = maxPrice as string;
-
-  if (query.sort) {
-    params['sort'] = query.sort;
-  }
+  params['sort'] = sort as string;
 
   return Object.assign(params, additionalParams);
 }
