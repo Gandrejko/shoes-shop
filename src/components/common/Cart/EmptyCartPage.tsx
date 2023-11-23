@@ -17,8 +17,11 @@ const styles = {
     },
   },
   imageWrapper: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: '24px',
-    backgroundColor: '#F9FAFB',
+    backgroundColor: '#a0a6b2',
     borderRadius: '50%',
   },
   title: {
