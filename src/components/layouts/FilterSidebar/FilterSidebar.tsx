@@ -24,7 +24,7 @@ const styles: Record<string, SxProps> = {
       overflowX: 'hidden',
     },
     '& .MuiModal-backdrop': {
-      backgroundColor: 'grey.A400',
+      backgroundColor: 'grey.A100',
       opacity: '0.9 !important',
       backdropFilter: 'blur(100px)',
     },

@@ -16,7 +16,7 @@ import {useContext} from 'react';
 const styles: Record<string, SxProps> = {
   modal: {
     '& .MuiBackdrop-root': {
-      backgroundColor: 'grey.A400',
+      backgroundColor: 'grey.A100',
       opacity: '0.9 !important',
       backdropFilter: 'blur(100px)',
     },
