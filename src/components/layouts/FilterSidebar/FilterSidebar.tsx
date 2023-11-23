@@ -109,14 +109,14 @@ export const FilterSidebar = ({
         ) : (
           <>
             <Typography>
-              Shoes{searchingString ? `/${searchingString}` : ''}
-              {searchingString ? '' : ` (${productsCount})`}
+              {searchingString
+                ? `Searching results for: ${searchingString}`
+                : 'Shoes'}
             </Typography>
-            {searchingString && (
-              <Typography>
-                {searchingString} ({productsCount})
-              </Typography>
-            )}
+            <Typography>
+              {searchingString && `Products found - ${productsCount}`}
+            </Typography>
+
             <Button
               onClick={handleClearFilters}
               sx={{marginTop: '15px'}}
