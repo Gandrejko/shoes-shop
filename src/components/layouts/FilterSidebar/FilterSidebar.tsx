@@ -58,7 +58,7 @@ export const FilterSidebar = ({
   filtersData,
 }: Props) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'), {noSsr: true});
 
   const {genders, colors, brands, categories, sizes} = filtersData;
 
