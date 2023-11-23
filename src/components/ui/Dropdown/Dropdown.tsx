@@ -15,9 +15,14 @@ const styles: Record<string, SxProps> = {
     '& .MuiSelect-icon': {
       color: 'text.primary',
     },
-  },
-  '& .MuiOutlinedInput-root': {
-    border: 'none',
+    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+      border: 'none',
+      outline: 'none',
+    },
+    '& .MuiInputBase-root': {
+      border: 'none',
+      outline: `none`,
+    },
   },
 };
 
