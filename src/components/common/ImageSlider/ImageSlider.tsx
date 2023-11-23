@@ -116,6 +116,7 @@ const ImageSlider = ({images}: ImageSliderProps) => {
               alt="prev"
               width={24}
               height={24}
+              priority
             />
           </IconButton>
           <IconButton onClick={nextImage}>

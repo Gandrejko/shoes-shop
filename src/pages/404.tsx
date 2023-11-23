@@ -8,6 +8,7 @@ import {
   Typography,
   useMediaQuery,
 } from '@mui/material';
+import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
@@ -22,13 +23,16 @@ const styles: Record<string, SxProps> = {
     display: 'flex',
     flexGrow: 1,
     height: '100%',
+    maxWidth: 1850,
+    marginX: 'auto',
+    paddingX: 4,
   },
   info: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     gap: '28px',
-    padding: {sm: '0 20px', md: '0 60px', lg: '0 120px'},
+    padding: {sm: '0 20px', md: '0 0px', lg: '0 120px'},
     width: '50vw',
   },
   banner: {
@@ -68,6 +72,9 @@ const Error404 = () => {
     <Stack sx={styles.page}>
       {isMobile ? (
         <>
+          <Head>
+            <title>Not found</title>
+          </Head>
           <Box sx={styles.mobile}>
             <Image
               src="/images/404PageBanner.png"
@@ -108,6 +115,9 @@ const Error404 = () => {
         </>
       ) : (
         <>
+          <Head>
+            <title>Not found</title>
+          </Head>
           <HeaderLayout>
             <Box sx={styles.main}>
               <Box sx={styles.info}>

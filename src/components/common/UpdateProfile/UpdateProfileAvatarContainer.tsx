@@ -39,6 +39,7 @@ const styles: Record<string, SxProps> = {
     textTransform: 'uppercase',
     width: {xs: 100, sm: 150},
     height: {xs: 100, sm: 150},
+    color: 'common.white',
     backgroundColor: 'primary.main',
   },
   button: {
