@@ -1,4 +1,11 @@
-import {AppBar, Divider, SxProps, useMediaQuery, useTheme} from '@mui/material';
+import {
+  AppBar,
+  Box,
+  Divider,
+  SxProps,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import {useSession} from 'next-auth/react';
 import {useRouter} from 'next/router';
 import {useState} from 'react';
@@ -11,6 +18,13 @@ const styles: Record<string, SxProps> = {
     position: 'sticky',
     border: 'none',
     boxShadow: 'none',
+    backgroundImage: 'none',
+    backgroundColor: 'background.paper',
+  },
+  container: {
+    maxWidth: 1850,
+    width: 1,
+    marginX: 'auto',
   },
 };
 
@@ -51,17 +65,19 @@ const Header = () => {
   return (
     <>
       <AppBar sx={styles.appBar}>
-        {isMobileMode ? (
-          <MobileHeader
-            userLoggedIn={status !== 'unauthenticated'}
-            handleModalOpen={handleModalOpen}
-          />
-        ) : (
-          <DesktopHeader
-            userLoggedIn={status !== 'unauthenticated'}
-            handleModalOpen={handleModalOpen}
-          />
-        )}
+        <Box sx={styles.container}>
+          {isMobileMode ? (
+            <MobileHeader
+              userLoggedIn={status !== 'unauthenticated'}
+              handleModalOpen={handleModalOpen}
+            />
+          ) : (
+            <DesktopHeader
+              userLoggedIn={status !== 'unauthenticated'}
+              handleModalOpen={handleModalOpen}
+            />
+          )}
+        </Box>
         <Divider />
       </AppBar>
       <Modal isOpen={open} onClose={handleModalClose} onSearch={handleSearch} />
