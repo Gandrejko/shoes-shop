@@ -52,13 +52,13 @@ export const getPalette = (mode: PaletteMode): ThemeOptions => ({
       styleOverrides: theme => ({
         body: {
           scrollbarWidth: 'thin',
-          scrollbarColor: theme.palette.grey.A400,
+          scrollbarColor: theme.palette.grey[300],
           '&::-webkit-scrollbar, & *::-webkit-scrollbar': {
             backgroundColor: 'transparent',
             width: 11,
           },
           '&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb': {
-            backgroundColor: theme.palette.grey.A400,
+            backgroundColor: theme.palette.grey[300],
             border: '2px solid transparent',
             backgroundClip: 'padding-box',
             borderRadius: 10,
@@ -66,7 +66,7 @@ export const getPalette = (mode: PaletteMode): ThemeOptions => ({
           },
           '&::-webkit-scrollbar-thumb:hover, & *::-webkit-scrollbar-thumb:hover':
             {
-              backgroundColor: theme.palette.grey.A700,
+              backgroundColor: theme.palette.grey[400],
             },
         },
       }),
