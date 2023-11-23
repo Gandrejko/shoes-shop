@@ -17,8 +17,8 @@ const styles = {
     },
   },
   imageWrapper: {
-    padding: '20px',
-    background: '#F9FAFB',
+    padding: '24px',
+    backgroundColor: '#F9FAFB',
     borderRadius: '50%',
   },
   title: {
