@@ -18,6 +18,8 @@ const styles: Record<string, SxProps> = {
     },
   },
   modalContent: {
+    maxWidth: 1500,
+    marginX: 'auto',
     backgroundColor: 'background.paper',
     position: 'absolute',
     top: 120,

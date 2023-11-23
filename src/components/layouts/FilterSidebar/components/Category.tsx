@@ -5,7 +5,6 @@ import {
   AccordionSummary,
   Box,
   Divider,
-  Theme,
   Typography,
 } from '@mui/material';
 import {useRouter} from 'next/router';
@@ -15,7 +14,10 @@ import {Option} from './Option';
 const styles = {
   accordion: {
     width: '100%',
-    padding: '15px 10px 15px 40px',
+    padding: {
+      xs: '15px 10px 15px 40px',
+      md: '15px 10px 15px 0',
+    },
     backgroundImage: 'none',
     boxShadow: 'none',
     '&:before': {

@@ -100,7 +100,11 @@ const ResetPassword = () => {
         </Button>
       </Box>
       <Box sx={styles.linksContainer}>
-        <Link href={'/auth/sign-in'} style={styles.link}>
+        <Link
+          href={'/auth/sign-in'}
+          style={styles.link}
+          aria-label="Back to log in"
+        >
           <Typography>Back to log in</Typography>
         </Link>
       </Box>

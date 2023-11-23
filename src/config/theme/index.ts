@@ -122,6 +122,12 @@ let theme = createTheme({
           padding: 0,
           '&.Mui-focused': {
             border: 'none', // Set the desired style for the border, for example 'none' to remove the border
+            outline: '2px solid #bdbdbd',
+          },
+          '&:hover .MuiOutlinedInput-notchedOutline': {
+            border: '1px solid #bdbdbd',
+            outline: 'none',
+            backgroundColor: 'rgba(254, 100, 94, 0.04)',
           },
         }),
       },

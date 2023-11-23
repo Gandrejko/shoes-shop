@@ -67,7 +67,11 @@ const ForgotPassword = () => {
         <Link href={'/auth/reset-password'} style={styles.link}>
           <Typography>Go to reset password page</Typography>
         </Link>
-        <Link href={'/auth/sign-in'} style={styles.link}>
+        <Link
+          href={'/auth/sign-in'}
+          style={styles.link}
+          aria-label="Back to log in"
+        >
           <Typography>Back to log in</Typography>
         </Link>
       </Box>
