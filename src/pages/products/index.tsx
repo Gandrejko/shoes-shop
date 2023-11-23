@@ -38,14 +38,13 @@ const styles: Record<string, SxProps> = {
     padding: {xs: '0 24px', md: 0},
   },
   productsHeader: {
-    alignItems: {xs: 'start', md: 'center'},
-    justifyContent: {md: 'space-between'},
+    alignItems: {xs: 'start', lg: 'center'},
+    justifyContent: {lg: 'space-between'},
     marginBottom: 3,
   },
   filterButtons: {
     marginTop: '15px',
     display: 'flex',
-    flexDirection: {xs: 'row', md: 'column'},
     gap: '10px',
   },
   buttonStyles: {
@@ -70,6 +69,7 @@ const MyProducts: NextPageWithLayout<Props> = ({
   const router = useRouter();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isLargeDevice = useMediaQuery(theme.breakpoints.down('lg'));
   const [showFilters, setShowFilters] = useState(!isMobile);
   const [productsCount, setProductsCount] = useState(0);
 
@@ -98,7 +98,7 @@ const MyProducts: NextPageWithLayout<Props> = ({
       >
         <Box sx={styles.productsContainer}>
           <Stack
-            direction={isMobile ? 'column' : 'row'}
+            direction={isLargeDevice ? 'column' : 'row'}
             sx={styles.productsHeader}
           >
             <Typography variant="h1">Search Results</Typography>

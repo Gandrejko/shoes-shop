@@ -1,4 +1,6 @@
 import {
+  Box,
+  Button,
   Drawer,
   IconButton,
   Stack,
@@ -7,11 +9,11 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-
 import {FiltersData} from '@/types';
 import Image from 'next/image';
 import {Category} from './components/Category';
 import PriceSlider from './components/PriceSlider';
+import {useRouter} from 'next/router';
 
 const styles: Record<string, SxProps> = {
   sidebar: {
@@ -34,6 +36,10 @@ const styles: Record<string, SxProps> = {
     padding: {xs: '26px 20px', md: '44px 40px 16px'},
     backgroundColor: 'background.paper',
   },
+  mobileButtonContainer: {
+    display: 'flex',
+    justifyContent: 'space-beetwen',
+  },
 };
 
 type Props = {
@@ -53,8 +59,23 @@ export const FilterSidebar = ({
 }: Props) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const router = useRouter();
 
   const {genders, colors, brands, categories, sizes} = filtersData;
+
+  const handleClearFilters = () => {
+    router.push(
+      {
+        pathname: router.pathname,
+        query: {},
+      },
+      undefined,
+      {shallow: true},
+    );
+    if (isMobile) {
+      onClose();
+    }
+  };
 
   return (
     <Drawer
@@ -66,31 +87,43 @@ export const FilterSidebar = ({
     >
       <Stack sx={styles.header}>
         {isMobile ? (
-          <IconButton onClick={onClose} sx={{marginLeft: 'auto'}}>
-            <Image
-              src="/icons/burgerClose.svg"
-              alt=""
-              width={20}
-              height={20}
-              style={{
-                filter:
-                  theme.palette.mode === 'dark'
-                    ? 'brightness(10)'
-                    : 'brightness(1)',
-              }}
-            />
-          </IconButton>
+          <Box sx={styles.mobileButtonContainer}>
+            <Button onClick={handleClearFilters} variant="outlined">
+              Clear filters
+            </Button>
+            <IconButton onClick={onClose} sx={{marginLeft: 'auto'}}>
+              <Image
+                src="/icons/burgerClose.svg"
+                alt=""
+                width={20}
+                height={20}
+                style={{
+                  filter:
+                    theme.palette.mode === 'dark'
+                      ? 'brightness(10)'
+                      : 'brightness(1)',
+                }}
+              />
+            </IconButton>
+          </Box>
         ) : (
           <>
             <Typography>
-              Shoes{searchingString ? `/${searchingString}` : ''}
-              {searchingString ? '' : ` (${productsCount})`}
+              {searchingString
+                ? `Searching results for: ${searchingString}`
+                : 'Shoes'}
             </Typography>
-            {searchingString && (
-              <Typography>
-                {searchingString} ({productsCount})
-              </Typography>
-            )}
+            <Typography>
+              {searchingString && `Products found - ${productsCount}`}
+            </Typography>
+
+            <Button
+              onClick={handleClearFilters}
+              sx={{marginTop: '15px'}}
+              variant="outlined"
+            >
+              Clear filters
+            </Button>
           </>
         )}
       </Stack>
