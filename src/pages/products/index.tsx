@@ -15,6 +15,7 @@ import ProductList from '@/components/common/Product/ProductList';
 import {FilterSidebar} from '@/components/layouts/FilterSidebar/FilterSidebar';
 import HeaderLayout from '@/components/layouts/HeaderLayout/HeaderLayout';
 import {SignInLayout} from '@/components/layouts/SignInLayout/SignInLayout';
+import {SortDropdown} from '@/components/ui/SortDropdown/SortDropdown';
 import {NextPageWithLayout} from '@/pages/_app';
 import {FiltersData, ProductsResponse} from '@/types';
 import buildParams from '@/utils/buildParams';
@@ -22,7 +23,6 @@ import axios from 'axios';
 import {GetServerSidePropsContext} from 'next';
 import Head from 'next/head';
 import {useRouter} from 'next/router';
-import {SortDropdown} from '@/components/ui/SortDropdown/SortDropdown';
 
 const styles: Record<string, SxProps> = {
   container: {
@@ -38,6 +38,7 @@ const styles: Record<string, SxProps> = {
     padding: {xs: '0 24px', md: 0},
   },
   productsHeader: {
+    flexDirection: {lg: 'row'},
     alignItems: {xs: 'start', lg: 'center'},
     justifyContent: {lg: 'space-between'},
     marginBottom: 3,
@@ -69,7 +70,6 @@ const MyProducts: NextPageWithLayout<Props> = ({
   const router = useRouter();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const isLargeDevice = useMediaQuery(theme.breakpoints.down('lg'));
   const [showFilters, setShowFilters] = useState(!isMobile);
   const [productsCount, setProductsCount] = useState(0);
 
@@ -92,15 +92,9 @@ const MyProducts: NextPageWithLayout<Props> = ({
         onClose={() => setShowFilters(false)}
         filtersData={filtersData}
       />
-      <Box
-        sx={styles.pageContainer}
-        marginLeft={showFilters && !isMobile ? 2 : 0}
-      >
+      <Box sx={styles.pageContainer}>
         <Box sx={styles.productsContainer}>
-          <Stack
-            direction={isLargeDevice ? 'column' : 'row'}
-            sx={styles.productsHeader}
-          >
+          <Stack sx={styles.productsHeader}>
             <Typography variant="h1">Search Results</Typography>
             <Box sx={styles.filterButtons}>
               <Button
