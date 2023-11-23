@@ -11,26 +11,37 @@ const styles: Record<string, SxProps> = {
   select: {
     width: '100%',
     borderRadius: '8px',
-    border: `1px solid ${theme.palette.grey['A400']}`,
+    outline: `1px solid ${theme.palette.grey['A400']}`,
     '& .MuiSelect-icon': {
       color: 'text.primary',
     },
-  },
-  '.MuiOutlinedInput-root': {
-    border: 'none',
+    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+      border: 'none',
+      outline: 'none',
+    },
+    '& .MuiInputBase-root': {
+      border: 'none',
+      outline: `none`,
+    },
   },
 };
 
 type DropdownProps = SelectProps & {
-  labelText: string;
-  options?: {value: number; name: string}[];
+  labelText?: string;
+  options?: {value: number | string; name: string}[];
+  withoutNone?: boolean;
 };
 
-const Dropdown = ({labelText, options = [], ...props}: DropdownProps) => {
+const Dropdown = ({
+  labelText,
+  options = [],
+  withoutNone = false,
+  ...props
+}: DropdownProps) => {
   const id = useId();
   return (
     <Box sx={styles.dropdown}>
-      <InputLabel htmlFor={id}>{labelText}</InputLabel>
+      {labelText && <InputLabel htmlFor={id}>{labelText}</InputLabel>}
       <Select
         id={id}
         IconComponent={ExpandMoreIcon}
@@ -38,9 +49,11 @@ const Dropdown = ({labelText, options = [], ...props}: DropdownProps) => {
         MenuProps={{sx: {maxHeight: 400}}}
         {...props}
       >
-        <MenuItem key="none" value={0}>
-          None
-        </MenuItem>
+        {!withoutNone && (
+          <MenuItem key="none" value={0}>
+            None
+          </MenuItem>
+        )}
         {options.map(({value, name}) => (
           <MenuItem key={value} value={value}>
             {name}

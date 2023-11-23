@@ -22,6 +22,7 @@ import axios from 'axios';
 import {GetServerSidePropsContext} from 'next';
 import Head from 'next/head';
 import {useRouter} from 'next/router';
+import {SortDropdown} from '@/components/ui/SortDropdown/SortDropdown';
 
 const styles: Record<string, SxProps> = {
   container: {
@@ -37,9 +38,20 @@ const styles: Record<string, SxProps> = {
     padding: {xs: '0 24px', md: 0},
   },
   productsHeader: {
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    alignItems: {xs: 'start', md: 'center'},
+    justifyContent: {md: 'space-between'},
     marginBottom: 3,
+  },
+  filterButtons: {
+    marginTop: '15px',
+    display: 'flex',
+    flexDirection: {xs: 'row', md: 'column'},
+    gap: '10px',
+  },
+  buttonStyles: {
+    color: 'text.secondary',
+    outline: '2px solid #bdbdbd',
+    minWidth: {xs: '140px', lg: '200px'},
   },
 };
 
@@ -85,29 +97,35 @@ const MyProducts: NextPageWithLayout<Props> = ({
         marginLeft={showFilters && !isMobile ? 2 : 0}
       >
         <Box sx={styles.productsContainer}>
-          <Stack direction="row" sx={styles.productsHeader}>
+          <Stack
+            direction={isMobile ? 'column' : 'row'}
+            sx={styles.productsHeader}
+          >
             <Typography variant="h1">Search Results</Typography>
-            <Button
-              variant="text"
-              sx={{color: 'text.secondary'}}
-              onClick={() => setShowFilters(!showFilters)}
-              endIcon={
-                <Image
-                  src={`/icons/filters${showFilters ? 'Hide' : 'Show'}.svg`}
-                  alt=""
-                  width={24}
-                  height={24}
-                  style={{
-                    filter:
-                      theme.palette.mode === 'dark'
-                        ? 'brightness(2)'
-                        : 'brightness(1)',
-                  }}
-                />
-              }
-            >
-              {showFilters && 'Hide'} Filters
-            </Button>
+            <Box sx={styles.filterButtons}>
+              <Button
+                variant="text"
+                sx={styles.buttonStyles}
+                onClick={() => setShowFilters(!showFilters)}
+                endIcon={
+                  <Image
+                    src={`/icons/filters${showFilters ? 'Hide' : 'Show'}.svg`}
+                    alt=""
+                    width={24}
+                    height={24}
+                    style={{
+                      filter:
+                        theme.palette.mode === 'dark'
+                          ? 'brightness(2)'
+                          : 'brightness(1)',
+                    }}
+                  />
+                }
+              >
+                {showFilters && 'Hide'} Filters
+              </Button>
+              <SortDropdown />
+            </Box>
           </Stack>
           <ProductList
             params={params}
