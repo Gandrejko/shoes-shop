@@ -3,7 +3,14 @@ import axios from 'axios';
 import {ProductResponse, ProductsResponse} from '@/types';
 import {GetServerSidePropsContext, GetStaticPropsContext} from 'next';
 import React, {ReactElement, useState} from 'react';
-import {Box, Container, Typography, SxProps, Button} from '@mui/material';
+import {
+  Box,
+  Container,
+  Typography,
+  SxProps,
+  Button,
+  Paper,
+} from '@mui/material';
 import ImageSlider from '@/components/common/ImageSlider/ImageSlider';
 import {useRouter} from 'next/router';
 import {useMutation} from '@tanstack/react-query';
@@ -112,6 +119,20 @@ const styles: Record<string, SxProps> = {
       backgroundColor: 'grey.A100',
     },
   },
+  emptyImageContainer: {
+    maxWidth: {sm: 550, md: 440, xl: 600},
+    height: {xs: '320px', sm: 550, md: 440, xl: 600},
+    width: {xs: '100%'},
+    display: 'flex',
+  },
+  emptyImage: {
+    textAlign: 'center',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
+  },
 };
 
 type ProductProps = {
@@ -145,15 +166,20 @@ const Product = ({product: data}: ProductProps) => {
   const color = product?.color?.data?.attributes.name;
   const sizes = product?.sizes?.data;
   const categories = product?.categories?.data;
+  const images = product?.images?.data?.map(({attributes: {url}}) => url) || [];
 
   return (
     <Container maxWidth="xl" sx={styles.container}>
       <Box sx={styles.productContainer}>
-        <ImageSlider
-          images={
-            product?.images?.data?.map(({attributes: {url}}) => url) || []
-          }
-        />
+        {images.length > 0 ? (
+          <ImageSlider images={images} />
+        ) : (
+          <Paper sx={styles.emptyImageContainer}>
+            <Typography sx={styles.emptyImage} variant="h4">
+              No images available
+            </Typography>
+          </Paper>
+        )}
       </Box>
       <Box sx={styles.productContainer}>
         <Box sx={styles.textContainer}>
