@@ -54,7 +54,7 @@ const styles: Record<string, SxProps> = {
     position: 'absolute',
     bottom: 0,
     left: {xs: 20, md: 40, xl: 60},
-    alignItems: 'flex-end',
+    alignItems: 'center',
   },
   avatarContainer: {
     position: 'relative',
@@ -68,12 +68,12 @@ const styles: Record<string, SxProps> = {
     bgcolor: 'primary.main',
     color: '#fff',
     fontSize: {xs: 20, sm: 35, md: 45},
+    textTransform: 'uppercase',
     width: 1,
     height: 1,
   },
-  profileInfo: {
+  profileUser: {
     marginLeft: {xs: 2, sm: 3},
-    marginBottom: {xs: 0, sm: 1, md: 3},
   },
   productsContainer: {
     padding: {xs: '0 24px', md: 0},
@@ -137,20 +137,15 @@ const Me: NextPageWithLayout<Props> = ({
               <Avatar
                 sx={styles.avatar}
                 src="/"
-                alt={`${sessionUser.username}`}
+                alt={`${sessionUser.firstName || sessionUser.username}`}
               />
             )}
           </Box>
-          <Stack sx={styles.profileInfo}>
-            <Typography variant="h4" fontSize={14}>
-              {sessionUser?.firstName && sessionUser?.lastName
-                ? `${sessionUser?.firstName} ${sessionUser?.lastName}`
-                : `${sessionUser?.username}`}
-            </Typography>
-            <Typography fontWeight={300} fontSize={14}>
-              1374 bonus points
-            </Typography>
-          </Stack>
+          <Typography sx={styles.profileUser} variant="h4" fontSize={14}>
+            {sessionUser?.firstName && sessionUser?.lastName
+              ? `${sessionUser?.firstName} ${sessionUser?.lastName}`
+              : `${sessionUser?.username}`}
+          </Typography>
         </Stack>
       </Box>
       <Box sx={styles.productsContainer}>
