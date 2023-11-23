@@ -55,7 +55,7 @@ export const getPalette = (mode: PaletteMode): ThemeOptions => ({
           scrollbarColor: theme.palette.grey.A400,
           '&::-webkit-scrollbar, & *::-webkit-scrollbar': {
             backgroundColor: 'transparent',
-            width: 15,
+            width: 11,
           },
           '&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb': {
             backgroundColor: theme.palette.grey.A400,
