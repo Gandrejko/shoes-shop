@@ -1,23 +1,27 @@
 import theme from '@/config/theme';
-import {Box, InputBase, InputLabel, Typography} from '@mui/material';
+import {Box, InputBase, InputLabel, SxProps, Typography} from '@mui/material';
 import {InputBaseProps} from '@mui/material/InputBase/InputBase';
 import Image from 'next/image';
 import warningIcon from 'public/icons/warning.svg';
 import {useId} from 'react';
 import {RegisterOptions, UseFormRegister} from 'react-hook-form';
 
-const styles = {
+const styles: Record<string, SxProps> = {
   requiredMark: {
-    color: '#FE645E',
+    color: 'primary.main',
     marginLeft: '5px',
   },
   textarea: {
     borderRadius: '8px',
-    border: '1px solid #494949',
+    border: '1px solid',
+    borderColor: 'grey.A400',
     padding: '8px 15px',
+    '& .MuiInputBase-input': {
+      color: 'text.primary',
+    },
   },
   errorWrapper: {
-    color: '#FE645E',
+    color: 'error.main',
     display: 'flex',
     alignItems: 'center',
     gap: '4px',

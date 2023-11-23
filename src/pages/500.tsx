@@ -8,6 +8,7 @@ import {
   Typography,
   useMediaQuery,
 } from '@mui/material';
+import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
@@ -34,6 +35,7 @@ const styles: Record<string, SxProps> = {
   },
   text: {
     zIndex: 1,
+    color: '#000',
   },
   title: {
     flex: 1,
@@ -68,6 +70,9 @@ const Error500 = () => {
     <Stack sx={styles.page}>
       {isMobile ? (
         <>
+          <Head>
+            <title>Internal error</title>
+          </Head>
           <Box sx={styles.title}>
             <Typography variant="h1">We lost that page</Typography>
           </Box>
@@ -97,6 +102,9 @@ const Error500 = () => {
         </>
       ) : (
         <>
+          <Head>
+            <title>Internal error</title>
+          </Head>
           <HeaderLayout>
             <Box sx={styles.main}>
               <Image

@@ -53,7 +53,7 @@ export const authOptions: AuthOptions = {
       session.user.accessToken = token.accessToken;
       session.user.firstName = token.firstName;
       session.user.lastName = token.lastName;
-      session.user.image = token.image;
+      session.user.image = token.image || null;
 
       return session;
     },

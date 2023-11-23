@@ -7,7 +7,8 @@ import {toast} from 'react-toastify';
 const styles: Record<string, SxProps> = {
   container: {
     display: 'flex',
-    borderBottom: '1px solid #EAECF0',
+    borderBottom: '1px solid',
+    borderColor: 'grey.A100',
     marginTop: '40px',
   },
   productDetails: {
@@ -41,7 +42,7 @@ const styles: Record<string, SxProps> = {
     },
   },
   productSubtitle: {
-    color: '#5C5C5C',
+    color: 'text.secondary',
     fontSize: {
       xl: 20,
       lg: 20,
@@ -147,7 +148,6 @@ const ProductItem: React.FC<ProductItemProps> = ({
   productID,
 }) => {
   const queryClient = useQueryClient();
-  const theme = useTheme();
 
   const {mutate: deleteProduct} = useMutation({
     mutationKey: ['cart'],
@@ -236,7 +236,7 @@ const ProductItem: React.FC<ProductItemProps> = ({
                 sx={{
                   ...styles.quantityButton,
                   backgroundColor: 'grey.A100',
-                  color: 'grey.A200',
+                  color: 'grey.A400',
                 }}
                 onClick={() => editProduct('dec')}
               >

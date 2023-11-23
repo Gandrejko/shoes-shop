@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ReactElement} from 'react';
 import {Box, Typography} from '@mui/material';
 import ProductItem from '@/components/common/Cart/CartItem';
 import SummarySection from '@/components/common/Cart/SummarySection';
@@ -12,6 +12,7 @@ import SummarySectionSkeleton from '@/components/common/Cart/SummarySectionSkele
 import {SxProps} from '@mui/system';
 import Head from 'next/head';
 import HeaderLayout from '@/components/layouts/HeaderLayout/HeaderLayout';
+import {NextPageWithLayout} from './_app';
 
 const styles: Record<string, SxProps> = {
   container: {
@@ -87,7 +88,7 @@ const styles: Record<string, SxProps> = {
 const txtAddFields = (ids: string[]) =>
   ids.map(id => `filters[id]=${id}`).join('&');
 
-const CartPage = () => {
+const CartPage: NextPageWithLayout = () => {
   const queryClient = useQueryClient();
 
   const {data: cartIds} = useQuery({
@@ -109,57 +110,61 @@ const CartPage = () => {
   );
 
   return (
+    <Box sx={styles.container}>
+      {isLoading ? (
+        <Box sx={styles.containerSkeleton}>
+          <Box sx={styles.containerSkeletonCartItems}>
+            {[...Array(3)].map((_, index) => (
+              <ProductItemSkeleton key={index} />
+            ))}
+          </Box>
+          <Box sx={styles.containerSkeletonSummer}>
+            <SummarySectionSkeleton />
+          </Box>
+        </Box>
+      ) : params !== undefined && params.length === 0 ? (
+        <Box sx={styles.emptyCartContainer}>
+          <EmptyCartPage />
+        </Box>
+      ) : isNotEmpty ? (
+        <>
+          <Box sx={styles.cartItem}>
+            <Typography variant="h1">Cart</Typography>
+            {products &&
+              products.data.map(({id, attributes}) => (
+                <ProductItem
+                  productID={id}
+                  cartIds={cartIds}
+                  key={id}
+                  product={attributes}
+                />
+              ))}
+          </Box>
+          <Box sx={styles.summarySection}>
+            <SummarySection
+              products={Object.entries(cartIds).map(([id, quantity]) => ({
+                id,
+                quantity,
+                price:
+                  products?.data.find(
+                    ({id: productID}) => productID.toString() === id,
+                  )?.attributes.price || 0,
+              }))}
+            />
+          </Box>
+        </>
+      ) : null}
+    </Box>
+  );
+};
+
+CartPage.getLayout = function getLayout(page: ReactElement) {
+  return (
     <>
       <Head>
         <title>Cart</title>
       </Head>
-      <HeaderLayout>
-        <Box sx={styles.container}>
-          {isLoading ? (
-            <Box sx={styles.containerSkeleton}>
-              <Box sx={styles.containerSkeletonCartItems}>
-                {[...Array(3)].map((_, index) => (
-                  <ProductItemSkeleton key={index} />
-                ))}
-              </Box>
-              <Box sx={styles.containerSkeletonSummer}>
-                <SummarySectionSkeleton />
-              </Box>
-            </Box>
-          ) : params !== undefined && params.length === 0 ? (
-            <Box sx={styles.emptyCartContainer}>
-              <EmptyCartPage />
-            </Box>
-          ) : isNotEmpty ? (
-            <>
-              <Box sx={styles.cartItem}>
-                <Typography variant="h1">Cart</Typography>
-                {products &&
-                  products.data.map(({id, attributes}) => (
-                    <ProductItem
-                      productID={id}
-                      cartIds={cartIds}
-                      key={id}
-                      product={attributes}
-                    />
-                  ))}
-              </Box>
-              <Box sx={styles.summarySection}>
-                <SummarySection
-                  products={Object.entries(cartIds).map(([id, quantity]) => ({
-                    id,
-                    quantity,
-                    price:
-                      products?.data.find(
-                        ({id: productID}) => productID.toString() === id,
-                      )?.attributes.price || 0,
-                  }))}
-                />
-              </Box>
-            </>
-          ) : null}
-        </Box>
-      </HeaderLayout>
+      <HeaderLayout>{page}</HeaderLayout>
     </>
   );
 };
