@@ -70,7 +70,7 @@ const ForgotPassword = () => {
         <Link
           href={'/auth/sign-in'}
           style={styles.link}
-          aria-label="Go to sig-in page"
+          aria-label="Back to log in"
         >
           <Typography>Back to log in</Typography>
         </Link>

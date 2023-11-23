@@ -114,7 +114,7 @@ const SignIn = () => {
         <Link
           href={'/auth/sign-up'}
           style={styles.link}
-          aria-label="Go to sig-up page"
+          aria-label="Go to sign up page"
         >
           <Typography>Sign up</Typography>
         </Link>
