@@ -41,7 +41,7 @@ const Dropdown = ({
   const id = useId();
   return (
     <Box sx={styles.dropdown}>
-      {labelText && <InputLabel htmlFor={id} sx={{color: 'text.secondary'}}>{labelText}</InputLabel>}
+      {labelText && <InputLabel htmlFor={id}>{labelText}</InputLabel>}
       <Select
         id={id}
         IconComponent={ExpandMoreIcon}
