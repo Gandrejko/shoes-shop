@@ -108,7 +108,7 @@ const ProductList = ({
             <ProductCardSkeleton />
           </Grid>
         ))}
-      {products?.map(page => {
+      {products?.map((page, index) => {
         return page.data.map(product => (
           <Grid
             key={product.id}
@@ -119,7 +119,10 @@ const ProductList = ({
             xl={fullWidth ? 2 : 3}
             sx={styles.gridItem}
           >
-            <ProductCard product={{...product.attributes, id: product.id}} />
+            <ProductCard
+              imagePriority={index === 0}
+              product={{...product.attributes, id: product.id}}
+            />
           </Grid>
         ));
       })}
