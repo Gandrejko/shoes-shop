@@ -80,6 +80,10 @@ ForgotPassword.getLayout = function getLayout(page: ReactElement) {
     <>
       <Head>
         <title>Forgot password</title>
+        <meta
+          name="description"
+          content="Forgot your password? No worries. Follow the steps on this page to recover your account. We'll guide you through the process to regain access."
+        />
       </Head>
       <AuthLayout
         title="Forgot password?"

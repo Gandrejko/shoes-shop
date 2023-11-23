@@ -124,6 +124,10 @@ SignIn.getLayout = function getLayout(page: ReactElement) {
     <>
       <Head>
         <title>Sign in</title>
+        <meta
+          name="description"
+          content="Sign in to your account for a personalized experience. Access orders, manage preferences, and enjoy a seamless journey through our platform."
+        />
       </Head>
       <AuthLayout
         title="Welcome back"

@@ -239,6 +239,10 @@ Product.getLayout = function getLayout(page: ReactElement) {
     <>
       <Head>
         <title>{page.props.product?.data?.attributes.name}</title>
+        <meta
+          name="description"
+          content={page.props.product?.data?.attributes.description}
+        />
       </Head>
       <HeaderLayout>{page}</HeaderLayout>
     </>

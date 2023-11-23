@@ -163,6 +163,10 @@ CartPage.getLayout = function getLayout(page: ReactElement) {
     <>
       <Head>
         <title>Cart</title>
+        <meta
+          name="description"
+          content="View and manage your shopping cart. Securely store and review your selected items before making a purchase. A convenient way to shop online!"
+        />
       </Head>
       <HeaderLayout>{page}</HeaderLayout>
     </>

@@ -125,6 +125,10 @@ SignUp.getLayout = function getLayout(page: ReactElement) {
     <>
       <Head>
         <title>Sign up</title>
+        <meta
+          name="description"
+          content="Create a new account to unlock exclusive benefits. Join our community, enjoy personalized recommendations, and stay updated on the latest offers and products."
+        />
       </Head>
       <AuthLayout
         title="Create an account"

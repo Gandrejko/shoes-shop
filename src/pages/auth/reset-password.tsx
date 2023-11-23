@@ -113,6 +113,10 @@ ResetPassword.getLayout = function getLayout(page: ReactElement) {
     <>
       <Head>
         <title>Reset password</title>
+        <meta
+          name="description"
+          content="Reset your password to enhance the security of your account. Follow the instructions on this page to set a new password and continue enjoying our services."
+        />
       </Head>
       <AuthLayout
         title="Reset password"

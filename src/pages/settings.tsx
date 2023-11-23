@@ -73,6 +73,10 @@ SettingsPage.getLayout = function (page: ReactElement) {
     <>
       <Head>
         <title>Settings</title>
+        <meta
+          name="description"
+          content="Personalize your experience with our settings page. Tailor preferences, update information, and make your visit uniquely yours."
+        />
       </Head>
       <HeaderLayout>
         <SidebarLayout currentTab="settings">{page}</SidebarLayout>
