@@ -1,5 +1,5 @@
 import SearchInput from '@/components/common/SearchInput/SearchInput';
-import {ProductsResponse} from '@/types';
+import { ProductsResponse } from '@/types';
 import buildParams from '@/utils/buildParams';
 import {
   Box,
@@ -16,12 +16,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import logoIcon from 'public/icons/logo.svg';
 import modalCloseIcon from 'public/icons/modalClose.svg';
-import {CSSProperties, useCallback, useEffect, useState} from 'react';
-import {useForm} from 'react-hook-form';
+import { CSSProperties, useCallback, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 const styles: Record<string, SxProps> = {
   modal: {
     '& .MuiModal-backdrop': {
+
       backgroundColor: 'grey.A100',
       opacity: '0.9 !important',
       backdropFilter: 'blur(100px)',
@@ -30,36 +31,39 @@ const styles: Record<string, SxProps> = {
       outline: 'none',
       backgroundColor: 'background.paper',
     },
+    '.MuiPaper-root':{
+      boxShadow: 'none',
+    }
   },
   container: {
     gap: 3,
     backgroundColor: 'background.paper',
-    padding: {md: '45px 60px 80px', xs: '25px 30px 50px'},
+    padding: { md: '45px 60px 80px', xs: '25px 30px 50px' },
   },
   searchContainer: {
     flexGrow: 1,
     display: 'flex',
     justifyContent: 'space-between',
-    alignItems: {xs: 'center', sm: 'flex-start'},
-    gap: {xs: 2, sm: 5, md: 7, lg: 15},
+    alignItems: { xs: 'center', sm: 'flex-start' },
+    gap: { xs: 2, sm: 5, md: 7, lg: 15 },
   },
   searchbox: {
     flexGrow: 1,
     display: 'flex',
-    flexDirection: {xs: 'column', md: 'row'},
+    flexDirection: { xs: 'column', md: 'row' },
     alignItems: 'center',
     gap: 3,
   },
   searchBtn: {
     width: '150px',
     height: '60px',
-    display: {xs: 'none', md: 'block'},
+    display: { xs: 'none', md: 'block' },
   },
   suggestionsList: {
     listStyleType: 'none',
     margin: 0,
-    paddingLeft: {xs: 0, sm: 10, md: 12, lg: 20},
-    paddingRight: {xs: 1, sm: 7, md: 16, lg: 24},
+    paddingLeft: { xs: 0, sm: 10, md: 12, lg: 20 },
+    paddingRight: { xs: 1, sm: 7, md: 16, lg: 24 },
   },
   closeImageStyles: {
     width: 45,
@@ -73,8 +77,8 @@ type Props = {
   isOpen: boolean;
 };
 
-export const Modal = ({onSearch, onClose, isOpen}: Props) => {
-  const {register, getValues, setValue, watch, setFocus} = useForm<{
+export const Modal = ({ onSearch, onClose, isOpen }: Props) => {
+  const { register, getValues, setValue, watch, setFocus } = useForm<{
     searchingString: string;
   }>();
   const theme = useTheme();
@@ -87,7 +91,7 @@ export const Modal = ({onSearch, onClose, isOpen}: Props) => {
     if (!trimmedSearchingString) return setSuggestions([]);
 
     const params = buildParams(
-      {searchingString},
+      { searchingString },
       {
         fields: 'name',
         'pagination[page]': 1,
@@ -96,7 +100,7 @@ export const Modal = ({onSearch, onClose, isOpen}: Props) => {
     );
     const response = await axios.get<ProductsResponse>(
       `${process.env.API_URL}/products`,
-      {params},
+      { params },
     );
     const products = response.data;
     const productNames = products.data.map(product => product.attributes.name);
@@ -130,6 +134,7 @@ export const Modal = ({onSearch, onClose, isOpen}: Props) => {
   return (
     <>
       <Drawer
+
         open={isOpen}
         onClose={onClose}
         anchor="top"
@@ -143,7 +148,7 @@ export const Modal = ({onSearch, onClose, isOpen}: Props) => {
               component={Link}
               href="/products"
               onClick={onClose}
-              sx={{display: {xs: 'none', sm: 'block'}}}
+              sx={{ display: { xs: 'none', sm: 'block' } }}
             >
               <Image
                 src={logoIcon}
@@ -195,7 +200,7 @@ export const Modal = ({onSearch, onClose, isOpen}: Props) => {
               <Box
                 key={index}
                 component="li"
-                style={{marginBottom: '8px', cursor: 'pointer'}}
+                style={{ marginBottom: '8px', cursor: 'pointer' }}
                 onClick={() => handleSuggestionClick(suggestion)}
               >
                 {suggestion}
