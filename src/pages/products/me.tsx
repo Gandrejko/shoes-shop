@@ -27,8 +27,7 @@ import {authOptions} from '../api/auth/[...nextauth]';
 
 const styles: Record<string, SxProps> = {
   container: {
-    padding: {xs: 0, md: '35px 16px'},
-    paddingLeft: {xs: 0, md: 4},
+    padding: {xs: 0, md: '32px'},
   },
   pageHeader: {
     position: 'relative',

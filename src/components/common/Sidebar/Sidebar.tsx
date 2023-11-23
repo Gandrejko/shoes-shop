@@ -8,17 +8,19 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import Image from 'next/image';
-import {destroyCookie} from 'nookies';
 import {signOut, useSession} from 'next-auth/react';
+import Image from 'next/image';
 import {useRouter} from 'next/navigation';
-import {relative} from 'path';
+import {destroyCookie} from 'nookies';
 
 const styles: Record<string, SxProps> = {
+  container: {
+    paddingLeft: 4,
+  },
   user: {
     display: 'flex',
     alignItems: 'center',
-    padding: '35px 16px',
+    paddingY: '35px',
     gap: '16px',
   },
   avatarContainer: {
@@ -51,7 +53,7 @@ const styles: Record<string, SxProps> = {
     display: 'flex',
     gap: '15px',
     listStyle: 'none',
-    padding: '0 16px',
+    padding: 0,
     cursor: 'pointer',
     transition: 'color 0.2s ease-in-out',
     '&:hover': {
@@ -80,7 +82,7 @@ const Sidebar = ({currentTab, closeDrawer}: SidebarProps) => {
   };
 
   return (
-    <Box>
+    <Box sx={styles.container}>
       <Box sx={styles.user}>
         <Box sx={styles.avatarContainer}>
           {image ? (

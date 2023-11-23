@@ -1,7 +1,7 @@
-import {Box, SxProps} from '@mui/material';
-import {ReactNode, useRef} from 'react';
 import Header from '@/components/common/Header/Header';
 import ScrollToTop from '@/components/common/ScrollToTop/ScrollToTop';
+import {Box, SxProps} from '@mui/material';
+import {ReactNode, useRef} from 'react';
 
 const styles: Record<string, SxProps> = {
   layout: {

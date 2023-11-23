@@ -23,13 +23,16 @@ const styles: Record<string, SxProps> = {
     display: 'flex',
     flexGrow: 1,
     height: '100%',
+    maxWidth: 1850,
+    marginX: 'auto',
+    paddingX: 4,
   },
   info: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     gap: '28px',
-    padding: {sm: '0 20px', md: '0 60px', lg: '0 120px'},
+    padding: {sm: '0 20px', md: '0 0px', lg: '0 120px'},
     width: '50vw',
   },
   banner: {

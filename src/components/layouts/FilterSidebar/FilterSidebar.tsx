@@ -3,6 +3,7 @@ import {
   IconButton,
   Stack,
   SxProps,
+  Theme,
   Typography,
   useMediaQuery,
   useTheme,
@@ -13,25 +14,30 @@ import Image from 'next/image';
 import {Category} from './components/Category';
 import PriceSlider from './components/PriceSlider';
 
-const styles: Record<string, SxProps> = {
+const styles: Record<string, SxProps<Theme>> = {
   sidebar: {
+    '&.MuiDrawer-root': {
+      position: 'relative',
+    },
     '& .MuiDrawer-paper': {
-      width: 320,
-      height: {md: 'calc(100% - 120px)'},
-      marginTop: {md: '120px'},
-      backgroundImage: 'none',
+      position: {md: 'sticky'},
+      width: 350,
+      height: {md: 'calc(100vh - 120px)'},
+      paddingLeft: {md: 4},
       border: 'none',
       overflowX: 'hidden',
+      backgroundImage: 'none',
     },
     '& .MuiModal-backdrop': {
       backgroundColor: 'grey.A400',
       opacity: '0.9 !important',
       backdropFilter: 'blur(100px)',
     },
+    zIndex: (theme: Theme) => ({md: theme.zIndex.appBar - 1})!,
     transition: 'width 0.2s ease-in-out',
   },
   header: {
-    padding: {xs: '26px 20px', md: '44px 40px 16px'},
+    padding: {xs: '26px 20px', md: '44px 40px 16px 0'},
     backgroundColor: 'background.paper',
   },
 };
@@ -40,8 +46,8 @@ type Props = {
   open: boolean;
   searchingString: string;
   productsCount: number;
-  onClose: () => void;
   filtersData: FiltersData;
+  onClose: () => void;
 };
 
 export const FilterSidebar = ({
@@ -62,7 +68,7 @@ export const FilterSidebar = ({
       onClose={onClose}
       anchor={isMobile ? 'right' : 'left'}
       variant={isMobile ? 'temporary' : 'persistent'}
-      sx={{...styles.sidebar, width: open ? 320 : 0}}
+      sx={{...styles.sidebar, width: open ? 350 : 0}}
     >
       <Stack sx={styles.header}>
         {isMobile ? (

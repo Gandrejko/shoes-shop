@@ -25,7 +25,11 @@ import {useRouter} from 'next/router';
 
 const styles: Record<string, SxProps> = {
   container: {
-    padding: {xs: 0, md: '35px'},
+    maxWidth: 1850,
+    marginX: 'auto',
+  },
+  pageContainer: {
+    padding: {xs: 0, md: 4},
     marginTop: 3,
     width: 1,
   },
@@ -68,7 +72,7 @@ const MyProducts: NextPageWithLayout<Props> = ({
   }, [isMobile]);
 
   return (
-    <Stack direction="row" justifyContent="center">
+    <Stack direction="row" justifyContent="center" sx={styles.container}>
       <FilterSidebar
         open={showFilters}
         searchingString={params['filters[name][$containsi]'] as string}
@@ -76,7 +80,10 @@ const MyProducts: NextPageWithLayout<Props> = ({
         onClose={() => setShowFilters(false)}
         filtersData={filtersData}
       />
-      <Box sx={styles.container} marginLeft={showFilters && !isMobile ? 2 : 0}>
+      <Box
+        sx={styles.pageContainer}
+        marginLeft={showFilters && !isMobile ? 2 : 0}
+      >
         <Box sx={styles.productsContainer}>
           <Stack direction="row" sx={styles.productsHeader}>
             <Typography variant="h1">Search Results</Typography>
