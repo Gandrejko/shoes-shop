@@ -111,7 +111,11 @@ const SignIn = () => {
       </Box>
       <Box sx={styles.linksContainer}>
         <Typography component="span">Don’t have an account?</Typography>
-        <Link href={'/auth/sign-up'} style={styles.link}>
+        <Link
+          href={'/auth/sign-up'}
+          style={styles.link}
+          aria-label="Go to sig-up page"
+        >
           <Typography>Sign up</Typography>
         </Link>
       </Box>
