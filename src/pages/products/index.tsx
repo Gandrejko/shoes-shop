@@ -49,7 +49,8 @@ const styles: Record<string, SxProps> = {
   },
   buttonStyles: {
     color: 'text.secondary',
-    outline: '2px solid #bdbdbd',
+    border: '2px solid #bdbdbd',
+    outline: 'none',
     minWidth: {xs: '140px', lg: '200px'},
   },
 };
