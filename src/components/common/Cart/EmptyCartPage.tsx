@@ -20,8 +20,8 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: '24px',
-    backgroundColor: '#a0a6b2',
+    padding: '20px',
+    backgroundColor: '#b5bdcb',
     borderRadius: '50%',
   },
   title: {
