@@ -21,7 +21,9 @@ const styles: Record<string, SxProps> = {
     alignItems: 'center',
     flexDirection: {xs: 'column', md: 'row'},
   },
-  box: {flex: 5},
+  box: {
+    width: 1,
+  },
   header: {
     marginBottom: {xs: '12px', sm: 2},
   },

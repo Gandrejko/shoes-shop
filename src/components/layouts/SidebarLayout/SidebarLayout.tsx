@@ -1,10 +1,13 @@
+import Sidebar from '@/components/common/Sidebar/Sidebar';
 import {Box, SxProps} from '@mui/material';
 import {ReactNode} from 'react';
-import Sidebar from '@/components/common/Sidebar/Sidebar';
 
 const styles: Record<string, SxProps> = {
   layout: {
+    maxWidth: 1850,
+    marginX: 'auto',
     display: 'flex',
+    gap: 2,
   },
   sidebar: {
     width: 320,
