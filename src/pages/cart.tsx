@@ -16,14 +16,16 @@ import {NextPageWithLayout} from './_app';
 
 const styles: Record<string, SxProps> = {
   container: {
+    maxWidth: {sm: 700, lg: 1100, xl: 1500},
     display: 'flex',
     gap: '5%',
     margin: {
-      xl: '100px 10% 50px 10%',
-      lg: '50px 8% 50px 8%',
-      sm: '50px 5% 50px 5%',
-      xs: '30px 5% 50px 5%',
+      xl: '100px auto 50px auto',
+      lg: '50px auto 50px auto',
+      sm: '50px auto 50px auto',
+      xs: '30px auto 50px auto',
     },
+    paddingX: 4,
     [theme.breakpoints.down('lg')]: {
       flexDirection: 'column',
     },

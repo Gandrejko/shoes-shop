@@ -34,8 +34,12 @@ export const AuthLayout = ({children, title, subtTitle}: AuthLayoutProps) => {
   return (
     <Box sx={styles.tab}>
       <Box sx={styles.header}>
-        <Link href="/products" style={styles.headerImage}>
-          <Image src={logoIcon} alt="" />
+        <Link
+          href="/products"
+          style={styles.headerImage}
+          aria-label="Go to products page"
+        >
+          <Image src={logoIcon} alt="Logo" />
         </Link>
       </Box>
       <Box sx={styles.container}>
@@ -43,7 +47,7 @@ export const AuthLayout = ({children, title, subtTitle}: AuthLayoutProps) => {
           <Typography variant="h1" sx={styles.title}>
             {title}
           </Typography>
-          <Typography component="h5" sx={styles.titleText}>
+          <Typography component="h2" variant="h5" sx={styles.titleText}>
             {subtTitle}
           </Typography>
           {children}

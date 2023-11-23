@@ -21,20 +21,22 @@ import {useForm} from 'react-hook-form';
 
 const styles: Record<string, SxProps> = {
   modal: {
+    '& .MuiDrawer-paper': {
+      backgroundImage: 'none',
+    },
     '& .MuiModal-backdrop': {
       backgroundColor: 'grey.A400',
       opacity: '0.9 !important',
       backdropFilter: 'blur(100px)',
     },
-    '& .MuiBox-root': {
-      outline: 'none',
-      backgroundColor: 'background.paper',
-    },
   },
   container: {
     gap: 3,
-    backgroundColor: 'background.paper',
+    maxWidth: 1700,
+    width: 1,
+    marginX: 'auto',
     padding: {md: '45px 60px 80px', xs: '25px 30px 50px'},
+    backgroundColor: 'background.paper',
   },
   searchContainer: {
     flexGrow: 1,
