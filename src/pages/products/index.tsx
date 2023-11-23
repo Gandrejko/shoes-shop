@@ -19,7 +19,7 @@ import {NextPageWithLayout} from '@/pages/_app';
 import {FiltersData, ProductsResponse} from '@/types';
 import buildParams from '@/utils/buildParams';
 import axios from 'axios';
-import {GetServerSidePropsContext} from 'next';
+import {GetServerSidePropsContext, Metadata} from 'next';
 import Head from 'next/head';
 import {useRouter} from 'next/router';
 
@@ -186,12 +186,15 @@ export const getServerSideProps = async (
   };
 };
 
+export const metadata: Metadata = {
+  title: 'Catalog',
+  description:
+    'Explore a diverse range of high-quality products in our catalog. Find the perfect items to suit your style and needs. Browse, compare, and order now!',
+};
+
 MyProducts.getLayout = function getLayout(page: ReactElement) {
   return (
     <>
-      <Head>
-        <title>Catalog</title>
-      </Head>
       <SignInLayout>
         <HeaderLayout>{page}</HeaderLayout>
       </SignInLayout>
