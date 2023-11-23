@@ -1,4 +1,4 @@
-import {Box, Typography, Button, useTheme, SxProps} from '@mui/material';
+import {Box, Typography, Button, useTheme, SxProps, Paper} from '@mui/material';
 import Image from 'next/image';
 import {useQueryClient, useMutation} from '@tanstack/react-query';
 import {ProductAttributes} from '@/types';
@@ -197,12 +197,13 @@ const ProductItem: React.FC<ProductItemProps> = ({
       <Box sx={styles.productDetails}>
         <Box sx={styles.productImage}>
           {!product.images?.data?.[0].attributes.url && (
-            <Image
-              style={{objectFit: 'cover'}}
-              fill
-              src="/icons/emptyPhoto2.svg"
-              alt={product.name || ' '}
-            />
+             <Paper sx={{ height: 1, backgroundColor: 'grey.A100', borderRadius: 1 }}>
+             <Image
+               fill
+               src="/icons/galleryIcon.svg"
+               alt="icon"
+             />
+           </Paper>
           )}
 
           {product.images?.data?.[0].attributes.url && (

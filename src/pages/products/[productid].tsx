@@ -1,8 +1,10 @@
 import HeaderLayout from '@/components/layouts/HeaderLayout/HeaderLayout';
 import axios from 'axios';
-import {ProductResponse, ProductsResponse} from '@/types';
-import {GetServerSidePropsContext, GetStaticPropsContext} from 'next';
-import React, {ReactElement, useState} from 'react';
+import Image from 'next/image';
+import { ProductResponse, ProductsResponse } from '@/types';
+import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
+import React, { ReactElement, useState } from 'react';
+import theme from '@/config/theme';
 import {
   Box,
   Container,
@@ -12,16 +14,16 @@ import {
   Paper,
 } from '@mui/material';
 import ImageSlider from '@/components/common/ImageSlider/ImageSlider';
-import {useRouter} from 'next/router';
-import {useMutation} from '@tanstack/react-query';
-import {toast} from 'react-toastify';
+import { useRouter } from 'next/router';
+import { useMutation } from '@tanstack/react-query';
+import { toast } from 'react-toastify';
 import Head from 'next/head';
 
 const styles: Record<string, SxProps> = {
   container: {
-    padding: {xs: '16px', md: '35px'},
+    padding: { xs: '16px', md: '35px' },
     display: 'flex',
-    flexDirection: {xs: 'column', md: 'row'},
+    flexDirection: { xs: 'column', md: 'row' },
     gap: '3vw',
   },
   productContainer: {
@@ -109,21 +111,23 @@ const styles: Record<string, SxProps> = {
   },
   button: {
     fontWeight: 'fontWeighRegular',
-    fontSize: {xs: 10, sm: 15},
+    fontSize: { xs: 10, sm: 15 },
     textTransform: 'uppercase',
     borderColor: 'grey.A700',
     color: 'text.secondary',
-    padding: {xs: '8px 15px', sm: '10px 20px'},
+    padding: { xs: '8px 15px', sm: '10px 20px' },
     '&:hover': {
       borderColor: 'grey.A700',
       backgroundColor: 'grey.A100',
     },
   },
   emptyImageContainer: {
-    maxWidth: {sm: 550, md: 440, xl: 600},
-    height: {xs: '320px', sm: 550, md: 440, xl: 600},
-    width: {xs: '100%'},
-    display: 'flex',
+    position: "relative",
+    backgroundColor: 'grey.A100',
+    maxWidth: { sm: 550, md: 440, xl: 600 },
+    height: { xs: '320px', sm: 550, md: 440, xl: 600 },
+    width: { xs: '100%' },
+    display: 'flex'
   },
   emptyImage: {
     textAlign: 'center',
@@ -139,14 +143,14 @@ type ProductProps = {
   product: ProductResponse;
 };
 
-const Product = ({product: data}: ProductProps) => {
+const Product = ({ product: data }: ProductProps) => {
   const router = useRouter();
   const productId = router.query.productid as string;
   const [choosedSize, setChoosedSize] = useState<number>(0);
 
-  const product = {id: data?.data.id, ...data?.data.attributes};
+  const product = { id: data?.data.id, ...data?.data.attributes };
 
-  const {mutate} = useMutation({
+  const { mutate } = useMutation({
     mutationKey: ['cart'],
     mutationFn: async () => {
       const existingData = JSON.parse(localStorage.getItem('cart') || '{}');
@@ -157,7 +161,7 @@ const Product = ({product: data}: ProductProps) => {
       toast.success('You have successfully added an item to your cart');
       localStorage.setItem(
         'cart',
-        JSON.stringify({...existingData, [productId]: 1}),
+        JSON.stringify({ ...existingData, [productId]: 1 }),
       );
     },
   });
@@ -166,7 +170,7 @@ const Product = ({product: data}: ProductProps) => {
   const color = product?.color?.data?.attributes.name;
   const sizes = product?.sizes?.data;
   const categories = product?.categories?.data;
-  const images = product?.images?.data?.map(({attributes: {url}}) => url) || [];
+  const images = product?.images?.data?.map(({ attributes: { url } }) => url) || [];
 
   return (
     <Container maxWidth="xl" sx={styles.container}>
@@ -175,9 +179,11 @@ const Product = ({product: data}: ProductProps) => {
           <ImageSlider images={images} />
         ) : (
           <Paper sx={styles.emptyImageContainer}>
-            <Typography sx={styles.emptyImage} variant="h4">
-              No images available
-            </Typography>
+              <Image
+                fill
+                src="/icons/galleryIcon.svg"
+                alt="no image"
+              />
           </Paper>
         )}
       </Box>
@@ -203,7 +209,7 @@ const Product = ({product: data}: ProductProps) => {
         {categories && categories.length !== 0 && (
           <Box sx={styles.categories}>
             <Typography variant="h4">Categories: </Typography>
-            {categories?.map(({id, attributes: {name}}, index) => (
+            {categories?.map(({ id, attributes: { name } }, index) => (
               <Typography key={id} component="span" sx={styles.category}>
                 {name + (index !== categories.length - 1 ? ',' : '')}
               </Typography>
@@ -218,7 +224,7 @@ const Product = ({product: data}: ProductProps) => {
             <Box sx={styles.buttonsList}>
               {sizes
                 .sort((a, b) => a.attributes.value - b.attributes.value)
-                .map(({id, attributes: {value}}) => {
+                .map(({ id, attributes: { value } }) => {
                   const isChecked = id === choosedSize;
                   return (
                     <Button
@@ -273,18 +279,18 @@ Product.getLayout = function getLayout(page: ReactElement) {
 
 export async function getStaticPaths() {
   try {
-    const {data: products} = await axios.get<ProductsResponse>(
+    const { data: products } = await axios.get<ProductsResponse>(
       `${process.env.API_URL}/products`,
     );
 
-    const paths = products.data.map(({id}) => ({
-      params: {productid: id.toString()},
+    const paths = products.data.map(({ id }) => ({
+      params: { productid: id.toString() },
     }));
 
-    return {paths, fallback: true};
+    return { paths, fallback: true };
   } catch (error) {
     console.error('Error fetching product data:', error);
-    return {paths: [], fallback: true};
+    return { paths: [], fallback: true };
   }
 }
 
@@ -292,7 +298,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   try {
     const productId = context.params?.productid;
 
-    const {data: product} = await axios.get<ProductResponse>(
+    const { data: product } = await axios.get<ProductResponse>(
       `${process.env.API_URL}/products/${productId}`,
       {
         params: {
@@ -301,7 +307,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
       },
     );
 
-    return {props: {product}};
+    return { props: { product } };
   } catch (e) {
     return {
       redirect: {
