@@ -30,7 +30,9 @@ const Dropdown = ({labelText, options = [], ...props}: DropdownProps) => {
   const id = useId();
   return (
     <Box sx={styles.dropdown}>
-      <InputLabel htmlFor={id}>{labelText}</InputLabel>
+      <InputLabel htmlFor={id} sx={{color: 'text.secondary'}}>
+        {labelText}
+      </InputLabel>
       <Select
         id={id}
         IconComponent={ExpandMoreIcon}

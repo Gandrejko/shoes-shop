@@ -48,7 +48,7 @@ const Textarea = ({
   const id = useId();
   return (
     <Box>
-      <InputLabel htmlFor={id}>
+      <InputLabel htmlFor={id} sx={{color: 'text.secondary'}}>
         {labelText}
         {validationSchema.required && (
           <Typography component="span" sx={styles.requiredMark}>

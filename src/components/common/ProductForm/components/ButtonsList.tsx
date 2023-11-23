@@ -21,7 +21,7 @@ const styles: Record<string, SxProps> = {
     },
   },
   header: {
-    color: 'grey.A700',
+    color: 'text.secondary',
   },
 };
 

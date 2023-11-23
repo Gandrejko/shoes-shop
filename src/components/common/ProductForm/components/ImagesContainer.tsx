@@ -22,11 +22,11 @@ const styles: Record<string, SxProps> = {
   },
   conatinerHeader: {
     marginBottom: 1,
-    color: 'grey.A700',
+    color: 'text.secondary',
   },
   uploadImageCard: {
     border: '2px dashed',
-    borderColor: 'grey.A400',
+    borderColor: 'text.secondary',
     borderRadius: '8px',
     display: 'flex',
     flexDirection: 'column',
