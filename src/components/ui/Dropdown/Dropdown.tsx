@@ -11,17 +11,9 @@ const styles: Record<string, SxProps> = {
   select: {
     width: '100%',
     borderRadius: '8px',
-    outline: `1px solid ${theme.palette.grey['A400']}`,
+
     '& .MuiSelect-icon': {
       color: 'text.primary',
-    },
-    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-      border: 'none',
-      outline: 'none',
-    },
-    '& .MuiInputBase-root': {
-      border: 'none',
-      outline: `none`,
     },
   },
 };
