@@ -29,7 +29,7 @@ const styles: Record<string, SxProps> = {
   },
   mobileWrapper: {
     height: '60px',
-    display: 'flex',
+    display: {xs: 'flex', md: 'none'},
     justifyContent: 'space-between',
     backgroundColor: 'background.paper',
   },
