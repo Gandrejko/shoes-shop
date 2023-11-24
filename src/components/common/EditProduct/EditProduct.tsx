@@ -87,9 +87,12 @@ const EditProduct = ({productId, filtersData}: EditProductProps) => {
       console.log(error);
       toast.error(error.message);
     },
-    onSuccess: () => {
+    onSuccess: async () => {
       queryClient.invalidateQueries({queryKey: ['products']});
       toast.success('Product updated successfully');
+      await axios.get(`${location.origin}/api/revalidate`, {
+        params: {productId},
+      });
       router.push('/products/me');
     },
   });
