@@ -108,6 +108,8 @@ const ImageSlider = ({images}: ImageSliderProps) => {
           alt={`Image ${currentImage + 1}`}
           style={{objectFit: 'cover'}}
           fill
+          sizes="100%"
+          quality={100}
         />
         <Box sx={styles.buttonsBox}>
           <IconButton onClick={prevImage}>

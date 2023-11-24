@@ -80,6 +80,7 @@ const ProductCard = ({product, imagePriority}: Props) => {
                 fill
                 style={{objectFit: 'cover'}}
                 priority={imagePriority}
+                sizes="100%"
               />
             ) : (
               <Paper

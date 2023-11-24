@@ -211,6 +211,7 @@ const ProductItem: React.FC<ProductItemProps> = ({
               fill
               src={product.images?.data?.[0].attributes.url}
               alt={product.name || ' '}
+              sizes="100%"
             />
           )}
         </Box>

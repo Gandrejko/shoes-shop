@@ -120,8 +120,10 @@ const Me: NextPageWithLayout<Props> = ({
             src="/images/myProductsBanner.png"
             alt="My products"
             fill
-            style={{objectFit: 'cover'}}
             priority
+            quality={100}
+            sizes="100vw"
+            style={{objectFit: 'cover'}}
           />
         </Box>
         <Stack sx={styles.profileContainer} direction="row">
@@ -131,6 +133,7 @@ const Me: NextPageWithLayout<Props> = ({
                 src={sessionUser.image}
                 alt={`${sessionUser.username}`}
                 fill
+                sizes="100%"
                 style={{objectFit: 'cover'}}
               />
             ) : (
