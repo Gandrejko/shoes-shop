@@ -1,5 +1,5 @@
 import {useRouter} from 'next/router';
-import Dropdown from '../Dropdown/Dropdown';
+import Dropdown from '@/components/ui/Dropdown/Dropdown';
 import {useEffect, useState} from 'react';
 
 export type SortType =

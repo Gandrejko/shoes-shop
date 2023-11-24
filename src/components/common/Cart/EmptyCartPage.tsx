@@ -1,3 +1,4 @@
+import {useRouter} from 'next/navigation';
 import React from 'react';
 import {Box, Typography, Button} from '@mui/material';
 import Image from 'next/image';
@@ -23,6 +24,7 @@ const styles = {
     padding: '20px',
     backgroundColor: '#b5bdcb',
     borderRadius: '50%',
+    marginBottom: 4,
   },
   title: {
     fontWeight: 700,
@@ -47,18 +49,23 @@ const styles = {
 };
 
 const EmptyCartPage = () => {
+  const router = useRouter();
   return (
     <Box sx={styles.container}>
       <Box sx={styles.imageWrapper}>
         <Image src="/icons/emptyCart.svg" alt="cart" width={32} height={32} />
       </Box>
       <Typography component="p" sx={styles.title}>
-        You don&apos;t post have any products yet.
+        You don&apos;t have any products yet.
       </Typography>
       <Typography component="p" sx={styles.description}>
-        Post can contain video, images and text.
+        You can add products to your store by clicking the button below.
       </Typography>
-      <Button variant="contained" sx={styles.button}>
+      <Button
+        variant="contained"
+        sx={styles.button}
+        onClick={() => router.push('/products')}
+      >
         Add product
       </Button>
     </Box>
