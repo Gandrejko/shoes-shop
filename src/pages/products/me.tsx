@@ -105,6 +105,7 @@ const Me: NextPageWithLayout<Props> = ({
   const productParams = useMemo(() => {
     return {
       populate: 'images,gender',
+      sort: 'createdAt:desc',
       'filters[userID]': sessionUser?.id,
     };
   }, [sessionUser?.id]);
@@ -229,6 +230,7 @@ export const getServerSideProps = async (
         'pagination[pageSize]': 15,
         'filters[userID]': user?.id,
         populate: 'images,gender',
+        sort: 'createdAt:desc',
       },
       headers: {
         Authorization: `Bearer ${user?.accessToken}`,

@@ -15,7 +15,7 @@ import {useSession} from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {useRouter} from 'next/navigation';
-import {useContext, useState} from 'react';
+import {FocusEvent, useContext, useState} from 'react';
 import {HeaderProps} from '../Header';
 import {ProfilePopup} from './ProfilePopup';
 
@@ -44,11 +44,16 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
+const DesktopHeader = ({userLoggedIn, onModalOpen}: HeaderProps) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const router = useRouter();
   const {data} = useSession();
   const {theme, toggleTheme} = useContext(ColorModeContext);
+
+  const handleSearchFocus = (e: FocusEvent<HTMLInputElement>) => {
+    onModalOpen();
+    e.target.blur();
+  };
 
   return (
     <>
@@ -83,7 +88,7 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
               name="not-used-1"
               register={false}
               validationSchema={false}
-              onClick={handleModalOpen}
+              onFocus={handleSearchFocus}
             />
             <Stack direction="row" spacing={0.5}>
               <IconButton aria-label="Toggle theme" onClick={toggleTheme}>
@@ -143,7 +148,7 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
               name="not-used-2"
               register={false}
               validationSchema={false}
-              onClick={handleModalOpen}
+              onFocus={handleSearchFocus}
             />
             <IconButton aria-label="Toggle theme" onClick={toggleTheme}>
               {theme.palette.mode === 'light' ? (

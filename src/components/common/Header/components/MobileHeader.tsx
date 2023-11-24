@@ -69,7 +69,7 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-const MobileHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
+const MobileHeader = ({userLoggedIn, onModalOpen}: HeaderProps) => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const {theme, toggleTheme} = useContext(ColorModeContext);
   const router = useRouter();
@@ -117,7 +117,7 @@ const MobileHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
               }}
             />
           </IconButton>
-          <IconButton onClick={handleModalOpen}>
+          <IconButton onClick={onModalOpen}>
             <Image
               src="/icons/search.svg"
               alt="search"

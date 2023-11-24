@@ -8,11 +8,6 @@ export type SortType =
   | 'price:desc'
   | 'price:asc';
 
-type PropsType = {
-  value?: SortType;
-  handleChooseSort?: (value: SortType) => void;
-};
-
 export const options: Array<{value: SortType; name: string}> = [
   {value: 'createdAt:desc', name: 'new first'},
   {value: 'createdAt:asc', name: 'old first'},
@@ -20,18 +15,18 @@ export const options: Array<{value: SortType; name: string}> = [
   {value: 'price:asc', name: 'low to high'},
 ];
 
-export const SortDropdown = ({value, handleChooseSort}: PropsType) => {
+export const SortDropdown = () => {
   const router = useRouter();
   const [sortType, setSortType] = useState(options[0].value);
 
   useEffect(() => {
-    const {sort} = router.query;
+    const sort = router.query.sort;
     if (sort) {
       setSortType(
         typeof sort === 'string' ? (sort as SortType) : (sort[0] as SortType),
       );
     }
-  }, []);
+  }, [router.query.sort]);
 
   const onChangeHandler = (value: SortType) => {
     const updatedQuery: {sort?: string} = {
