@@ -74,6 +74,12 @@ const styles: Record<string, SxProps> = {
     padding: '20px 0',
     zIndex: '1',
   },
+  button: {
+    '&.Mui-disabled': {
+      color: 'grey.A200',
+      backgroundColor: 'grey.A100',
+    },
+  },
 };
 
 const oneCategoryPercentage = 11.1111111111; // one of nine attributes
@@ -276,8 +282,10 @@ const ProductForm = ({
           <Button
             variant="contained"
             type="submit"
-            disabled={isLoading}
+            // disabled={isLoading}
+            disabled={true} //TODO: delete this line
             endIcon={isLoading && <CircularProgress size={15} />}
+            sx={styles.button}
           >
             {isLoading ? 'Saving...' : 'Save changes'}
           </Button>

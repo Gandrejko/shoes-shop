@@ -45,6 +45,10 @@ const styles: Record<string, SxProps> = {
   button: {
     fontSize: {xs: 12, sm: 16},
     width: {xs: 117, sm: 152},
+    '&.Mui-disabled': {
+      color: 'grey.A200',
+      backgroundColor: 'grey.A100',
+    },
   },
   inputHidden: {display: 'none'},
 };
@@ -96,9 +100,10 @@ const UpdateProfileAvatarContainer = () => {
         <Button
           variant="outlined"
           component="label"
-          disabled={
-            isDeleteImageLoading || isUploadImageLoading || isUserDataLoading
-          }
+          // disabled={
+          //   isDeleteImageLoading || isUploadImageLoading || isUserDataLoading
+          // }
+          disabled={true} //TODO: delete this line
           sx={styles.button}
         >
           Change photo
@@ -112,9 +117,10 @@ const UpdateProfileAvatarContainer = () => {
         <Button
           variant="contained"
           type="button"
-          disabled={
-            isDeleteImageLoading || isUploadImageLoading || isUserDataLoading
-          }
+          // disabled={
+          //   isDeleteImageLoading || isUploadImageLoading || isUserDataLoading
+          // }
+          disabled={true} //TODO: delete this line
           onClick={() => deleteImage(avatar?.id!)}
           sx={styles.button}
         >

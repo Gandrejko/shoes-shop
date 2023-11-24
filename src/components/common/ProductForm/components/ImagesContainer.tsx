@@ -122,7 +122,6 @@ const ImagesContainer = () => {
         ))}
         {isUploadLoading &&
           uploadingImages.map((image: any, index: number) => (
-            //Know that to take index isn't good idea. But while uploading image we don't have an id for it.
             <Grid item key={image.name} xs={12} sm={6} md={6} lg={8} xl={5}>
               <Box sx={styles.skeletonBox}>
                 <Skeleton

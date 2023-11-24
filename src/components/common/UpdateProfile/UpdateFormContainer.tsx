@@ -12,6 +12,10 @@ const styles: Record<string, SxProps> = {
     alignSelf: 'flex-end',
     width: {xs: 117, sm: 152},
     fontSize: {xs: 12, sm: 16},
+    '&.Mui-disabled': {
+      color: 'grey.A200',
+      backgroundColor: 'grey.A100',
+    },
   },
 };
 
@@ -75,7 +79,8 @@ const UpdateFormContainer = () => {
         variant="contained"
         type="submit"
         sx={styles.button}
-        disabled={isUserDataLoading || isUploadImageLoading}
+        // disabled={isUserDataLoading || isUploadImageLoading}
+        disabled={true} //TODO: delete this line
         endIcon={isUserDataLoading && <CircularProgress size={15} />}
       >
         {isUserDataLoading ? 'Saving...' : 'Save changes'}

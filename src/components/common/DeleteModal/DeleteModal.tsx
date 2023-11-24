@@ -107,19 +107,13 @@ const DeleteModal = ({
       </DialogContent>
       <Divider variant="fullWidth" />
       <DialogActions sx={styles.actions}>
-        <Button
-          variant="outlined"
-          sx={styles.button}
-          onClick={onClose}
-          disabled={isDeleting}
-        >
+        <Button variant="outlined" sx={styles.button} onClick={onClose}>
           Cancel
         </Button>
         <Button
           variant="contained"
           sx={styles.button}
           onClick={onDelete}
-          disabled={isDeleting}
           endIcon={isDeleting && <CircularProgress size={15} />}
         >
           {isDeleting ? 'Deleting...' : 'Delete'}
