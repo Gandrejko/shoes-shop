@@ -12,7 +12,7 @@ import {toast} from 'react-toastify';
 const styles: Record<string, SxProps> = {
   modal: {
     '& .MuiModal-backdrop': {
-      backgroundColor: 'grey.A400',
+      backgroundColor: 'grey.A100',
       opacity: '0.9 !important',
       backdropFilter: 'blur(100px)',
     },

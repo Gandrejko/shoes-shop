@@ -9,7 +9,7 @@ import {
 import {useSession} from 'next-auth/react';
 import {useRouter} from 'next/router';
 import {useState} from 'react';
-import {Modal} from '../Modal/Modal';
+import Modal from './components/Modal';
 import DesktopHeader from './components/DesktopHeader';
 import MobileHeader from './components/MobileHeader';
 
@@ -40,14 +40,6 @@ const Header = () => {
   const {status} = useSession();
   const router = useRouter();
 
-  const handleModalClose = () => {
-    setOpen(false);
-  };
-
-  const handleModalOpen = () => {
-    setOpen(true);
-  };
-
   const handleSearch = (value: string) => {
     setOpen(false);
     router.push(
@@ -69,18 +61,22 @@ const Header = () => {
           {isMobileMode ? (
             <MobileHeader
               userLoggedIn={status !== 'unauthenticated'}
-              handleModalOpen={handleModalOpen}
+              handleModalOpen={() => setOpen(true)}
             />
           ) : (
             <DesktopHeader
               userLoggedIn={status !== 'unauthenticated'}
-              handleModalOpen={handleModalOpen}
+              handleModalOpen={() => setOpen(true)}
             />
           )}
         </Box>
         <Divider />
       </AppBar>
-      <Modal isOpen={open} onClose={handleModalClose} onSearch={handleSearch} />
+      <Modal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        onSearch={handleSearch}
+      />
     </>
   );
 };
