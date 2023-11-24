@@ -1,10 +1,10 @@
-import {AppBar, Box, Divider, SxProps} from '@mui/material';
+import {AppBar, Box, Divider, SxProps, useTheme} from '@mui/material';
 import {useSession} from 'next-auth/react';
 import {useRouter} from 'next/router';
 import {useState} from 'react';
+import Modal from './components/Modal';
 import DesktopHeader from './components/DesktopHeader';
 import MobileHeader from './components/MobileHeader';
-import Modal from './components/Modal';
 
 const styles: Record<string, SxProps> = {
   appBar: {
@@ -23,6 +23,7 @@ const styles: Record<string, SxProps> = {
 
 const Header = () => {
   const [open, setOpen] = useState(false);
+  const theme = useTheme();
   const {status} = useSession();
   const router = useRouter();
 
@@ -64,4 +65,8 @@ const Header = () => {
   );
 };
 
+export type HeaderProps = {
+  userLoggedIn: boolean;
+  handleModalOpen: () => void;
+};
 export default Header;
