@@ -50,13 +50,19 @@ const ButtonMenu = ({
           <MenuItem
             divider
             sx={styles.menuItem}
-            onClick={() => router.push(`/products/me?productId=${productid}`)}
+            onClick={e => {
+              router.push(`/products/me?productId=${productid}`);
+              props.onClose?.(e, 'backdropClick');
+            }}
           >
             <Typography fontWeight={300}>Edit</Typography>
           </MenuItem>
           <MenuItem
             sx={styles.menuItem}
-            onClick={() => setOpenDeleteModal(true)}
+            onClick={e => {
+              setOpenDeleteModal(true);
+              props.onClose?.(e, 'backdropClick');
+            }}
           >
             <Typography fontWeight={300}>Delete</Typography>
           </MenuItem>
