@@ -25,7 +25,7 @@ const ForgotPassword = () => {
       toast.info('On your email was sent information about recovery');
       router.push('/auth/reset-password');
     },
-    onError: () => {
+    onError: e => {
       toast.error('Something went wrong, try again later');
     },
   });
@@ -51,7 +51,7 @@ const ForgotPassword = () => {
             validationSchema={{
               required: 'Entered value does not match email format',
               pattern: {
-                value: /\S+@\S+\.\S+/,
+                value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                 message: 'Entered value does not match email format',
               },
             }}

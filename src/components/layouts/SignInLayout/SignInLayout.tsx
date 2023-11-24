@@ -13,7 +13,10 @@ export const SignInLayout = ({children}: SignInProps) => {
     const value = JSON.parse(localStorage.getItem('signInJustNow') || '{}');
 
     if (typeof value !== 'object' && value && session) {
-      toast.success(`Hello, ${session?.user.username}!`);
+      const userFullName =
+        (session?.user.firstName + ' ' + session?.user.lastName).trim() ||
+        session?.user.username;
+      toast.success(`Hello, ${userFullName}!`);
       localStorage.setItem('signInJustNow', JSON.stringify(false));
     }
   }, [session?.user.username]);

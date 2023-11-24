@@ -16,14 +16,48 @@ import {toast} from 'react-toastify';
 import {styles} from '@/components/layouts/AuthLayout/authPagesStyles';
 import {ReactElement, useState} from 'react';
 import {AuthLayout} from '@/components/layouts/AuthLayout/AuthLayout';
+import {useMutation} from '@tanstack/react-query';
+import axios from 'axios';
 
-interface SignInType {
+type SignInType = {
   email: string;
   password: string;
   rememberMe: boolean;
-}
+};
 const SignIn = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const {mutate} = useMutation({
+    mutationFn: (userData: Partial<SignInType>) => {
+      setIsLoading(true);
+      return axios.post(`${process.env.API_URL}/auth/local`, {
+        identifier: userData.email,
+        password: userData.password,
+      });
+    },
+    onSuccess: (_, userData) => {
+      signIn('credentials', {
+        identifier: userData.email,
+        password: userData.password,
+        redirect: false,
+      })
+        .then((value: SignInResponse | undefined) => {
+          if (value?.ok) {
+            localStorage.setItem('signInJustNow', JSON.stringify(true));
+            router.push('/products');
+          } else {
+            toast.error('Something went wrong!');
+          }
+        })
+        .finally(() => setIsLoading(false));
+    },
+    onError: (e: any) => {
+      const errorMessage =
+        e.response!.data.error.message.replace('identifier', 'email') ||
+        'Wrong credentials';
+      toast.error(errorMessage);
+      setIsLoading(false);
+    },
+  });
   const {
     register,
     handleSubmit,
@@ -34,24 +68,7 @@ const SignIn = () => {
   const router = useRouter();
 
   const onSubmit: SubmitHandler<SignInType> = async data => {
-    setIsLoading(true);
-    signIn('credentials', {
-      identifier: data.email,
-      password: data.password,
-      rememberMe: data.rememberMe,
-      redirect: false,
-    })
-      .then((value: SignInResponse | undefined) => {
-        if (value?.ok) {
-          localStorage.setItem('signInJustNow', JSON.stringify(true));
-          router.push('/products');
-        } else {
-          toast.error('Wrong credentials!');
-        }
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    mutate(data);
   };
 
   return (
@@ -70,7 +87,7 @@ const SignIn = () => {
             validationSchema={{
               required: 'Entered value does not match email format',
               pattern: {
-                value: /\S+@\S+\.\S+/,
+                value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                 message: 'Entered value does not match email format',
               },
             }}
