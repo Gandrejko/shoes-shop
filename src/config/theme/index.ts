@@ -57,7 +57,8 @@ let theme = createTheme({
       styleOverrides: {
         root: ({theme}) => ({
           fontSize: 15,
-          color: theme.palette.grey[700],
+          color: 'text.secondary',
+          marginBottom: '5px',
         }),
       },
     },
@@ -120,16 +121,28 @@ let theme = createTheme({
       styleOverrides: {
         root: ({theme}) => ({
           padding: 0,
+          border: 'none',
+
           '&.Mui-focused': {
-            border: 'none', // Set the desired style for the border, for example 'none' to remove the border
-            outline: '2px solid #bdbdbd',
+            borderColor: '#bdbdbd',
           },
           '&:hover .MuiOutlinedInput-notchedOutline': {
-            border: '1px solid #bdbdbd',
-            outline: 'none',
+            border: 'none',
+
+            borderColor: '#bdbdbd',
             backgroundColor: 'rgba(254, 100, 94, 0.04)',
           },
+          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            border: 'none',
+          },
+
+          '.MuiOutlinedInput-notchedOutline': {
+            border: 0,
+          },
         }),
+        select: {
+          border: '2px solid #bdbdbd',
+        },
       },
     },
   },

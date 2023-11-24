@@ -1,9 +1,18 @@
 import HeaderLayout from '@/components/layouts/HeaderLayout/HeaderLayout';
 import axios from 'axios';
+import Image from 'next/image';
 import {ProductResponse, ProductsResponse} from '@/types';
 import {GetServerSidePropsContext, GetStaticPropsContext} from 'next';
 import React, {ReactElement, useState} from 'react';
-import {Box, Container, Typography, SxProps, Button} from '@mui/material';
+import theme from '@/config/theme';
+import {
+  Box,
+  Container,
+  Typography,
+  SxProps,
+  Button,
+  Paper,
+} from '@mui/material';
 import ImageSlider from '@/components/common/ImageSlider/ImageSlider';
 import {useRouter} from 'next/router';
 import {useMutation} from '@tanstack/react-query';
@@ -112,6 +121,22 @@ const styles: Record<string, SxProps> = {
       backgroundColor: 'grey.A100',
     },
   },
+  emptyImageContainer: {
+    position: 'relative',
+    backgroundColor: 'grey.A100',
+    maxWidth: {sm: 550, md: 440, xl: 600},
+    height: {xs: '320px', sm: 550, md: 440, xl: 600},
+    width: {xs: '100%'},
+    display: 'flex',
+  },
+  emptyImage: {
+    textAlign: 'center',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
+  },
 };
 
 type ProductProps = {
@@ -145,15 +170,18 @@ const Product = ({product: data}: ProductProps) => {
   const color = product?.color?.data?.attributes.name;
   const sizes = product?.sizes?.data;
   const categories = product?.categories?.data;
+  const images = product?.images?.data?.map(({attributes: {url}}) => url) || [];
 
   return (
     <Container maxWidth="xl" sx={styles.container}>
       <Box sx={styles.productContainer}>
-        <ImageSlider
-          images={
-            product?.images?.data?.map(({attributes: {url}}) => url) || []
-          }
-        />
+        {images.length > 0 ? (
+          <ImageSlider images={images} />
+        ) : (
+          <Paper sx={styles.emptyImageContainer}>
+            <Image fill src="/icons/galleryIcon.svg" alt="no image" />
+          </Paper>
+        )}
       </Box>
       <Box sx={styles.productContainer}>
         <Box sx={styles.textContainer}>
@@ -239,6 +267,10 @@ Product.getLayout = function getLayout(page: ReactElement) {
     <>
       <Head>
         <title>{page.props.product?.data?.attributes.name}</title>
+        <meta
+          name="description"
+          content={page.props.product?.data?.attributes.description}
+        />
       </Head>
       <HeaderLayout>{page}</HeaderLayout>
     </>

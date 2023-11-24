@@ -2,12 +2,16 @@ import ColorModeContext from '@/config/theme/ColorModeContext';
 import {Divider, List, ListItem, Popover, Typography} from '@mui/material';
 import {signOut} from 'next-auth/react';
 import Image from 'next/image';
-import {useRouter} from 'next/navigation';
+import Link from 'next/link';
 import {destroyCookie} from 'nookies';
 import {useContext} from 'react';
 
 const styles = {
   list: {
+    a: {
+      textDecoration: 'none',
+      color: 'text.secondary',
+    },
     li: {
       cursor: 'pointer',
       '&:hover': {
@@ -23,17 +27,16 @@ type ProfilePopupProps = {
 };
 
 export const ProfilePopup = ({anchorEl, handleOnClose}: ProfilePopupProps) => {
-  const router = useRouter();
   const {theme} = useContext(ColorModeContext);
+  const unidqId = 1192; //uniqId for tabIndex
 
   const logoutFunction = async () => {
     destroyCookie(null, 'rememberMe');
     await signOut();
   };
 
-  const onRedirectHandler = (url: string) => {
+  const onRedirectHandler = () => {
     handleOnClose();
-    router.push(url);
   };
 
   return (
@@ -48,41 +51,45 @@ export const ProfilePopup = ({anchorEl, handleOnClose}: ProfilePopupProps) => {
       }}
     >
       <List sx={styles.list}>
-        <ListItem onClick={() => onRedirectHandler('/products/me')}>
-          <Image
-            width={20}
-            height={20}
-            src="/icons/myProducts.svg"
-            alt="my-products"
-            style={{
-              marginRight: 10,
-              filter:
-                theme.palette.mode === 'dark'
-                  ? 'brightness(10)'
-                  : 'brightness(1)',
-            }}
-          />
-          <Typography variant="body1">My products</Typography>
-        </ListItem>
+        <Link href="/products/me" onClick={onRedirectHandler}>
+          <ListItem>
+            <Image
+              width={20}
+              height={20}
+              src="/icons/myProducts.svg"
+              alt="my-products"
+              style={{
+                marginRight: 10,
+                filter:
+                  theme.palette.mode === 'dark'
+                    ? 'brightness(10)'
+                    : 'brightness(1)',
+              }}
+            />
+            <Typography variant="body1">My products</Typography>
+          </ListItem>
+        </Link>
         <Divider />
-        <ListItem onClick={() => onRedirectHandler('/settings')}>
-          <Image
-            width={20}
-            height={20}
-            src="/icons/settings.svg"
-            alt="settings"
-            style={{
-              marginRight: 10,
-              filter:
-                theme.palette.mode === 'dark'
-                  ? 'brightness(10)'
-                  : 'brightness(1)',
-            }}
-          />
-          <Typography variant="body1">Settings</Typography>
-        </ListItem>
+        <Link href="/settings" onClick={onRedirectHandler}>
+          <ListItem>
+            <Image
+              width={20}
+              height={20}
+              src="/icons/settings.svg"
+              alt="settings"
+              style={{
+                marginRight: 10,
+                filter:
+                  theme.palette.mode === 'dark'
+                    ? 'brightness(10)'
+                    : 'brightness(1)',
+              }}
+            />
+            <Typography variant="body1">Settings</Typography>
+          </ListItem>
+        </Link>
         <Divider />
-        <ListItem onClick={logoutFunction}>
+        <ListItem onClick={logoutFunction} tabIndex={unidqId}>
           <Image
             width={20}
             height={20}

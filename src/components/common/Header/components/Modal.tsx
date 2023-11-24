@@ -18,25 +18,26 @@ import logoIcon from 'public/icons/logo.svg';
 import modalCloseIcon from 'public/icons/modalClose.svg';
 import {CSSProperties, useCallback, useEffect, useState} from 'react';
 import {useForm} from 'react-hook-form';
-
+import theme from '@/config/theme';
 const styles: Record<string, SxProps> = {
   modal: {
-    '& .MuiDrawer-paper': {
-      backgroundImage: 'none',
-    },
     '& .MuiModal-backdrop': {
-      backgroundColor: 'grey.A400',
+      backgroundColor: 'grey.A100',
       opacity: '0.9 !important',
       backdropFilter: 'blur(100px)',
     },
+    '& .MuiBox-root': {
+      outline: 'none',
+      backgroundColor: 'background.paper',
+    },
+    '.MuiPaper-root': {
+      boxShadow: 'none',
+    },
   },
   container: {
-    gap: 3,
-    maxWidth: 1700,
-    width: 1,
-    marginX: 'auto',
-    padding: {md: '45px 60px 80px', xs: '25px 30px 50px'},
+    gap: 4,
     backgroundColor: 'background.paper',
+    padding: {md: '45px 60px 80px', xs: '25px 30px 50px'},
   },
   searchContainer: {
     flexGrow: 1,
@@ -60,12 +61,22 @@ const styles: Record<string, SxProps> = {
   suggestionsList: {
     listStyleType: 'none',
     margin: 0,
-    paddingLeft: {xs: 0, sm: 10, md: 12, lg: 20},
+    paddingLeft: {xs: 0, sm: 15, md: 15, lg: 25},
     paddingRight: {xs: 1, sm: 7, md: 16, lg: 24},
   },
   closeImageStyles: {
     width: 45,
     height: 45,
+  },
+  searchResult: {
+    padding: 1,
+    marginBottom: '16px',
+    cursor: 'pointer',
+    ':hover': {
+      backgroundColor: `pink`,
+      borderRadius: 1,
+      color: 'black',
+    },
   },
 };
 
@@ -75,7 +86,7 @@ type Props = {
   isOpen: boolean;
 };
 
-export const Modal = ({onSearch, onClose, isOpen}: Props) => {
+const Modal = ({onSearch, onClose, isOpen}: Props) => {
   const {register, getValues, setValue, watch, setFocus} = useForm<{
     searchingString: string;
   }>();
@@ -197,7 +208,7 @@ export const Modal = ({onSearch, onClose, isOpen}: Props) => {
               <Box
                 key={index}
                 component="li"
-                style={{marginBottom: '8px', cursor: 'pointer'}}
+                sx={styles.searchResult}
                 onClick={() => handleSuggestionClick(suggestion)}
               >
                 {suggestion}
@@ -209,3 +220,5 @@ export const Modal = ({onSearch, onClose, isOpen}: Props) => {
     </>
   );
 };
+
+export default Modal;

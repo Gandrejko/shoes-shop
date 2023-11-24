@@ -22,7 +22,7 @@ import {
   UseFormTrigger,
   useForm,
 } from 'react-hook-form';
-import {BorderLinearProgress} from '../BorderLinearProgress/BorderLinearProgress';
+import BorderLinearProgress from './components/BorderLinearProgress';
 import FormContainer from './components/FormContainer';
 import ImagesContainer from './components/ImagesContainer';
 

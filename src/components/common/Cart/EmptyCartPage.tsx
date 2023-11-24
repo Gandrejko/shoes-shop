@@ -50,12 +50,7 @@ const EmptyCartPage = () => {
   return (
     <Box sx={styles.container}>
       <Box sx={styles.imageWrapper}>
-        <Image
-          src="/icons/emptyCart.svg"
-          alt="cart"
-          width={32}
-          height={32}
-        />
+        <Image src="/icons/emptyCart.svg" alt="cart" width={32} height={32} />
       </Box>
       <Typography component="p" sx={styles.title}>
         You don&apos;t post have any products yet.

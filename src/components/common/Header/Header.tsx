@@ -1,10 +1,10 @@
-import {AppBar, Box, Divider, SxProps, useTheme} from '@mui/material';
+import {AppBar, Box, Divider, SxProps} from '@mui/material';
 import {useSession} from 'next-auth/react';
 import {useRouter} from 'next/router';
 import {useState} from 'react';
-import {Modal} from '../Modal/Modal';
 import DesktopHeader from './components/DesktopHeader';
 import MobileHeader from './components/MobileHeader';
+import Modal from './components/Modal';
 
 const styles: Record<string, SxProps> = {
   appBar: {
@@ -21,24 +21,10 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-export type HeaderProps = {
-  userLoggedIn: boolean;
-  handleModalOpen: () => void;
-};
-
 const Header = () => {
   const [open, setOpen] = useState(false);
-  const theme = useTheme();
   const {status} = useSession();
   const router = useRouter();
-
-  const handleModalClose = () => {
-    setOpen(false);
-  };
-
-  const handleModalOpen = () => {
-    setOpen(true);
-  };
 
   const handleSearch = (value: string) => {
     setOpen(false);
@@ -60,16 +46,20 @@ const Header = () => {
         <Box sx={styles.container}>
           <MobileHeader
             userLoggedIn={status !== 'unauthenticated'}
-            handleModalOpen={handleModalOpen}
+            handleModalOpen={() => setOpen(true)}
           />
           <DesktopHeader
             userLoggedIn={status !== 'unauthenticated'}
-            handleModalOpen={handleModalOpen}
+            handleModalOpen={() => setOpen(true)}
           />
         </Box>
         <Divider />
       </AppBar>
-      <Modal isOpen={open} onClose={handleModalClose} onSearch={handleSearch} />
+      <Modal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        onSearch={handleSearch}
+      />
     </>
   );
 };

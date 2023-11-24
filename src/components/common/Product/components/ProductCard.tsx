@@ -84,8 +84,10 @@ const ProductCard = ({product, imagePriority}: Props) => {
               />
             ) : (
               <Paper
-                sx={{height: 1, backgroundColor: 'grey.A200', borderRadius: 0}}
-              />
+                sx={{height: 1, backgroundColor: 'grey.A100', borderRadius: 0}}
+              >
+                <Image fill src="/icons/galleryIcon.svg" alt="icon" />
+              </Paper>
             )}
           </Box>
           <CardActionArea LinkComponent={Link} sx={styles.cardActionArea}>
