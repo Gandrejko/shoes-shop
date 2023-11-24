@@ -33,7 +33,6 @@ const styles: Record<string, SxProps> = {
   errorWrapper: {
     color: 'error.main',
     display: 'flex',
-    alignItems: 'center',
     gap: '4px',
     marginTop: '8px',
   },
@@ -114,7 +113,7 @@ const Input = ({
       </Box>
       {errorMessage && (
         <Box sx={styles.errorWrapper}>
-          <Image src={warningIcon} alt="" />
+          <Image src={warningIcon} alt="warning" style={{marginTop: '4px'}} />
           {errorMessage}
         </Box>
       )}
