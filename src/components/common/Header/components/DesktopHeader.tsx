@@ -51,23 +51,16 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
   const {data} = useSession();
   const {theme, toggleTheme} = useContext(ColorModeContext);
 
-  const [cartQty, setCartQty] = useState(0);
-  const updateCartQty = (updatedCart: Record<string, number>) => {
-    const totalCount = Object.values(updatedCart).reduce((acc, curr) => acc + curr, 0);
-    setCartQty(totalCount);
-  };
+  const [cartQty, setCartQty] = useState<number>(0);
 
   useEffect(() => {
-    const currentCart = JSON.parse(localStorage.getItem('cart') || '{}');
-    updateCartQty(currentCart);
+    const cartItems = JSON.parse(localStorage.getItem('cart') || '{}');
+    const totalQuantity = Object.values(cartItems).reduce(
+      (acc: number, quantity: number) => acc + quantity,
+      0
+    );
+    setCartQty(totalQuantity);
   }, []);
-
-  const updateCart = (productId: string, quantity: number) => {
-    const updatedCart = JSON.parse(localStorage.getItem('cart') || '{}');
-    updatedCart[productId] = quantity;
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
-    updateCartQty(updatedCart);
-  };
 
   return (
     <>
