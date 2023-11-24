@@ -10,12 +10,13 @@ import {
   SxProps,
   Toolbar,
   Typography,
+  Badge
 } from '@mui/material';
 import {useSession} from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {useRouter} from 'next/navigation';
-import {useContext, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import {HeaderProps} from '../Header';
 import {ProfilePopup} from './ProfilePopup';
 
@@ -49,6 +50,24 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
   const router = useRouter();
   const {data} = useSession();
   const {theme, toggleTheme} = useContext(ColorModeContext);
+
+  const [cartQty, setCartQty] = useState(0);
+  const updateCartQty = (updatedCart: Record<string, number>) => {
+    const totalCount = Object.values(updatedCart).reduce((acc, curr) => acc + curr, 0);
+    setCartQty(totalCount);
+  };
+
+  useEffect(() => {
+    const currentCart = JSON.parse(localStorage.getItem('cart') || '{}');
+    updateCartQty(currentCart);
+  }, []);
+
+  const updateCart = (productId: string, quantity: number) => {
+    const updatedCart = JSON.parse(localStorage.getItem('cart') || '{}');
+    updatedCart[productId] = quantity;
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
+    updateCartQty(updatedCart);
+  };
 
   return (
     <>
@@ -94,6 +113,7 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
                 )}
               </IconButton>
               <IconButton onClick={() => router.push('/cart')}>
+                <Badge badgeContent={cartQty} color="primary">
                 <Image
                   src="/icons/cart.svg"
                   alt="cart"
@@ -106,6 +126,7 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
                         : 'brightness(1)',
                   }}
                 />
+                </Badge>
               </IconButton>
               <IconButton
                 onClick={e => setAnchorEl(e.currentTarget)}
@@ -153,6 +174,7 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
               )}
             </IconButton>
             <IconButton onClick={() => router.push('/cart')}>
+              <Badge badgeContent={cartQty} color="primary">
               <Image
                 src="/icons/cart.svg"
                 alt="cart"
@@ -165,6 +187,7 @@ const DesktopHeader = ({userLoggedIn, handleModalOpen}: HeaderProps) => {
                       : 'brightness(1)',
                 }}
               />
+              </Badge>
             </IconButton>
           </Stack>
         )}
