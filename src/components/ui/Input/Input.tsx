@@ -70,7 +70,7 @@ const Input = ({
 
   return (
     <Box sx={boxSx}>
-      <InputLabel htmlFor={id} sx={{color: 'text.secondary'}}>
+      <InputLabel htmlFor={id}>
         {labelText}
         {validationSchema.required && (
           <Typography component="span" sx={styles.requiredMark}>

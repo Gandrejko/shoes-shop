@@ -2,16 +2,8 @@ import Dropdown from '@/components/ui/Dropdown/Dropdown';
 import Input from '@/components/ui/Input/Input';
 import ButtonsList from './ButtonsList';
 import Textarea from '@/components/ui/Textarea/Textarea';
-import {useGet} from '@/hooks';
 import theme from '@/config/theme';
-import {CategoriesResponse} from '@/types';
 import {ProductFormContext} from '../ProductForm';
-import {
-  BrandsResponse,
-  ColorsResponse,
-  GendersResponse,
-  SizesResponse,
-} from '@/types';
 
 import {Box, Grid, SxProps} from '@mui/material';
 import React, {useContext} from 'react';
@@ -93,6 +85,7 @@ const FormContainer = () => {
       />
       <Box sx={styles.dropdowns}>
         <Dropdown
+          name="gender"
           labelText="Gender"
           options={genders?.data.map(({id, attributes}) => ({
             value: id,
@@ -105,6 +98,7 @@ const FormContainer = () => {
           disabled={isLoading}
         />
         <Dropdown
+          name="brand"
           labelText="Brand"
           options={brands?.data.map(({id, attributes}) => ({
             value: id,
@@ -118,6 +112,7 @@ const FormContainer = () => {
         />
       </Box>
       <Dropdown
+        name="color"
         labelText="Color"
         options={colors?.data.map(({id, attributes}) => ({
           value: id,

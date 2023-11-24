@@ -57,7 +57,8 @@ let theme = createTheme({
       styleOverrides: {
         root: ({theme}) => ({
           fontSize: 15,
-          color: theme.palette.grey[700],
+          color: 'text.secondary',
+          marginBottom: '5px',
         }),
       },
     },
