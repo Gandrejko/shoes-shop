@@ -1,7 +1,6 @@
 import {
   Avatar,
   Box,
-  Button,
   Stack,
   SxProps,
   Typography,
@@ -13,6 +12,7 @@ import {ReactElement, useEffect, useMemo, useState} from 'react';
 
 import ProductList from '@/components/common/Product/ProductList';
 import {FilterSidebar} from '@/components/layouts/FilterSidebar/FilterSidebar';
+import ToggleFilterbarButton from '@/components/layouts/FilterSidebar/components/ToggleFilterbarButton';
 import HeaderLayout from '@/components/layouts/HeaderLayout/HeaderLayout';
 import {SignInLayout} from '@/components/layouts/SignInLayout/SignInLayout';
 import {SortDropdown} from '@/components/ui/SortDropdown/SortDropdown';
@@ -48,11 +48,6 @@ const styles: Record<string, SxProps> = {
     display: 'flex',
     gap: '10px',
   },
-  buttonStyles: {
-    color: 'text.secondary',
-    outline: '2px solid #bdbdbd',
-    minWidth: {xs: '140px', lg: '200px'},
-  },
 };
 
 type Props = {
@@ -70,7 +65,8 @@ const MyProducts: NextPageWithLayout<Props> = ({
   const router = useRouter();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const [showFilters, setShowFilters] = useState(!isMobile);
+  const [showFiltersDesktop, setShowFiltersDesktop] = useState(!isMobile);
+  const [showFiltersMobile, setShowFiltersMobile] = useState(isMobile);
   const [productsCount, setProductsCount] = useState(0);
 
   const params = useMemo(() => {
@@ -80,16 +76,26 @@ const MyProducts: NextPageWithLayout<Props> = ({
   }, [router.query]);
 
   useEffect(() => {
-    setShowFilters(!isMobile);
+    setShowFiltersDesktop(!isMobile);
+    setShowFiltersMobile(!isMobile);
   }, [isMobile]);
 
   return (
     <Stack direction="row" justifyContent="center" sx={styles.container}>
       <FilterSidebar
-        open={showFilters}
+        open={showFiltersMobile}
+        isMobile={true}
         searchingString={params['filters[name][$containsi]'] as string}
         productsCount={productsCount}
-        onClose={() => setShowFilters(false)}
+        onClose={() => setShowFiltersMobile(false)}
+        filtersData={filtersData}
+      />
+      <FilterSidebar
+        open={showFiltersDesktop}
+        isMobile={false}
+        searchingString={params['filters[name][$containsi]'] as string}
+        productsCount={productsCount}
+        onClose={() => setShowFiltersDesktop(false)}
         filtersData={filtersData}
       />
       <Box sx={styles.pageContainer}>
@@ -97,33 +103,22 @@ const MyProducts: NextPageWithLayout<Props> = ({
           <Stack sx={styles.productsHeader}>
             <Typography variant="h1">Search Results</Typography>
             <Box sx={styles.filterButtons}>
-              <Button
-                variant="text"
-                sx={styles.buttonStyles}
-                onClick={() => setShowFilters(!showFilters)}
-                endIcon={
-                  <Image
-                    src={`/icons/filters${showFilters ? 'Hide' : 'Show'}.svg`}
-                    alt=""
-                    width={24}
-                    height={24}
-                    style={{
-                      filter:
-                        theme.palette.mode === 'dark'
-                          ? 'brightness(2)'
-                          : 'brightness(1)',
-                    }}
-                  />
-                }
-              >
-                {showFilters && 'Hide'} Filters
-              </Button>
+              <ToggleFilterbarButton
+                isMobile={true}
+                show={showFiltersMobile}
+                onToggle={() => setShowFiltersMobile(!showFiltersMobile)}
+              />
+              <ToggleFilterbarButton
+                isMobile={false}
+                show={showFiltersDesktop}
+                onToggle={() => setShowFiltersDesktop(!showFiltersDesktop)}
+              />
               <SortDropdown />
             </Box>
           </Stack>
           <ProductList
             params={params}
-            fullWidth={!showFilters}
+            fullWidth={!showFiltersDesktop}
             initialPages={initialPages}
             initialProducts={initialProducts}
             setProductsCount={count => setProductsCount(count)}

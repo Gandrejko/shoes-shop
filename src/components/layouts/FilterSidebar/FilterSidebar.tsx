@@ -1,7 +1,19 @@
 import {FiltersData} from '@/types';
-import {Drawer, SxProps, Theme, useMediaQuery} from '@mui/material';
+import {
+  Box,
+  Button,
+  Drawer,
+  IconButton,
+  Stack,
+  SxProps,
+  Theme,
+  Typography,
+  useTheme,
+} from '@mui/material';
+import Image from 'next/image';
 import {useRouter} from 'next/router';
-import FiltersDrawer from './components/FiltersDrawer';
+import {Category} from './components/Category';
+import PriceSlider from './components/PriceSlider';
 
 const styles: Record<string, SxProps<Theme>> = {
   sidebar: {
@@ -25,10 +37,19 @@ const styles: Record<string, SxProps<Theme>> = {
     zIndex: (theme: Theme) => ({md: theme.zIndex.appBar - 1})!,
     transition: 'width 0.2s ease-in-out',
   },
+  header: {
+    flexDirection: {xs: 'row-reverse', md: 'column'},
+    justifyContent: 'space-between',
+    gap: 3,
+    padding: {xs: '26px 20px', md: '44px 40px 16px 0'},
+    paddingLeft: {xs: 5},
+    backgroundColor: 'background.paper',
+  },
 };
 
 type Props = {
   open: boolean;
+  isMobile: boolean;
   searchingString: string;
   productsCount: number;
   filtersData: FiltersData;
@@ -36,16 +57,17 @@ type Props = {
 };
 
 export const FilterSidebar = ({
+  open,
+  isMobile,
   searchingString,
   productsCount,
   filtersData,
-  open,
   onClose,
 }: Props) => {
   const router = useRouter();
-  const isMobile = useMediaQuery((theme: Theme) => {
-    return theme.breakpoints.down('md');
-  });
+  const theme = useTheme();
+
+  const {genders, colors, brands, categories, sizes} = filtersData;
 
   const handleClearFilters = () => {
     router.push(
@@ -67,43 +89,85 @@ export const FilterSidebar = ({
       <Drawer
         open={open}
         onClose={onClose}
-        anchor={'left'}
-        variant={'persistent'}
+        anchor={isMobile ? 'right' : 'left'}
+        variant={isMobile ? 'temporary' : 'persistent'}
         sx={{
           ...styles.sidebar,
           width: open ? 370 : 0,
-          display: {xs: 'none', md: 'block'},
+          display: isMobile ? {md: 'none'} : {xs: 'none', md: 'block'},
         }}
       >
-        <FiltersDrawer
-          isMobile={false}
-          productsCount={productsCount}
-          searchingString={searchingString}
-          filtersData={filtersData}
-          onClearFilters={handleClearFilters}
-          onClose={onClose}
-        />
-      </Drawer>
+        <Stack sx={styles.header}>
+          {isMobile ? (
+            <IconButton onClick={onClose} sx={{display: {md: 'none'}}}>
+              <Image
+                src="/icons/burgerClose.svg"
+                alt=""
+                width={20}
+                height={20}
+                style={{
+                  filter:
+                    theme.palette.mode === 'dark'
+                      ? 'brightness(10)'
+                      : 'brightness(1)',
+                }}
+              />
+            </IconButton>
+          ) : (
+            <Box>
+              <Typography>
+                {searchingString
+                  ? `Searching results for: ${searchingString}`
+                  : 'Shoes'}
+              </Typography>
+              <Typography>
+                {searchingString && `Products found - ${productsCount}`}
+              </Typography>
+            </Box>
+          )}
+          <Button onClick={handleClearFilters} variant="outlined">
+            Clear filters
+          </Button>
+        </Stack>
 
-      {/* Mobile */}
-      <Drawer
-        open={open}
-        onClose={onClose}
-        anchor={'right'}
-        variant={'temporary'}
-        sx={{
-          ...styles.sidebar,
-          width: open ? 370 : 0,
-          display: {md: 'none'},
-        }}
-      >
-        <FiltersDrawer
-          isMobile={true}
-          productsCount={productsCount}
-          searchingString={searchingString}
-          filtersData={filtersData}
-          onClearFilters={handleClearFilters}
-          onClose={onClose}
+        {/* Categories */}
+        <Category
+          name="Gender"
+          options={genders?.data.map(({id, attributes}) => ({
+            id,
+            value: attributes.name!,
+          }))}
+        />
+        <Category
+          name="Color"
+          options={colors?.data.map(({id, attributes}) => ({
+            id,
+            value: attributes.name!,
+          }))}
+        />
+        <Category
+          name="Brand"
+          options={brands?.data.map(({id, attributes}) => ({
+            id,
+            value: attributes.name!,
+          }))}
+        />
+        <Category
+          name="Categories"
+          options={categories?.data.map(({id, attributes}) => ({
+            id,
+            value: attributes.name!,
+          }))}
+        />
+        <Category name="Price">
+          <PriceSlider />
+        </Category>
+        <Category
+          name="Sizes"
+          options={sizes?.data.map(({id, attributes}) => ({
+            id,
+            value: attributes.value!,
+          }))}
         />
       </Drawer>
     </>
