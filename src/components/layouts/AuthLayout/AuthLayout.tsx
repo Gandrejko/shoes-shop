@@ -58,8 +58,11 @@ export const AuthLayout = ({children, title, subtTitle}: AuthLayoutProps) => {
             <Image
               src={`/images/${currentImage}`}
               alt="picture of our brand"
-              objectFit="cover"
               fill
+              priority
+              quality={100}
+              sizes="50vw"
+              style={{objectFit: 'cover'}}
             />
           </Box>
         )}

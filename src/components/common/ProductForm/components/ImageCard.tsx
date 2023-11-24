@@ -10,6 +10,7 @@ const styles: Record<string, SxProps> = {
     width: 1,
   },
   imageContainer: {
+    position: 'relative',
     aspectRatio: 320 / 380,
   },
   cardContent: {
@@ -58,10 +59,11 @@ const ImageCard = ({image, onDelete, isLoading}: ImageCardProps) => {
     >
       <Box sx={styles.imageContainer}>
         <Image
-          fill
-          style={{objectFit: 'cover'}}
           src={image.url}
           alt="product"
+          fill
+          sizes="100%"
+          style={{objectFit: 'cover'}}
         />
         <Box
           sx={{

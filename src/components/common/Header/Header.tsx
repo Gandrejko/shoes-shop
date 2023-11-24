@@ -1,11 +1,4 @@
-import {
-  AppBar,
-  Box,
-  Divider,
-  SxProps,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import {AppBar, Box, Divider, SxProps, useTheme} from '@mui/material';
 import {useSession} from 'next-auth/react';
 import {useRouter} from 'next/router';
 import {useState} from 'react';
@@ -28,15 +21,9 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-export type HeaderProps = {
-  userLoggedIn: boolean;
-  handleModalOpen: () => void;
-};
-
 const Header = () => {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
-  const isMobileMode = useMediaQuery(theme.breakpoints.down('md'));
   const {status} = useSession();
   const router = useRouter();
 
@@ -58,17 +45,14 @@ const Header = () => {
     <>
       <AppBar sx={styles.appBar}>
         <Box sx={styles.container}>
-          {isMobileMode ? (
-            <MobileHeader
-              userLoggedIn={status !== 'unauthenticated'}
-              handleModalOpen={() => setOpen(true)}
-            />
-          ) : (
-            <DesktopHeader
-              userLoggedIn={status !== 'unauthenticated'}
-              handleModalOpen={() => setOpen(true)}
-            />
-          )}
+          <MobileHeader
+            userLoggedIn={status !== 'unauthenticated'}
+            handleModalOpen={() => setOpen(true)}
+          />
+          <DesktopHeader
+            userLoggedIn={status !== 'unauthenticated'}
+            handleModalOpen={() => setOpen(true)}
+          />
         </Box>
         <Divider />
       </AppBar>
@@ -81,4 +65,8 @@ const Header = () => {
   );
 };
 
+export type HeaderProps = {
+  userLoggedIn: boolean;
+  handleModalOpen: () => void;
+};
 export default Header;

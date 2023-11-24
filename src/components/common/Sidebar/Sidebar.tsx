@@ -90,6 +90,7 @@ const Sidebar = ({currentTab, closeDrawer}: SidebarProps) => {
               src={image}
               alt={(firstName || username || ' ')[0].toUpperCase()}
               fill
+              sizes="100%"
               style={{objectFit: 'cover'}}
             />
           ) : (

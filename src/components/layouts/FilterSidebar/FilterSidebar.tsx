@@ -8,7 +8,6 @@ import {
   SxProps,
   Theme,
   Typography,
-  useMediaQuery,
   useTheme,
 } from '@mui/material';
 import Image from 'next/image';
@@ -39,17 +38,18 @@ const styles: Record<string, SxProps<Theme>> = {
     transition: 'width 0.2s ease-in-out',
   },
   header: {
+    flexDirection: {xs: 'row-reverse', md: 'column'},
+    justifyContent: 'space-between',
+    gap: 3,
     padding: {xs: '26px 20px', md: '44px 40px 16px 0'},
+    paddingLeft: {xs: 5},
     backgroundColor: 'background.paper',
-  },
-  mobileButtonContainer: {
-    display: 'flex',
-    justifyContent: 'space-beetwen',
   },
 };
 
 type Props = {
   open: boolean;
+  isMobile: boolean;
   searchingString: string;
   productsCount: number;
   filtersData: FiltersData;
@@ -57,15 +57,15 @@ type Props = {
 };
 
 export const FilterSidebar = ({
+  open,
+  isMobile,
   searchingString,
   productsCount,
   filtersData,
-  open,
   onClose,
 }: Props) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const router = useRouter();
+  const theme = useTheme();
 
   const {genders, colors, brands, categories, sizes} = filtersData;
 
@@ -84,20 +84,22 @@ export const FilterSidebar = ({
   };
 
   return (
-    <Drawer
-      open={open}
-      onClose={onClose}
-      anchor={isMobile ? 'right' : 'left'}
-      variant={isMobile ? 'temporary' : 'persistent'}
-      sx={{...styles.sidebar, width: open ? 370 : 0}}
-    >
-      <Stack sx={styles.header}>
-        {isMobile ? (
-          <Box sx={styles.mobileButtonContainer}>
-            <Button onClick={handleClearFilters} variant="outlined">
-              Clear filters
-            </Button>
-            <IconButton onClick={onClose} sx={{marginLeft: 'auto'}}>
+    <>
+      {/* Desktop */}
+      <Drawer
+        open={open}
+        onClose={onClose}
+        anchor={isMobile ? 'right' : 'left'}
+        variant={isMobile ? 'temporary' : 'persistent'}
+        sx={{
+          ...styles.sidebar,
+          width: open ? 370 : 0,
+          display: isMobile ? {md: 'none'} : {xs: 'none', md: 'block'},
+        }}
+      >
+        <Stack sx={styles.header}>
+          {isMobile ? (
+            <IconButton onClick={onClose} sx={{display: {md: 'none'}}}>
               <Image
                 src="/icons/burgerClose.svg"
                 alt=""
@@ -111,66 +113,63 @@ export const FilterSidebar = ({
                 }}
               />
             </IconButton>
-          </Box>
-        ) : (
-          <>
-            <Typography>
-              {searchingString
-                ? `Searching results for: ${searchingString}`
-                : 'Shoes'}
-            </Typography>
-            <Typography>
-              {searchingString && `Products found - ${productsCount}`}
-            </Typography>
+          ) : (
+            <Box>
+              <Typography>
+                {searchingString
+                  ? `Searching results for: ${searchingString}`
+                  : 'Shoes'}
+              </Typography>
+              <Typography>
+                {searchingString && `Products found - ${productsCount}`}
+              </Typography>
+            </Box>
+          )}
+          <Button onClick={handleClearFilters} variant="outlined">
+            Clear filters
+          </Button>
+        </Stack>
 
-            <Button
-              onClick={handleClearFilters}
-              sx={{marginTop: '15px'}}
-              variant="outlined"
-            >
-              Clear filters
-            </Button>
-          </>
-        )}
-      </Stack>
-      <Category
-        name="Gender"
-        options={genders?.data.map(({id, attributes}) => ({
-          id,
-          value: attributes.name!,
-        }))}
-      />
-      <Category
-        name="Color"
-        options={colors?.data.map(({id, attributes}) => ({
-          id,
-          value: attributes.name!,
-        }))}
-      />
-      <Category
-        name="Brand"
-        options={brands?.data.map(({id, attributes}) => ({
-          id,
-          value: attributes.name!,
-        }))}
-      />
-      <Category
-        name="Categories"
-        options={categories?.data.map(({id, attributes}) => ({
-          id,
-          value: attributes.name!,
-        }))}
-      />
-      <Category name="Price">
-        <PriceSlider />
-      </Category>
-      <Category
-        name="Sizes"
-        options={sizes?.data.map(({id, attributes}) => ({
-          id,
-          value: attributes.value!,
-        }))}
-      />
-    </Drawer>
+        {/* Categories */}
+        <Category
+          name="Gender"
+          options={genders?.data.map(({id, attributes}) => ({
+            id,
+            value: attributes.name!,
+          }))}
+        />
+        <Category
+          name="Color"
+          options={colors?.data.map(({id, attributes}) => ({
+            id,
+            value: attributes.name!,
+          }))}
+        />
+        <Category
+          name="Brand"
+          options={brands?.data.map(({id, attributes}) => ({
+            id,
+            value: attributes.name!,
+          }))}
+        />
+        <Category
+          name="Categories"
+          options={categories?.data.map(({id, attributes}) => ({
+            id,
+            value: attributes.name!,
+          }))}
+        />
+        <Category name="Price">
+          <PriceSlider />
+        </Category>
+        <Category
+          name="Sizes"
+          options={sizes?.data.map(({id, attributes}) => ({
+            id,
+            value: attributes.value!,
+          }))}
+        />
+      </Drawer>
+    </>
   );
 };

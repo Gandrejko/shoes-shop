@@ -22,7 +22,7 @@ import {ProfilePopup} from './ProfilePopup';
 const styles: Record<string, SxProps> = {
   desktopWrapper: {
     height: '120px',
-    display: 'flex',
+    display: {xs: 'none', md: 'flex'},
     justifyContent: 'space-between',
     backgroundColor: 'background.paper',
   },

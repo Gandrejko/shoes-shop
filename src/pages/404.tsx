@@ -79,8 +79,10 @@ const Error404 = () => {
             <Image
               src="/images/404PageBanner.png"
               alt="404 error"
-              objectFit="cover"
               fill
+              priority
+              sizes="100vw"
+              style={{objectFit: 'cover'}}
             />
             <Stack spacing={2} sx={styles.text}>
               <Typography variant="h1">Error 404</Typography>
@@ -150,8 +152,10 @@ const Error404 = () => {
                 <Image
                   src="/images/404PageBanner.png"
                   alt="404 error"
-                  objectFit="cover"
                   fill
+                  priority
+                  sizes="50vw"
+                  style={{objectFit: 'cover'}}
                 />
               </Box>
             </Box>

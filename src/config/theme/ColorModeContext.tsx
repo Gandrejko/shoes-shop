@@ -15,7 +15,12 @@ const useColorMode = () => {
   const [mode, setMode] = useState<'light' | 'dark'>('light');
 
   useEffect(() => {
-    setMode(prefersDarkMode ? 'dark' : 'light');
+    const themePreference = localStorage.getItem('theme-preference');
+    if (themePreference) {
+      setMode(JSON.parse(themePreference));
+    } else {
+      setMode(prefersDarkMode ? 'dark' : 'light');
+    }
   }, [prefersDarkMode]);
 
   const theme = useMemo(() => {
@@ -23,7 +28,9 @@ const useColorMode = () => {
   }, [mode]);
 
   const toggleTheme = () => {
-    setMode(prevMode => (prevMode === 'light' ? 'dark' : 'light'));
+    const newTheme = mode === 'light' ? 'dark' : 'light';
+    setMode(newTheme);
+    localStorage.setItem('theme-preference', JSON.stringify(newTheme));
   };
 
   return [theme, toggleTheme] as [typeof theme, typeof toggleTheme];

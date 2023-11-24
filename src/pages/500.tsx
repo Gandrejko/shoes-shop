@@ -81,7 +81,10 @@ const Error500 = () => {
               src="/images/500PageBanner.png"
               alt="500 error"
               fill
-              objectFit="cover"
+              priority
+              sizes="100vw"
+              quality={100}
+              style={{objectFit: 'cover'}}
             />
             <Typography variant="h4" sx={styles.text}>
               Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
@@ -111,7 +114,10 @@ const Error500 = () => {
                 src="/images/500PageBanner.png"
                 alt="500 error"
                 fill
-                objectFit="cover"
+                priority
+                sizes="100vw"
+                quality={100}
+                style={{objectFit: 'cover'}}
               />
               <Box sx={styles.wrapper}>
                 <Typography variant="h1" sx={styles.text}>
