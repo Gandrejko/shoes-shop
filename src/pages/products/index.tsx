@@ -211,6 +211,10 @@ MyProducts.getLayout = function getLayout(page: ReactElement) {
     <>
       <Head>
         <title>Catalog</title>
+        <meta
+          name="description"
+          content="Explore a diverse range of high-quality products in our catalog. Find the perfect items to suit your style and needs. Browse, compare, and order now!"
+        />
       </Head>
       <SignInLayout>
         <HeaderLayout>{page}</HeaderLayout>

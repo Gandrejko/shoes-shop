@@ -41,6 +41,10 @@ const AddProduct = (filtersData: FiltersData) => {
     <>
       <Head>
         <title>Add product</title>
+        <meta
+          name="description"
+          content="Easily add new products to your inventory. Provide details, images, and set prices effortlessly to showcase your offerings to potential customers."
+        />
       </Head>
       <HeaderLayout>
         <SidebarLayout>

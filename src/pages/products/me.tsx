@@ -271,6 +271,10 @@ Me.getLayout = function getLayout(page: ReactElement) {
     <>
       <Head>
         <title>My products</title>
+        <meta
+          name="description"
+          content="Effortlessly manage your listed products with our 'My Products' page. Edit details, track sales, and keep your inventory up to date for a successful selling experience."
+        />
       </Head>
       <HeaderLayout>
         <SidebarLayout currentTab="products">{page}</SidebarLayout>
