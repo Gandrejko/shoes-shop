@@ -66,7 +66,7 @@ const ProductCard = ({product, imagePriority}: Props) => {
   const router = useRouter();
   const showControls = router.pathname === '/products/me';
 
-  const {mutate: deleteProduct} = useDelete('/products');
+  const {mutate: deleteProduct, isPending} = useDelete('/products');
 
   return (
     <Box sx={{position: 'relative', width: '100%'}}>
@@ -134,6 +134,7 @@ const ProductCard = ({product, imagePriority}: Props) => {
             transformOrigin={{vertical: 'top', horizontal: 'right'}}
             onClose={() => setAnchorEl(null)}
             onDeleteProduct={() => deleteProduct(product.id!)}
+            isDeleting={isPending}
           />
         </Box>
       )}

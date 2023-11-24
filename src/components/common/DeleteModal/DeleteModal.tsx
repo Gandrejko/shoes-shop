@@ -1,6 +1,7 @@
 import ColorModeContext from '@/config/theme/ColorModeContext';
 import {
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -59,6 +60,7 @@ type DeleteModalProps = {
   isModalOpen: boolean;
   onClose: () => void;
   onDelete: () => void;
+  isDeleting: boolean;
 };
 
 const DeleteModal = ({
@@ -67,6 +69,7 @@ const DeleteModal = ({
   isModalOpen,
   onClose,
   onDelete,
+  isDeleting,
 }: DeleteModalProps) => {
   const {theme} = useContext(ColorModeContext);
 
@@ -104,11 +107,22 @@ const DeleteModal = ({
       </DialogContent>
       <Divider variant="fullWidth" />
       <DialogActions sx={styles.actions}>
-        <Button variant="outlined" sx={styles.button} onClick={onClose}>
+        <Button
+          variant="outlined"
+          sx={styles.button}
+          onClick={onClose}
+          disabled={isDeleting}
+        >
           Cancel
         </Button>
-        <Button variant="contained" sx={styles.button} onClick={onDelete}>
-          Delete
+        <Button
+          variant="contained"
+          sx={styles.button}
+          onClick={onDelete}
+          disabled={isDeleting}
+          endIcon={isDeleting && <CircularProgress size={15} />}
+        >
+          {isDeleting ? 'Deleting...' : 'Delete'}
         </Button>
       </DialogActions>
     </Dialog>
