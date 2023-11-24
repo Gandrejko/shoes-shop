@@ -15,7 +15,7 @@ import {FilterSidebar} from '@/components/layouts/FilterSidebar/FilterSidebar';
 import ToggleFilterbarButton from '@/components/layouts/FilterSidebar/components/ToggleFilterbarButton';
 import HeaderLayout from '@/components/layouts/HeaderLayout/HeaderLayout';
 import {SignInLayout} from '@/components/layouts/SignInLayout/SignInLayout';
-import {SortDropdown} from '@/components/ui/SortDropdown/SortDropdown';
+import {SortDropdown} from '@/components/common/SortDropdown/SortDropdown';
 import {NextPageWithLayout} from '@/pages/_app';
 import {FiltersData, ProductsResponse} from '@/types';
 import buildParams from '@/utils/buildParams';

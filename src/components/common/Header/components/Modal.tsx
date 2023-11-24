@@ -103,6 +103,7 @@ const Modal = ({onSearch, onClose, isOpen}: Props) => {
       {searchingString},
       {
         fields: 'name',
+        'filters[teamName]': 'team-3',
         'pagination[page]': 1,
         'pagination[pageSize]': 3,
       },

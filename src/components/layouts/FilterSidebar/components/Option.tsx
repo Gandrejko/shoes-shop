@@ -48,7 +48,9 @@ export const Option = ({
         checked={checked}
         onChange={handleChange}
       />
-      <InputLabel htmlFor={id}>{value}</InputLabel>
+      <InputLabel htmlFor={id} sx={{marginBottom: 0}}>
+        {value}
+      </InputLabel>
     </Box>
   );
 };
