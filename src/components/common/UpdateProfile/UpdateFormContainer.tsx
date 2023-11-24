@@ -65,8 +65,7 @@ const UpdateFormContainer = () => {
           validationSchema={{
             pattern: {
               value: /^\(\d{3}\) \d{3}-\d{4}$/,
-              message:
-                'Please, enter a valid phone number in the format (949) 354-2574',
+              message: 'Enter phone number in the format (949) 354-2574',
             },
           }}
           errorMessage={formState.errors.phoneNumber?.message}
