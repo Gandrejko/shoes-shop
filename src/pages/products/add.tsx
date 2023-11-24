@@ -1,20 +1,21 @@
-import HeaderLayout from '@/components/layouts/HeaderLayout/HeaderLayout';
 import ProductForm from '@/components/common/ProductForm/ProductForm';
+import HeaderLayout from '@/components/layouts/HeaderLayout/HeaderLayout';
 import {SidebarLayout} from '@/components/layouts/SidebarLayout/SidebarLayout';
 import {FiltersData} from '@/types';
-import {useMutation} from '@tanstack/react-query';
+import {useMutation, useQueryClient} from '@tanstack/react-query';
 import axios from 'axios';
 import {GetStaticPropsContext} from 'next';
 import {useSession} from 'next-auth/react';
 import Head from 'next/head';
 import {useRouter} from 'next/navigation';
-import React from 'react';
 import {toast} from 'react-toastify';
 
 const AddProduct = (filtersData: FiltersData) => {
   const router = useRouter();
   const session = useSession();
   const token = session.data?.user.accessToken;
+
+  const queryClient = useQueryClient();
 
   const {mutate, isPending} = useMutation({
     mutationFn: (data: any) => {
@@ -30,6 +31,7 @@ const AddProduct = (filtersData: FiltersData) => {
       );
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ['products']});
       toast.success('Product added successfully');
       router.push('/products/me');
     },
@@ -37,6 +39,7 @@ const AddProduct = (filtersData: FiltersData) => {
       toast.error('Something went wrong');
     },
   });
+
   return (
     <>
       <Head>
