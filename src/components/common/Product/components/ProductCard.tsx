@@ -1,4 +1,4 @@
-import { MoreHoriz } from '@mui/icons-material';
+import {MoreHoriz} from '@mui/icons-material';
 import {
   Box,
   Card,
@@ -11,12 +11,12 @@ import {
   Typography,
 } from '@mui/material';
 import Image from 'next/image';
-import { useState } from 'react';
-import { ProductAttributes } from '@/types';
+import {useState} from 'react';
+import {ProductAttributes} from '@/types';
 import ButtonMenu from './ButtonMenu';
-import { useRouter } from 'next/router';
+import {useRouter} from 'next/router';
 import Link from 'next/link';
-import { useDelete } from '@/hooks';
+import {useDelete} from '@/hooks';
 
 const styles: Record<string, SxProps> = {
   card: {
@@ -66,11 +66,11 @@ const ProductCard = ({product, imagePriority}: Props) => {
   const router = useRouter();
   const showControls = router.pathname === '/products/me';
 
-  const { mutate: deleteProduct } = useDelete('/products');
+  const {mutate: deleteProduct} = useDelete('/products');
 
   return (
-    <Box sx={{ position: 'relative', width: '100%' }}>
-      <Link href={`/products/${product.id}`} style={{ textDecoration: 'none' }}>
+    <Box sx={{position: 'relative', width: '100%'}}>
+      <Link href={`/products/${product.id}`} style={{textDecoration: 'none'}}>
         <Card sx={styles.card}>
           <Box sx={styles.imageContainer}>
             {product.images?.data ? (
@@ -82,13 +82,10 @@ const ProductCard = ({product, imagePriority}: Props) => {
                 priority={imagePriority}
               />
             ) : (
-
-              <Paper sx={{ height: 1, backgroundColor: 'grey.A100', borderRadius: 0 }}>
-                <Image
-                  fill
-                  src="/icons/galleryIcon.svg"
-                  alt="icon"
-                />
+              <Paper
+                sx={{height: 1, backgroundColor: 'grey.A100', borderRadius: 0}}
+              >
+                <Image fill src="/icons/galleryIcon.svg" alt="icon" />
               </Paper>
             )}
           </Box>
@@ -132,8 +129,8 @@ const ProductCard = ({product, imagePriority}: Props) => {
             productid={product.id!}
             open={Boolean(anchorEl)}
             anchorEl={anchorEl}
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+            anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
+            transformOrigin={{vertical: 'top', horizontal: 'right'}}
             onClose={() => setAnchorEl(null)}
             onDeleteProduct={() => deleteProduct(product.id!)}
           />
