@@ -10,12 +10,13 @@ import {
   SxProps,
   Toolbar,
   Typography,
+  Badge
 } from '@mui/material';
 import {useSession} from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {useRouter} from 'next/navigation';
-import {FocusEvent, useContext, useState} from 'react';
+import {FocusEvent, useContext, useState, useEffect} from 'react';
 import {HeaderProps} from '../Header';
 import {ProfilePopup} from './ProfilePopup';
 
@@ -54,6 +55,17 @@ const DesktopHeader = ({userLoggedIn, onModalOpen}: HeaderProps) => {
     onModalOpen();
     e.target.blur();
   };
+
+  const [cartQty, setCartQty] = useState<number>(0);
+
+  useEffect(() => {
+    const cartItems = JSON.parse(localStorage.getItem('cart') || '{}');
+    const totalQuantity = Object.values(cartItems).reduce(
+      (acc: number, quantity: number) => acc + quantity,
+      0
+    );
+    setCartQty(totalQuantity);
+  }, []);
 
   return (
     <>
@@ -99,18 +111,20 @@ const DesktopHeader = ({userLoggedIn, onModalOpen}: HeaderProps) => {
                 )}
               </IconButton>
               <IconButton onClick={() => router.push('/cart')}>
-                <Image
-                  src="/icons/cart.svg"
-                  alt="cart"
-                  width={30}
-                  height={24}
-                  style={{
-                    filter:
-                      theme.palette.mode === 'dark'
-                        ? 'brightness(10)'
-                        : 'brightness(1)',
-                  }}
-                />
+                <Badge badgeContent={cartQty} color="primary">
+                  <Image
+                    src="/icons/cart.svg"
+                    alt="cart"
+                    width={30}
+                    height={24}
+                    style={{
+                      filter:
+                        theme.palette.mode === 'dark'
+                          ? 'brightness(10)'
+                          : 'brightness(1)',
+                    }}
+                  />
+                </Badge>
               </IconButton>
               <IconButton
                 onClick={e => setAnchorEl(e.currentTarget)}
@@ -158,18 +172,20 @@ const DesktopHeader = ({userLoggedIn, onModalOpen}: HeaderProps) => {
               )}
             </IconButton>
             <IconButton onClick={() => router.push('/cart')}>
-              <Image
-                src="/icons/cart.svg"
-                alt="cart"
-                width={26}
-                height={26}
-                style={{
-                  filter:
-                    theme.palette.mode === 'dark'
-                      ? 'brightness(10)'
-                      : 'brightness(1)',
-                }}
-              />
+              <Badge badgeContent={cartQty} color="primary">
+                <Image
+                  src="/icons/cart.svg"
+                  alt="cart"
+                  width={26}
+                  height={26}
+                  style={{
+                    filter:
+                      theme.palette.mode === 'dark'
+                        ? 'brightness(10)'
+                        : 'brightness(1)',
+                  }}
+                />
+              </Badge>
             </IconButton>
           </Stack>
         )}
