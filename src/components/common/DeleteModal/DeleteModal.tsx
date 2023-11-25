@@ -47,8 +47,9 @@ const styles: Record<string, SxProps> = {
     width: {xs: 122, md: 281},
     height: {xs: 40, md: 61},
     '&.Mui-disabled': {
-      color: 'grey.A200',
-      backgroundColor: 'grey.A100',
+      color: 'primary.main',
+      backgroundColor: 'transparent',
+      opacity: 0.85,
     },
   },
   closeButton: {

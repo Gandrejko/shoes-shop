@@ -46,8 +46,9 @@ const styles: Record<string, SxProps> = {
     fontSize: {xs: 12, sm: 16},
     width: {xs: 117, sm: 152},
     '&.Mui-disabled': {
-      color: 'grey.A200',
-      backgroundColor: 'grey.A100',
+      color: 'primary.main',
+      backgroundColor: 'transparent',
+      opacity: 0.85,
     },
   },
   inputHidden: {display: 'none'},

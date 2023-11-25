@@ -76,8 +76,9 @@ const styles: Record<string, SxProps> = {
   },
   button: {
     '&.Mui-disabled': {
-      color: 'grey.A200',
-      backgroundColor: 'grey.A100',
+      color: 'primary.main',
+      backgroundColor: 'transparent',
+      opacity: 0.85,
     },
   },
 };
