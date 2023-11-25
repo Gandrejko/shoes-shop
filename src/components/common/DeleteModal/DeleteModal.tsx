@@ -43,7 +43,14 @@ const styles: Record<string, SxProps> = {
     gap: {xs: 1.5, md: 3.75},
     width: '100%',
   },
-  button: {width: {xs: 122, md: 281}, height: {xs: 40, md: 61}},
+  button: {
+    width: {xs: 122, md: 281},
+    height: {xs: 40, md: 61},
+    '&.Mui-disabled': {
+      color: 'grey.A200',
+      backgroundColor: 'grey.A100',
+    },
+  },
   closeButton: {
     position: 'absolute',
     right: '4%',
@@ -107,13 +114,19 @@ const DeleteModal = ({
       </DialogContent>
       <Divider variant="fullWidth" />
       <DialogActions sx={styles.actions}>
-        <Button variant="outlined" sx={styles.button} onClick={onClose}>
+        <Button
+          variant="outlined"
+          sx={styles.button}
+          onClick={onClose}
+          disabled={isDeleting}
+        >
           Cancel
         </Button>
         <Button
           variant="contained"
           sx={styles.button}
           onClick={onDelete}
+          disabled={isDeleting}
           endIcon={isDeleting && <CircularProgress size={15} />}
         >
           {isDeleting ? 'Deleting...' : 'Delete'}

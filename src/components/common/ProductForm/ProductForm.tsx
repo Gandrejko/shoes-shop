@@ -282,8 +282,7 @@ const ProductForm = ({
           <Button
             variant="contained"
             type="submit"
-            // disabled={isLoading}
-            disabled={true} //TODO: delete this line
+            disabled={isLoading}
             endIcon={isLoading && <CircularProgress size={15} />}
             sx={styles.button}
           >

@@ -100,10 +100,9 @@ const UpdateProfileAvatarContainer = () => {
         <Button
           variant="outlined"
           component="label"
-          // disabled={
-          //   isDeleteImageLoading || isUploadImageLoading || isUserDataLoading
-          // }
-          disabled={true} //TODO: delete this line
+          disabled={
+            isDeleteImageLoading || isUploadImageLoading || isUserDataLoading
+          }
           sx={styles.button}
         >
           Change photo
@@ -117,10 +116,9 @@ const UpdateProfileAvatarContainer = () => {
         <Button
           variant="contained"
           type="button"
-          // disabled={
-          //   isDeleteImageLoading || isUploadImageLoading || isUserDataLoading
-          // }
-          disabled={true} //TODO: delete this line
+          disabled={
+            isDeleteImageLoading || isUploadImageLoading || isUserDataLoading
+          }
           onClick={() => deleteImage(avatar?.id!)}
           sx={styles.button}
         >

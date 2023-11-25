@@ -79,8 +79,7 @@ const UpdateFormContainer = () => {
         variant="contained"
         type="submit"
         sx={styles.button}
-        // disabled={isUserDataLoading || isUploadImageLoading}
-        disabled={true} //TODO: delete this line
+        disabled={isUserDataLoading || isUploadImageLoading}
         endIcon={isUserDataLoading && <CircularProgress size={15} />}
       >
         {isUserDataLoading ? 'Saving...' : 'Save changes'}
