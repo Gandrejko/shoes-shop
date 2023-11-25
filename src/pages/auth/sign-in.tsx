@@ -14,7 +14,7 @@ import Input from '@/components/ui/Input/Input';
 import {useRouter} from 'next/router';
 import {toast} from 'react-toastify';
 import {styles} from '@/components/layouts/AuthLayout/authPagesStyles';
-import {ReactElement, useState} from 'react';
+import {ReactElement} from 'react';
 import {AuthLayout} from '@/components/layouts/AuthLayout/AuthLayout';
 import {useMutation} from '@tanstack/react-query';
 import axios from 'axios';
@@ -25,10 +25,8 @@ type SignInType = {
   rememberMe: boolean;
 };
 const SignIn = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const {mutate} = useMutation({
+  const {mutate, isPending} = useMutation({
     mutationFn: (userData: Partial<SignInType>) => {
-      setIsLoading(true);
       return axios.post(`${process.env.API_URL}/auth/local`, {
         identifier: userData.email,
         password: userData.password,
@@ -39,23 +37,20 @@ const SignIn = () => {
         identifier: userData.email,
         password: userData.password,
         redirect: false,
-      })
-        .then((value: SignInResponse | undefined) => {
-          if (value?.ok) {
-            localStorage.setItem('signInJustNow', JSON.stringify(true));
-            router.push('/products');
-          } else {
-            toast.error('Something went wrong!');
-          }
-        })
-        .finally(() => setIsLoading(false));
+      }).then((value: SignInResponse | undefined) => {
+        if (value?.ok) {
+          localStorage.setItem('signInJustNow', JSON.stringify(true));
+          router.push('/products');
+        } else {
+          toast.error('Something went wrong!');
+        }
+      });
     },
     onError: (e: any) => {
       const errorMessage =
         e.response!.data.error.message.replace('identifier', 'email') ||
         'Wrong credentials';
       toast.error(errorMessage);
-      setIsLoading(false);
     },
   });
   const {
@@ -73,7 +68,7 @@ const SignIn = () => {
 
   return (
     <Box sx={styles.formBox}>
-      {isLoading && <CircularProgress sx={styles.loader} />}
+      {isPending && <CircularProgress sx={styles.loader} />}
       <Box
         component="form"
         onSubmit={handleSubmit(onSubmit)}
@@ -122,7 +117,7 @@ const SignIn = () => {
             </Link>
           </Box>
         </Box>
-        <Button type="submit" variant="contained" disabled={isLoading}>
+        <Button type="submit" variant="contained" disabled={isPending}>
           Sign in
         </Button>
       </Box>
