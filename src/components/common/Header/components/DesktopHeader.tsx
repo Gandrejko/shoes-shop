@@ -16,9 +16,10 @@ import {useSession} from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {useRouter} from 'next/navigation';
-import {FocusEvent, useContext, useState, useEffect} from 'react';
+import {FocusEvent, useContext, useState} from 'react';
 import {HeaderProps} from '../Header';
 import {ProfilePopup} from './ProfilePopup';
+import {useQuery} from '@tanstack/react-query';
 
 const styles: Record<string, SxProps> = {
   desktopWrapper: {
@@ -56,16 +57,14 @@ const DesktopHeader = ({userLoggedIn, onModalOpen}: HeaderProps) => {
     e.target.blur();
   };
 
-  const [cartQty, setCartQty] = useState<number>(0);
+  const {data: cartIds} = useQuery({
+    queryKey: ['cart'],
+    queryFn: async () => JSON.parse(localStorage.getItem('cart') || '{}')
+  });
 
-  useEffect(() => {
-    const cartItems = JSON.parse(localStorage.getItem('cart') || '{}');
-    const totalQuantity = Object.values(cartItems).reduce(
-      (acc: number, quantity: number) => acc + quantity,
-      0
-    );
-    setCartQty(totalQuantity);
-  }, []);
+  const totalQuantity = cartIds
+    ? Object.values(cartIds).reduce((acc, quantity) => acc + quantity, 0)
+    : 0;
 
   return (
     <>
@@ -111,7 +110,7 @@ const DesktopHeader = ({userLoggedIn, onModalOpen}: HeaderProps) => {
                 )}
               </IconButton>
               <IconButton onClick={() => router.push('/cart')}>
-                <Badge badgeContent={cartQty} color="primary">
+                <Badge badgeContent={totalQuantity} color="primary">
                   <Image
                     src="/icons/cart.svg"
                     alt="cart"
@@ -172,7 +171,7 @@ const DesktopHeader = ({userLoggedIn, onModalOpen}: HeaderProps) => {
               )}
             </IconButton>
             <IconButton onClick={() => router.push('/cart')}>
-              <Badge badgeContent={cartQty} color="primary">
+              <Badge badgeContent={totalQuantity} color="primary">
                 <Image
                   src="/icons/cart.svg"
                   alt="cart"
