@@ -12,6 +12,11 @@ const styles: Record<string, SxProps> = {
     alignSelf: 'flex-end',
     width: {xs: 117, sm: 152},
     fontSize: {xs: 12, sm: 16},
+    '&.Mui-disabled': {
+      color: 'primary.main',
+      backgroundColor: 'transparent',
+      opacity: 0.85,
+    },
   },
 };
 

@@ -6,7 +6,13 @@ import {
   ProductAttributes,
   ProductRequest,
 } from '@/types';
-import {Box, Button, SxProps, Typography} from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  SxProps,
+  Typography,
+} from '@mui/material';
 import {useSession} from 'next-auth/react';
 import {
   Dispatch,
@@ -67,6 +73,13 @@ const styles: Record<string, SxProps> = {
     backgroundColor: 'background.paper',
     padding: '20px 0',
     zIndex: '1',
+  },
+  button: {
+    '&.Mui-disabled': {
+      color: 'primary.main',
+      backgroundColor: 'transparent',
+      opacity: 0.85,
+    },
   },
 };
 
@@ -267,8 +280,14 @@ const ProductForm = ({
           <Typography variant="h1">
             {product ? 'Edit product' : 'Add a product'}
           </Typography>
-          <Button variant="contained" type="submit" disabled={isLoading}>
-            Save
+          <Button
+            variant="contained"
+            type="submit"
+            disabled={isLoading}
+            endIcon={isLoading && <CircularProgress size={15} />}
+            sx={styles.button}
+          >
+            {isLoading ? 'Saving...' : 'Save changes'}
           </Button>
         </Box>
         <Typography sx={styles.description}>

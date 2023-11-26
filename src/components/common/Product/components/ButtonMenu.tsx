@@ -27,11 +27,13 @@ const styles: Record<string, SxProps> = {
 type ButtonMenuProps = MenuProps & {
   productid: number;
   onDeleteProduct: () => void;
+  isDeleting: boolean;
 };
 
 const ButtonMenu = ({
   productid,
   onDeleteProduct,
+  isDeleting,
   ...props
 }: ButtonMenuProps) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
@@ -77,6 +79,7 @@ const ButtonMenu = ({
           onDeleteProduct();
           setOpenDeleteModal(false);
         }}
+        isDeleting={isDeleting}
       />
     </>
   );
