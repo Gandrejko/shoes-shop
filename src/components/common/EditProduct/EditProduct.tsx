@@ -27,10 +27,10 @@ const styles: Record<string, SxProps> = {
     bottom: 120,
     right: 180,
     [theme.breakpoints.down('lg')]: {
-      top: 70,
-      left: 90,
-      bottom: 70,
-      right: 90,
+      top: 40,
+      left: 80,
+      bottom: 40,
+      right: 80,
     },
     [theme.breakpoints.down('md')]: {
       top: 0,

@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import ImageSlider from '@/components/common/ImageSlider/ImageSlider';
 import {useRouter} from 'next/router';
-import {useMutation} from '@tanstack/react-query';
+import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {toast} from 'react-toastify';
 import Head from 'next/head';
 
@@ -150,6 +150,8 @@ const Product = ({product: data}: ProductProps) => {
 
   const product = {id: data?.data.id, ...data?.data.attributes};
 
+  const queryClient = useQueryClient();
+
   const {mutate} = useMutation({
     mutationKey: ['cart'],
     mutationFn: async () => {
@@ -159,10 +161,11 @@ const Product = ({product: data}: ProductProps) => {
         return;
       }
       toast.success('You have successfully added an item to your cart');
-      localStorage.setItem(
-        'cart',
-        JSON.stringify({...existingData, [productId]: 1}),
-      );
+      const updatedCartData = {...existingData, [productId]: 1};
+      localStorage.setItem('cart', JSON.stringify(updatedCartData));
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ['cart']});
     },
   });
 
