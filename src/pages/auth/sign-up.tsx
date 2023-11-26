@@ -21,14 +21,17 @@ type SignUpType = {
 const SignUp = () => {
   const {mutate, isPending} = useMutation({
     mutationFn: (userData: Partial<SignUpType>) =>
-      axios.post(`${process.env.API_URL}/api/auth/local/register`, userData),
+      axios.post(`${process.env.API_URL}/auth/local/register`, userData),
     onSuccess: () => {
       toast.success('You are successfully sign up!');
       toast.info('The last step is to confirm your email');
       router.push('/auth/sign-in');
     },
-    onError: e => {
-      toast.error('Account with such login or email already exist');
+    onError: (e: any) => {
+      const errorMessage =
+        e.response!.data.error.message ||
+        'Account with such login or email already exist';
+      toast.error(errorMessage);
     },
   });
   const {
@@ -69,7 +72,7 @@ const SignUp = () => {
             validationSchema={{
               required: 'Entered value does not match email format',
               pattern: {
-                value: /\S+@\S+\.\S+/,
+                value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                 message: 'Entered value does not match email format',
               },
             }}
