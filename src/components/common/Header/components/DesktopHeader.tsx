@@ -16,7 +16,7 @@ import {useSession} from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {useRouter} from 'next/navigation';
-import {FocusEvent, useContext, useEffect, useState} from 'react';
+import {FocusEvent, useContext, useState} from 'react';
 import {HeaderProps} from '../Header';
 import {ProfilePopup} from './ProfilePopup';
 import {useQuery} from '@tanstack/react-query';
