@@ -8,18 +8,22 @@ export async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
   const res = NextResponse.next();
 
-  //it is session info
   const token = await getToken({req});
-  if (!token) {
-    const url = new URL(`/`, req.url);
-    //url.searchParams.set("callbackUrl", pathname);
+  const pathnamePage = pathname.split('/')[1];
+
+  if (pathnamePage === 'auth' && token) {
+    const url = new URL(`/products`, req.url);
+    return NextResponse.redirect(url);
+  }
+
+  if (pathnamePage !== 'auth' && !token) {
+    const url = new URL(`/products`, req.url);
     return NextResponse.redirect(url);
   }
 
   return res;
 }
 
-// See "Matching Paths" below to learn more
 export const config = {
-  matcher: ['/products/add', '/products/me', '/settings'],
+  matcher: ['/products/add', '/products/me', '/settings', '/auth/:path*'],
 };

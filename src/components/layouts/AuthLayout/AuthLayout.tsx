@@ -1,11 +1,11 @@
+import ColorModeContext from '@/config/theme/ColorModeContext';
 import {Box, Typography, useMediaQuery} from '@mui/material';
-import Link from 'next/link';
 import Image from 'next/image';
+import Link from 'next/link';
 import {useRouter} from 'next/router';
 import logoIcon from 'public/icons/logo.svg';
-import theme from '@/config/theme';
+import {ReactNode, useContext} from 'react';
 import {styles} from './authPagesStyles';
-import {ReactNode} from 'react';
 
 type AuthLayoutProps = {
   children: ReactNode;
@@ -29,6 +29,7 @@ export const AuthLayout = ({children, title, subtTitle}: AuthLayoutProps) => {
   const currentTab = router.route.replace('/auth/', '') as ImagesType;
   const currentImage = chooseCurrentImage(currentTab);
 
+  const {theme} = useContext(ColorModeContext);
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
@@ -39,7 +40,16 @@ export const AuthLayout = ({children, title, subtTitle}: AuthLayoutProps) => {
           style={styles.headerImage}
           aria-label="Go to products page"
         >
-          <Image src={logoIcon} alt="Logo" />
+          <Image
+            src={logoIcon}
+            alt="Logo"
+            style={{
+              filter:
+                theme.palette.mode === 'dark'
+                  ? 'brightness(1)'
+                  : 'brightness(0)',
+            }}
+          />
         </Link>
       </Box>
       <Box sx={styles.container}>

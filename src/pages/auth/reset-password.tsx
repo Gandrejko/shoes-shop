@@ -31,8 +31,11 @@ const ResetPassword = () => {
       toast.success('Password was changed!');
       router.push('/auth/sign-in');
     },
-    onError: e => {
-      toast.error('Something went wrong, try again later');
+    onError: (e: any) => {
+      const errorMessage =
+        e.response!.data.error.message ||
+        'Account with such login or email already exist';
+      toast.error(errorMessage);
     },
   });
   const {

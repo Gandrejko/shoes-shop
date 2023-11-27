@@ -1,6 +1,7 @@
 import ColorModeContext from '@/config/theme/ColorModeContext';
 import {
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -42,7 +43,15 @@ const styles: Record<string, SxProps> = {
     gap: {xs: 1.5, md: 3.75},
     width: '100%',
   },
-  button: {width: {xs: 122, md: 281}, height: {xs: 40, md: 61}},
+  button: {
+    width: {xs: 122, md: 281},
+    height: {xs: 40, md: 61},
+    '&.Mui-disabled': {
+      color: 'primary.main',
+      backgroundColor: 'transparent',
+      opacity: 0.85,
+    },
+  },
   closeButton: {
     position: 'absolute',
     right: '4%',
@@ -59,6 +68,7 @@ type DeleteModalProps = {
   isModalOpen: boolean;
   onClose: () => void;
   onDelete: () => void;
+  isDeleting: boolean;
 };
 
 const DeleteModal = ({
@@ -67,6 +77,7 @@ const DeleteModal = ({
   isModalOpen,
   onClose,
   onDelete,
+  isDeleting,
 }: DeleteModalProps) => {
   const {theme} = useContext(ColorModeContext);
 
@@ -104,11 +115,22 @@ const DeleteModal = ({
       </DialogContent>
       <Divider variant="fullWidth" />
       <DialogActions sx={styles.actions}>
-        <Button variant="outlined" sx={styles.button} onClick={onClose}>
+        <Button
+          variant="outlined"
+          sx={styles.button}
+          onClick={onClose}
+          disabled={isDeleting}
+        >
           Cancel
         </Button>
-        <Button variant="contained" sx={styles.button} onClick={onDelete}>
-          Delete
+        <Button
+          variant="contained"
+          sx={styles.button}
+          onClick={onDelete}
+          disabled={isDeleting}
+          endIcon={isDeleting && <CircularProgress size={15} />}
+        >
+          {isDeleting ? 'Deleting...' : 'Delete'}
         </Button>
       </DialogActions>
     </Dialog>

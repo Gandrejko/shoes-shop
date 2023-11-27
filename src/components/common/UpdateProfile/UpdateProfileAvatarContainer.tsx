@@ -45,6 +45,11 @@ const styles: Record<string, SxProps> = {
   button: {
     fontSize: {xs: 12, sm: 16},
     width: {xs: 117, sm: 152},
+    '&.Mui-disabled': {
+      color: 'primary.main',
+      backgroundColor: 'transparent',
+      opacity: 0.85,
+    },
   },
   inputHidden: {display: 'none'},
 };
