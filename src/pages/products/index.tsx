@@ -158,7 +158,7 @@ export const getServerSideProps = async (
 ) => {
   const params = buildParams(context.query, {
     'pagination[page]': 1,
-    'pagination[pageSize]': 15,
+    'pagination[pageSize]': 12,
     'filters[teamName]': 'team-3',
     populate: '*',
   });
