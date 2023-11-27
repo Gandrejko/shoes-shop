@@ -175,7 +175,7 @@ const Product = ({product: data}: ProductProps) => {
   const categories = product?.categories?.data;
   const images = product?.images?.data?.map(({attributes: {url}}) => url) || [];
 
-  if (!router.isFallback) {
+  if (router.isFallback) {
     return (
       <Container maxWidth="xl" sx={{...styles.container, height: 1}}>
         <CircularProgress size={100} style={{margin: 'auto'}} />
