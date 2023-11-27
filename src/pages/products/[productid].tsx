@@ -1,23 +1,23 @@
+import ImageSlider from '@/components/common/ImageSlider/ImageSlider';
 import HeaderLayout from '@/components/layouts/HeaderLayout/HeaderLayout';
-import axios from 'axios';
-import Image from 'next/image';
 import {ProductResponse, ProductsResponse} from '@/types';
-import {GetServerSidePropsContext, GetStaticPropsContext} from 'next';
-import React, {ReactElement, useState} from 'react';
-import theme from '@/config/theme';
 import {
   Box,
-  Container,
-  Typography,
-  SxProps,
   Button,
+  CircularProgress,
+  Container,
   Paper,
+  SxProps,
+  Typography,
 } from '@mui/material';
-import ImageSlider from '@/components/common/ImageSlider/ImageSlider';
-import {useRouter} from 'next/router';
 import {useMutation, useQueryClient} from '@tanstack/react-query';
-import {toast} from 'react-toastify';
+import axios from 'axios';
+import {GetStaticPropsContext} from 'next';
 import Head from 'next/head';
+import Image from 'next/image';
+import {useRouter} from 'next/router';
+import {ReactElement, useState} from 'react';
+import {toast} from 'react-toastify';
 
 const styles: Record<string, SxProps> = {
   container: {
@@ -175,6 +175,14 @@ const Product = ({product: data}: ProductProps) => {
   const categories = product?.categories?.data;
   const images = product?.images?.data?.map(({attributes: {url}}) => url) || [];
 
+  if (!router.isFallback) {
+    return (
+      <Container maxWidth="xl" sx={{...styles.container, height: 1}}>
+        <CircularProgress size={100} style={{margin: 'auto'}} />
+      </Container>
+    );
+  }
+
   return (
     <Container maxWidth="xl" sx={styles.container}>
       <Box sx={styles.productContainer}>
@@ -284,6 +292,15 @@ export async function getStaticPaths() {
   try {
     const {data: products} = await axios.get<ProductsResponse>(
       `${process.env.API_URL}/products`,
+      {
+        params: {
+          'pagination[page]': 1,
+          'pagination[pageSize]': 12,
+          'filters[teamName]': 'team-3',
+          sort: 'createdAt:desc',
+          fields: 'id',
+        },
+      },
     );
 
     const paths = products.data.map(({id}) => ({
