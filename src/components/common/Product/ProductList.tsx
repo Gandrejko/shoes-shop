@@ -53,7 +53,7 @@ const ProductList = ({
     },
     {
       'filters[teamName]': 'team-3',
-      'pagination[pageSize]': 15,
+      'pagination[pageSize]': 12,
       ...params,
     },
   );

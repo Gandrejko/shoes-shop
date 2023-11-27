@@ -227,7 +227,7 @@ export const getServerSideProps = async (
     {
       params: {
         'pagination[page]': 1,
-        'pagination[pageSize]': 15,
+        'pagination[pageSize]': 12,
         'filters[userID]': user?.id,
         populate: 'images,gender',
         sort: 'createdAt:desc',
