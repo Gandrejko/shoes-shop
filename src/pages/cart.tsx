@@ -1,23 +1,23 @@
-import React, { ReactElement, useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import React, {ReactElement, useState} from 'react';
+import {Box, Typography} from '@mui/material';
 import ProductItem from '@/components/common/Cart/CartItem';
 import SummarySection from '@/components/common/Cart/SummarySection';
 import EmptyCartPage from '@/components/common/Cart/EmptyCartPage';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import {useQuery, useQueryClient} from '@tanstack/react-query';
 import theme from '@/config/theme';
-import { useGet } from '@/hooks';
-import { ProductsResponse } from '@/types';
+import {useGet} from '@/hooks';
+import {ProductsResponse} from '@/types';
 import ProductItemSkeleton from '@/components/common/Cart/ProductItemSkeleton';
 import SummarySectionSkeleton from '@/components/common/Cart/SummarySectionSkeleton';
-import { SxProps } from '@mui/system';
+import {SxProps} from '@mui/system';
 import Head from 'next/head';
 import HeaderLayout from '@/components/layouts/HeaderLayout/HeaderLayout';
-import { NextPageWithLayout } from './_app';
+import {NextPageWithLayout} from './_app';
 import Checkout from '@/components/common/Cart/Checkout';
 
 const styles: Record<string, SxProps> = {
   container: {
-    maxWidth: { sm: 700, lg: 1100, xl: 1500 },
+    maxWidth: {sm: 700, lg: 1100, xl: 1500},
     display: 'flex',
     gap: '5%',
     margin: {
@@ -95,7 +95,7 @@ const CartPage: NextPageWithLayout = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const queryClient = useQueryClient();
 
-  const { data: cartIds } = useQuery({
+  const {data: cartIds} = useQuery({
     queryKey: ['cart'],
     queryFn: async () => JSON.parse(localStorage.getItem('cart') || '{}'),
   });
@@ -103,7 +103,7 @@ const CartPage: NextPageWithLayout = () => {
 
   const isNotEmpty = params !== undefined && params.length !== 0;
 
-  const { data: products, isLoading } = useGet<ProductsResponse>(
+  const {data: products, isLoading} = useGet<ProductsResponse>(
     `/products?${params}`,
     {
       enabled: isNotEmpty,
@@ -136,7 +136,7 @@ const CartPage: NextPageWithLayout = () => {
           <Box sx={styles.cartItem}>
             <Typography variant="h1">Cart</Typography>
             {products &&
-              products.data.map(({ id, attributes }) => (
+              products.data.map(({id, attributes}) => (
                 <ProductItem
                   productID={id}
                   cartIds={cartIds}
@@ -153,14 +153,13 @@ const CartPage: NextPageWithLayout = () => {
                 quantity,
                 price:
                   products?.data.find(
-                    ({ id: productID }) => productID.toString() === id,
+                    ({id: productID}) => productID.toString() === id,
                   )?.attributes.price || 0,
               }))}
             />
           </Box>
         </>
       ) : null}
-
     </Box>
   );
 };

@@ -1,8 +1,8 @@
-import { Box, Typography, Button, SxProps, Link } from '@mui/material';
-import { useState } from 'react';
-import { toast } from 'react-toastify';
-import { Dispatch, SetStateAction } from 'react';
-import { useQueryClient, useMutation } from '@tanstack/react-query';
+import {Box, Typography, Button, SxProps, Link} from '@mui/material';
+import {useState} from 'react';
+import {toast} from 'react-toastify';
+import {Dispatch, SetStateAction} from 'react';
+import {useQueryClient, useMutation} from '@tanstack/react-query';
 
 const styles: Record<string, SxProps> = {
   container: {
@@ -50,7 +50,13 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-const SummarySection = ({ products, flagCheck }: { products: any[]; flagCheck: Dispatch<SetStateAction<boolean>> }) => {
+const SummarySection = ({
+  products,
+  flagCheck,
+}: {
+  products: any[];
+  flagCheck: Dispatch<SetStateAction<boolean>>;
+}) => {
   const [isCheckoutClicked, setIsCheckoutClicked] = useState(false);
 
   const total = products.reduce((accumulator, product) => {
@@ -62,17 +68,15 @@ const SummarySection = ({ products, flagCheck }: { products: any[]; flagCheck: D
     clearCart();
   };
 
-
-
   const queryClient = useQueryClient();
 
-  const { mutate: clearCart } = useMutation({
+  const {mutate: clearCart} = useMutation({
     mutationKey: ['cart'],
     mutationFn: async () => {
       localStorage.removeItem('cart');
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['cart'] });
+      queryClient.invalidateQueries({queryKey: ['cart']});
     },
   });
 
