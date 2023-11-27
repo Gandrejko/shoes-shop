@@ -22,9 +22,9 @@ const styles: Record<string, SxProps> = {
     marginX: 'auto',
     backgroundColor: 'background.paper',
     position: 'absolute',
-    top: 120,
+    top: 60,
     left: 180,
-    bottom: 120,
+    bottom: 60,
     right: 180,
     [theme.breakpoints.down('lg')]: {
       top: 70,
