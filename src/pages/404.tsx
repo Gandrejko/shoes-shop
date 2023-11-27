@@ -25,7 +25,7 @@ const styles: Record<string, SxProps> = {
     height: '100%',
     maxWidth: 1850,
     marginX: 'auto',
-    marginLeft:'32px'
+    marginLeft: '32px',
   },
   info: {
     display: 'flex',
