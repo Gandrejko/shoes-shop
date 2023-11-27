@@ -87,12 +87,6 @@ const styles: Record<string, SxProps> = {
       textDecoration: 'underline',
     },
   },
-  buttonSize: {
-    padding: '12px 16px',
-    minWidth: '85px',
-    height: '55px',
-    textTransform: 'none',
-  },
   sizesContainer: {
     marginTop: '10px',
     width: '100%',
@@ -251,9 +245,6 @@ const Product = ({product: data}: ProductProps) => {
           </Box>
         )}
         <Box sx={styles.btnContainer}>
-          <Button variant="contained" sx={styles.addToCartButton}>
-            Favorite
-          </Button>
           <Button
             onClick={() => mutate()}
             variant="contained"

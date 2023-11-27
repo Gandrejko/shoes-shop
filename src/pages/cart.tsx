@@ -1,4 +1,4 @@
-import React, {ReactElement} from 'react';
+import React, {ReactElement, useState} from 'react';
 import {Box, Typography} from '@mui/material';
 import ProductItem from '@/components/common/Cart/CartItem';
 import SummarySection from '@/components/common/Cart/SummarySection';
@@ -13,6 +13,7 @@ import {SxProps} from '@mui/system';
 import Head from 'next/head';
 import HeaderLayout from '@/components/layouts/HeaderLayout/HeaderLayout';
 import {NextPageWithLayout} from './_app';
+import Checkout from '@/components/common/Cart/Checkout';
 
 const styles: Record<string, SxProps> = {
   container: {
@@ -91,6 +92,7 @@ const txtAddFields = (ids: string[]) =>
   ids.map(id => `filters[id]=${id}`).join('&');
 
 const CartPage: NextPageWithLayout = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const queryClient = useQueryClient();
 
   const {data: cartIds} = useQuery({
@@ -126,6 +128,7 @@ const CartPage: NextPageWithLayout = () => {
         </Box>
       ) : params !== undefined && params.length === 0 ? (
         <Box sx={styles.emptyCartContainer}>
+          <Checkout flagCheck={setIsModalOpen} isModalOpen={isModalOpen} />
           <EmptyCartPage />
         </Box>
       ) : isNotEmpty ? (
@@ -144,6 +147,7 @@ const CartPage: NextPageWithLayout = () => {
           </Box>
           <Box sx={styles.summarySection}>
             <SummarySection
+              flagCheck={setIsModalOpen}
               products={Object.entries(cartIds).map(([id, quantity]) => ({
                 id,
                 quantity,

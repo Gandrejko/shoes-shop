@@ -1,6 +1,8 @@
 import {Box, Typography, Button, SxProps, Link} from '@mui/material';
 import {useState} from 'react';
 import {toast} from 'react-toastify';
+import {Dispatch, SetStateAction} from 'react';
+import {useQueryClient, useMutation} from '@tanstack/react-query';
 
 const styles: Record<string, SxProps> = {
   container: {
@@ -48,7 +50,13 @@ const styles: Record<string, SxProps> = {
   },
 };
 
-const SummarySection = ({products}: {products: any[]}) => {
+const SummarySection = ({
+  products,
+  flagCheck,
+}: {
+  products: any[];
+  flagCheck: Dispatch<SetStateAction<boolean>>;
+}) => {
   const [isCheckoutClicked, setIsCheckoutClicked] = useState(false);
 
   const total = products.reduce((accumulator, product) => {
@@ -56,12 +64,21 @@ const SummarySection = ({products}: {products: any[]}) => {
   }, 0);
 
   const handleCheckout = () => {
-    toast.success('Thank you for your purchase!', {
-      onClose: () => {
-        setIsCheckoutClicked(true);
-      },
-    });
+    flagCheck(true);
+    clearCart();
   };
+
+  const queryClient = useQueryClient();
+
+  const {mutate: clearCart} = useMutation({
+    mutationKey: ['cart'],
+    mutationFn: async () => {
+      localStorage.removeItem('cart');
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ['cart']});
+    },
+  });
 
   return (
     <Box sx={styles.container}>
@@ -95,15 +112,13 @@ const SummarySection = ({products}: {products: any[]}) => {
         </Typography>
       </Box>
 
-      <Link href={isCheckoutClicked ? '/cart' : '/products'}>
-        <Button
-          variant="contained"
-          sx={styles.checkoutButton}
-          onClick={handleCheckout}
-        >
-          Checkout
-        </Button>
-      </Link>
+      <Button
+        variant="contained"
+        sx={styles.checkoutButton}
+        onClick={handleCheckout}
+      >
+        Checkout
+      </Button>
     </Box>
   );
 };

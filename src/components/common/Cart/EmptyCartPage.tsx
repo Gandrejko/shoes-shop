@@ -2,7 +2,7 @@ import {useRouter} from 'next/navigation';
 import React from 'react';
 import {Box, Typography, Button} from '@mui/material';
 import Image from 'next/image';
-
+import theme from '@/config/theme';
 const styles = {
   container: {
     display: 'flex',
@@ -22,7 +22,7 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     padding: '20px',
-    backgroundColor: '#b5bdcb',
+    backgroundColor: `${theme.palette.grey.A100}`,
     borderRadius: '50%',
     marginBottom: 4,
   },
