@@ -12,12 +12,14 @@ import {
   SxProps,
   Toolbar,
   Typography,
+  Badge,
 } from '@mui/material';
 import Image from 'next/image';
 import Link from 'next/link';
 import {useRouter} from 'next/navigation';
 import {useContext, useState} from 'react';
 import {HeaderProps} from '../Header';
+import {useQuery} from '@tanstack/react-query';
 
 const styles: Record<string, SxProps> = {
   modal: {
@@ -78,6 +80,15 @@ const MobileHeader = ({userLoggedIn, onModalOpen}: HeaderProps) => {
     typeof navigator !== 'undefined' &&
     /iPad|iPhone|iPod/.test(navigator.userAgent);
 
+  const {data: cartIds} = useQuery<Record<string, number>>({
+    queryKey: ['cart'],
+    queryFn: async () => JSON.parse(localStorage.getItem('cart') || '{}'),
+  });
+
+  const totalQuantity = cartIds
+    ? Object.values(cartIds).reduce((acc, quantity) => acc + quantity, 0)
+    : 0;
+
   return (
     <>
       <Toolbar sx={styles.mobileWrapper}>
@@ -104,18 +115,20 @@ const MobileHeader = ({userLoggedIn, onModalOpen}: HeaderProps) => {
             )}
           </IconButton>
           <IconButton onClick={() => router.push('/cart')}>
-            <Image
-              src="/icons/cart.svg"
-              alt="cart"
-              width={20}
-              height={20}
-              style={{
-                filter:
-                  theme.palette.mode === 'dark'
-                    ? 'brightness(10)'
-                    : 'brightness(1)',
-              }}
-            />
+            <Badge badgeContent={totalQuantity} color="primary">
+              <Image
+                src="/icons/cart.svg"
+                alt="cart"
+                width={20}
+                height={20}
+                style={{
+                  filter:
+                    theme.palette.mode === 'dark'
+                      ? 'brightness(10)'
+                      : 'brightness(1)',
+                }}
+              />
+            </Badge>
           </IconButton>
           <IconButton onClick={onModalOpen}>
             <Image
